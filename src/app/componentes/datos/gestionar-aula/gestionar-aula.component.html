@@ -1,0 +1,158 @@
+<div class="grid">
+    <div class="col-12">
+        <h3>Gestionar aulas</h3>
+        <p>Esta pantalla permite la creación, visualización, edición y eliminación manual de espacios físicos, así como la visualización de sus horarios.</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="lg:col-12 md:col-12 sm:col-12">
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-5rem align-self-center" style="text-align: right;">Facultad</label>
+			<p-multiSelect 
+                maxSelectedLabels="4" 
+                selectedItemsLabel="{0} Facultades seleccionadas" 
+                optionLabel="abreviatura" 
+                [defaultLabel]="'Seleccione facultad'"
+                [options]="lstFacultadOutDTO" 
+                [(ngModel)]="facultadesSeleccionadas"  
+                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
+                [ngClass]="{'w-30rem':true }"
+                [filter]="false"
+                [showClear]="true"
+                (ngModelChange)="onFacultadesChange()" >
+                <ng-template let-facultad pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                    </div>
+                </ng-template>
+			</p-multiSelect>
+        </div>
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-5rem align-self-center" style="text-align: right;">Edificio</label>
+			<p-multiSelect 
+                maxSelectedLabels="4" 
+                selectedItemsLabel="{0} Edificios seleccionados" 
+                optionLabel="nombre" 
+                [defaultLabel]="listaEdificios.length === 0 ? '':'Seleccione edificios'"
+                [options]="listaEdificios" 
+                [(ngModel)]="edificiosSeleccionados"  
+                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
+                [ngClass]="{'w-30rem':true }"
+                [filter]="false"
+                [showClear]="true"
+                [disabled]="listaEdificios.length === 0"
+                (ngModelChange)="onEdificiosChange()" >
+                <ng-template let-edificio pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ edificio.nombre }}</strong></div>
+                    </div>
+                </ng-template>
+			</p-multiSelect>
+        </div>
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-5rem align-self-center" style="text-align: right;">Tipo aula</label>
+			<p-multiSelect 
+                maxSelectedLabels="2" 
+                selectedItemsLabel="{0} Tipo aulas seleccionadas" 
+                optionLabel="tipo" 
+                [defaultLabel]="listaTipoAulas.length === 0 ? '':'Seleccione tipo aulas'"
+                [options]="listaTipoAulas" 
+                [(ngModel)]="tipoAulasSeleccionadas"  
+                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
+                [ngClass]="{'w-30rem':true }"
+                [filter]="false"
+                [showClear]="true"
+                [disabled]="listaTipoAulas.length === 0"
+                (ngModelChange)="onTipoAulaChange()" >
+                <ng-template let-tipoAula pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ tipoAula.tipo }}</strong></div>
+                    </div>
+                </ng-template>
+			</p-multiSelect>
+        </div>
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-5rem align-self-center" style="text-align: right;">Estado</label>
+            <p-dropdown 
+                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }"
+                [placeholder]="facultadesSeleccionadas.length === 0 ? ' ':'Seleccione estado aula'" 
+                [ngClass]="{'w-30rem':true}" 
+                [options]="listaEstados" 
+                [(ngModel)]="estadoSeleccionado"
+                [showClear]="true"
+                [disabled]="facultadesSeleccionadas.length === 0"
+                (ngModelChange)="onEstadoChange()">
+            </p-dropdown>
+        </div>
+  </div>
+</div>
+
+<div class="grid" *ngIf="totalRecords!==undefined">
+    <div class="col-3">
+        <label class="large-label">Espacios físicos consultados: {{totalRecords}}</label>
+    </div>
+</div>
+<div class="grid">
+    <div class="col-12">      
+        <p-table #dt [value]="listaAulaDTO" responsiveLayout="scroll" [rows]="10"
+            selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Facultad</th>
+                    <th>Edificio</th>
+                    <th>Tipo aula</th>
+                    <th>Número aula</th>
+                    <th>Capacidad</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                    <th>Ver horario</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-aulaDTO>
+                <tr>
+                    <td>{{aulaDTO.abreviaturaFacultad}}</td>
+                    <td>{{aulaDTO.nombreEdificio}}</td>
+                    <td>{{aulaDTO.tipoAula}}</td>
+                    <td>{{aulaDTO.numeroAula}}</td>
+                    <td>{{aulaDTO.capacidad}}</td>
+                    <td>{{(aulaDTO.estado===true)? 'Activo':'Inactivo'}}</td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success"></button>
+                            <span style="margin-right: 10px;"></span>
+                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary"></button>
+                            <span style="margin-right: 10px;"></span>
+                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarAula(aulaDTO)"></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple type="button" icon="pi pi-calendar" class="p-button-rounded p-button-info p-button-outlined" (click)="abrirModalHorarioAula(aulaDTO)"></button>  
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0"></p-paginator>   
+    </div>   
+</div>
+
+<app-horario-aula #horarioAula></app-horario-aula>
+
+<div class="grid">
+    <div class="col-12">
+        <!-- botón inactivar fila -->
+        <p-dialog [(visible)]="inactivarAulaDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>¿Está seguro que desea inactivar el aula <b>{{obtenerNombreCompletoAula()}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="inactivarAulaeDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmarInactivacion()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>    
+</div>

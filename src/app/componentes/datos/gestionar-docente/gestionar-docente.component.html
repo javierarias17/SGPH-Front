@@ -1,0 +1,119 @@
+<div class="grid">
+    <div class="col-12">
+        <h3>Gestionar docentes</h3>
+        <p>Esta pantalla permite la creación, visualización, edición y eliminación manual de docentes, así como la visualización de sus horarios.</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="lg:col-12 md:col-12 sm:col-12">
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-6rem align-self-center" style="text-align: right;">Nombres</label>
+            <input type="text" class="p-inputtext" 
+            [(ngModel)]="filtroDocenteDTO.nombre" 
+            [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
+            [ngClass]="{'w-21rem':true }"
+            placeholder="Ingrese nombres"
+            (ngModelChange)="inputsChange()">
+        </div>
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-6rem align-self-center" style="text-align: right;">Identificación</label>
+            <input type="text" class="p-inputtext" 
+            [(ngModel)]="filtroDocenteDTO.numeroIdentificacion" 
+            [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
+            [ngClass]="{'w-21rem':true }"
+            placeholder="Ingrese número de identificación"
+            (ngModelChange)="inputsChange()">
+        </div>
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-6rem align-self-center" style="text-align: right;">Código</label>
+            <input type="text" class="p-inputtext" 
+            [(ngModel)]="filtroDocenteDTO.codigo" 
+            [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
+            [ngClass]="{'w-21rem':true }"
+            placeholder="Ingrese código docente"
+            (ngModelChange)="inputsChange()">
+        </div>
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-6rem align-self-center" style="text-align: right;">Estado</label>
+            <p-dropdown 
+                [style]="{ 'height': '2.0rem', 'margin-left': '8%',  'line-height': '1.2px', 'width': '70%' }"
+                placeholder="Seleccione estado docente" 
+                [ngClass]="{'w-30rem':true}" 
+                [options]="listaEstados" 
+                [(ngModel)]="estadoSeleccionado"
+                [showClear]="true"
+                (ngModelChange)="onEstadoChange()">
+            </p-dropdown>
+        </div>
+    </div>
+</div>
+<div class="grid" *ngIf="totalRecords!==undefined">
+    <div class="col-3">
+        <label class="large-label">Docentes consultados: {{totalRecords}}</label>
+    </div>
+</div>
+<div class="grid">
+    <div class="col-12">      
+        <p-table #dt [value]="listaDocenteOutDTO" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+            selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Codigo</th>
+                    <th>Identificación</th>
+                    <th>Primer nombre</th>
+                    <th>Segundo nombre</th>
+                    <th>Primer apellido</th>
+                    <th>Segundo apellido</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                    <th>Ver horario</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-docenteOutDTO>
+                <tr>
+                    <td>{{docenteOutDTO.codigo}}</td>
+                    <td>{{docenteOutDTO.codigoTipoIdentificacion}} {{docenteOutDTO.numeroIdentificacion}}</td>
+                    <td>{{docenteOutDTO.primerNombre}}</td>
+                    <td>{{docenteOutDTO.segundoNombre}}</td>
+                    <td>{{docenteOutDTO.primerApellido}}</td>
+                    <td>{{docenteOutDTO.segundoApellido}}</td>
+                    <td>{{(docenteOutDTO.estado===true)? 'Activo':'Inactivo'}}</td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Ver curso')"></button>
+                            <span style="margin-right: 10px;"></span>
+                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Editar curso')"></button>
+                            <span style="margin-right: 10px;"></span>
+                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarDocente(docenteOutDTO)"></button>
+                        </div>
+                    </td>
+                    <td>                   
+                        <button pButton pRipple type="button" icon="pi pi-calendar" class="p-button-rounded p-button-info p-button-outlined" (click)="abrirModalHorarioDocente(docenteOutDTO)"></button>  
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords"></p-paginator>   
+    </div>   
+</div>
+
+<app-crear-editar-ver-docente #crearEditarVerDocente></app-crear-editar-ver-docente>
+<app-horario-docente #horarioDocente></app-horario-docente>
+
+<div class="grid">
+    <div class="col-12">
+        <!-- botón inactivar fila -->
+        <p-dialog [(visible)]="inactivarDocenteDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>¿Está seguro que desea inactivar el docente <b>{{obtenerNombreCompletoDocente()}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="inactivarDocenteDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmarInactivacion()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>    
+</div>

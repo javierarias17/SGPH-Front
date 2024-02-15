@@ -1,0 +1,122 @@
+<div class="grid">
+    <div class="col-6">
+        <h3>Gestionar usuarios</h3>
+        <p>Esta pantalla permite la gestión completa de usuarios de la aplicación, incluyendo la creación,
+        visualización, edición y desactivación, así como la asignación de permisos correspondientes a cada usuario.</p>
+        <hr>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="lg:col-12 md:col-12 sm:col-12">
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-6rem align-self-center" style="text-align: right;">Nombres</label>
+            <input type="text" class="p-inputtext" 
+            [(ngModel)]="filtroUsuarioDTO.nombre" 
+            [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
+            [ngClass]="{'w-21rem':true }"
+            placeholder="Ingrese nombres"
+            (ngModelChange)="inputsChange()">
+        </div>
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-6rem align-self-center" style="text-align: right;">Identificación</label>
+            <input type="text" class="p-inputtext" 
+            [(ngModel)]="filtroUsuarioDTO.numeroIdentificacion" 
+            [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
+            [ngClass]="{'w-21rem':true }"
+            placeholder="Ingrese número de identificación"
+            (ngModelChange)="inputsChange()">
+        </div>
+        <div class="mt-1 flex justify-content-start flex-wrap">
+            <label class="w-6rem align-self-center" style="text-align: right;">Estado</label>
+            <p-dropdown 
+                [style]="{ 'height': '2.0rem', 'margin-left': '8%',  'line-height': '1.2px', 'width': '70%' }"
+                placeholder="Seleccione estado usuario" 
+                [ngClass]="{'w-30rem':true}" 
+                [options]="listaEstados" 
+                [(ngModel)]="estadoSeleccionado"
+                [showClear]="true"
+                (ngModelChange)="onEstadoChange()">
+            </p-dropdown>
+        </div>
+    </div>
+</div>
+<div class="grid" *ngIf="totalRecords!==undefined">
+    <div class="col-3">
+        <label class="large-label">Usuarios consultados: {{totalRecords}}</label>
+    </div>
+</div>
+<div class="grid">
+    <div class="col-12">      
+        <p-table #dt [value]="listaUsuarioOutDTO" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+            selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Identificación</th>
+                    <th>Nombres y apellidos</th>
+                    <th>Usuario</th>
+                    <th>Estado</th>
+                    <th>Roles asignados</th>
+                    <th>Programas asignados</th>
+                    <th>Opciones</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-usuarioOutDTO>
+                <tr>
+                    <td>{{usuarioOutDTO.codigoTipoIdentificacion}} {{usuarioOutDTO.numeroIdentificacion}}</td>
+                    <td>{{obtenerNombreCompletoUsuario(usuarioOutDTO)}}</td>
+                    <td>{{usuarioOutDTO.nombreUsuario}}</td>
+                    <td>{{(usuarioOutDTO.estado===true)? 'Activo':'Inactivo'}}</td>
+                    <td>
+                        <div *ngIf="usuarioOutDTO.lstIdRol.length > 0; else noRoles">
+                            <div *ngFor="let rol of usuarioOutDTO.lstIdRol " style="display: flex; flex-direction: column; ">
+                                {{obtenerNombreRol(rol) | titlecase }}
+                            </div>      
+                        </div>
+                        <ng-template #noRoles>
+                            <p style = "color:red">No asignado</p>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <div *ngIf="usuarioOutDTO.lstIdPrograma.length > 0; else noProgramas">
+                            <div *ngFor="let idPrograma of usuarioOutDTO.lstIdPrograma " style="display: flex; flex-direction: column; ">
+                                {{obtenerNombrePrograma(idPrograma) | titlecase }}
+                            </div>                         
+                        </div>
+                        <ng-template #noProgramas>
+                            <p style = "color:red">No asignado</p>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Ver curso')"></button>
+                            <span style="margin-right: 10px;"></span>
+                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Editar curso')"></button>
+                            <span style="margin-right: 10px;"></span>
+                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarUsuario(usuarioOutDTO)"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords"></p-paginator>   
+    </div>   
+</div>
+
+
+<div class="grid">
+    <div class="col-12">
+        <!-- botón inactivar fila -->
+        <p-dialog [(visible)]="inactivarUsuarioDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>¿Está seguro que desea inactivar el usuario <b>{{obtenerNombreCompletoUsuarioSeleccionado()}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="inactivarUsuarioDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmarInactivacion()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>    
+</div>
