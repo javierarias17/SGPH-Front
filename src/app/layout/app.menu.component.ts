@@ -66,7 +66,7 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'Gestionar usuarios', icon: 'pi pi-fw pi-users', routerLink: ['seguridad/gestionar-usuario'] }
                 ]
-            },  
+            },
             {
                 label: 'UI Components',
                 items: [

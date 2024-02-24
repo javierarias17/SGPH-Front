@@ -37,7 +37,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { PaginatorModule } from 'primeng/paginator';
 import { PickListModule } from 'primeng/picklist';
 import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar-docente.component';
-import { CrearEditarConsultarCursoComponent } from './datos/gestionar-curso/crear-editar-consultar-curso/crear-editar-consultar-curso.component';
+import { CrearEditarVerCursoComponent } from './datos/gestionar-curso/crear-editar-consultar-curso/crear-editar-ver-curso.component';
 import { InicioComponent } from './home/inicio/inicio.component';
 import { CrearPeriodoAcademicoComponent } from './periodo-academico/crear-periodo-academico/crear-periodo-academico.component';
 import { GestionarGrupoComponent } from './datos/gestionar-grupo/gestionar-grupo.component';
@@ -56,8 +56,7 @@ import { AsociarDocenteComponent } from './planificacion-horario/planificacion-m
 import { HorarioDocenteComponent } from './datos/gestionar-docente/horario-docente/horario-docente.component';
 import { CrearEditarVerDocenteComponent } from './datos/gestionar-docente/crear-editar-ver-docente/crear-editar-ver-docente.component';
 import { HorarioAulaComponent } from './datos/gestionar-aula/horario-aula/horario-aula.component';
-
-
+import { CrearEditarVerUsuarioComponent } from './seguridad/gestionar-usuario/crear-editar-ver-usuario/crear-editar-ver-usuario.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +66,7 @@ import { HorarioAulaComponent } from './datos/gestionar-aula/horario-aula/horari
     GestionarAulaComponent,
     AsociarAulaComponent,
     AsociarDocenteComponent,
-    CrearEditarConsultarCursoComponent,
+    CrearEditarVerCursoComponent,
     InicioComponent,
     CrearPeriodoAcademicoComponent,
     GestionarGrupoComponent,
@@ -83,7 +82,8 @@ import { HorarioAulaComponent } from './datos/gestionar-aula/horario-aula/horari
     GestionarUsuarioComponent,
     HorarioDocenteComponent,
     CrearEditarVerDocenteComponent,
-    HorarioAulaComponent
+    HorarioAulaComponent,
+    CrearEditarVerUsuarioComponent
   ],
   imports: [
     PaginatorModule,
@@ -95,7 +95,8 @@ import { HorarioAulaComponent } from './datos/gestionar-aula/horario-aula/horari
     ButtonModule,
     PickListModule,    
 		MultiSelectModule,
-		CheckboxModule    
+		CheckboxModule,
+    ToolbarModule
   ]
 })
 export class ComponentesModule { }

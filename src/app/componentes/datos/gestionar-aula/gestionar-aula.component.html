@@ -89,13 +89,27 @@
   </div>
 </div>
 
-<div class="grid" *ngIf="totalRecords!==undefined">
-    <div class="col-3">
-        <label class="large-label">Espacios físicos consultados: {{totalRecords}}</label>
-    </div>
-</div>
 <div class="grid">
-    <div class="col-12">      
+    <div class="col-12"> 
+        <div class="grid" *ngIf="totalRecords!==undefined">
+            <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
+                <label class="large-label">Espacios físicos consultados: {{totalRecords}}</label>
+            </div>
+            <div [class]="totalRecords!==undefined ? 'col-6': 'col-12'">
+                <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
+                    <ng-template pTemplate="left">
+                    </ng-template>
+                    <ng-template pTemplate="right">
+                        <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                        <button pButton pRipple label="Subir archivo" icon="pi pi-upload" class="p-button-help" (click)="cargarArchivo()"></button>
+                        <span style="margin-right: 10px;"></span>
+                        <div class="my-0">
+                            <button pButton pRipple label="Crear Aula" icon="pi pi-plus" class="p-button-success mr-2" (click)="abrirModalCrearEditarVerAula(null, 'Crear curso')"></button>
+                        </div>
+                    </ng-template>
+                </p-toolbar>  
+            </div>
+        </div>       
         <p-table #dt [value]="listaAulaDTO" responsiveLayout="scroll" [rows]="10"
             selectionMode="multiple" [rowHover]="true" dataKey="id">
             <ng-template pTemplate="header">

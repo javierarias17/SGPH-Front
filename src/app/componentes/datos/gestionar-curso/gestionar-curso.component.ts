@@ -8,7 +8,7 @@ import { EstadoCursoHorarioEnum } from '../../enum/estado.curso.horario.enum';
 import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
 import { AulaServicio } from '../../servicios/aula.servicio';
 import { HorarioServicio } from '../../servicios/horario.servicio';
-import { CrearEditarConsultarCursoComponent } from './crear-editar-consultar-curso/crear-editar-consultar-curso.component';
+import { CrearEditarVerCursoComponent } from './crear-editar-consultar-curso/crear-editar-ver-curso.component';
 import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { CursoPlanificacionOutDTO } from '../../dto/curso/out/curso.planificacion.out.dto';
@@ -69,7 +69,7 @@ export class GestionarCursoComponent {
     rowsPerPageOptions = [5, 10, 20];
 
     //Referencias componentes hijos
-    @ViewChild('crearEditarConsultarCurso') crearEditarConsultarCurso: CrearEditarConsultarCursoComponent;
+    @ViewChild('crearEditarVerCurso') crearEditarVerCurso: CrearEditarVerCursoComponent;
 
     constructor(private messageService: MessageService, 
         private cursoServicio:CursoServicio, private facultadServicio:FacultadServicio,
@@ -234,9 +234,9 @@ export class GestionarCursoComponent {
     }
        
     /*Crear, Editar y Ver curso*/
-    public crearEditarVerCurso(cursoPlanificacionOutDTOSeleccionado: CursoPlanificacionOutDTO, tituloModal: string) {
-        if (this.crearEditarConsultarCurso) {
-            this.crearEditarConsultarCurso.abrirModal(cursoPlanificacionOutDTOSeleccionado, tituloModal);
+    public abrirModalCrearEditarVerCurso(cursoPlanificacionOutDTOSeleccionado: CursoPlanificacionOutDTO, tituloModal: string) {
+        if (this.crearEditarVerCurso) {
+            this.crearEditarVerCurso.abrirModal(cursoPlanificacionOutDTOSeleccionado, tituloModal);
         }      
     }
     

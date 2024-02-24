@@ -11,7 +11,7 @@
 <div class="row">
     <div class="lg:col-12 md:col-12 sm:col-12">
         <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-6rem align-self-center" style="text-align: right;">Nombres</label>
+            <label class="w-7rem align-self-center" style="text-align: right;">Nombres</label>
             <input type="text" class="p-inputtext" 
             [(ngModel)]="filtroUsuarioDTO.nombre" 
             [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
@@ -20,7 +20,7 @@
             (ngModelChange)="inputsChange()">
         </div>
         <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-6rem align-self-center" style="text-align: right;">Identificación</label>
+            <label class="w-7rem align-self-center" style="text-align: right;">Identificación</label>
             <input type="text" class="p-inputtext" 
             [(ngModel)]="filtroUsuarioDTO.numeroIdentificacion" 
             [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
@@ -29,11 +29,11 @@
             (ngModelChange)="inputsChange()">
         </div>
         <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-6rem align-self-center" style="text-align: right;">Estado</label>
+            <label class="w-7rem align-self-center" style="text-align: right;">Estado</label>
             <p-dropdown 
-                [style]="{ 'height': '2.0rem', 'margin-left': '8%',  'line-height': '1.2px', 'width': '70%' }"
+                [style]="{ 'height': '2.0rem', 'margin-left': '8%',  'line-height': '1.2px', 'width': '91%' }"
                 placeholder="Seleccione estado usuario" 
-                [ngClass]="{'w-30rem':true}" 
+                [ngClass]="{'w-23rem':true}" 
                 [options]="listaEstados" 
                 [(ngModel)]="estadoSeleccionado"
                 [showClear]="true"
@@ -42,13 +42,30 @@
         </div>
     </div>
 </div>
-<div class="grid" *ngIf="totalRecords!==undefined">
-    <div class="col-3">
-        <label class="large-label">Usuarios consultados: {{totalRecords}}</label>
-    </div>
-</div>
+
+
 <div class="grid">
-    <div class="col-12">      
+    <div class="col-12">        
+        <div class="grid" >
+            <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
+                <label class="large-label">Usuarios consultados: {{totalRecords}}</label>
+            </div>
+            <div class="col-6">
+                <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
+                    <ng-template pTemplate="left">
+                    </ng-template>
+                    <ng-template pTemplate="right">
+                        <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                        <button pButton pRipple label="Subir archivo" icon="pi pi-upload" class="p-button-help" (click)="cargarArchivo()"></button>
+                        <span style="margin-right: 10px;"></span>
+                        <div class="my-0">
+                            <button pButton pRipple label="Crear usuario" icon="pi pi-plus" class="p-button-success mr-2" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Crear usuario')"></button>
+                        </div>
+                    </ng-template>
+                </p-toolbar>  
+            </div>
+        </div>                        
+                
         <p-table #dt [value]="listaUsuarioOutDTO" [columns]="cols" responsiveLayout="scroll" [rows]="10"
             selectionMode="multiple" [rowHover]="true" dataKey="id">
             <ng-template pTemplate="header">
@@ -90,9 +107,9 @@
                     </td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Ver curso')"></button>
+                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Ver usuario')"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Editar curso')"></button>
+                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Editar usuario')"></button>
                             <span style="margin-right: 10px;"></span>
                             <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarUsuario(usuarioOutDTO)"></button>
                         </div>
@@ -104,6 +121,7 @@
     </div>   
 </div>
 
+<app-crear-editar-ver-usuario #crearEditarVerUsuario></app-crear-editar-ver-usuario>
 
 <div class="grid">
     <div class="col-12">

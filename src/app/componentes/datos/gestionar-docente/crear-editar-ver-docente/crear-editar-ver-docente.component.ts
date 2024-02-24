@@ -6,7 +6,7 @@ import { DocenteOutDTO } from 'src/app/componentes/dto/docente/out/docente.out.d
 	templateUrl: './crear-editar-ver-docente.component.html',
 	styleUrls: ['./crear-editar-ver-docente.component.css']
 })
-	export class CrearEditarVerDocenteComponent {
+export class CrearEditarVerDocenteComponent {
 
 	@ViewChild('crearEditarVerDocente') crearEditarVerDocente: CrearEditarVerDocenteComponent;
 

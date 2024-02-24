@@ -121,14 +121,28 @@
     </div>
 </div>
 
-<div class="grid" *ngIf="totalRecords!==undefined">
-    <div class="col-3">
-        <label class="large-label">Cursos consultados: {{totalRecords}}</label>
-    </div>
-</div>
+
 <div class="grid">
     <div class="col-12">
-        <p-toast></p-toast>
+        <div class="grid" *ngIf="totalRecords!==undefined">
+            <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
+                <label class="large-label">Cursos consultados: {{totalRecords}}</label>
+            </div>
+            <div [class]="totalRecords!==undefined ? 'col-6': 'col-12'">
+                <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
+                    <ng-template pTemplate="left">
+                    </ng-template>
+                    <ng-template pTemplate="right">
+                        <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                        <button pButton pRipple label="Subir archivo" icon="pi pi-upload" class="p-button-help" (click)="cargarArchivo()"></button>
+                        <span style="margin-right: 10px;"></span>
+                        <div class="my-0">
+                            <button pButton pRipple label="Crear curso" icon="pi pi-plus" class="p-button-success mr-2" (click)="abrirModalCrearEditarVerCurso(usuarioOutDTO, 'Crear curso')"></button>
+                        </div>
+                    </ng-template>
+                </p-toolbar>  
+            </div>
+        </div>  
         <p-table #dt [value]="listaCursoPlanificacionOutDTO" [columns]="cols" responsiveLayout="scroll" [rows]="10"
         selectionMode="multiple" [rowHover]="true" dataKey="id">
 			<ng-template pTemplate="header">
@@ -162,9 +176,9 @@
 				</td>
 				<td>
 					<div class="flex">
-						<button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success" (click)="crearEditarVerCurso(cursoPlanificacionOutDTO, 'Ver curso')"></button>
+						<button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success" (click)="abrirModalCrearEditarVerCurso(cursoPlanificacionOutDTO, 'Ver curso')"></button>
 						<span style="margin-right: 10px;"></span>
-						<button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="crearEditarVerCurso(cursoPlanificacionOutDTO, 'Editar curso')"></button>
+						<button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerCurso(cursoPlanificacionOutDTO, 'Editar curso')"></button>
 						<span style="margin-right: 10px;"></span>
 						<button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="eliminarCurso(cursoPlanificacionOutDTO)"></button>
 					</div>
@@ -176,7 +190,7 @@
     </div>   
 </div>
   
-<app-crear-editar-consultar-curso #crearEditarConsultarCurso></app-crear-editar-consultar-curso>
+<app-crear-editar-ver-curso #crearEditarVerCurso></app-crear-editar-ver-curso>
 
 <div class="grid">
     <div class="col-12">

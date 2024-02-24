@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { ProgramaServicio } from '../../servicios/programa.servicio';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { RolUsuarioEnum } from '../../enum/rol.usuario.enum';
+import { CrearEditarVerUsuarioComponent } from './crear-editar-ver-usuario/crear-editar-ver-usuario.component';
 
 @Component({
     selector: 'app-gestionar-usuario',
@@ -29,8 +30,7 @@ export class GestionarUsuarioComponent {
 
     public listaEstados = [];
 
-    public estadoSeleccionado: { label: string; codigo: EstadoUsuarioEnum } =
-        null;
+    public estadoSeleccionado: { label: string; codigo: EstadoUsuarioEnum } = null;
 
     public mapaProgramas: Map<number, ProgramaOutDTO> = new Map<number, ProgramaOutDTO>();
 
@@ -46,7 +46,7 @@ export class GestionarUsuarioComponent {
     rowsPerPageOptions = [5, 10, 20];
 
     //Referencias componentes hijos
-    //@ViewChild('crearEditarVerUsuario') crearEditarVerUsuario: CrearEditarVerUsuarioComponent;
+    @ViewChild('crearEditarVerUsuario') crearEditarVerUsuario: CrearEditarVerUsuarioComponent;
 
     constructor(
         private messageService: MessageService,
@@ -161,18 +161,12 @@ export class GestionarUsuarioComponent {
         this.consultarUsuariosPorFiltro();
     }
 
-    /*Crear, Editar y Ver docente
-    public abrirModalCrearEditarVerUsuario(
-        usuarioOutDTOSeleccionado: UsuarioOutDTO,
-        tituloModal: string
-    ) {
+    //Crear, Editar y Ver docente
+    public abrirModalCrearEditarVerUsuario(usuarioOutDTOSeleccionado: UsuarioOutDTO, tituloModal: string ) {
         if (this.crearEditarVerUsuario) {
-            this.crearEditarVerUsuario.abrirModal(
-                usuarioOutDTOSeleccionado,
-                tituloModal
-            );
+            this.crearEditarVerUsuario.abrirModal(usuarioOutDTOSeleccionado, tituloModal);
         }
-    }*/
+    }
 
     /*Inactivar curso*/
     public inactivarUsuario(usuarioOutDTOSeleccionado: UsuarioOutDTO) {

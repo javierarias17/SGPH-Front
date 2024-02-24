@@ -1,14 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { CursoPlanificacionOutDTO } from 'src/app/componentes/dto/curso/out/curso.planificacion.out.dto';
+import { CursoPlanificacionOutDTO } from '../../../dto/curso/out/curso.planificacion.out.dto';
 
 @Component({
-  selector: 'app-crear-editar-consultar-curso',
-  templateUrl: './crear-editar-consultar-curso.component.html',
-  styleUrls: ['./crear-editar-consultar-curso.component.css']
+  selector: 'app-crear-editar-ver-curso',
+  templateUrl: './crear-editar-ver-curso.component.html',
+  styleUrls: ['./crear-editar-ver-curso.component.css']
 })
-export class CrearEditarConsultarCursoComponent {
+export class CrearEditarVerCursoComponent {
 
-    @ViewChild('crearEditarConsultarCurso') crearEditarConsultarCurso: CrearEditarConsultarCursoComponent;
+    @ViewChild('crearEditarVerCurso') crearEditarVerCurso: CrearEditarVerCursoComponent;
 
     public visible: boolean = false;
 
