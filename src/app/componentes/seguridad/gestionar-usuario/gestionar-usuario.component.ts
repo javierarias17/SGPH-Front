@@ -8,6 +8,7 @@ import { ProgramaServicio } from '../../servicios/programa.servicio';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { RolUsuarioEnum } from '../../enum/rol.usuario.enum';
 import { CrearEditarVerUsuarioComponent } from './crear-editar-ver-usuario/crear-editar-ver-usuario.component';
+import { RolOutDTO } from '../../dto/usuario/rol.out.dto';
 
 @Component({
     selector: 'app-gestionar-usuario',
@@ -30,9 +31,13 @@ export class GestionarUsuarioComponent {
 
     public listaEstados = [];
 
-    public estadoSeleccionado: { label: string; codigo: EstadoUsuarioEnum } = null;
+    public estadoSeleccionado: { label: string; codigo: EstadoUsuarioEnum } =
+        null;
 
     public mapaProgramas: Map<number, ProgramaOutDTO> = new Map<number, ProgramaOutDTO>();
+
+    /** Mapa de roles para accederlos rápidamente por el identificador*/
+    public mapaRoles: Map<number, RolUsuarioEnum> = new Map<number, RolUsuarioEnum>();
 
     /*Filtro*/
     public filtroUsuarioDTO: FiltroUsuarioDTO = new FiltroUsuarioDTO();
@@ -67,10 +72,23 @@ export class GestionarUsuarioComponent {
             }
         );
 
+        this.usuarioServicio.consultarRoles().subscribe(
+            (lstRolOutDTO: RolOutDTO[]) => {   
+                lstRolOutDTO.forEach(rolOutDTO =>{
+                    this.mapaRoles.set(rolOutDTO.idRol, rolOutDTO.rolUsuario);        
+                });
+            },
+            (error) => {
+              console.error(error);
+            }
+        );
+
+
         this.listaEstados = [
             { label: 'Activo', codigo: EstadoUsuarioEnum.ACTIVO },
             { label: 'Inactivo', codigo: EstadoUsuarioEnum.INACTIVO },
         ];
+        
 
         this.filtroUsuarioDTO.pagina = this.pagina;
         this.filtroUsuarioDTO.registrosPorPagina = this.registrosPorPagina;
@@ -147,15 +165,6 @@ export class GestionarUsuarioComponent {
         return "";
     }
 
-    public obtenerNombreRol(idRol:number):string{
-        for (const [nombre, id] of Object.entries(RolUsuarioEnum)) {
-            if (id === idRol) {
-                return nombre;
-            }
-        }
-        return "";
-    }
-
     public onPageChange(event: any) {
         this.filtroUsuarioDTO.pagina = event.page;
         this.consultarUsuariosPorFiltro();
@@ -182,5 +191,9 @@ export class GestionarUsuarioComponent {
             detail: 'Usuario inactivado',
             life: 3000,
         });
+    }
+
+    public actualizarInformacionUsuarios():void{
+        this.consultarUsuariosPorFiltro();
     }
 }

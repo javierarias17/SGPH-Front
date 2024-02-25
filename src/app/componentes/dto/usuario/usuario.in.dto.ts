@@ -1,3 +1,5 @@
+import { EstadoUsuarioEnum } from "../../enum/estado.usuario.enum";
+
 export class UsuarioInDTO{
     public idPersona: number;
     public idTipoIdentificacion: number;
@@ -10,7 +12,7 @@ export class UsuarioInDTO{
     public email: string;
     public nombreUsuario: string;
     public password: string;
-    public estado: boolean;
+    public estado: EstadoUsuarioEnum;
     public lstIdRol: number[];
     public lstIdPrograma: number[];
 }
