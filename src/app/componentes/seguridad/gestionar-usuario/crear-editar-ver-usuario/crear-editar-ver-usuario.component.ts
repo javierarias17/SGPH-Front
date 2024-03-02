@@ -10,6 +10,7 @@ import { UsuarioServicio } from '../../../servicios/usuario.servicio';
 import { TipoIdentificacionOutDTO } from '../../../dto/usuario/tipo.identificacion.out.dto';
 import { RolOutDTO } from '../../../dto/usuario/rol.out.dto';
 import { MessageService } from 'primeng/api';
+import { EstadoUsuarioEnum } from '../../../enum/estado.usuario.enum';
 
 
 @Component({
@@ -19,10 +20,13 @@ import { MessageService } from 'primeng/api';
   providers: [ FacultadServicio, UsuarioServicio]
 
 })
-export class CrearEditarVerUsuarioComponent {
+export class CrearEditarVerUsuarioComponent {   
+    /** Constante que determina el tipo de operación 'Ver usuario'*/
+    private readonly VER_USUARIO :string =  "Ver usuario";
+    /** Constante que determina el tipo de operación 'Editar usuario'*/
+    private readonly EDITAR_USUARIO :string =  "Editar usuario";
 
-    @ViewChild('crearEditarVerUsuario') crearEditarVerUsuario: CrearEditarVerUsuarioComponent;
-
+    /** Evento para notificar al padre que el modal se ha cerrado*/
     @Output() modalClosedEmitter = new EventEmitter<void>();
 
 	public mostrarModalCRUD: boolean = false;
@@ -37,10 +41,7 @@ export class CrearEditarVerUsuarioComponent {
     /** Mapa de todos las facultades para accederlos rápidamente por el identificador*/
     public mapaFacultades: Map<number, FacultadOutDTO> = new Map<number, FacultadOutDTO>();
     /** Mapa de roles para accederlos rápidamente por el identificador*/
-    public mapaRoles: Map<number, RolUsuarioEnum> = new Map<number, RolUsuarioEnum>();
-
-    /** Listas de facultades seleccionadas*/
-    public lstIdFacultadSeleccionadas: number[] = [];    
+    public mapaRoles: Map<number, RolOutDTO> = new Map<number, RolOutDTO>();
 
     /** Listas de facultades para el selector multiple facultad*/
     public listaFacultades: FacultadOutDTO[] = [];    
@@ -53,6 +54,8 @@ export class CrearEditarVerUsuarioComponent {
     /** Listas de tipo de identificación para el selector único tipo de identificación*/
     public listaTiposIdentificacion:TipoIdentificacionOutDTO[] = [];  
 
+    /** Listas de facultades seleccionadas en el selector*/
+    public lstIdFacultadSeleccionadas: number[] = [];    
 
     /** Usuario que ingresa al componente*/    
 	public usuarioOutDTOSeleccionado:UsuarioOutDTO;
@@ -63,6 +66,7 @@ export class CrearEditarVerUsuarioComponent {
          private facultadServicio: FacultadServicio, 
          private usuarioServicio:UsuarioServicio,
          private messageService: MessageService,){
+
         this.facultadServicio.consultarFacultades().subscribe(
             (lstFacultadOutDTO: FacultadOutDTO[]) => {
                 this.listaFacultades = lstFacultadOutDTO;
@@ -91,9 +95,11 @@ export class CrearEditarVerUsuarioComponent {
 
         this.usuarioServicio.consultarRoles().subscribe(
             (lstRolOutDTO: RolOutDTO[]) => {   
-                lstRolOutDTO.forEach(rolOutDTO =>{
-                    this.mapaRoles.set(rolOutDTO.idRol, rolOutDTO.rolUsuario);        
-                });
+                this.listaRoles = lstRolOutDTO.map((rolOutDTO:RolOutDTO) => ({ idRol: rolOutDTO.idRol, rolUsuario:rolOutDTO.rolUsuario, nombre:RolUsuarioEnum[rolOutDTO.rolUsuario] }));  
+                //Se crea el mapa de roles  
+                this.listaRoles.forEach(rolOutDTO =>{
+                    this.mapaRoles.set(rolOutDTO.idRol, rolOutDTO);        
+                });      
             },
             (error) => {
               console.error(error);
@@ -109,23 +115,7 @@ export class CrearEditarVerUsuarioComponent {
             }
         );
 
-        this.usuarioServicio.consultarEstadosUsuario().subscribe(
-            (lstEstadoUsuario: string[]) => {   
-                this.listaEstados = lstEstadoUsuario.map((estado: any) => ({ label:estado, value:estado}));               
-            },
-            (error) => {
-              console.error(error);
-            }
-        );
-
-        this.usuarioServicio.consultarRoles().subscribe(
-            (lstRolOutDTO: RolOutDTO[]) => {   
-                this.listaRoles = lstRolOutDTO;               
-            },
-            (error) => {
-              console.error(error);
-            }
-        );
+        this.listaEstados =  Object.keys(EstadoUsuarioEnum).map(key => ({ label: EstadoUsuarioEnum[key], value: key }));
     }
 
 	public abrirModal(usuarioOutDTOSeleccionado: UsuarioOutDTO, tituloModal: string) {
@@ -136,9 +126,9 @@ export class CrearEditarVerUsuarioComponent {
         this.tituloModal = tituloModal;
         this.mostrarModalCRUD=true;
         
-        if(tituloModal==='Ver usuario'){
+        if(tituloModal===this.VER_USUARIO){
             this.esVer=true;
-        }else if(tituloModal==='Editar usuario'){
+        }else if(tituloModal===this.EDITAR_USUARIO){
             this.usuarioInDTO= {...usuarioOutDTOSeleccionado};
             this.esEditar = true;
         }else{
@@ -146,7 +136,7 @@ export class CrearEditarVerUsuarioComponent {
             this.esCrear=true;
         }       
 
-        if(tituloModal!=='Ver usuario'){
+        if(tituloModal !== this.VER_USUARIO){
             let lstIdFacultad:number[] =[];
             this.usuarioInDTO.lstIdPrograma.forEach(idPrograma =>{
                 let programaOutDTO = this.mapaProgramas.get(idPrograma);
@@ -203,11 +193,10 @@ export class CrearEditarVerUsuarioComponent {
         return "";
     }
 
-    public obtenerNombreRol(idRol:number):string{
-        for (const [nombre, id] of Object.entries(RolUsuarioEnum)) {
-            if (id === idRol) {
-                return nombre;
-            }
+    public obtenerNombreRol(idRol: number):string{
+        const rolOutDTO = this.mapaRoles.get(idRol);
+        if (rolOutDTO) {
+            return rolOutDTO.nombre;
         }
         return "";
     }

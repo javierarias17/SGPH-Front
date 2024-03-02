@@ -29,15 +29,14 @@ export class GestionarUsuarioComponent {
 
     public listaUsuarioOutDTO: UsuarioOutDTO[] = [];
 
-    public listaEstados = [];
+    public listaEstados:{ label: string; value: string }[] = [];  
 
-    public estadoSeleccionado: { label: string; codigo: EstadoUsuarioEnum } =
-        null;
+    public estadoSeleccionado: { label: string; codigo: EstadoUsuarioEnum } = null;
 
     public mapaProgramas: Map<number, ProgramaOutDTO> = new Map<number, ProgramaOutDTO>();
 
     /** Mapa de roles para accederlos rápidamente por el identificador*/
-    public mapaRoles: Map<number, RolUsuarioEnum> = new Map<number, RolUsuarioEnum>();
+    public mapaRoles: Map<number, RolOutDTO> = new Map<number, RolOutDTO>();
 
     /*Filtro*/
     public filtroUsuarioDTO: FiltroUsuarioDTO = new FiltroUsuarioDTO();
@@ -50,7 +49,7 @@ export class GestionarUsuarioComponent {
     cols: any[] = [];
     rowsPerPageOptions = [5, 10, 20];
 
-    //Referencias componentes hijos
+    //Referencia al componente hijo
     @ViewChild('crearEditarVerUsuario') crearEditarVerUsuario: CrearEditarVerUsuarioComponent;
 
     constructor(
@@ -74,27 +73,30 @@ export class GestionarUsuarioComponent {
 
         this.usuarioServicio.consultarRoles().subscribe(
             (lstRolOutDTO: RolOutDTO[]) => {   
-                lstRolOutDTO.forEach(rolOutDTO =>{
-                    this.mapaRoles.set(rolOutDTO.idRol, rolOutDTO.rolUsuario);        
-                });
+                let listaRoles:RolOutDTO[] = lstRolOutDTO.map((rolOutDTO:RolOutDTO) => ({ idRol: rolOutDTO.idRol, rolUsuario:rolOutDTO.rolUsuario, nombre:RolUsuarioEnum[rolOutDTO.rolUsuario] }));  
+                //Se crea el mapa de roles  
+                listaRoles.forEach(rolOutDTO =>{
+                    this.mapaRoles.set(rolOutDTO.idRol, rolOutDTO);        
+                });      
             },
             (error) => {
               console.error(error);
             }
-        );
-
-
-        this.listaEstados = [
-            { label: 'Activo', codigo: EstadoUsuarioEnum.ACTIVO },
-            { label: 'Inactivo', codigo: EstadoUsuarioEnum.INACTIVO },
-        ];
+        );  
         
+        this.listaEstados =  Object.keys(EstadoUsuarioEnum).map(key => ({ label: EstadoUsuarioEnum[key], value: key }));
 
         this.filtroUsuarioDTO.pagina = this.pagina;
         this.filtroUsuarioDTO.registrosPorPagina = this.registrosPorPagina;
         this.consultarUsuariosPorFiltro();
     }
 
+    /**
+     * Método encargado de invocar el servicio que permite consultar 
+     * los usuarios por filtro
+     *
+     * @author parias 
+     */
     private consultarUsuariosPorFiltro() {
         this.usuarioServicio
             .consultarUsuariosPorFiltro(this.filtroUsuarioDTO)
@@ -109,6 +111,34 @@ export class GestionarUsuarioComponent {
             );
     }
 
+    /**
+     * Método invocado por el paginador para consultar determinada
+     * pagina de usuarios
+     *
+     * @author parias 
+     */
+    public onPageChange(event: any) {
+        this.filtroUsuarioDTO.pagina = event.page;
+        this.consultarUsuariosPorFiltro();
+    }
+
+    /**
+     * Método invocado por el input de estado para consultar los usuarios
+     * por dicho estado seleccionado
+     *
+     * @author parias 
+     */
+    public onEstadoChange(): void {
+        this.filtroUsuarioDTO.pagina = this.PAGINA_CERO;
+        this.consultarUsuariosPorFiltro();
+    }
+
+    /**
+     * Método invocado por los inputs de nombres y número de identificación 
+     * para consultar consultar los usuarios por dichos criterios de busqueda
+     *
+     * @author parias 
+     */
     public inputsChange(): void {
         if (this.filtroUsuarioDTO.numeroIdentificacion === '') {
             this.filtroUsuarioDTO.numeroIdentificacion = null;
@@ -119,44 +149,41 @@ export class GestionarUsuarioComponent {
         this.consultarUsuariosPorFiltro();
     }
 
-    public onEstadoChange(): void {
-        if (this.estadoSeleccionado) {
-            this.filtroUsuarioDTO.estado =
-                this.estadoSeleccionado.codigo === EstadoUsuarioEnum.INACTIVO
-                    ? false
-                    : true;
-        } else {
-            this.filtroUsuarioDTO.estado = null;
-        }
-        this.filtroUsuarioDTO.pagina = this.PAGINA_CERO;
-        this.consultarUsuariosPorFiltro();
-    }
-
+    /**
+     * Método invocado por el botón activar/inactivar para mostrar el mensaje de confirmación
+     * con el nombre del usuario que se ha seleccionado
+     *
+     * @author parias 
+     */
     public obtenerNombreCompletoUsuarioSeleccionado(): string {
         return this.construirNombreCompletoUsuario(this.usuarioOutDTOSeleccionado);
     }
 
+    /**
+     * Método invocado por la tabla para obtener el nombre completo de cada usuario
+     * que se mostrará en la pagina seleccionada
+     *
+     * @author parias 
+     */
     public obtenerNombreCompletoUsuario(usuarioOutDTO:UsuarioOutDTO): string {
         return this.construirNombreCompletoUsuario(usuarioOutDTO);
     }
 
     private construirNombreCompletoUsuario(usuarioOutDTO:UsuarioOutDTO):string{
         return (
-            (usuarioOutDTO.primerNombre
-                ? usuarioOutDTO.primerNombre + ' '
-                : '') +
-            (usuarioOutDTO.segundoNombre
-                ? usuarioOutDTO.segundoNombre + ' '
-                : '') +
-            (usuarioOutDTO.primerApellido
-                ? usuarioOutDTO.primerApellido + ' '
-                : '') +
-            (usuarioOutDTO.segundoApellido
-                ? usuarioOutDTO.segundoApellido
-                : '')
+            (usuarioOutDTO.primerNombre ? usuarioOutDTO.primerNombre + ' ': '') +
+            (usuarioOutDTO.segundoNombre ? usuarioOutDTO.segundoNombre + ' ': '') +
+            (usuarioOutDTO.primerApellido ? usuarioOutDTO.primerApellido + ' ' : '') +
+            (usuarioOutDTO.segundoApellido ? usuarioOutDTO.segundoApellido : '')
         );
     }
 
+     /**
+     * Método invocado por la tabla para obtener los nombres de los programas asociados
+     * a cada usuario
+     *
+     * @author parias 
+     */
     public obtenerNombrePrograma(idPrograma: number):string{
         const programa = this.mapaProgramas.get(idPrograma);
         if (programa) {
@@ -165,9 +192,18 @@ export class GestionarUsuarioComponent {
         return "";
     }
 
-    public onPageChange(event: any) {
-        this.filtroUsuarioDTO.pagina = event.page;
-        this.consultarUsuariosPorFiltro();
+     /**
+     * Método invocado por la tabla para obtener los nombres de los roles asociados
+     * a cada usuario
+     *
+     * @author parias 
+     */
+    public obtenerNombreRol(idRol: number):string{
+        const rolOutDTO = this.mapaRoles.get(idRol);
+        if (rolOutDTO) {
+            return rolOutDTO.nombre;
+        }
+        return "";
     }
 
     //Crear, Editar y Ver docente
@@ -183,16 +219,31 @@ export class GestionarUsuarioComponent {
         this.inactivarUsuarioDialog = true;
     }
 
-    public confirmarInactivacion() {
-        this.inactivarUsuarioDialog = false;
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Usuario inactivado',
-            life: 3000,
-        });
+    private guardar() {
+        this.usuarioServicio.guardarUsuario(this.usuarioOutDTOSeleccionado).subscribe(
+            (usuarioOutDTO: UsuarioOutDTO) => {
+                this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario '+EstadoUsuarioEnum[this.usuarioOutDTOSeleccionado.estado]+' con éxito.' });
+            },
+            (error) => {
+              console.error(error);
+            }
+        ); 
     }
 
+    public confirmarInactivacion() {
+        this.inactivarUsuarioDialog = false;
+        this.usuarioOutDTOSeleccionado.estado = this.usuarioOutDTOSeleccionado.estado === EstadoUsuarioEnum.ACTIVO 
+        ? EstadoUsuarioEnum.INACTIVO 
+        : EstadoUsuarioEnum.ACTIVO;
+        this.guardar();       
+    }
+
+     /**
+     * Método invocado por el evento del componente hijo para consutlar 
+     * de nuevo la información de los usuarios
+     *
+     * @author parias 
+     */
     public actualizarInformacionUsuarios():void{
         this.consultarUsuariosPorFiltro();
     }

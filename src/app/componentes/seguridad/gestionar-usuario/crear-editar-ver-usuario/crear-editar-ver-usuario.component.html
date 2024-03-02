@@ -148,7 +148,7 @@
                 <p-multiSelect 
                     maxSelectedLabels="3" 
                     selectedItemsLabel="{0} Roles seleccionados" 
-                    optionLabel="rolUsuario"
+                    optionLabel="nombre"
                     optionValue="idRol" 
                     [defaultLabel]="listaRoles.length === 0 ? '':'Seleccione roles'"
                     [options]="listaRoles" 
@@ -160,7 +160,7 @@
                     [disabled]="listaRoles.length === 0">
                 <ng-template let-rol pTemplate="item">
                     <div class="flex align-items-center gap-2">
-                        <div>{{ rol.rolUsuario}}</div>
+                        <div>{{ rol.nombre}}</div>
                     </div>
                 </ng-template>
                 </p-multiSelect>
@@ -246,7 +246,7 @@
                 <label class="w-10rem" style="text-align: right;">Roles asignados</label>
                 <div *ngIf="usuarioOutDTOSeleccionado?.lstIdRol.length > 0; else noRoles" class="w-25rem" style="margin-left: 10%">
                     <div *ngFor="let idRol of usuarioOutDTOSeleccionado?.lstIdRol ">
-                        <label style="display: list-item; list-style: square  inside;"><b>{{mapaRoles.get(idRol)| titlecase }}</b></label>
+                        <label style="display: list-item; list-style: square  inside;"><b>{{obtenerNombreRol(idRol)}}</b></label>
                     </div>      
                 </div>
                 <ng-template #noRoles>

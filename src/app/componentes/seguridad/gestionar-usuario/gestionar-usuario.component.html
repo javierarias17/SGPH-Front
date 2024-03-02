@@ -35,7 +35,9 @@
                 placeholder="Seleccione estado usuario" 
                 [ngClass]="{'w-23rem':true}" 
                 [options]="listaEstados" 
-                [(ngModel)]="estadoSeleccionado"
+                [(ngModel)]="filtroUsuarioDTO.estado"
+                optionLabel="label" 
+                optionValue="value"
                 [showClear]="true"
                 (ngModelChange)="onEstadoChange()">
             </p-dropdown>
@@ -43,7 +45,6 @@
         {{estadoSeleccionado | json}}
     </div>
 </div>
-
 
 <div class="grid">
     <div class="col-12">        
@@ -89,7 +90,7 @@
                     <td>
                         <div *ngIf="usuarioOutDTO.lstIdRol.length > 0; else noRoles">
                             <div *ngFor="let idRol of usuarioOutDTO.lstIdRol " style="display: flex; flex-direction: column; ">
-                                {{mapaRoles.get(idRol) | titlecase }}
+                                {{obtenerNombreRol(idRol)}}
                             </div>      
                         </div>
                         <ng-template #noRoles>
@@ -121,6 +122,8 @@
         <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords"></p-paginator>   
     </div>   
 </div>
+
+<p>JSON</p><pre>{{ usuarioOutDTOSeleccionado | json }}</pre>
 
 <app-crear-editar-ver-usuario #crearEditarVerUsuario (modalClosedEmitter)="actualizarInformacionUsuarios()"></app-crear-editar-ver-usuario>
  <!-- p-toast para mensajes -->
