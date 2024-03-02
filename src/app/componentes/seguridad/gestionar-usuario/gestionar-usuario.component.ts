@@ -9,12 +9,14 @@ import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { RolUsuarioEnum } from '../../enum/rol.usuario.enum';
 import { CrearEditarVerUsuarioComponent } from './crear-editar-ver-usuario/crear-editar-ver-usuario.component';
 import { RolOutDTO } from '../../dto/usuario/rol.out.dto';
+import { TranslateService } from '@ngx-translate/core';
+import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
 
 @Component({
     selector: 'app-gestionar-usuario',
     templateUrl: './gestionar-usuario.component.html',
     styleUrls: ['./gestionar-usuario.component.css'],
-	providers:[MessageService, UsuarioServicio, ProgramaServicio]
+	providers:[MessageService, UsuarioServicio, ProgramaServicio, LenguajeServicio]
 })
 export class GestionarUsuarioComponent {
     private readonly PAGINA_CERO: number = 0;
@@ -55,8 +57,10 @@ export class GestionarUsuarioComponent {
     constructor(
         private messageService: MessageService,
         private usuarioServicio: UsuarioServicio,
-        private programaServicio: ProgramaServicio
-    ) {}
+        private programaServicio: ProgramaServicio,
+        private translateService: TranslateService
+    ) {
+    }
 
     public ngOnInit() {
 
@@ -73,7 +77,7 @@ export class GestionarUsuarioComponent {
 
         this.usuarioServicio.consultarRoles().subscribe(
             (lstRolOutDTO: RolOutDTO[]) => {   
-                let listaRoles:RolOutDTO[] = lstRolOutDTO.map((rolOutDTO:RolOutDTO) => ({ idRol: rolOutDTO.idRol, rolUsuario:rolOutDTO.rolUsuario, nombre:RolUsuarioEnum[rolOutDTO.rolUsuario] }));  
+                let listaRoles:RolOutDTO[] = lstRolOutDTO;  
                 //Se crea el mapa de roles  
                 listaRoles.forEach(rolOutDTO =>{
                     this.mapaRoles.set(rolOutDTO.idRol, rolOutDTO);        
@@ -83,9 +87,12 @@ export class GestionarUsuarioComponent {
               console.error(error);
             }
         );  
+      
+        Object.keys(EstadoUsuarioEnum).forEach(key => {
+            const translatedLabel = this.translateService.instant('gestionar.usuario.filtro.estado.usuario.' + key);
+            this.listaEstados.push({ label: translatedLabel, value: key });
+        });
         
-        this.listaEstados =  Object.keys(EstadoUsuarioEnum).map(key => ({ label: EstadoUsuarioEnum[key], value: key }));
-
         this.filtroUsuarioDTO.pagina = this.pagina;
         this.filtroUsuarioDTO.registrosPorPagina = this.registrosPorPagina;
         this.consultarUsuariosPorFiltro();
@@ -201,7 +208,7 @@ export class GestionarUsuarioComponent {
     public obtenerNombreRol(idRol: number):string{
         const rolOutDTO = this.mapaRoles.get(idRol);
         if (rolOutDTO) {
-            return rolOutDTO.nombre;
+            return this.translateService.instant('gestionar.usuario.filtro.rol.usuario.' + rolOutDTO.rolUsuario);
         }
         return "";
     }

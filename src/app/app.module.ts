@@ -12,6 +12,14 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
+import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { LenguajeServicio } from './componentes/servicios/lenguaje.servicio';
+
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
     declarations: [
@@ -20,13 +28,24 @@ import { PhotoService } from './demo/service/photo.service';
     imports: [
         AppRoutingModule,
         AppLayoutModule,
-        ComponentesModule
+        ComponentesModule,
+        TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useFactory: HttpLoaderFactory,
+              deps: [HttpClient]
+            }
+          })
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService
+        PhotoService, ProductService, LenguajeServicio
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+    /*Se inyecta para configurar el archivo de internacionalización*/
+    constructor(private languageService: LenguajeServicio) {
+    }
+ }

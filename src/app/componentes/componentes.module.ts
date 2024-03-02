@@ -5,35 +5,12 @@ import { GestionarCursoComponent } from './datos/gestionar-curso/gestionar-curso
 import { GestionarAsignaturaComponent } from './datos/gestionar-asignatura/gestionar-asignatura.component';
 import { GestionarAulaComponent } from './datos/gestionar-aula/gestionar-aula.component';
 import { TableModule } from 'primeng/table';
-import { FileUploadModule } from 'primeng/fileupload';
-import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { InputTextModule } from 'primeng/inputtext';
-import { RatingModule } from 'primeng/rating';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ToastModule } from 'primeng/toast';
-import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
-import { ListboxModule } from 'primeng/listbox';
-import { InputDemoRoutingModule } from '../demo/components/uikit/input/inputdemo-routing.module';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { CalendarModule } from 'primeng/calendar';
-import { ChipsModule } from 'primeng/chips';
-import { InputMaskModule } from 'primeng/inputmask';
-import { ColorPickerModule } from 'primeng/colorpicker';
-import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { SliderModule } from 'primeng/slider';
-import { ChipModule } from 'primeng/chip';
-import { KnobModule } from 'primeng/knob';
-import { InputSwitchModule } from 'primeng/inputswitch';
 import { CheckboxModule } from 'primeng/checkbox';
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { PaginatorModule } from 'primeng/paginator';
 import { PickListModule } from 'primeng/picklist';
 import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar-docente.component';
@@ -57,6 +34,7 @@ import { HorarioDocenteComponent } from './datos/gestionar-docente/horario-docen
 import { CrearEditarVerDocenteComponent } from './datos/gestionar-docente/crear-editar-ver-docente/crear-editar-ver-docente.component';
 import { HorarioAulaComponent } from './datos/gestionar-aula/horario-aula/horario-aula.component';
 import { CrearEditarVerUsuarioComponent } from './seguridad/gestionar-usuario/crear-editar-ver-usuario/crear-editar-ver-usuario.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -94,9 +72,10 @@ import { CrearEditarVerUsuarioComponent } from './seguridad/gestionar-usuario/cr
     DialogModule,			
     ButtonModule,
     PickListModule,    
-		MultiSelectModule,
-		CheckboxModule,
-    ToolbarModule
+	MultiSelectModule,
+	CheckboxModule,
+    ToolbarModule,
+	TranslateModule
   ]
 })
 export class ComponentesModule { }

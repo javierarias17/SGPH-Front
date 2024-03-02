@@ -1,4 +1,4 @@
 export enum RolUsuarioEnum {
-    ROLE_ADMINISTRADOR='Administrador',
-    ROLE_COORDINADOR='Coordinador'
+    ROLE_ADMINISTRADOR='ROLE_ADMINISTRADOR',
+    ROLE_COORDINADOR='ROLE_COORDINADOR'
 }

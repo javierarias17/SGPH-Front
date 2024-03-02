@@ -1,17 +1,15 @@
 <div class="grid">
     <div class="col-6">
-        <h3>Gestionar usuarios</h3>
-        <p>Esta pantalla permite la gestión completa de usuarios de la aplicación, incluyendo la creación,
-        visualización, edición y desactivación, así como la asignación de permisos correspondientes a cada usuario.</p>
+        <h3>{{ 'gestionar.usuario.titulo' | translate }}</h3>
+        <p>{{ 'gestionar.usuario.subtitulo' | translate }}</p>
         <hr>
     </div>
 </div>
 
-
 <div class="row">
     <div class="lg:col-12 md:col-12 sm:col-12">
         <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-7rem align-self-center" style="text-align: right;">Nombres</label>
+            <label class="w-7rem align-self-center" style="text-align: right;">{{ 'gestionar.usuario.filtro.label.nombres' | translate }}</label>
             <input type="text" class="p-inputtext" 
             [(ngModel)]="filtroUsuarioDTO.nombre" 
             [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
@@ -20,7 +18,7 @@
             (ngModelChange)="inputsChange()">
         </div>
         <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-7rem align-self-center" style="text-align: right;">Identificación</label>
+            <label class="w-7rem align-self-center" style="text-align: right;">{{ 'gestionar.usuario.filtro.label.identificacion' | translate }}</label>
             <input type="text" class="p-inputtext" 
             [(ngModel)]="filtroUsuarioDTO.numeroIdentificacion" 
             [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
@@ -29,7 +27,7 @@
             (ngModelChange)="inputsChange()">
         </div>
         <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-7rem align-self-center" style="text-align: right;">Estado</label>
+            <label class="w-7rem align-self-center" style="text-align: right;">{{ 'gestionar.usuario.filtro.label.estado' | translate }}</label>
             <p-dropdown 
                 [style]="{ 'height': '2.0rem', 'margin-left': '8%',  'line-height': '1.2px', 'width': '91%' }"
                 placeholder="Seleccione estado usuario" 
@@ -42,7 +40,6 @@
                 (ngModelChange)="onEstadoChange()">
             </p-dropdown>
         </div>
-        {{estadoSeleccionado | json}}
     </div>
 </div>
 
@@ -50,7 +47,7 @@
     <div class="col-12">        
         <div class="grid" >
             <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
-                <label class="large-label">Usuarios consultados: {{totalRecords}}</label>
+                <label class="large-label">{{ 'gestionar.usuario.label.usuario.consultados' | translate }} {{totalRecords}}</label>
             </div>
             <div class="col-6">
                 <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
@@ -72,13 +69,13 @@
             selectionMode="multiple" [rowHover]="true" dataKey="id">
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Identificación</th>
-                    <th>Nombres y apellidos</th>
-                    <th>Usuario</th>
-                    <th>Estado</th>
-                    <th>Roles asignados</th>
-                    <th>Programas asignados</th>
-                    <th>Opciones</th>
+                    <th>{{ 'gestionar.usuario.tabla.label.identificacion' | translate }}</th>
+                    <th>{{ 'gestionar.usuario.tabla.label.apellidos' | translate }}</th>
+                    <th>{{ 'gestionar.usuario.tabla.label.usuario' | translate }}</th>
+                    <th>{{ 'gestionar.usuario.tabla.label.estado' | translate }}</th>
+                    <th>{{ 'gestionar.usuario.tabla.label.roles.asignados' | translate }}</th>
+                    <th>{{ 'gestionar.usuario.tabla.label.programas.asignados' | translate }}</th>
+                    <th>{{ 'gestionar.usuario.tabla.label.opciones' | translate }}</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-usuarioOutDTO>
@@ -123,8 +120,6 @@
     </div>   
 </div>
 
-<p>JSON</p><pre>{{ usuarioOutDTOSeleccionado | json }}</pre>
-
 <app-crear-editar-ver-usuario #crearEditarVerUsuario (modalClosedEmitter)="actualizarInformacionUsuarios()"></app-crear-editar-ver-usuario>
  <!-- p-toast para mensajes -->
  <p-toast></p-toast>
@@ -135,7 +130,7 @@
         <p-dialog [(visible)]="inactivarUsuarioDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>¿Está seguro que desea inactivar el usuario <b>{{obtenerNombreCompletoUsuarioSeleccionado()}}</b>?</span>
+                <span>{{ 'gestionar.usuario.mensaje.confirmacion.inactivacion' | translate:{'0': 'Inactivar/Activar', '1': obtenerNombreCompletoUsuarioSeleccionado()} }}</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="inactivarUsuarioDialog = false"></button>
