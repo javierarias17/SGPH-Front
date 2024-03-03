@@ -210,10 +210,13 @@ export class CrearEditarVerUsuarioComponent {
     public guardar() {
         this.usuarioServicio.guardarUsuario(this.usuarioInDTO).subscribe(
             (usuarioOutDTO: UsuarioOutDTO) => {
+                let mensajeDetalle = "";
                 if(this.usuarioInDTO.idPersona){
-                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario modificado con éxito.' });
+                    mensajeDetalle = this.translateService.instant('gestionar.usuario.mensaje.exito.usuario.modificado.con.exito');
+                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: mensajeDetalle });
                 }else{
-                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario creado con éxito.' });
+                    mensajeDetalle = this.translateService.instant('gestionar.usuario.mensaje.exito.usuario.creado.con.exito');
+                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: mensajeDetalle });
                 }
 
             },

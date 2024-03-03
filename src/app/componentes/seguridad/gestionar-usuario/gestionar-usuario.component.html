@@ -70,7 +70,7 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th>{{ 'gestionar.usuario.tabla.label.identificacion' | translate }}</th>
-                    <th>{{ 'gestionar.usuario.tabla.label.apellidos' | translate }}</th>
+                    <th>{{ 'gestionar.usuario.tabla.label.nombres.apellidos' | translate }}</th>
                     <th>{{ 'gestionar.usuario.tabla.label.usuario' | translate }}</th>
                     <th>{{ 'gestionar.usuario.tabla.label.estado' | translate }}</th>
                     <th>{{ 'gestionar.usuario.tabla.label.roles.asignados' | translate }}</th>
@@ -110,7 +110,7 @@
                             <span style="margin-right: 10px;"></span>
                             <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Editar usuario')"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarUsuario(usuarioOutDTO)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="cambiarEstadoUsuario(usuarioOutDTO)"></button>
                         </div>
                     </td>
                 </tr>
@@ -126,15 +126,15 @@
  
 <div class="grid">
     <div class="col-12">
-        <!-- botón inactivar fila -->
+        <!-- Modal de confirmación para cambiar el estado del usuario -->
         <p-dialog [(visible)]="inactivarUsuarioDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>{{ 'gestionar.usuario.mensaje.confirmacion.inactivacion' | translate:{'0': 'Inactivar/Activar', '1': obtenerNombreCompletoUsuarioSeleccionado()} }}</span>
+                <span>{{ 'gestionar.usuario.mensaje.confirmacion.inactivacion' | translate:{'0': obtenerEstadoUsuarioContrario(), '1': obtenerNombreCompletoUsuarioSeleccionado()} }}</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="inactivarUsuarioDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmarInactivacion()"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmarCambioEstado()"></button>
             </ng-template>
         </p-dialog>
     </div>    

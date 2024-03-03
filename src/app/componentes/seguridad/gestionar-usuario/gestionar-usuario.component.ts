@@ -213,23 +213,38 @@ export class GestionarUsuarioComponent {
         return "";
     }
 
-    //Crear, Editar y Ver docente
+    /**
+     * Método invocado por los botones Crear, Actualizar y Ver 
+     * para desplegar el modal crearEditarVerUsuario
+     *
+     * @author parias 
+     */
     public abrirModalCrearEditarVerUsuario(usuarioOutDTOSeleccionado: UsuarioOutDTO, tituloModal: string ) {
         if (this.crearEditarVerUsuario) {
             this.crearEditarVerUsuario.abrirModal(usuarioOutDTOSeleccionado, tituloModal);
         }
     }
 
-    /*Inactivar curso*/
-    public inactivarUsuario(usuarioOutDTOSeleccionado: UsuarioOutDTO) {
+    /**
+     * Método invocado por el botón Inactivar para cambiar el estado del usuario
+     *
+     * @author parias 
+     */
+    public cambiarEstadoUsuario(usuarioOutDTOSeleccionado: UsuarioOutDTO) {
         this.usuarioOutDTOSeleccionado = { ...usuarioOutDTOSeleccionado };
         this.inactivarUsuarioDialog = true;
     }
 
+    /**
+     * Método encargado de actualizar la información del usuario seleccionado
+     *
+     * @author parias 
+     */
     private guardar() {
         this.usuarioServicio.guardarUsuario(this.usuarioOutDTOSeleccionado).subscribe(
             (usuarioOutDTO: UsuarioOutDTO) => {
                 this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario '+EstadoUsuarioEnum[this.usuarioOutDTOSeleccionado.estado]+' con éxito.' });
+                this.consultarUsuariosPorFiltro();
             },
             (error) => {
               console.error(error);
@@ -237,7 +252,13 @@ export class GestionarUsuarioComponent {
         ); 
     }
 
-    public confirmarInactivacion() {
+    /**
+     * Método invocado por el modal de confirmación activar/inactivar 
+     * para efectuar la actualización del estado
+     *
+     * @author parias 
+     */
+    public confirmarCambioEstado() {
         this.inactivarUsuarioDialog = false;
         this.usuarioOutDTOSeleccionado.estado = this.usuarioOutDTOSeleccionado.estado === EstadoUsuarioEnum.ACTIVO 
         ? EstadoUsuarioEnum.INACTIVO 
@@ -245,9 +266,21 @@ export class GestionarUsuarioComponent {
         this.guardar();       
     }
 
+    /**
+     * Método invocado por el modal de confirmación activar/inactivar 
+     * para obtener el estado opuesto del usuario seleccionado
+     *
+     * @author parias 
+     */
+    public obtenerEstadoUsuarioContrario():string {
+        return this.usuarioOutDTOSeleccionado.estado === EstadoUsuarioEnum.ACTIVO 
+        ? this.translateService.instant('gestionar.usuario.accion.inactivar') 
+        : this.translateService.instant('gestionar.usuario.accion.activar') ;
+    }
+
      /**
-     * Método invocado por el evento del componente hijo para consutlar 
-     * de nuevo la información de los usuarios
+     * Método invocado por el evento del componente hijo para refrescar 
+     * la información de la tabla
      *
      * @author parias 
      */
