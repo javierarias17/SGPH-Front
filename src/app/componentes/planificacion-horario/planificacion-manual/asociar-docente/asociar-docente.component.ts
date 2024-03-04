@@ -55,7 +55,7 @@ export class AsociarDocenteComponent {
     }
 
     public ngOnInit() { 
-        this.filtroDocenteDTO.estado=true;
+        this.filtroDocenteDTO.estado=EstadoDocenteEnum.ACTIVO;
     }
 
     public abrirModal(cursoPlanificacionOutDTOSeleccionado:CursoPlanificacionOutDTO) {

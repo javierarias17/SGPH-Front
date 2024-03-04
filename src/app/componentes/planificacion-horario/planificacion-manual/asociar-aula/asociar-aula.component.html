@@ -38,11 +38,18 @@
             <div class="col-6">
                 <div class="mt-1 flex justify-content-start flex-wrap">
                     <label class="w-5rem align-self-center" style="text-align: right;">Facultad</label>
-                    <p-multiSelect maxSelectedLabels="4" selectedItemsLabel="{0} Facultades seleccionadas"
-                        optionLabel="abreviatura" [defaultLabel]="'Seleccione facultad'" [options]="lstFacultadOutDTO"
+                    <p-multiSelect maxSelectedLabels="4" 
+                        selectedItemsLabel="{0} Facultades seleccionadas"
+                        optionLabel="abreviatura" 
+                        [defaultLabel]="'Seleccione facultad'" 
+                        [options]="lstFacultadOutDTO"
                         [(ngModel)]="facultadesSeleccionadas"
                         [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
-                        [ngClass]="{'w-27rem':true }" [filter]="false"
+                        [ngClass]="{'w-27rem':true }" 
+                        [filter]="false"
+                        [showClear]="false"
+                        optionLabel="abreviatura" 
+                        optionValue="idFacultad"
                         (ngModelChange)="onFacultadesChange()">
                         <ng-template let-facultad pTemplate="item">
                             <div class="flex align-items-center gap-2">
@@ -61,8 +68,11 @@
                         [(ngModel)]="tipoAulasSeleccionadas"
                         [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
                         [ngClass]="{'w-27rem':true }"
-                        [filter]="true" 
+                        [filter]="true"
+                        [showClear]="false" 
                         [disabled]="facultadesSeleccionadas.length === 0"
+                        optionLabel="nombre" 
+                        optionValue="idTipoAula"
                         (ngModelChange)="onTipoAulasChange()">
                         <ng-template let-tipoAula pTemplate="item">
                             <div class="flex align-items-center gap-2">
@@ -173,7 +183,7 @@
             </div><!--Cierre segunda columna-->
         </div>
 
-    
+        <p>filtroFranjaHorariaDisponibleCursoDTO</p><pre>{{ filtroFranjaHorariaDisponibleCursoDTO | json }}</pre>
         <!--Asociar Aulas-->
         <div class="col-12 xl:col-12">
             <p-pickList [source]="listaFranjaHorariaDisponibles" [target]="listaFranjaHorariaAsignadas" sourceHeader="Franjas disponibles"

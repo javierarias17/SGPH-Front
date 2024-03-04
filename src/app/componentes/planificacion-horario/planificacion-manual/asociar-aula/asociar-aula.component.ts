@@ -51,9 +51,9 @@ export class AsociarAulaComponent {
 
     /*Atributos para almacenar las opciones seleccionadas*/
 
-    public facultadesSeleccionadas: any[] = [];
+    public facultadesSeleccionadas: number[] = [];
 
-    public tipoAulasSeleccionadas: any[] = [];
+    public tipoAulasSeleccionadas: number[] = [];
 
     public numeroAulaSeleccionada: string;
     
@@ -179,15 +179,16 @@ export class AsociarAulaComponent {
     }
 
     public onFacultadesChange(){
-        this.filtroFranjaHorariaDisponibleCursoDTO.listaIdFacultad = this.facultadesSeleccionadas.map(facultad => facultad.idFacultad); 
+        this.filtroFranjaHorariaDisponibleCursoDTO.listaIdFacultad = this.facultadesSeleccionadas; 
         this.consultarFranjasHorariasDisponiblesPorCurso();
 
-        if(this.facultadesSeleccionadas.length === 0){
+        if(this.facultadesSeleccionadas===null || this.facultadesSeleccionadas.length === 0){
             this.listaTipoAulas=[];
             this.tipoAulasSeleccionadas=[];
+            this.facultadesSeleccionadas=[];
         }else{
             //Se consulta y actualiza la lista de tipo de aulas
-            this.aulaServicio.consultarTipoAulasPorIdFacultad(this.facultadesSeleccionadas.map(facultad => facultad.idFacultad)).subscribe(
+            this.aulaServicio.consultarTipoAulasPorIdFacultad(this.facultadesSeleccionadas).subscribe(
                 (lstTipoAulaOutDTO: TipoAulaOutDTO[]) => {
                     if(lstTipoAulaOutDTO.length === 0){
                         this.listaTipoAulas=[];
@@ -208,7 +209,7 @@ export class AsociarAulaComponent {
     }
 
     public onTipoAulasChange(){
-        this.filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoAula = this.tipoAulasSeleccionadas.map(tipoAula => tipoAula.idTipoAula); 
+        this.filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoAula = this.tipoAulasSeleccionadas; 
         this.consultarFranjasHorariasDisponiblesPorCurso();
     }
     

@@ -12,12 +12,14 @@ import { DocenteOutDTO } from '../../dto/docente/out/docente.out.dto';
 import { CrearEditarVerDocenteComponent } from './crear-editar-ver-docente/crear-editar-ver-docente.component';
 import { HorarioDocenteComponent } from './horario-docente/horario-docente.component';
 import { EstadoDocenteEnum } from '../../enum/estado.docente.enum';
+import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-gestionar-docente',
   templateUrl: './gestionar-docente.component.html',
   styleUrls: ['./gestionar-docente.component.css'],
-  providers: [MessageService, CursoServicio, FacultadServicio, ProgramaServicio, AsignaturaServicio, AulaServicio, HorarioServicio, DocenteServicio]
+  providers: [MessageService, CursoServicio, FacultadServicio, ProgramaServicio, AsignaturaServicio, AulaServicio, HorarioServicio, DocenteServicio, LenguajeServicio]
 })
 export class GestionarDocenteComponent {
 
@@ -33,9 +35,7 @@ export class GestionarDocenteComponent {
 
 	public listaDocenteOutDTO: DocenteOutDTO[] = [];
 
-	public listaEstados= [];
-
-    public estadoSeleccionado: { label: string, codigo: EstadoDocenteEnum }= null;
+	public listaEstados:{ label: string; value: string }[] = [];  
 
   	/*Filtro*/
   	public filtroDocenteDTO:FiltroDocenteDTO=new FiltroDocenteDTO();
@@ -53,14 +53,15 @@ export class GestionarDocenteComponent {
 	@ViewChild('horarioDocente') horarioDocente: HorarioDocenteComponent;
   
 	constructor(private messageService: MessageService,
-		private docenteServicio:DocenteServicio) {
+		private docenteServicio:DocenteServicio,
+		private translateService: TranslateService) {
 	}
 
 	public ngOnInit() {   
-		this.listaEstados = [
-            { label: 'Activo', codigo: EstadoDocenteEnum.ACTIVO },
-            { label: 'Inactivo', codigo: EstadoDocenteEnum.INACTIVO }
-        ];
+		Object.keys(EstadoDocenteEnum).forEach(key => {
+            const translatedLabel = this.translateService.instant('gestionar.docente.filtro.estado.docente.' + key);
+            this.listaEstados.push({ label: translatedLabel, value: key });
+        });
 
         this.filtroDocenteDTO.pagina=this.pagina;
         this.filtroDocenteDTO.registrosPorPagina = this.registrosPorPagina;    
@@ -92,12 +93,7 @@ export class GestionarDocenteComponent {
         this.consultarDocentes();
 	}
 
-	public onEstadoChange():void{   
-        if(this.estadoSeleccionado){
-            this.filtroDocenteDTO.estado=this.estadoSeleccionado.codigo===EstadoDocenteEnum.INACTIVO? false: true;
-        }else{
-            this.filtroDocenteDTO.estado=null;
-        }     
+	public onEstadoChange():void{    
         this.filtroDocenteDTO.pagina=this.PAGINA_CERO;
         this.consultarDocentes();
     } 

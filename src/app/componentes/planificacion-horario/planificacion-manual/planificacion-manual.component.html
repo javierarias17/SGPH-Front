@@ -21,6 +21,8 @@
                 [ngClass]="{'w-30rem':true }"
                 [filter]="false"
                 [showClear]="true"
+                optionLabel="abreviatura" 
+                optionValue="idFacultad"
                 (ngModelChange)="onFacultadesChange()" >
                 <ng-template let-facultad pTemplate="item">
                     <div class="flex align-items-center gap-2">
@@ -43,6 +45,8 @@
                 [filter]="false"
                 [showClear]="true"
                 [disabled]="listaProgramas.length === 0"
+                optionLabel="abreviatura" 
+                optionValue="idPrograma"
                 (ngModelChange)="onProgramasChange()" >
             <ng-template let-programa pTemplate="item">
                 <div class="flex align-items-center gap-2">
@@ -65,6 +69,8 @@
                 [filter]="true"
                 [showClear]="true"
                 [disabled]="listaAsignaturas.length === 0"
+                optionLabel="nombre" 
+                optionValue="idAsignatura"
                 (ngModelChange)="onAsignaturasChange()" >
             <ng-template let-asignatura pTemplate="item">
                 <div class="flex align-items-center gap-2">

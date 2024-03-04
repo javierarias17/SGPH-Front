@@ -6,7 +6,6 @@ import { UsuarioServicio } from '../../servicios/usuario.servicio';
 import { MessageService } from 'primeng/api';
 import { ProgramaServicio } from '../../servicios/programa.servicio';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
-import { RolUsuarioEnum } from '../../enum/rol.usuario.enum';
 import { CrearEditarVerUsuarioComponent } from './crear-editar-ver-usuario/crear-editar-ver-usuario.component';
 import { RolOutDTO } from '../../dto/usuario/rol.out.dto';
 import { TranslateService } from '@ngx-translate/core';
@@ -32,8 +31,6 @@ export class GestionarUsuarioComponent {
     public listaUsuarioOutDTO: UsuarioOutDTO[] = [];
 
     public listaEstados:{ label: string; value: string }[] = [];  
-
-    public estadoSeleccionado: { label: string; codigo: EstadoUsuarioEnum } = null;
 
     public mapaProgramas: Map<number, ProgramaOutDTO> = new Map<number, ProgramaOutDTO>();
 

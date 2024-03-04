@@ -9,6 +9,7 @@
     "gestionar.usuario.filtro.estado.usuario.INACTIVO":"Inactivo",
     "gestionar.usuario.filtro.rol.usuario.ROLE_ADMINISTRADOR":"Administrador",
     "gestionar.usuario.filtro.rol.usuario.ROLE_COORDINADOR":"Coordinador",
+    "gestionar.usuario.filtro.rol.usuario.ROLE_SECRETARIO":"Secretario",
     "gestionar.usuario.filtro.label.nombres":"Nombres",
     "gestionar.usuario.filtro.label.identificacion":"Identificación",
     "gestionar.usuario.filtro.label.estado":"Estado",
@@ -24,5 +25,15 @@
     "gestionar.usuario.accion.inactivar":"Inactivar",
     "gestionar.usuario.accion.activar":"Activar",
     "gestionar.usuario.mensaje.exito.usuario.modificado.con.exito":"Usuario modificado con éxito",
-    "gestionar.usuario.mensaje.exito.usuario.creado.con.exito":"Usuario creado con éxito"
+    "gestionar.usuario.mensaje.exito.usuario.creado.con.exito":"Usuario creado con éxito",
+    "gestionar.usuario.tabla.campo.rol.no.asignado":"No asignado",
+    "gestionar.usuario.tabla.campo.programa.no.asignado":"No asignado",
+
+    "planificacion.manual.filtro.estado.horario.PARCIALMENTE":"Parcial",
+    "planificacion.manual.filtro.estado.horario.SIN_ASIGNAR":"Sin horario",
+    "planificacion.manual.filtro.estado.horario.ASIGNADO":"Completo",
+
+    "gestionar.docente.filtro.estado.docente.ACTIVO":"Activo",
+    "gestionar.docente.filtro.estado.docente.INACTIVO":"Inactivo"
+
 }

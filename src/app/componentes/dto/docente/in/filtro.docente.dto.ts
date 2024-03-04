@@ -1,3 +1,5 @@
+import { EstadoDocenteEnum } from "src/app/componentes/enum/estado.docente.enum";
+
 export class FiltroDocenteDTO{
 	
 	public nombre: string;
@@ -6,7 +8,7 @@ export class FiltroDocenteDTO{
 
 	public codigo: string;
 
-	public estado: boolean;
+	public estado: EstadoDocenteEnum;
 
 	public pagina:number;
 

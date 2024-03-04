@@ -42,7 +42,7 @@
                 placeholder="Seleccione estado docente" 
                 [ngClass]="{'w-30rem':true}" 
                 [options]="listaEstados" 
-                [(ngModel)]="estadoSeleccionado"
+                [(ngModel)]="filtroDocenteDTO.estado"
                 [showClear]="true"
                 (ngModelChange)="onEstadoChange()">
             </p-dropdown>
@@ -94,7 +94,7 @@
                     <td>{{docenteOutDTO.segundoNombre}}</td>
                     <td>{{docenteOutDTO.primerApellido}}</td>
                     <td>{{docenteOutDTO.segundoApellido}}</td>
-                    <td>{{(docenteOutDTO.estado===true)? 'Activo':'Inactivo'}}</td>
+                    <td>{{docenteOutDTO.estado | titlecase }}</td>
                     <td>
                         <div class="flex">
                             <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Ver curso')"></button>

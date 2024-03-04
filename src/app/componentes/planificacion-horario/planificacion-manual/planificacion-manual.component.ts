@@ -15,12 +15,14 @@ import { InfoGeneralCursosPorProgramaDTO } from '../../dto/curso/out/info.genera
 import { CursoPlanificacionOutDTO } from '../../dto/curso/out/curso.planificacion.out.dto';
 import { FiltroCursoPlanificacionDTO } from '../../dto/curso/in/filtro.curso.planificacion.dto';
 import { PlanificacionManualServicio } from '../../servicios/planificacion.manual.servicio';
+import { TranslateService } from '@ngx-translate/core';
+import { LenguajeServicio } from 'src/app/componentes/servicios/lenguaje.servicio';
 
 @Component({
 selector: 'app-planificacion-manual',
 templateUrl: './planificacion-manual.component.html',
 styleUrls: ['./planificacion-manual.component.css'],
-providers: [MessageService, FacultadServicio, ProgramaServicio, AsignaturaServicio, AulaServicio, HorarioServicio, PlanificacionManualServicio]
+providers: [MessageService, FacultadServicio, ProgramaServicio, AsignaturaServicio, AulaServicio, HorarioServicio, PlanificacionManualServicio, LenguajeServicio]
 })
 export class PlanificacionManualComponent {
 
@@ -32,11 +34,11 @@ export class PlanificacionManualComponent {
 
     public lstFacultadOutDTO: FacultadOutDTO[] = [];
 
-    public facultadesSeleccionadas: any[] = [];
+    public facultadesSeleccionadas: number[] = [];
 
     public listaProgramas: any[] = [];
 
-    public programasSeleccionados: any[] = [];
+    public programasSeleccionados: number[] = [];
         
     public listaHorarios= [];
     
@@ -44,7 +46,7 @@ export class PlanificacionManualComponent {
     
     public listaAsignaturas: any[] = [];
     
-    public asignaturasSeleccionadas: any[] = [];
+    public asignaturasSeleccionadas: number[] = [];
     
     public numeroSemestre: number;
     
@@ -80,7 +82,8 @@ export class PlanificacionManualComponent {
     constructor(private messageService: MessageService, 
         private facultadServicio:FacultadServicio,
         private programaServicio: ProgramaServicio, private asignaturaServicio:AsignaturaServicio,
-        private planificacionManualServicio: PlanificacionManualServicio) {
+        private planificacionManualServicio: PlanificacionManualServicio,
+        private translateService: TranslateService) {
     }
 
     public ngOnInit() {   
@@ -96,11 +99,10 @@ export class PlanificacionManualComponent {
             }
         );  
 
-        this.listaHorarios = [
-            { label: 'Parcial', codigo: EstadoCursoHorarioEnum.PARCIALMENTE },
-            { label: 'Sin horario', codigo: EstadoCursoHorarioEnum.SIN_ASIGNAR },
-            { label: 'Completo', codigo: EstadoCursoHorarioEnum.ASIGNADO }
-        ];
+        Object.keys(EstadoCursoHorarioEnum).forEach(key => {
+            const translatedLabel = this.translateService.instant('planificacion.manual.filtro.estado.horario.' + key);
+            this.listaHorarios.push({ label: translatedLabel, codigo: key });
+        });
     }
 
     private consultarInfoGeneralCursosPorPrograma(idPrograma:number):void{
@@ -129,7 +131,7 @@ export class PlanificacionManualComponent {
     public onFacultadesChange(){
         this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
         if(this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0){
-            this.programaServicio.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas.map(facultad => facultad.idFacultad)).subscribe(
+            this.programaServicio.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas).subscribe(
                 (lstProgramaOutDTO: ProgramaOutDTO[]) => {
                     if(lstProgramaOutDTO.length === 0){
                         this.listaProgramas=[];
@@ -140,7 +142,7 @@ export class PlanificacionManualComponent {
                         this.listaProgramas = lstProgramaOutDTO.map((programa: any) => ({ abreviatura: programa.abreviatura, nombre: programa.nombre, idPrograma:programa.idPrograma }));
                         this.filtroCursoPlanificacionDTO.listaIdPrograma = lstProgramaOutDTO.map(programa => programa.idPrograma);
                     }
-                    this.filtroCursoPlanificacionDTO.listaIdFacultad = this.facultadesSeleccionadas.map(facultad => facultad.idFacultad);
+                    this.filtroCursoPlanificacionDTO.listaIdFacultad = this.facultadesSeleccionadas;
                     this.consultarCursosPorFiltro();
                 },
                 (error) => {
@@ -174,10 +176,10 @@ export class PlanificacionManualComponent {
     public onProgramasChange(){        
         this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
         if(this.programasSeleccionados){
-            this.filtroCursoPlanificacionDTO.listaIdPrograma = this.programasSeleccionados.map(programa => programa.idPrograma);
+            this.filtroCursoPlanificacionDTO.listaIdPrograma = this.programasSeleccionados;
 
             if(this.programasSeleccionados.length === 1){
-                this.asignaturaServicio.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0].idPrograma).subscribe(
+                this.asignaturaServicio.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0]).subscribe(
                     (response: any) => {
                         if(response.length === 0){
                             this.listaAsignaturas=[];
@@ -185,7 +187,7 @@ export class PlanificacionManualComponent {
                             this.listaAsignaturas = response.map((asignatura: any) => ({ nombre: asignatura.nombre, semestre: asignatura.semestre, idAsignatura:asignatura.idAsignatura }));
                         }
                         this.consultarCursosPorFiltro();
-                        this.consultarInfoGeneralCursosPorPrograma(this.programasSeleccionados[0].idPrograma);
+                        this.consultarInfoGeneralCursosPorPrograma(this.programasSeleccionados[0]);
                     },
                     (error) => {
                         console.error(error);
@@ -208,7 +210,7 @@ export class PlanificacionManualComponent {
 
     public onAsignaturasChange(){        
         if( this.asignaturasSeleccionadas){
-            this.filtroCursoPlanificacionDTO.listaIdAsignatura = this.asignaturasSeleccionadas.map(asignatura => asignatura.idAsignatura);
+            this.filtroCursoPlanificacionDTO.listaIdAsignatura = this.asignaturasSeleccionadas;
         }else{
             this.filtroCursoPlanificacionDTO.listaIdAsignatura =[];
         }
@@ -278,7 +280,7 @@ export class PlanificacionManualComponent {
 
     public actualizarInformacionCursos():void {
         if(this.programasSeleccionados && this.programasSeleccionados.length === 1){
-            this.consultarInfoGeneralCursosPorPrograma(this.programasSeleccionados[0].idPrograma);
+            this.consultarInfoGeneralCursosPorPrograma(this.programasSeleccionados[0]);
         }
         this.consultarCursosPorFiltro();
     }
