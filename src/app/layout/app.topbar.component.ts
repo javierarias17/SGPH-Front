@@ -4,7 +4,13 @@ import { LayoutService } from "./service/app.layout.service";
 
 @Component({
     selector: 'app-topbar',
-    templateUrl: './app.topbar.component.html'
+    templateUrl: './app.topbar.component.html',
+    styles: [`
+        .sidebar {
+            background: rgb(12,128,178);
+background: radial-gradient(circle, rgba(12,128,178,1) 45%, rgba(7,57,116,1) 84%);
+        }`
+    ]
 })
 export class AppTopBarComponent {
 

@@ -4,7 +4,7 @@ export class FranjaHorariaCursoAsociarInDTO{
 
 	public idHorario: number;
     
-	public idAula:number;
+	public idEspacioFisico:number;
 
 	public dia: DiaSemanaEnum;
 

@@ -1,0 +1,69 @@
+<p-dialog #modalDialog [(visible)]="visible" [style]="{width: '1024px'}" [header]="tituloModal" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+
+        <!--Información Aula-->
+        <div class="grid">
+            <div class="col-6">
+                <div class="flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Facultad</label>
+                    <label class="w-25rem"
+                        style="margin-left: 10%; width: 90%"><b>{{aulaDTOSeleccionado.abreviaturaFacultad}}</b></label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Edificio</label>
+                    <label class="w-25rem"
+                        style="margin-left: 10%; width: 90%"><b>{{aulaDTOSeleccionado.nombreEdificio}}</b>
+                        </label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Tipo Aula</label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ aulaDTOSeleccionado.tipoEspacioFisico }}</b></label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Numero</label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ aulaDTOSeleccionado.numeroAula ?
+                        aulaDTOSeleccionado.numeroAula:'Sin asignar'
+                        }}</b></label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Estado</label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ aulaDTOSeleccionado.estado === true ?
+                        'Activo':'Inactivo'
+                        }}</b></label>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="container">
+            <ng-container>
+                <div class="encabezado">HORAS</div>
+                <div class="encabezado">LUNES</div>
+                <div class="encabezado">MARTES</div>
+                <div class="encabezado">MIERCOLES</div>
+                <div class="encabezado">JUEVES</div>
+                <div class="encabezado">VIERNES</div> 
+                <div class="encabezado">SABADO</div>
+                <div class="encabezado">DOMINGO</div>
+            </ng-container>
+            <ng-container *ngFor="let horaInicio of horas; let fila=index">
+                <div class="columna-horas">{{formatearHoraString(horaInicio)}}</div>
+                <ng-container *ngFor="let dia of dias; let columna=index">
+                    <div class="grid-item"
+                        *ngIf="!esPosicionOcupada(fila,columna)"   
+                        [ngStyle]="{'background-color': obtenerColorPorMateria(obtenerNombreCurso(dia, horaInicio))}"
+                        [style.gridRow]="generarFilasParaFranja(dia, horaInicio)">
+                        {{ configurarFranjaCurso( dia, horaInicio,fila,columna) }}
+                    </div>      
+                </ng-container>
+            </ng-container>
+        </div>  
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text"
+            (click)="salir()"></button>
+    </ng-template>
+</p-dialog>

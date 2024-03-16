@@ -1,37 +1,71 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { MenuItem } from 'primeng/api';
 
 @Component({
     selector: 'app-menu',
-    templateUrl: './app.menu.component.html'
+    templateUrl: './app.menu.component.html',
+    styles: [`
+    /* Headers normal look */
+    ::ng-deep .p-panelmenu .p-panelmenu-header > a {
+      background-color: #cfe6f4  ;
+    }
+    /* Header on expanded content */
+    ::ng-deep .p-panelmenu .p-panelmenu-header.p-highlight > a {
+    background-color: #82b4da;
+    }
+    /* Header text normal */
+    ::ng-deep p-panelmenu .p-component.p-panelmenu-header > a {
+    color: #295276 ;
+    }
+    /* Header on hover, but not expanded */
+    ::ng-deep
+    .p-panelmenu
+    .p-panelmenu-header:not(.p-highlight):not(.p-disabled)
+    > a:hover {
+    background-color: #82b4da ;
+    }
+    /* Header on hover, but ALSO Expanded */
+    ::ng-deep
+    .p-panelmenu
+    .p-panelmenu-header.p-highlight:not(.p-disabled)
+    > a:hover {
+    background-color: #82b4da;
+    }
+    `
+
+    
+    ]
 })
 export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
+
+    panelMenuItems: MenuItem[] = [];
 
     constructor(public layoutService: LayoutService) { }
 
     ngOnInit() {
         this.model = [
             {
-                label: 'HOME',
+                label: 'Home',
                 items: [
                     { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['home/inicio'] }
                 ]
             },
             {
-                label: 'PERIODO ACADÉMICO',
+                label: 'Periodo Académico',
                 items: [
                     { label: 'Crear periodo académico', icon: 'pi pi-fw pi-chart-pie', routerLink: ['periodo-academico/crear-periodo-academico'] },
                 ]
             },
             {
-                label: 'DATOS',
+                label: 'Datos',
                 items: [
                     
-                    { label: 'Cargar labor docente', icon: 'pi pi-fw pi-upload', routerLink: ['datos/cargar-labor-docente'] },
-                    { label: 'Gestionar aulas', icon: 'pi pi-fw pi-building', routerLink: ['datos/gestionar-aula'] },
+                    { label: 'Cargar labor docencia', icon: 'pi pi-fw pi-upload', routerLink: ['datos/cargar-labor-docencia'] },
+                    { label: 'Gestionar espacios físicos', icon: 'pi pi-fw pi-building', routerLink: ['datos/gestionar-espacio-fisico'] },
                     { label: 'Gestionar asignaturas', icon: 'pi pi-fw pi-book', routerLink: ['datos/gestionar-asignatura'] },
                     { label: 'Gestionar cursos', icon: 'pi pi-fw pi-star', routerLink: ['datos/gestionar-curso'] },
                     { label: 'Gestionar docentes', icon: 'pi pi-fw pi-users', routerLink: ['datos/gestionar-docente'] },
@@ -39,34 +73,33 @@ export class AppMenuComponent implements OnInit {
                 ]
             },   
             {
-                label: 'PLANIFICACION HORARIO',
+                label: 'Planificación Horario',
                 items: [
                     { label: 'Planificación manual', icon: 'pi pi-fw pi-calendar', routerLink: ['planificacion-horario/planificacion-manual'] },
-                    { label: 'Planificación basa en semestre anterior', icon: 'pi pi-fw pi-calendar-times', routerLink: ['planificacion-horario/planificacion-semestre-anterior'] },
-                    { label: 'Planificación automática', icon: 'pi pi-fw pi-calendar-plus', routerLink: ['planificacion-horario/planificacion-automatica'] }
+                    { label: 'Planificación basada en semestre anterior', icon: 'pi pi-fw pi-calendar-times', routerLink: ['planificacion-horario/planificacion-semestre-anterior'] }
                 ]
             },   
             {
-                label: 'REPORTES',
+                label: 'Reportes',
                 items: [
-                    { label: 'Generar reporte aula', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-aula'] },
+                    { label: 'Generar reporte espacio físico', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-espacio-fisico'] },
                     { label: 'Generar reporte docente', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-docente'] },
                     { label: 'Generar reporte SIMCA', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-simca'] }
                 ]
             }, 
             {
-                label: 'RESERVAS',
+                label: 'Reservas',
                 items: [
                     { label: 'Gestionar reserva temporal', icon: 'pi pi-fw pi-id-card', routerLink: ['reservas/gestionar-reserva-temporal'] },
                     { label: 'Gestionar reserva facultad', icon: 'pi pi-fw pi-window-minimize', routerLink: ['reservas/gestionar-reserva-facultad'] }
                 ]
             },        
             {
-                label: 'SEGURIDAD',
+                label: 'Seguridad',
                 items: [
                     { label: 'Gestionar usuarios', icon: 'pi pi-fw pi-users', routerLink: ['seguridad/gestionar-usuario'] }
                 ]
-            },
+            }/*,
             {
                 label: 'UI Components',
                 items: [
@@ -204,6 +237,80 @@ export class AppMenuComponent implements OnInit {
                     },
                     {
                         label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/primefaces/sakai-ng'], target: '_blank'
+                    }
+                ]
+            }*/
+        ];
+
+
+        this.panelMenuItems = [
+            {
+                label: 'Customers',
+                items: [
+                    {
+                        label: 'New',
+                        icon: 'pi pi-fw pi-plus',
+                        items: [
+                            {
+                                label: 'Customer',
+                                icon: 'pi pi-fw pi-plus'
+                            },
+                            {
+                                label: 'Duplicate',
+                                icon: 'pi pi-fw pi-copy'
+                            },
+
+                        ]
+                    },
+                    {
+                        label: 'Edit',
+                        icon: 'pi pi-fw pi-user-edit'
+                    }
+                ]
+            },
+            {
+                label: 'Orders',
+                items: [
+                    {
+                        label: 'View',
+                        icon: 'pi pi-fw pi-list'
+                    },
+                    {
+                        label: 'Search',
+                        icon: 'pi pi-fw pi-search'
+                    }
+
+                ]
+            },
+            {
+                label: 'Shipments',
+                items: [
+                    {
+                        label: 'Tracker',
+                        icon: 'pi pi-fw pi-compass',
+
+                    },
+                    {
+                        label: 'Map',
+                        icon: 'pi pi-fw pi-map-marker',
+
+                    },
+                    {
+                        label: 'Manage',
+                        icon: 'pi pi-fw pi-pencil'
+                    }
+                ]
+            },
+            {
+                label: 'Profile',
+                items: [
+                    {
+                        label: 'Settings',
+                        icon: 'pi pi-fw pi-cog'
+                    },
+                    {
+                        label: 'Billing',
+                        icon: 'pi pi-fw pi-file'
                     }
                 ]
             }

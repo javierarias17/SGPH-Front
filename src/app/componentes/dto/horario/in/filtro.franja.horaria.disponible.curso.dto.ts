@@ -17,7 +17,7 @@ export class FiltroFranjaHorariaDisponibleCursoDTO{
 
 	public listaIdEdificio: number[];
 
-	public listaIdTipoAula: number[];
+	public listaIdTipoEspacioFisico: number[];
 
-	public listaNumeroAula: string[];
+	public listaNumeroEspacioFisico: string[];
 }

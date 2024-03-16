@@ -10,8 +10,8 @@ import { CrearActualizarDocentesCursoOutDTO } from '../dto/horario/out/crea.actu
 import { FranjaHorariaCursoDTO } from '../dto/curso/out/franja.horaria.curso.dto';
 import { FiltroFranjaHorariaDisponibleCursoDTO } from '../dto/horario/in/filtro.franja.horaria.disponible.curso.dto';
 import { FranjaHorariaDocenteDTO } from '../dto/docente/out/franja.horaria.docente.dto';
-import { FranjaHorariaAulaDTO } from '../dto/aula/out/franja.horaria.aula.dto';
-import { FormatoPresentacionFranjaHorariaCursoDTO } from '../dto/aula/out/formato.presentacion.franja.horaria.curso.dto';
+import { FranjaHorariaEspacioFisicoDTO } from '../dto/espacio-fisico/out/franja.horaria.espacio.fisico.dto';
+import { FormatoPresentacionFranjaHorariaCursoDTO } from '../dto/espacio-fisico/out/formato.presentacion.franja.horaria.curso.dto';
 
 @Injectable()
 export class PlanificacionManualServicio{
@@ -58,7 +58,7 @@ export class PlanificacionManualServicio{
 	/**
 	 * Método encargado de obtener las franjas disponibles de un curso dado un
 	 * conjunto de criterios de busqueda; este método considera los horarios de los
-	 * docentes y aula.
+	 * docentes y espacios físicos.
 	 * 
 	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
 	 * 
@@ -70,7 +70,7 @@ export class PlanificacionManualServicio{
     }  
 
 	/**
-	 * Método encargado de obtener los nombres completos de cada aula.
+	 * Método encargado de obtener los nombres completos de cada espacio físico.
 	 * Ejemplo del formato: 'Salón 204-Edificio nuevo' 
 	 * 
 	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
@@ -83,7 +83,7 @@ export class PlanificacionManualServicio{
     }
 	
 	/**
-	 * Método encargado de obtener las aulas asociadas a un curso.
+	 * Método encargado de obtener los espacios físicos asociadas a un curso.
 	 * 
 	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
 	 * 
@@ -110,15 +110,15 @@ export class PlanificacionManualServicio{
     }  
 
 	/**
-	 * Método encargado de obtener todas las franjas horarias de un aula
+	 * Método encargado de obtener todas las franjas horarias de un espacio físico
 	 *
 	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
 	 * 
-	 * @param idAula
+	 * @param idEspacioFisico
 	 * @return
 	 */
-    public consultarFranjasAulaPorIdAula(idAula:number): Observable<FranjaHorariaAulaDTO[]>{
-        const url = `http://localhost:8081/PlanificacionManual/consultarFranjasAulaPorIdAula?idAula=${idAula}`;
-        return this.http.get<FranjaHorariaAulaDTO[]>(url);
+    public consultarFranjasEspacioFisicoPorIdEspacioFisico(idEspacioFisico:number): Observable<FranjaHorariaEspacioFisicoDTO[]>{
+        const url = `http://localhost:8081/PlanificacionManual/consultarFranjasEspacioFisicoPorIdEspacioFisico?idEspacioFisico=${idEspacioFisico}`;
+        return this.http.get<FranjaHorariaEspacioFisicoDTO[]>(url);
     }  
 }
