@@ -34,8 +34,7 @@ const routes: Routes=[
     { path: 'generar-reporte-simca', component: GenerarReporteSimcaComponent},
     { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
     { path: 'gestionar-reserva-facultad', component: GestionarReservaFacultadComponent},
-    { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
-    { path: '**', redirectTo: 'inicio' }
+    { path: 'gestionar-usuario', component: GestionarUsuarioComponent}
 ]
 
 @NgModule({

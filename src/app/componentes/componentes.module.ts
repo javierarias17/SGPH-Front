@@ -23,6 +23,8 @@ import { AsociarEspacioFisicoComponent } from './planificacion-horario/planifica
 import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/cargar.labor.docencia.component';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { CommonModule } from '@angular/common';
+import { ComponentesRoutingModule } from './componentes-routing.module';
+import { AppRoutingModule } from '../app-routing.module';
 
 @NgModule({
 	declarations: [
