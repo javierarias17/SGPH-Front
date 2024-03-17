@@ -32,10 +32,7 @@ import { MenuItem } from 'primeng/api';
     .p-panelmenu-header.p-highlight:not(.p-disabled)
     > a:hover {
     background-color: #82b4da;
-    }
-    `
-
-    
+    }`    
     ]
 })
 export class AppMenuComponent implements OnInit {
@@ -62,8 +59,7 @@ export class AppMenuComponent implements OnInit {
             },
             {
                 label: 'Datos',
-                items: [
-                    
+                items: [                    
                     { label: 'Cargar labor docencia', icon: 'pi pi-fw pi-upload', routerLink: ['datos/cargar-labor-docencia'] },
                     { label: 'Gestionar espacios físicos', icon: 'pi pi-fw pi-building', routerLink: ['datos/gestionar-espacio-fisico'] },
                     { label: 'Gestionar asignaturas', icon: 'pi pi-fw pi-book', routerLink: ['datos/gestionar-asignatura'] },
@@ -99,7 +95,7 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'Gestionar usuarios', icon: 'pi pi-fw pi-users', routerLink: ['seguridad/gestionar-usuario'] }
                 ]
-            }/*,
+            },
             {
                 label: 'UI Components',
                 items: [
@@ -239,7 +235,7 @@ export class AppMenuComponent implements OnInit {
                         label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/primefaces/sakai-ng'], target: '_blank'
                     }
                 ]
-            }*/
+            }
         ];
 
 

@@ -1,14 +1,13 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { UsuarioOutDTO } from '../../../dto/usuario/usuario.out.dto';
-import { UsuarioInDTO } from '../../../dto/usuario/usuario.in.dto';
-import { RolUsuarioEnum } from '../../../enum/rol.usuario.enum';
+import { UsuarioOutDTO } from '../../../dto/usuario/out/usuario.out.dto';
+import { UsuarioInDTO } from '../../../dto/usuario/in/usuario.in.dto';
 import { ProgramaServicio } from '../../../servicios/programa.servicio';
 import { ProgramaOutDTO } from '../../../dto/programa/out/programa.out.dto';
 import { FacultadOutDTO } from '../../../dto/facultad/out/facultad.out.dto';
 import { FacultadServicio } from '../../../servicios/facultad.servicio';
 import { UsuarioServicio } from '../../../servicios/usuario.servicio';
-import { TipoIdentificacionOutDTO } from '../../../dto/usuario/tipo.identificacion.out.dto';
-import { RolOutDTO } from '../../../dto/usuario/rol.out.dto';
+import { TipoIdentificacionOutDTO } from '../../../dto/usuario/out/tipo.identificacion.out.dto';
+import { RolOutDTO } from '../../../dto/usuario/out/rol.out.dto';
 import { MessageService } from 'primeng/api';
 import { EstadoUsuarioEnum } from '../../../enum/estado.usuario.enum';
 import { TranslateService } from '@ngx-translate/core';

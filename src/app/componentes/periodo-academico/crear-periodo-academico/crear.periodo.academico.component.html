@@ -7,3 +7,67 @@
         <br>
     </div>
 </div>
+
+<div class="grid">
+    <div class="col-2 md:col-2 ">		
+	</div>
+	<div class="col-8 md:col-8 ">		
+		<div class="card p-fluid">
+			<h5>Información periodo académico</h5>
+            <br>			
+            <div class="mt-1 flex justify-content-start flex-wrap">
+                <label class="w-6rem align-self-center" style="text-align: right;">Fecha inicio</label>
+                <p-calendar
+                    [style]="{'height': '2.0rem', 'margin-left': '10%', 'width': '70%' }"
+                    [ngClass]="{'w-30rem':true}"  
+                    [showIcon]="true" 
+                    inputId="icon">
+                </p-calendar>
+            </div>
+            <div class="mt-1 flex justify-content-start flex-wrap">
+                <label class="w-6rem align-self-center" style="text-align: right;">Fecha fin</label>
+                <p-calendar
+                    [style]="{'height': '2.0rem', 'margin-left': '10%', 'width': '70%' }" 
+                    [ngClass]="{'w-30rem':true}" 
+                    [showIcon]="true" 
+                    inputId="icon">
+                </p-calendar>
+            </div>           
+            <div class="mt-1 flex justify-content-start flex-wrap">
+                <label class="w-6rem align-self-center" style="text-align: right;">Año</label>
+                <p-inputNumber 
+                    [style]="{'height': '2.0rem', 'margin-left': '10%', 'width': '70%' }" 
+                    [placeholder]="'Ingrese año'"
+                    [step]="1" 
+                    [ngClass]="{'w-30rem':true}" 
+                    [showButtons]="true" 
+                    [min]="2020" 
+                    [max]="2050"
+                    [showClear]="false"
+                    [disabled]="false"
+                    [(ngModel)]="anioPeriodo">
+                </p-inputNumber>
+            </div>
+            <div class="mt-1 flex justify-content-start flex-wrap">
+                <label class="w-6rem align-self-center" style="text-align: right;">Periodo</label>
+                <p-inputNumber 
+                    [style]="{'height': '2.0rem', 'margin-left': '10%', 'width': '70%' }" 
+                    [placeholder]="'Ingrese periodo'"
+                    [step]="1" 
+                    [ngClass]="{'w-30rem':true}" 
+                    [showButtons]="true" 
+                    [min]="0" 
+                    [max]="2"
+                    [showClear]="false"
+                    [disabled]="false"
+                    [(ngModel)]="numeroPeriodo">
+                </p-inputNumber>
+            </div>
+            <br>
+            <br>			
+            <div class="col-3" style="margin:auto" >
+                <button pButton pRipple label="Crear periodo"></button>
+            </div>
+		</div>
+	</div>
+</div>

@@ -1,4 +1,4 @@
-import { RolUsuarioEnum } from "../../enum/rol.usuario.enum";
+import { RolUsuarioEnum } from "../../../enum/rol.usuario.enum";
 export class RolOutDTO{
     public idRol: number;
     public rolUsuario: RolUsuarioEnum;

@@ -1,5 +1,6 @@
-import { EstadoUsuarioEnum } from "../../enum/estado.usuario.enum";
-export class UsuarioOutDTO{
+import { EstadoUsuarioEnum } from "../../../enum/estado.usuario.enum";
+
+export class UsuarioInDTO{
     public idPersona: number;
     public idTipoIdentificacion: number;
     public numeroIdentificacion: string;

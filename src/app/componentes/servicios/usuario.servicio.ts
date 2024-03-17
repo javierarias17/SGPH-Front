@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FiltroUsuarioDTO } from '../dto/usuario/filtro.usuario.dto';
-import { TipoIdentificacionOutDTO } from '../dto/usuario/tipo.identificacion.out.dto';
-import { UsuarioInDTO } from '../dto/usuario/usuario.in.dto';
-import { UsuarioOutDTO } from '../dto/usuario/usuario.out.dto';
-import { RolOutDTO } from '../dto/usuario/rol.out.dto';
+import { FiltroUsuarioDTO } from '../dto/usuario/in/filtro.usuario.dto';
+import { TipoIdentificacionOutDTO } from '../dto/usuario/out/tipo.identificacion.out.dto';
+import { UsuarioInDTO } from '../dto/usuario/in/usuario.in.dto';
+import { UsuarioOutDTO } from '../dto/usuario/out/usuario.out.dto';
+import { RolOutDTO } from '../dto/usuario/out/rol.out.dto';
 
 @Injectable()
 export class UsuarioServicio{

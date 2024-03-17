@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { GestionarCursoComponent } from './datos/gestionar-curso/gestionar.curso.component';
 import { GestionarAsignaturaComponent } from './datos/gestionar-asignatura/gestionar-asignatura.component';
 import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar.docente.component';
@@ -17,26 +17,29 @@ import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docen
 import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte-espacio-fisico/generar.reporte.espacio.fisico.component';
 import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/cargar.labor.docencia.component';
 
+
+const routes: Routes=[
+    { path: 'inicio', component: InicioComponent},
+    { path: 'crear-periodo-academico', component: CrearPeriodoAcademicoComponent},
+    { path: 'cargar-labor-docencia', component: CargarLaborDocenciaComponent},
+    { path: 'gestionar-espacio-fisico', component: GestionarEspacioFisicoComponent},
+    { path: 'gestionar-asignatura', component: GestionarAsignaturaComponent},
+    { path: 'gestionar-curso', component: GestionarCursoComponent},
+    { path: 'gestionar-docente', component: GestionarDocenteComponent},
+    { path: 'gestionar-grupo', component: GestionarGrupoComponent},
+    { path: 'planificacion-manual', component: PlanificacionManualComponent},
+    { path: 'planificacion-semestre-anterior', component: PlanificacionSemestreAnteriorComponent},
+    { path: 'generar-reporte-espacio-fisico', component: GenerarReporteEspacioFisicoComponent},
+    { path: 'generar-reporte-docente', component: GenerarReporteDocenteComponent},
+    { path: 'generar-reporte-simca', component: GenerarReporteSimcaComponent},
+    { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
+    { path: 'gestionar-reserva-facultad', component: GestionarReservaFacultadComponent},
+    { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
+    { path: '**', redirectTo: 'inicio' }
+]
+
 @NgModule({
-    imports: [RouterModule.forChild([
-        { path: 'inicio', component: InicioComponent},
-        { path: 'crear-periodo-academico', component: CrearPeriodoAcademicoComponent},
-        { path: 'cargar-labor-docencia', component: CargarLaborDocenciaComponent},
-        { path: 'gestionar-espacio-fisico', component: GestionarEspacioFisicoComponent},
-        { path: 'gestionar-asignatura', component: GestionarAsignaturaComponent},
-        { path: 'gestionar-curso', component: GestionarCursoComponent},
-        { path: 'gestionar-docente', component: GestionarDocenteComponent},
-        { path: 'gestionar-grupo', component: GestionarGrupoComponent},
-        { path: 'planificacion-manual', component: PlanificacionManualComponent},
-        { path: 'planificacion-semestre-anterior', component: PlanificacionSemestreAnteriorComponent},
-        { path: 'generar-reporte-espacio-fisico', component: GenerarReporteEspacioFisicoComponent},
-        { path: 'generar-reporte-docente', component: GenerarReporteDocenteComponent},
-        { path: 'generar-reporte-simca', component: GenerarReporteSimcaComponent},
-        { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
-        { path: 'gestionar-reserva-facultad', component: GestionarReservaFacultadComponent},
-        { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
-        { path: '**', redirectTo: '/notfound' }
-    ])],
+    imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
 export class ComponentesRoutingModule { }

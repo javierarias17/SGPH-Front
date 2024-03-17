@@ -1,13 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { UsuarioOutDTO } from '../../dto/usuario/usuario.out.dto';
+import { UsuarioOutDTO } from '../../dto/usuario/out/usuario.out.dto';
 import { EstadoUsuarioEnum } from '../../enum/estado.usuario.enum';
-import { FiltroUsuarioDTO } from '../../dto/usuario/filtro.usuario.dto';
+import { FiltroUsuarioDTO } from '../../dto/usuario/in/filtro.usuario.dto';
 import { UsuarioServicio } from '../../servicios/usuario.servicio';
 import { MessageService } from 'primeng/api';
 import { ProgramaServicio } from '../../servicios/programa.servicio';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { CrearEditarVerUsuarioComponent } from './crear-editar-ver-usuario/crear.editar.ver.usuario.component';
-import { RolOutDTO } from '../../dto/usuario/rol.out.dto';
+import { RolOutDTO } from '../../dto/usuario/out/rol.out.dto';
 import { TranslateService } from '@ngx-translate/core';
 import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
 
