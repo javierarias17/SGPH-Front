@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { UsuarioOutDTO } from '../../../dto/usuario/out/usuario.out.dto';
 import { UsuarioInDTO } from '../../../dto/usuario/in/usuario.in.dto';
 import { ProgramaServicio } from '../../../servicios/programa.servicio';
@@ -11,7 +11,8 @@ import { RolOutDTO } from '../../../dto/usuario/out/rol.out.dto';
 import { MessageService } from 'primeng/api';
 import { EstadoUsuarioEnum } from '../../../enum/estado.usuario.enum';
 import { TranslateService } from '@ngx-translate/core';
-import { LenguajeServicio } from 'src/app/componentes/servicios/lenguaje.servicio';
+import { FormGroup } from '@angular/forms';
+import { LenguajeServicio } from '../../../servicios/lenguaje.servicio';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { LenguajeServicio } from 'src/app/componentes/servicios/lenguaje.servici
   providers: [ FacultadServicio, UsuarioServicio, LenguajeServicio]
 
 })
-export class CrearEditarVerUsuarioComponent {   
+export class CrearEditarVerUsuarioComponent implements OnInit {   
     /** Constante que determina el tipo de operación 'Ver usuario'*/
     private readonly VER_USUARIO :string =  "Ver usuario";
     /** Constante que determina el tipo de operación 'Editar usuario'*/
@@ -36,6 +37,8 @@ export class CrearEditarVerUsuarioComponent {
     public esVer: boolean = false;
     public esCrear: boolean = false;
     public esEditar: boolean = false;
+
+    public reactiveForm!: FormGroup;
     
     /** Mapa de todos los programas para accederlos rápidamente por el identificador*/
     public mapaProgramas: Map<number, ProgramaOutDTO> = new Map<number, ProgramaOutDTO>();
@@ -62,6 +65,8 @@ export class CrearEditarVerUsuarioComponent {
 	public usuarioOutDTOSeleccionado:UsuarioOutDTO;
     /** Usuario de tipo UsuarioInDTO para las operaciones de Crear y Editar*/  
     public usuarioInDTO:UsuarioInDTO;
+
+    public name:string;
     
     constructor(private programaServicio: ProgramaServicio,
          private facultadServicio: FacultadServicio, 
@@ -121,6 +126,15 @@ export class CrearEditarVerUsuarioComponent {
             const translatedLabel = this.translateService.instant('gestionar.usuario.filtro.estado.usuario.' + key);
             this.listaEstados.push({ label: translatedLabel, value: key });
         });
+    }
+    ngOnInit(): void {
+        /*this.reactiveForm = new FormGroup({
+            name: new FormControl(this.name, [
+                Validators.required,
+                Validators.minLength(1),
+                Validators.maxLength(10),
+              ])
+        });*/
     }
 
 	public abrirModal(usuarioOutDTOSeleccionado: UsuarioOutDTO, tituloModal: string) {

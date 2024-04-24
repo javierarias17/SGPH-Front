@@ -4,6 +4,25 @@
 
      <!--Información Usuario-->
     <div class="grid" *ngIf="esEditar || esCrear"  style="margin-left: 3%;">
+        <!--<form [formGroup]="reactiveForm" #form="ngForm">
+            <div class="row">
+                <div class="col mb-2">
+                  <label for="name" class="form-label">Name:</label>
+                  <input type="text" id="name" name="name" formControlName="name" placeholder="Your name" required minlength="1" maxlength="250" class="form-control form-control-sm" [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
+                  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+                    <div *ngIf="name.errors?.['required']">
+                      This field is required.
+                    </div>
+                    <div *ngIf="name.errors?.['minlength']">
+                      This field must have at least 1 character.
+                    </div>
+                    <div *ngIf="name.errors?.['maxlength']">
+                      This field must have at most 250 characters.
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </form>-->
         <div class="col-12">
             <!--Información personal-->
             <h5>Información personal</h5>
@@ -164,8 +183,7 @@
                     </div>
                 </ng-template>
                 </p-multiSelect>
-            </div>
-        
+            </div>        
         </div>
     </div>
     <div class="grid" *ngIf="esEditar || esCrear"  style="margin-left: 3%;">

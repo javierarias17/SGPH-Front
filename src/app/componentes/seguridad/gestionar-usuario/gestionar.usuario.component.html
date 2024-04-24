@@ -127,7 +127,7 @@
 <div class="grid">
     <div class="col-12">
         <!-- Modal de confirmación para cambiar el estado del usuario -->
-        <p-dialog [(visible)]="inactivarUsuarioDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="inactivarUsuarioDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span>{{ 'gestionar.usuario.mensaje.confirmacion.inactivacion' | translate:{'0': obtenerEstadoUsuarioContrario(), '1': obtenerNombreCompletoUsuarioSeleccionado()} }}</span>

@@ -13,8 +13,8 @@ import { CursoPlanificacionOutDTO } from '../../dto/curso/out/curso.planificacio
 import { FiltroCursoPlanificacionDTO } from '../../dto/curso/in/filtro.curso.planificacion.dto';
 import { PlanificacionManualServicio } from '../../servicios/planificacion.manual.servicio';
 import { TranslateService } from '@ngx-translate/core';
-import { LenguajeServicio } from 'src/app/componentes/servicios/lenguaje.servicio';
 import { AsociarEspacioFisicoComponent } from './asociar-espacio-fisico/asociar.espacio.fisico.component';
+import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
 
 @Component({
 selector: 'app-planificacion-manual',
