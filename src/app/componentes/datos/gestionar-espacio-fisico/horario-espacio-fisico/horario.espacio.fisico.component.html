@@ -6,31 +6,29 @@
         <div class="grid">
             <div class="col-6">
                 <div class="flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Facultad</label>
+                    <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
                     <label class="w-25rem"
-                        style="margin-left: 10%; width: 90%"><b>{{aulaDTOSeleccionado.abreviaturaFacultad}}</b></label>
+                        style="margin-left: 10%; width: 90%"><b>{{espacioFisicoDTOSeleccionado.ubicacion}}</b></label>
                 </div>
                 <div class="mt-1 flex justify-content-start flex-wrap">
                     <label class="w-5rem align-self-center" style="text-align: right;">Edificio</label>
                     <label class="w-25rem"
-                        style="margin-left: 10%; width: 90%"><b>{{aulaDTOSeleccionado.nombreEdificio}}</b>
+                        style="margin-left: 10%; width: 90%"><b>{{espacioFisicoDTOSeleccionado.edificio}}</b>
                         </label>
                 </div>
                 <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Tipo Aula</label>
-                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ aulaDTOSeleccionado.tipoEspacioFisico }}</b></label>
+                    <label class="w-5rem align-self-center" style="text-align: right;">Tipo</label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ espacioFisicoDTOSeleccionado.tipoEspacioFisico }}</b></label>
                 </div>
                 <div class="mt-1 flex justify-content-start flex-wrap">
                     <label class="w-5rem align-self-center" style="text-align: right;">Numero</label>
-                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ aulaDTOSeleccionado.numeroAula ?
-                        aulaDTOSeleccionado.numeroAula:'Sin asignar'
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ espacioFisicoDTOSeleccionado.numeroAula ?
+                        espacioFisicoDTOSeleccionado.numeroAula:'Sin asignar'
                         }}</b></label>
                 </div>
                 <div class="mt-1 flex justify-content-start flex-wrap">
                     <label class="w-5rem align-self-center" style="text-align: right;">Estado</label>
-                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ aulaDTOSeleccionado.estado === true ?
-                        'Activo':'Inactivo'
-                        }}</b></label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ espacioFisicoDTOSeleccionado.estado | titlecase}}</b></label>
                 </div>
             </div>
         </div>

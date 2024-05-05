@@ -13,6 +13,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
+import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
     declarations: [],
@@ -31,7 +35,11 @@ import { FormsModule } from '@angular/forms';
         ToolbarModule,
         TranslateModule,
         PanelMenuModule,
-        CalendarModule         
+        CalendarModule,
+        TooltipModule,//Selector: p-toast
+        ConfirmDialogModule,//Selector: p-confirmDialog   
+        InputTextModule,//Directiva personalizada pInputText
+        InputTextareaModule //Directiva personalizada pInputTextarea
     ]
 })
 export class PrimeNgModule { }

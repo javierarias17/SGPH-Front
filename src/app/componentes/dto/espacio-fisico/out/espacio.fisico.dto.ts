@@ -1,9 +1,11 @@
+import { EstadoEspacioFisicoEnum } from "../../../enum/estado.espacio.fisico.enum";
+
 export class EspacioFisicoDTO{    
-	public abreviaturaFacultad:string;
-	public nombreEdificio:string;
-	public tipoEspacioFisico: string;
-	public numeroEspacioFisico: string;
-	public capacidad: number;
-	public estado: boolean;
 	public idEspacioFisico: number;
+	public capacidad: number;
+	public estado: EstadoEspacioFisicoEnum;
+	public numeroEspacioFisico: string;
+	public edificio:string;
+	public ubicacion:string;
+	public tipoEspacioFisico: string;
 }

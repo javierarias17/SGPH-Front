@@ -97,15 +97,15 @@
                     <td>{{docenteOutDTO.estado | titlecase }}</td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Ver curso')"></button>
+                            <button pButton pRipple type="button" icon="pi pi-search" pTooltip="Ver docente" class="p-button-rounded p-button-info" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Ver curso')"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Editar curso')"></button>
+                            <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar docente" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Editar curso')"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarDocente(docenteOutDTO)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-ban" pTooltip="Inactivar/Activar docente" class="p-button-rounded p-button-danger" (click)="inactivarDocente(docenteOutDTO)"></button>
                         </div>
                     </td>
                     <td>                   
-                        <button pButton pRipple type="button" icon="pi pi-calendar" class="p-button-rounded p-button-info p-button-outlined" (click)="abrirModalHorarioDocente(docenteOutDTO)"></button>  
+                        <button pButton pRipple type="button" icon="pi pi-calendar" pTooltip="Ver horario docente" class="p-button-rounded p-button-info p-button-outlined" (click)="abrirModalHorarioDocente(docenteOutDTO)"></button>  
                     </td>
                 </tr>
             </ng-template>
@@ -117,18 +117,5 @@
 <app-crear-editar-ver-docente #crearEditarVerDocente></app-crear-editar-ver-docente>
 <app-horario-docente #horarioDocente></app-horario-docente>
 
-<div class="grid">
-    <div class="col-12">
-        <!-- botón inactivar fila -->
-        <p-dialog [(visible)]="inactivarDocenteDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>¿Está seguro que desea inactivar el docente <b>{{obtenerNombreCompletoDocente()}}</b>?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="inactivarDocenteDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmarInactivacion()"></button>
-            </ng-template>
-        </p-dialog>
-    </div>    
-</div>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>

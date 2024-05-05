@@ -2,7 +2,12 @@
     "general.boton.salir":"Salir",
     "general.boton.guardar":"Guardar",
     "general.boton.subir.archivo":"Subir archivo",
-    
+
+
+    "gestionar.espaciofisico.filtro.estado.espaciofisico.ACTIVO":"Activo",
+    "gestionar.espaciofisico.filtro.estado.espaciofisico.INACTIVO":"Inactivo",
+
+
     "gestionar.usuario.titulo":"Gestionar usuarios",
     "gestionar.usuario.subtitulo":"Esta pantalla permite la gestión completa de usuarios de la aplicación, incluyendo la creación, visualización, edición y desactivación, así como la asignación de permisos correspondientes a cada usuario.",
     "gestionar.usuario.filtro.estado.usuario.ACTIVO":"Activo",
@@ -34,6 +39,9 @@
     "planificacion.manual.filtro.estado.horario.ASIGNADO":"Completo",
 
     "gestionar.docente.filtro.estado.docente.ACTIVO":"Activo",
-    "gestionar.docente.filtro.estado.docente.INACTIVO":"Inactivo"
+    "gestionar.docente.filtro.estado.docente.INACTIVO":"Inactivo",
+    "gestionar.docente.inactivar.ACTIVO":"Inactivar",
+    "gestionar.docente.inactivar.INACTIVO":"Activar"
+
 
 }

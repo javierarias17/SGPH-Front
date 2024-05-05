@@ -6,19 +6,39 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="lg:col-12 md:col-12 sm:col-12">
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Facultad</label>
-			<p-multiSelect 
+<!--<div class="grid">
+	<div class="col-12 md:col-6">
+		<div class="card p-fluid">
+			<h5>Horizontal</h5>
+			<div class="field grid">
+				<label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0">Name</label>
+				<div class="col-12 md:col-10">
+					<input pInputText id="name3" type="text" />
+				</div>
+			</div>
+			<div class="field grid">
+				<label htmlFor="email3" class="col-12 mb-2 md:col-2 md:mb-0">Email</label>
+				<div class="col-12 md:col-10">
+					<input pInputText id="email3" type="text" />
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>-->
+
+<!--<div class="card p-fluid">-->
+    <div class="p-fluid p-formgrid grid">
+        <div class="field col-6 md:col-2">
+            <label>Facultad</label>
+            <p-multiSelect 
                 maxSelectedLabels="4" 
                 selectedItemsLabel="{0} Facultades seleccionadas" 
                 optionLabel="abreviatura" 
                 [defaultLabel]="'Seleccione facultad'"
                 [options]="lstFacultadOutDTO" 
                 [(ngModel)]="facultadesSeleccionadas"  
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
-                [ngClass]="{'w-30rem':true }"
                 [filter]="false"
                 [showClear]="true"
                 optionLabel="abreviatura" 
@@ -29,10 +49,10 @@
                         <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
                     </div>
                 </ng-template>
-			</p-multiSelect>
+            </p-multiSelect>
         </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Programa</label>
+        <div class="field col-6 md:col-2">
+            <label>Programa</label>
             <p-multiSelect 
                 maxSelectedLabels="4" 
                 selectedItemsLabel="{0} Programas seleccionados" 
@@ -40,23 +60,21 @@
                 [defaultLabel]="listaProgramas.length === 0 ? '':'Seleccione programas'"
                 [options]="listaProgramas" 
                 [(ngModel)]="programasSeleccionados"  
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%'  }" 
-                [ngClass]="{'w-30rem':true }"
                 [filter]="false"
                 [showClear]="true"
                 [disabled]="listaProgramas.length === 0"
                 optionLabel="abreviatura" 
                 optionValue="idPrograma"
                 (ngModelChange)="onProgramasChange()" >
-            <ng-template let-programa pTemplate="item">
-                <div class="flex align-items-center gap-2">
-                    <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
-                </div>
-            </ng-template>
-			</p-multiSelect>
+                <ng-template let-programa pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
         </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Asignatura</label>
+        <div class="field col-6 md:col-2">
+            <label>Asignatura</label>
             <p-multiSelect 
                 maxSelectedLabels="1" 
                 selectedItemsLabel="{0} Asignaturas seleccionadas" 
@@ -64,28 +82,24 @@
                 [defaultLabel]="listaAsignaturas.length === 0 ? '':'Seleccione Asignatura'"
                 [options]="listaAsignaturas" 
                 [(ngModel)]="asignaturasSeleccionadas"  
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%'  }" 
-                [ngClass]="{'w-30rem':true }"
                 [filter]="true"
                 [showClear]="true"
                 [disabled]="listaAsignaturas.length === 0"
                 optionLabel="nombre" 
                 optionValue="idAsignatura"
                 (ngModelChange)="onAsignaturasChange()" >
-            <ng-template let-asignatura pTemplate="item">
-                <div class="flex align-items-center gap-2">
-                    <div>{{ asignatura.nombre }}-<strong>Sem {{asignatura.semestre}}</strong></div>
-                </div>
-            </ng-template>
-			</p-multiSelect>
+                <ng-template let-asignatura pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ asignatura.nombre }}-<strong>Sem {{asignatura.semestre}}</strong></div>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
         </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Semestre</label>
+        <div class="field col-6 md:col-2">
+            <label>Semestre</label>
             <p-inputNumber 
-                [style]="{'height': '2.0rem', 'margin-left': '10%', 'width': '70%' }" 
                 [placeholder]="facultadesSeleccionadas.length === 0 ? '':'Ingrese semestre'"
                 [step]="1" 
-                [ngClass]="{'w-30rem':true}" 
                 [showButtons]="true" 
                 [min]="1" 
                 [max]="10"
@@ -94,13 +108,12 @@
                 [(ngModel)]="numeroSemestre"
                 (ngModelChange)="onSemestreChange()">
             </p-inputNumber>
-        </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Horario</label>
+        </div>  
+        <div class="field col-6 md:col-2">
+            <label>Horario</label>
             <p-dropdown 
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
+                [style]="{ 'height': '3rem'}" 
                 [placeholder]="facultadesSeleccionadas.length === 0 ? ' ':'Seleccione estado horario'"
-                [ngClass]="{'w-30rem':true}" 
                 [options]="listaHorarios" 
                 [(ngModel)]="horarioSeleccionado"
                 [showClear]="true"
@@ -108,13 +121,11 @@
                 (ngModelChange)="onHorarioChange()">
             </p-dropdown>
         </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Docentes</label>
+        <div class="field col-6 md:col-2">
+            <label>Docentes</label>
             <p-inputNumber 
-                [style]="{'height': '2.0rem', 'margin-left': '10%', 'width': '70%' }" 
                 [placeholder]="facultadesSeleccionadas.length === 0 ? ' ':'Ingrese cantidad docentes'"
                 mode="decimal" 
-                [ngClass]="{'w-30rem':true}" 
                 [showButtons]="true" 
                 [min]="0" 
                 [max]="4"
@@ -123,10 +134,11 @@
                 [(ngModel)]="numeroDocente"
                 (ngModelChange)="onDocenteChange()">
             </p-inputNumber>
-        </div>
+        </div>                                             
     </div>
-</div>
+<!--</div>-->
 
+<br>
 <div class="grid" *ngIf="infoGeneralCursosPorProgramaDTO === null && totalRecords!==undefined">
     <div class="col-2">
         <label class="large-label">Cursos consultados: {{totalRecords}}</label>

@@ -19,7 +19,7 @@ export class HorarioEspacioFisicoComponent {
 
 	public tituloModal: string = "Horario aula";
 	
-	public aulaDTOSeleccionado:EspacioFisicoDTO;
+	public espacioFisicoDTOSeleccionado:EspacioFisicoDTO;
 	
 	public listaFranjaHorariaAulaDTO: FranjaHorariaEspacioFisicoDTO[] = [];
 	
@@ -45,8 +45,8 @@ export class HorarioEspacioFisicoComponent {
 		}
 	}
 
-	public abrirModal(aulaDTOSeleccionado:EspacioFisicoDTO):void {
-		this.aulaDTOSeleccionado = aulaDTOSeleccionado;
+	public abrirModal(espacioFisicoDTOSeleccionado:EspacioFisicoDTO):void {
+		this.espacioFisicoDTOSeleccionado = espacioFisicoDTOSeleccionado;
 		this.visible=true;
 		this.consultarAula();
 	}
@@ -59,8 +59,8 @@ export class HorarioEspacioFisicoComponent {
 		this.posicionesOcupadas=[];
 		this.listaFranjaHorariaAulaDTO = [];
 		// Verificar si idAula es válido y realizar la consulta
-		if (this.aulaDTOSeleccionado.idEspacioFisico) {  					
-		this.planificacionManualServicio.consultarFranjasEspacioFisicoPorIdEspacioFisico(this.aulaDTOSeleccionado.idEspacioFisico).subscribe(
+		if (this.espacioFisicoDTOSeleccionado.idEspacioFisico) {  					
+		this.planificacionManualServicio.consultarFranjasEspacioFisicoPorIdEspacioFisico(this.espacioFisicoDTOSeleccionado.idEspacioFisico).subscribe(
 			(listaFranjaHorariaAulaDTO: FranjaHorariaEspacioFisicoDTO[]) => {
 				this.listaFranjaHorariaAulaDTO = listaFranjaHorariaAulaDTO;
 			},

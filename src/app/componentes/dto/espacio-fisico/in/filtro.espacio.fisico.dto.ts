@@ -1,14 +1,16 @@
+import { EstadoEspacioFisicoEnum } from "../../../enum/estado.espacio.fisico.enum";
+
 export class FiltroEspacioFisicoDTO{
 	
-	public listaIdFacultad: number[];
+	public listaUbicacion: string[];
 
-	public listaIdEdificio: number[];
+	public listaEdificio: string[];
 
 	public listaIdTipoEspacioFisico: number[];
 
 	public numeroEspacioFisico: string;
 
-	public estado: boolean;
+	public estado: EstadoEspacioFisicoEnum;
 	
 	public capacidad: number;
 
@@ -16,6 +18,7 @@ export class FiltroEspacioFisicoDTO{
 
 	public registrosPorPagina:number;
 
-	constructor(){	
+	constructor(){
+		this.listaUbicacion= [];
 	} 
 }

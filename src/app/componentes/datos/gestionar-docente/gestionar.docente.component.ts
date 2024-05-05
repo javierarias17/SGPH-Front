@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { DocenteServicio } from '../../servicios/docente.servicio';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CursoServicio } from '../../servicios/curso.servicio';
 import { FacultadServicio } from '../../servicios/facultad.servicio';
 import { ProgramaServicio } from '../../servicios/programa.servicio';
@@ -18,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-gestionar-docente',
   templateUrl: './gestionar.docente.component.html',
   styleUrls: ['./gestionar.docente.component.css'],
-  providers: [MessageService, CursoServicio, FacultadServicio, ProgramaServicio, AsignaturaServicio, HorarioServicio, DocenteServicio, LenguajeServicio]
+  providers: [ConfirmationService, MessageService, CursoServicio, FacultadServicio, ProgramaServicio, AsignaturaServicio, HorarioServicio, DocenteServicio, LenguajeServicio]
 })
 export class GestionarDocenteComponent {
 
@@ -42,7 +42,6 @@ export class GestionarDocenteComponent {
 	public docenteOutDTOSeleccionado: DocenteOutDTO=new DocenteOutDTO();   
 	
 	/*TEMPORALES*/    
-	inactivarDocenteDialog: boolean = false;
 	submitted: boolean = false;
 	cols: any[] = [];
 	rowsPerPageOptions = [5, 10, 20];
@@ -51,7 +50,8 @@ export class GestionarDocenteComponent {
 	@ViewChild('crearEditarVerDocente') crearEditarVerDocente: CrearEditarVerDocenteComponent;
 	@ViewChild('horarioDocente') horarioDocente: HorarioDocenteComponent;
   
-	constructor(private messageService: MessageService,
+	constructor(private confirmationService: ConfirmationService,
+		private messageService: MessageService,
 		private docenteServicio:DocenteServicio,
 		private translateService: TranslateService) {
 	}
@@ -97,7 +97,7 @@ export class GestionarDocenteComponent {
         this.consultarDocentes();
     } 
 
-	public obtenerNombreCompletoDocente():string{
+	private obtenerNombreCompletoDocente():string{
         return (this.docenteOutDTOSeleccionado.primerNombre? this.docenteOutDTOSeleccionado.primerNombre+" ": "")
                 +(this.docenteOutDTOSeleccionado.segundoNombre? this.docenteOutDTOSeleccionado.segundoNombre+" ": "")
                 +(this.docenteOutDTOSeleccionado.primerApellido? this.docenteOutDTOSeleccionado.primerApellido+" ": "")
@@ -115,23 +115,30 @@ export class GestionarDocenteComponent {
 			this.crearEditarVerDocente.abrirModal(docenteOutDTOSeleccionado, tituloModal);
 		}      
 	}
-	
-	/*Inactivar curso*/
-	public inactivarDocente(docenteOutDTOSeleccionado: DocenteOutDTO) {
-		this.docenteOutDTOSeleccionado = { ...docenteOutDTOSeleccionado};
-		this.inactivarDocenteDialog = true;
-	}
-	
-	public confirmarInactivacion() {
-		this.inactivarDocenteDialog = false;
-		this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Docente inactivado', life: 3000 });
-	}
-
+		
 	/*Horario docente*/
 	public abrirModalHorarioDocente(docenteOutDTOSeleccionado: DocenteOutDTO) {
 		if (this.horarioDocente) {
 			this.horarioDocente.abrirModal(docenteOutDTOSeleccionado);
 		}      
+	}
+
+	/*Inactivar Docente*/
+	public inactivarDocente(docenteOutDTOSeleccionado: DocenteOutDTO) {
+		this.docenteOutDTOSeleccionado = { ...docenteOutDTOSeleccionado};
+		const nombreCompleto = this.obtenerNombreCompletoDocente();
+
+		this.confirmationService.confirm({
+            message: `¿Está seguro que desea inactivar/activar el docente <strong>${nombreCompleto}</strong>?`,
+            header: 'Confirmar',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {             
+              this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Docente activado/inactivado', life: 3000 });
+            },
+            reject: () => {
+              this.messageService.add({ severity: 'error', summary: 'Cancelado', detail: 'Operación cancelada', life: 3000 });
+            }
+          }); 
 	}
 }
 

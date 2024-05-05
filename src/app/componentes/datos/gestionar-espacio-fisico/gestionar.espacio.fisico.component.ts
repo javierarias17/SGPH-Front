@@ -3,19 +3,17 @@ import { EspacioFisicoServicio } from '../../servicios/espacio.fisico.servicio';
 import { MessageService } from 'primeng/api';
 import { FacultadServicio } from '../../servicios/facultad.servicio';
 import { HorarioEspacioFisicoComponent } from './horario-espacio-fisico/horario.espacio.fisico.component';
-import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
-import { EdificioServicio } from '../../servicios/edificio.servicio';
-import { EdificioOutDTO } from '../../dto/edificio/out/edificio.out.dto';
 import { FiltroEspacioFisicoDTO } from '../../dto/espacio-fisico/in/filtro.espacio.fisico.dto';
-import { EstadoAulaEnum } from '../../enum/estado.aula.enum';
+import { EstadoEspacioFisicoEnum } from '../../enum/estado.espacio.fisico.enum';
 import { TipoEspacioFisicoOutDTO } from '../../dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
 import { EspacioFisicoDTO } from '../../dto/espacio-fisico/out/espacio.fisico.dto';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-gestionar-espacio-fisico',
   templateUrl: './gestionar.espacio.fisico.component.html',
   styleUrls: ['./gestionar.espacio.fisico.component.css'],
-  providers: [MessageService, FacultadServicio, EspacioFisicoServicio, EdificioServicio]
+  providers: [MessageService, FacultadServicio, EspacioFisicoServicio]
 })
 export class GestionarEspacioFisicoComponent {
 
@@ -31,21 +29,15 @@ export class GestionarEspacioFisicoComponent {
 
     public listaEspacioFisicoDTO: EspacioFisicoDTO[] = [];
 
-    public lstFacultadOutDTO: FacultadOutDTO[] = [];
+    public lstUbicacion: string[] = [];
 
-    public facultadesSeleccionadas: any[] = [];
-
-    public listaEdificios: EdificioOutDTO[] = [];
-
-    public edificiosSeleccionados: EdificioOutDTO[] = [];
+    public listaEdificios: string[] = [];
 
     public listaTipoEspacioFisico: TipoEspacioFisicoOutDTO[] = [];
 
     public tipoEspacioFisicoSeleccionados: TipoEspacioFisicoOutDTO[] = [];
 
-    public listaEstados= [];
-    
-    public estadoSeleccionado: { label: string, codigo: EstadoAulaEnum }= null;
+    public listaEstados:{ label: string; value: string }[] = [];  
 
     public filtroEspacioFisicoDTO: FiltroEspacioFisicoDTO=new FiltroEspacioFisicoDTO();
 
@@ -58,30 +50,29 @@ export class GestionarEspacioFisicoComponent {
 	@ViewChild('horarioEspacioFisico') horarioEspacioFisico: HorarioEspacioFisicoComponent;
   
 	constructor(private messageService: MessageService,
-        private facultadServicio:FacultadServicio,
-        private edificioServicio:EdificioServicio,
-        private espacioFisicoServicio:EspacioFisicoServicio) {
+        private espacioFisicoServicio:EspacioFisicoServicio,
+        private translateService: TranslateService) {
 	}
 
 	public ngOnInit():void {          
         this.filtroEspacioFisicoDTO.registrosPorPagina = this.registrosPorPagina;         
 
-        this.listaEstados = [
-            { label: 'Activo', codigo: EstadoAulaEnum.ACTIVO },
-            { label: 'Inactivo', codigo: EstadoAulaEnum.INACTIVO }
-        ];
-
-        this.facultadServicio.consultarFacultades().subscribe(
-            (lstFacultadOutDTO: FacultadOutDTO[]) => {
-                this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
+        this.espacioFisicoServicio.consultarUbicaciones().subscribe(
+            (lstUbicacion: string[]) => {
+                this.lstUbicacion = lstUbicacion;
             },
             (error) => {
               console.error(error);
             }
         );  
+
+        Object.keys(EstadoEspacioFisicoEnum).forEach(key => {
+            const translatedLabel = this.translateService.instant('gestionar.espaciofisico.filtro.estado.espaciofisico.' + key);
+            this.listaEstados.push({ label: translatedLabel, value: key });
+        });
 	}
 
-    private consultarAulas():void{
+    private consultarEspaciosFisicos():void{
         this.espacioFisicoServicio.consultarEspaciosFisicos(this.filtroEspacioFisicoDTO).subscribe(
             (response: any) => {
               this.listaEspacioFisicoDTO = response.content;
@@ -93,20 +84,21 @@ export class GestionarEspacioFisicoComponent {
           );
     }
 
-    public onFacultadesChange():void{
+    public onUbicacionesChange():void{
         this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
-        if(this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0){
-            this.edificioServicio.consultarEdificiosPorIdFacultad(this.facultadesSeleccionadas.map(facultad => facultad.idFacultad)).subscribe(
-                (lstEdificioOutDTO: EdificioOutDTO[]) => {
-                    if(lstEdificioOutDTO.length === 0){
+        if(this.filtroEspacioFisicoDTO.listaUbicacion!==null && this.filtroEspacioFisicoDTO.listaUbicacion.length !== 0){
+            this.espacioFisicoServicio.consultarEdificiosPorUbicacion(this.filtroEspacioFisicoDTO.listaUbicacion).subscribe(
+                (lstEdificio: string[]) => {
+                    this.filtroEspacioFisicoDTO.listaEdificio =[];
+                    if(lstEdificio.length === 0){
                         this.listaEdificios=[];
-                        this.filtroEspacioFisicoDTO.listaIdEdificio =null;
                     }else{
-                        this.listaEdificios = lstEdificioOutDTO;
-                        this.filtroEspacioFisicoDTO.listaIdEdificio = lstEdificioOutDTO.map(edificio => edificio.idEdificio);
+                        this.listaEdificios = lstEdificio;
                     }
-                    this.filtroEspacioFisicoDTO.listaIdFacultad = this.facultadesSeleccionadas.map(facultad => facultad.idFacultad);
-                    this.consultarAulas();
+                    this.listaTipoEspacioFisico=[];
+                    this.tipoEspacioFisicoSeleccionados=[];
+                    this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico=[];
+                    this.consultarEspaciosFisicos();
                 },
                 (error) => {
                     console.error(error);
@@ -114,74 +106,67 @@ export class GestionarEspacioFisicoComponent {
                 ); 
         }else{
             this.listaEspacioFisicoDTO=[];
-            this.totalRecords=undefined;
             //Se limpian variables de las listas desplegables
             this.listaEdificios=[];
             this.listaTipoEspacioFisico=[];
             //Se limpian valores del filtro
-            this.filtroEspacioFisicoDTO.listaIdFacultad=null;
-            this.filtroEspacioFisicoDTO.listaIdEdificio=null;
-            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico=null;
+            this.filtroEspacioFisicoDTO.listaUbicacion=[];
+            this.filtroEspacioFisicoDTO.listaEdificio=[];
+            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico=[];
             this.filtroEspacioFisicoDTO.estado=null;
             //Se limpian variables de los inputs
-            this.facultadesSeleccionadas=[];
-            this.edificiosSeleccionados=null;
-            this.tipoEspacioFisicoSeleccionados=null;
-            this.estadoSeleccionado=null;
+            this.tipoEspacioFisicoSeleccionados=[];  
         }
     }  
     
     public onEdificiosChange():void{
         this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
-        if(this.edificiosSeleccionados){
-            this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorIdEdificio(this.edificiosSeleccionados.map(edificio => edificio.idEdificio)).subscribe(
+        if(this.filtroEspacioFisicoDTO.listaEdificio!==null && this.filtroEspacioFisicoDTO.listaEdificio.length !== 0){
+            this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorEdificio(this.filtroEspacioFisicoDTO.listaEdificio).subscribe(
                 (lstTipoAulaOutDTO: TipoEspacioFisicoOutDTO[]) => {
                     if(lstTipoAulaOutDTO.length === 0){
                         this.listaTipoEspacioFisico=[];
-                        this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =null;
+                        this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
                     }else{
                         this.listaTipoEspacioFisico = lstTipoAulaOutDTO;
                         this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico = lstTipoAulaOutDTO.map(tipoAula => tipoAula.idTipoEspacioFisico);
                     }
-                    this.filtroEspacioFisicoDTO.listaIdEdificio = this.edificiosSeleccionados.map(edficio => edficio.idEdificio);
-                    this.consultarAulas();
+                    this.tipoEspacioFisicoSeleccionados=[];
+                    this.consultarEspaciosFisicos();
                 },
                 (error) => {
                   console.error(error);
                 }
             ); 
         }else{
-            this.tipoEspacioFisicoSeleccionados=null;
+            //Se limpian variables de las listas desplegables
             this.listaTipoEspacioFisico=[];
-            this.filtroEspacioFisicoDTO.listaIdEdificio=null;
-            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico=null
-            this.consultarAulas();
+             //Se limpian valores del filtro
+            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico=[];
+             //Se limpian variables de los inputs
+            this.tipoEspacioFisicoSeleccionados=[];
+            this.consultarEspaciosFisicos();
         }
     }   
 
     public onTipoEspacioFisicoChange():void{
         if( this.tipoEspacioFisicoSeleccionados){
-            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico = this.tipoEspacioFisicoSeleccionados.map(tipoAula => tipoAula.idTipoEspacioFisico);
+            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico = this.tipoEspacioFisicoSeleccionados.map(tipoEspacioFisico => tipoEspacioFisico.idTipoEspacioFisico);
         }else{
             this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
         }
         this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
-        this.consultarAulas();
+        this.consultarEspaciosFisicos();
     }
 
-    public onEstadoChange():void{   
-        if(this.estadoSeleccionado){
-            this.filtroEspacioFisicoDTO.estado=this.estadoSeleccionado.codigo===EstadoAulaEnum.INACTIVO? false: true;
-        }else{
-            this.filtroEspacioFisicoDTO.estado=null;
-        }     
+    public onEstadoChange():void{     
         this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
-        this.consultarAulas();
+        this.consultarEspaciosFisicos();
     } 
 
     public onPageChange(event: any):void {
 		this.filtroEspacioFisicoDTO.pagina =event.page;     
-		this.consultarAulas();
+		this.consultarEspaciosFisicos();
 	}
 		
 	//Crear, Editar y Ver espacio físico

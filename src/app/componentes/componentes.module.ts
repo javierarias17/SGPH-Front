@@ -23,7 +23,9 @@ import { AsociarEspacioFisicoComponent } from './planificacion-horario/planifica
 import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/cargar.labor.docencia.component';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 
 @NgModule({
 	declarations: [
@@ -53,7 +55,7 @@ import { FormsModule } from '@angular/forms';
 		CrearEditarVerUsuarioComponent,
 	],
 	imports: [
-		FormsModule,
+		ReactiveFormsModule,
 		CommonModule,
 		PrimeNgModule
 	]

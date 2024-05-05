@@ -5,28 +5,21 @@
         <hr>
     </div>
 </div>
-
 <div class="row">
     <div class="lg:col-12 md:col-12 sm:col-12">
         <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Facultad</label>
+            <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
 			<p-multiSelect 
                 maxSelectedLabels="4" 
-                selectedItemsLabel="{0} Facultades seleccionadas" 
-                optionLabel="abreviatura" 
-                [defaultLabel]="'Seleccione facultad'"
-                [options]="lstFacultadOutDTO" 
-                [(ngModel)]="facultadesSeleccionadas"  
+                selectedItemsLabel="{0} Ubicaciones seleccionadas" 
+                [defaultLabel]="'Seleccione ubicación'"
+                [options]="lstUbicacion" 
+                [(ngModel)]="filtroEspacioFisicoDTO.listaUbicacion"  
                 [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
                 [ngClass]="{'w-30rem':true }"
                 [filter]="false"
                 [showClear]="true"
-                (ngModelChange)="onFacultadesChange()" >
-                <ng-template let-facultad pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                        <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
-                    </div>
-                </ng-template>
+                (ngModelChange)="onUbicacionesChange()" >
 			</p-multiSelect>
         </div>
         <div class="mt-1 flex justify-content-start flex-wrap">
@@ -34,21 +27,15 @@
 			<p-multiSelect 
                 maxSelectedLabels="4" 
                 selectedItemsLabel="{0} Edificios seleccionados" 
-                optionLabel="nombre" 
                 [defaultLabel]="listaEdificios.length === 0 ? '':'Seleccione edificios'"
                 [options]="listaEdificios" 
-                [(ngModel)]="edificiosSeleccionados"  
+                [(ngModel)]="filtroEspacioFisicoDTO.listaEdificio"  
                 [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
                 [ngClass]="{'w-30rem':true }"
                 [filter]="false"
                 [showClear]="true"
                 [disabled]="listaEdificios.length === 0"
                 (ngModelChange)="onEdificiosChange()" >
-                <ng-template let-edificio pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                        <div><strong>{{ edificio.nombre }}</strong></div>
-                    </div>
-                </ng-template>
 			</p-multiSelect>
         </div>
         <div class="mt-1 flex justify-content-start flex-wrap">
@@ -77,12 +64,12 @@
             <label class="w-5rem align-self-center" style="text-align: right;">Estado</label>
             <p-dropdown 
                 [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }"
-                [placeholder]="facultadesSeleccionadas.length === 0 ? ' ':'Seleccione estado espacio físico'" 
+                [placeholder]="filtroEspacioFisicoDTO?.listaUbicacion.length === 0 ? ' ':'Seleccione estado espacio físico'" 
                 [ngClass]="{'w-30rem':true}" 
                 [options]="listaEstados" 
-                [(ngModel)]="estadoSeleccionado"
+                [(ngModel)]="filtroEspacioFisicoDTO.estado"
                 [showClear]="true"
-                [disabled]="facultadesSeleccionadas.length === 0"
+                [disabled]="filtroEspacioFisicoDTO?.listaUbicacion.length === 0"
                 (ngModelChange)="onEstadoChange()">
             </p-dropdown>
         </div>
@@ -114,7 +101,7 @@
             selectionMode="multiple" [rowHover]="true" dataKey="id">
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Facultad</th>
+                    <th>Ubicación</th>
                     <th>Edificio</th>
                     <th>Espacio físico</th>
                     <th>Número espacio físico</th>
@@ -126,12 +113,12 @@
             </ng-template>
             <ng-template pTemplate="body" let-espacioFisicoDTO>
                 <tr>
-                    <td>{{espacioFisicoDTO.abreviaturaFacultad}}</td>
-                    <td>{{espacioFisicoDTO.nombreEdificio}}</td>
+                    <td>{{espacioFisicoDTO.ubicacion}}</td>
+                    <td>{{espacioFisicoDTO.edificio}}</td>
                     <td>{{espacioFisicoDTO.tipoEspacioFisico}}</td>
                     <td>{{espacioFisicoDTO.numeroEspacioFisico}}</td>
                     <td>{{espacioFisicoDTO.capacidad}}</td>
-                    <td>{{(espacioFisicoDTO.estado===true)? 'Activo':'Inactivo'}}</td>
+                    <td>{{espacioFisicoDTO.estado | titlecase}}</td>
                     <td>
                         <div class="flex">
                             <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info"></button>
@@ -149,7 +136,7 @@
                 </tr>
             </ng-template>
         </p-table>
-        <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0"></p-paginator>   
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.filtroEspacioFisicoDTO.listaUbicacion!==null && this.filtroEspacioFisicoDTO.listaUbicacion.length !== 0"></p-paginator>   
     </div>   
 </div>
 

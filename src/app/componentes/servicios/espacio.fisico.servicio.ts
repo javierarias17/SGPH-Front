@@ -54,9 +54,47 @@ export class EspacioFisicoServicio{
 	 * @param lstIdEdificio
 	 * @return
 	 */
-	public consultarTiposEspaciosFisicosPorIdEdificio(lstIdEdificio:number[]): Observable<TipoEspacioFisicoOutDTO[]>{
-		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarTiposEspaciosFisicosPorIdEdificio?lstIdEdificio=${lstIdEdificio}`;
+	public consultarTiposEspaciosFisicosPorEdificio(lstEdificio:string[]): Observable<TipoEspacioFisicoOutDTO[]>{
+		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarTiposEspaciosFisicosPorEdificio?lstEdificio=${lstEdificio}`;
         return this.http.get<TipoEspacioFisicoOutDTO[]>(url);
+	}  
+
+	/**
+	 * Método encargado de consultar todos los edificios de los espacios físicos
+	 * <br>
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @return Nombres de los edificios
+	 */
+	public consultarEdificios(): Observable<string[]>{
+		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarEdificios`;
+        return this.http.get<string[]>(url);
     }  
 
+	/**
+	 * Método encargado de consultar todas las ubicaciones de los espacios físicos
+	 * <br>
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @return Nombres de las ubicaciones
+	 */
+	public consultarUbicaciones(): Observable<string[]>{
+		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarUbicaciones`;
+        return this.http.get<string[]>(url);
+    }  
+
+	/**
+	 * Método encargado de consultar los edificios de los espacios físicos por
+	 * ubicación <br>
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @return Nombres de los edificios
+	 */
+	public consultarEdificiosPorUbicacion(lstUbicacion: string[]): Observable<string[]>{
+		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarEdificiosPorUbicacion?lstUbicacion=${lstUbicacion}`;
+        return this.http.get<string[]>(url);
+    }  
 }

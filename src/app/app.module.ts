@@ -16,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LenguajeServicio } from './componentes/servicios/lenguaje.servicio';
+import { ConfirmationService } from 'primeng/api';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -40,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, LenguajeServicio
+        PhotoService, ProductService, LenguajeServicio, ConfirmationService 
     ],
     bootstrap: [AppComponent]
 })
