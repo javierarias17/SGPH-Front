@@ -1,0 +1,153 @@
+<div class="grid">
+    <div class="col-12">
+        <h3>Gestionar asignaturas</h3>
+        <p>Esta pantalla permite la creación, visualización, edición y eliminación manual de asignaturas.</p>
+        <hr>
+    </div>
+</div>
+
+
+<!--<div class="card p-fluid">-->
+    <div class="p-fluid p-formgrid grid">
+        <div class="field col-6 md:col-2">
+            <label>Facultad</label>
+            <p-multiSelect 
+                [ngClass]="{'w-30rem':true }"
+                maxSelectedLabels="4" 
+                selectedItemsLabel="{0} Facultades seleccionadas" 
+                optionLabel="abreviatura" 
+                [defaultLabel]="'Seleccione facultad'"
+                [options]="lstFacultadOutDTO" 
+                [(ngModel)]="facultadesSeleccionadas"  
+                [filter]="false"
+                [showClear]="true"
+                optionLabel="abreviatura" 
+                optionValue="idFacultad"
+                (ngModelChange)="this.onChangeFacultad()"
+                appendTo = "body"
+                >
+                <ng-template let-facultad pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
+        </div>
+        <div class="field col-6 md:col-2">
+            <label style="text-align: right;">Programa</label>
+            <p-multiSelect 
+                maxSelectedLabels="4" 
+                selectedItemsLabel="{0} Programas seleccionados" 
+                optionLabel="abreviatura"
+                optionValue="idPrograma"
+                [defaultLabel]="listaProgramas.length === 0 ? '':'Seleccione programas'"
+                [options]="listaProgramas" 
+                [(ngModel)]="programasSeleccionados"  
+                appendTo = "body"
+                [ngClass]="{'w-30rem':true }"
+                [filter]="false"
+                [showClear]="true"
+                [disabled]="facultadesSeleccionadas == null || listaProgramas.length === 0"
+                (ngModelChange)="onProgramasChange()" >
+            <ng-template let-programa pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                </div>
+            </ng-template>
+			</p-multiSelect>
+        </div>
+        <div class="field col-6 md:col-2">
+            <label style="text-align: right;">Semestre</label>
+            <p-inputNumber 
+                [ngClass]="{'w-30rem':true }"
+                [placeholder]="facultadesSeleccionadas?.length === 0 ? '':'Ingrese semestre'"
+                [step]="1" 
+                [ngClass]="{'w-30rem':true}" 
+                [showButtons]="true" 
+                [min]="1" 
+                [max]="10"
+                [showClear]="true"
+                [disabled]="facultadesSeleccionadas == null || facultadesSeleccionadas?.length === 0"
+                [(ngModel)]="numeroSemestre"
+                (ngModelChange)="onSemestreChange()">
+            </p-inputNumber>
+        </div>                                       
+    </div>
+<!--</div>-->
+
+
+
+<div class="flex justify-content-end" style="width: 100%;">
+    <div class="m-1">
+        <button pButton pRipple label="Registrar" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarAsignatura()"></button>
+    </div>
+</div>
+
+<p-table [value]='this.asignaturas' responsiveLayout="scroll" styleClass="p-datatable-gridlines" [lazy]="true"
+    (onLazyLoad)="listarAsignaturas($event)" dataKey="idAsignatura" [paginator]="true" [rows]="10" [totalRecords]="totalRecords"
+    [loading]="cargando">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>
+                Programa
+            </th>
+            <th>
+                Semestre
+            </th>
+            <th>
+                Asignatura
+            </th>
+            <th>
+                Código
+            </th>
+            <th>
+                Horas por semana
+            </th>
+            <th>
+                Pénsum
+            </th>
+            <th style="width: 10%;">
+                Opciones
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-asignatura>
+        <tr>
+            <td style="width: 20%;">
+                {{asignatura.nombrePrograma}}
+            </td>
+            <td style="width: 20%;">
+                {{asignatura.semestre}}
+            </td>
+            <td style="width: 20%;">
+                {{asignatura.nombre}}
+            </td>
+            <td style="width: 20%;">
+                {{asignatura.codigoAsignatura}}
+            </td>
+            <td style="width: 20%;">
+                {{asignatura.horasSemana}}
+            </td>
+            <td style="width: 20%;">
+                {{asignatura.pensum}}
+            </td>
+            <td>
+                <div class="flex">
+                    <button pButton pRipple type="button" icon="pi pi-search" pTooltip="Ver asignatura" class="p-button-rounded p-button-info" (click)="verAsignatura(asignatura.idAsignatura)"></button>
+                    <span style="margin-right: 10px;"></span>
+                    <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar asignatura" class="p-button-rounded p-button-secondary" (click)="editarAsignatura(asignatura.idAsignatura)"></button>
+                    <span style="margin-right: 10px;"></span>
+                    <button pButton pRipple type="button" icon="pi pi-ban" pTooltip="Inactivar/Activar asignatura" class="p-button-rounded p-button-danger" (click)="eliminarAsignatura(asignatura.idAsignatura)"></button>
+                </div>
+            </td>
+
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+                Aun no existen asignaturas
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

@@ -79,7 +79,8 @@ export class PlanificacionManualComponent {
 
     constructor(private messageService: MessageService, 
         private facultadServicio:FacultadServicio,
-        private programaServicio: ProgramaServicio, private asignaturaServicio:AsignaturaServicio,
+        private programaServicio: ProgramaServicio, 
+        private asignaturaServicio:AsignaturaServicio,
         private planificacionManualServicio: PlanificacionManualServicio,
         private translateService: TranslateService) {
     }

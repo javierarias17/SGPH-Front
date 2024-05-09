@@ -1,0 +1,185 @@
+<div class="flex flex-column">
+    <div class="grid" *ngIf="this.lectura">
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Facultad</label>
+            <p class="label col-12 md:col-6">{{this.asignatura.nombreFacultad}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Programa</label>
+            <p class="label col-12 md:col-6">{{this.asignatura.nombrePrograma}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Código asignatura</label>
+            <p class="label col-12 md:col-6">{{this.asignatura.codigoAsignatura}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">OID asignatura</label>
+            <p class="label col-12 md:col-6">{{this.asignatura.OID}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Asignatura</label>
+            <p class="label col-12 md:col-6">{{this.asignatura.nombre}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Semestre</label>
+            <p class="label col-12 md:col-6">{{this.asignatura.semestre}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Horas por semana</label>
+            <p class="label col-12 md:col-6">{{this.asignatura.horasSemana}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Pénsum</label>
+            <p class="label col-12 md:col-6">{{this.asignatura.pensum}}</p>
+        </div>
+    </div>
+
+    <form class="flex flex-column" style="width: 500px;" *ngIf="!this.lectura" [formGroup]="formulario">
+
+        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
+            <label class="col-12 md:col-3">Facultad</label>
+            <div class="col-12 md:col-9">
+                <p-dropdown
+                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }"
+                    [placeholder]="' '" 
+                    [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.idFacultad().invalid &&
+                            this.idFacultad().touched
+                    }"
+                    [options]="lstFacultadOutDTO" optionValue="idFacultad" optionLabel="abreviatura"
+                    formControlName="idFacultad" [showClear]="true" appendTo="body"
+                    (ngModelChange)="onFacultadChange()"
+                    >
+
+                    <ng-template let-facultad pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+        <div class=" col-12 flex justify-content-center flex-wrap" style="width: 100%;">
+            <label class="col-12 md:col-3">Programa</label>
+            <div class="col-12 md:col-9">
+                <p-dropdown
+                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }"
+                    [placeholder]="' '" [options]="listaProgramas"
+                    optionValue="idPrograma" optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true"
+                    appendTo="body" (ngModelChange)="onProgramaChange()"
+                    [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.idPrograma().invalid &&
+                            this.idPrograma().touched
+                    }"
+                    >
+                    <ng-template let-programa pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
+            <label class="col-12 md:col-3">Código de asignatura</label>
+            <div class="col-12 md:col-9">
+                <input type="text" pInputText 
+                    [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.codigoAsignatura().invalid &&
+                            this.codigoAsignatura().touched
+                    }"
+                    formControlName="codigoAsignatura"
+                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }"
+                    placeholder=" " >
+            </div>
+        </div>
+        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
+            <label class="col-12 md:col-3">OID asignatura</label>
+            <div class="col-12 md:col-9">
+                <input type="text" pInputText 
+                [ngClass]="{
+                    'ng-invalid ng-dirty':
+                        this.OID().invalid &&
+                        this.OID().touched
+                }" 
+                formControlName="OID"
+                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }">
+            </div>
+        </div>
+        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
+            <label class="col-12 md:col-3">Nombre asignatura</label>
+            <div class="col-12 md:col-9">
+                <input type="text" pInputText
+                [ngClass]="{
+                    'ng-invalid ng-dirty':
+                        this.nombre().invalid &&
+                        this.nombre().touched
+                }" 
+                formControlName="nombre"
+                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }">
+            </div>
+        </div>
+        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
+            <label class="col-12 md:col-3">Semestre</label>
+            <div class="col-12 md:col-9">
+                <div class="ml-2">
+                    <p-inputNumber
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                this.nombre().invalid &&
+                                this.nombre().touched
+                        }" 
+                        [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '100%' }"
+                        [step]="1" 
+                        [showButtons]="true" 
+                        [min]="1" 
+                        [max]="10"
+                        formControlName="semestre"
+                        >
+                    </p-inputNumber>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
+            <label class="col-12 md:col-3">Horas por semana</label>
+            <div class="col-12 md:col-9">
+                <input type="text" pInputText 
+                [ngClass]="{
+                    'ng-invalid ng-dirty':
+                        this.horasSemana().invalid &&
+                        this.horasSemana().touched
+                }" 
+                formControlName="horasSemana"
+                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }">
+            </div>
+        </div>
+        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
+            <label class="col-12 md:col-3">Pensum</label>
+            <div class="col-12 md:col-9">
+                <input type="text" pInputText 
+                    [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.pensum().invalid &&
+                            this.pensum().touched
+                    }" 
+                    formControlName="pensum"
+                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }">
+            </div>
+        </div>
+    </form>
+    
+    <app-filtro-grupo-espacio-fisico (emitirGrupoSeleccionado) = "this.obtenerGrupoSeleccionado($event)" [lectura] ="this.lectura" [agrupadoresLectura] ="this.agrupadores"></app-filtro-grupo-espacio-fisico>
+
+    <div class="flex justify-content-end" style="width: 100%;" *ngIf="!this.lectura">
+        <div class="m-1">
+            <button pButton pRipple label="Registrar" icon="pi pi-plus" class="p-button-success mr-2" (click)="guardarAsignatura()"></button>
+        </div>
+    </div>
+</div>
+
+
+{{this.formulario.value | json}}

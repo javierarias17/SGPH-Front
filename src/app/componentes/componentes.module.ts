@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { GestionarCursoComponent } from './datos/gestionar-curso/gestionar.curso.component';
-import { GestionarAsignaturaComponent } from './datos/gestionar-asignatura/gestionar-asignatura.component';
 import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/gestionar.espacio.fisico.component';
 import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar.docente.component';
 import { CrearEditarVerCursoComponent } from './datos/gestionar-curso/crear-editar-consultar-curso/crear.editar.ver.curso.component';
@@ -24,13 +23,13 @@ import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/carg
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 
 @NgModule({
 	declarations: [
 		GestionarCursoComponent,
-		GestionarAsignaturaComponent,
 		GestionarDocenteComponent,
 		GestionarEspacioFisicoComponent,
 		AsociarEspacioFisicoComponent,
@@ -57,7 +56,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 	imports: [
 		ReactiveFormsModule,
 		CommonModule,
-		PrimeNgModule
+		PrimeNgModule,
+		SharedModule
 	]
 })
 export class ComponentesModule { }

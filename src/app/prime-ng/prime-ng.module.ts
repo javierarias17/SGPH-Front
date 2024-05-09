@@ -17,6 +17,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @NgModule({
     declarations: [],
@@ -39,7 +40,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         TooltipModule,//Selector: p-toast
         ConfirmDialogModule,//Selector: p-confirmDialog   
         InputTextModule,//Directiva personalizada pInputText
-        InputTextareaModule //Directiva personalizada pInputTextarea
+        InputTextareaModule,
+        FieldsetModule
     ]
 })
 export class PrimeNgModule { }
