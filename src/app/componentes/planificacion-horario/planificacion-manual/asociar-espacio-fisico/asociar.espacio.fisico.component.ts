@@ -15,17 +15,17 @@ import { FormatoPresentacionFranjaHorariaCursoDTO } from 'src/app/componentes/dt
 import { CursoPlanificacionOutDTO } from 'src/app/componentes/dto/curso/out/curso.planificacion.out.dto';
 import { PlanificacionManualServicio } from 'src/app/componentes/servicios/planificacion.manual.servicio';
 import { TipoEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
+import { AgrupadorEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.out.dto';
 
 interface FranjaHorariaItem {
     check: boolean;
     franjaHorariaCursoDTO: FranjaHorariaCursoDTO;
 }
-
 @Component({
     selector: 'app-asociar-espacio-fisico',
     templateUrl: './asociar.espacio.fisico.component.html',
     styleUrls: ['./asociar.espacio.fisico.component.css'],
-    providers: [MessageService, FacultadServicio, EspacioFisicoServicio, HorarioServicio, PlanificacionManualServicio]
+    providers: [MessageService, EspacioFisicoServicio, PlanificacionManualServicio]
 })
 export class AsociarEspacioFisicoComponent {
     
@@ -69,19 +69,19 @@ export class AsociarEspacioFisicoComponent {
 
     /*Atributos para mostrar las opciones disponibles*/
 
-    public lstFacultadOutDTO: FacultadOutDTO[] = [];
-
-    public listaTipoAulas: { nombre: string; idTipoEspacioFisico: number }[] = [];   
-
-    public listaRecursos: any[] = [];
-
+    public lstNombresUbicaciones: string[] = [];
+    
+    public lstTipoEspaciosFisicos: TipoEspacioFisicoOutDTO[] = [];  
+    
+    public lstAgrupadorEspacioFisicoOutDTO:AgrupadorEspacioFisicoOutDTO[]=[];
+    
     public listaHorasInicio: {label: string; formato:string}[] = [];
 
     /*Filtro*/
     public filtroFranjaHorariaDisponibleCursoDTO:FiltroFranjaHorariaDisponibleCursoDTO=new FiltroFranjaHorariaDisponibleCursoDTO();
    
-    constructor(private messageService: MessageService, private facultadServicio:FacultadServicio,
-        private espacioFisicoServicio: EspacioFisicoServicio, private horarioServicio: HorarioServicio, 
+    constructor(private messageService: MessageService,
+        private espacioFisicoServicio: EspacioFisicoServicio,
         private planificacionManualServicio: PlanificacionManualServicio) {
     }
 
@@ -117,7 +117,6 @@ export class AsociarEspacioFisicoComponent {
               console.error(error);
             }
           );
-
     }
 
     private consultarFranjasHorariasDisponiblesPorCurso():void{
@@ -139,20 +138,50 @@ export class AsociarEspacioFisicoComponent {
         this.cursoPlanificacionOutDTOSeleccionado = cursoPlanificacionOutDTOSeleccionado;
         this.mostrarAsociarAulaModal=true;
         this.consultarAulasAsignadasYDisponibles();
-        this.consultarFacultades();
+        this.consultarUbicaciones();
+        this.consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso();
     }
 
-    private consultarFacultades():void{
-        this.facultadServicio.consultarFacultades().subscribe(
-            (lstFacultadOutDTO: FacultadOutDTO[]) => {
-                this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
+    private consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso(){
+        this.espacioFisicoServicio.consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso).subscribe(
+            (lstAgrupadorEspacioFisicoOutDTO: AgrupadorEspacioFisicoOutDTO[]) => {
+                this.lstAgrupadorEspacioFisicoOutDTO = lstAgrupadorEspacioFisicoOutDTO;
             },
             (error) => {
               console.error(error);
             }
         );  
-    }   
+    }
 
+    private consultarUbicaciones():void{
+        this.espacioFisicoServicio.consultarUbicaciones().subscribe(
+            (lstNombresUbicaciones: string[]) => {
+                this.lstNombresUbicaciones = lstNombresUbicaciones;
+            },
+            (error) => {
+              console.error(error);
+            }
+        );  
+    } 
+
+    private consultarTiposEspaciosFisicosPorUbicaciones(){
+        if(this.filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones){
+            this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones).subscribe(
+                (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
+                    if(lstTipoEspacioFisicoOutDTO.length === 0){
+                        this.lstTipoEspaciosFisicos=[];
+                    }else{
+                        this.lstTipoEspaciosFisicos = lstTipoEspacioFisicoOutDTO;
+                    }
+                    this.filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico=[];
+                },
+                (error) => {
+                  console.error(error);
+                }
+            );  
+        }
+    }
+    
     public obtenerFormatoFranjaPresentacion(franjaHorariaCursoDTO: FranjaHorariaCursoDTO):string{
         return franjaHorariaCursoDTO.dia+' '+franjaHorariaCursoDTO.horaInicio+'-'+franjaHorariaCursoDTO.horaFin+' '+(this.mapaAulas.get(franjaHorariaCursoDTO.idEspacioFisico)).nombreCompletoEspacioFisico;
     }
@@ -178,29 +207,16 @@ export class AsociarEspacioFisicoComponent {
         this.consultarFranjasHorariasDisponiblesPorCurso();
     }
 
-    public onFacultadesChange(){
-        this.filtroFranjaHorariaDisponibleCursoDTO.listaIdFacultad = this.facultadesSeleccionadas; 
+    public inputsChange(){
         this.consultarFranjasHorariasDisponiblesPorCurso();
+    }
 
-        if(this.facultadesSeleccionadas===null || this.facultadesSeleccionadas.length === 0){
-            this.listaTipoAulas=[];
-            this.tipoAulasSeleccionadas=[];
-            this.facultadesSeleccionadas=[];
-        }else{
-            //Se consulta y actualiza la lista de tipo de aulas
-            this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorIdFacultad(this.facultadesSeleccionadas).subscribe(
-                (lstTipoAulaOutDTO: TipoEspacioFisicoOutDTO[]) => {
-                    if(lstTipoAulaOutDTO.length === 0){
-                        this.listaTipoAulas=[];
-                    }else{
-                        this.listaTipoAulas = lstTipoAulaOutDTO.map((tipoAulaOutDTO: TipoEspacioFisicoOutDTO) => ({ nombre: tipoAulaOutDTO.tipo, idTipoEspacioFisico:tipoAulaOutDTO.idTipoEspacioFisico }));
-                    }
-                },
-                (error) => {
-                  console.error(error);
-                }
-            ); 
-        }        
+    public onUbicacionesChange(){
+        if(this.filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones===null){
+            this.filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones=[];
+        }
+        this.consultarTiposEspaciosFisicosPorUbicaciones();
+        this.consultarFranjasHorariasDisponiblesPorCurso();
     }   
 
     public onDiasChange(){
@@ -208,8 +224,7 @@ export class AsociarEspacioFisicoComponent {
         this.consultarFranjasHorariasDisponiblesPorCurso();
     }
 
-    public onTipoAulasChange(){
-        this.filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico = this.tipoAulasSeleccionadas; 
+    public onTiposEspacioFisicoChange(){
         this.consultarFranjasHorariasDisponiblesPorCurso();
     }
     
@@ -242,16 +257,19 @@ export class AsociarEspacioFisicoComponent {
         this.consultarFranjasHorariasDisponiblesPorCurso();
     }
 
-    public onNumeroAulaChange(){
-        if(this.numeroAulaSeleccionada===null){
-            this.filtroFranjaHorariaDisponibleCursoDTO.listaNumeroEspacioFisico=[];
-        }else{
-            this.filtroFranjaHorariaDisponibleCursoDTO.listaNumeroEspacioFisico = Array.of(this.numeroAulaSeleccionada);
-        }
-        this.consultarFranjasHorariasDisponiblesPorCurso();        
-    }
-
     public salir() {
+        // Se limpia DTO filtroFranjaHorariaDisponibleCursoDTO
+        this.filtroFranjaHorariaDisponibleCursoDTO.duracion=null;
+        this.filtroFranjaHorariaDisponibleCursoDTO.horaInicio=null;
+        this.filtroFranjaHorariaDisponibleCursoDTO.horaFin=null;
+        this.filtroFranjaHorariaDisponibleCursoDTO.salon=null;
+        this.filtroFranjaHorariaDisponibleCursoDTO.listaDiaSemanaEnum=[];
+        this.filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico=[];
+        this.filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico=[];
+        this.filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones=[];
+        //Se limpian checks de días
+        this.diasSeleccionados=[];
+        
         this.mostrarAsociarAulaModal=false;
         this.modalClosedEmitter.emit();   
     }

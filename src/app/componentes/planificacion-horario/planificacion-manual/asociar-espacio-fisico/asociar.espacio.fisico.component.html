@@ -1,4 +1,4 @@
-<p-dialog #modalDialog [(visible)]="mostrarAsociarAulaModal" [style]="{width: '1024px'}" header="Asociar aulas" [modal]="true"
+<p-dialog #modalDialog [(visible)]="mostrarAsociarAulaModal" [style]="{width: '1024px'}" header="Gestionar horarios" [modal]="true"
     class="p-fluid">
     <ng-template pTemplate="content">
 
@@ -29,90 +29,69 @@
                 </div>
             </div>
         </div>
-
-        <!--Caracteristicas Aula-->
-        <h5>Caracteristica Aula</h5>
-
+        <!--Caracteristicas Espacio físico-->
+        <h5>Caracteristica Espacio Físico</h5>
         <div class="grid">
             <!--Primera columna-->
-            <div class="col-6">
+            <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length === 0">
                 <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Facultad</label>
+                    <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
                     <p-multiSelect maxSelectedLabels="4" 
-                        selectedItemsLabel="{0} Facultades seleccionadas"
-                        optionLabel="abreviatura" 
-                        [defaultLabel]="'Seleccione facultad'" 
-                        [options]="lstFacultadOutDTO"
-                        [(ngModel)]="facultadesSeleccionadas"
+                        selectedItemsLabel="{0} Ubicaciones seleccionadas"
+                        [defaultLabel]="'Seleccione ubicación'" 
+                        [options]="lstNombresUbicaciones"
+                        [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones"
                         [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
                         [ngClass]="{'w-27rem':true }" 
                         [filter]="false"
-                        [showClear]="false"
-                        optionLabel="abreviatura" 
-                        optionValue="idFacultad"
-                        (ngModelChange)="onFacultadesChange()">
-                        <ng-template let-facultad pTemplate="item">
-                            <div class="flex align-items-center gap-2">
-                                <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
-                            </div>
-                        </ng-template>
+                        [showClear]="true"
+                        (ngModelChange)="onUbicacionesChange()">
                     </p-multiSelect>
                 </div>
-
                 <div class="mt-1 flex justify-content-start flex-wrap">
                     <label class="w-5rem align-self-center" style="text-align: right;">Tipo</label>
-                    <p-multiSelect maxSelectedLabels="4" selectedItemsLabel="{0} Tipo aulas seleccionadas"
-                        optionLabel="nombre"
-                        [defaultLabel]="facultadesSeleccionadas.length === 0 ? '':'Seleccione tipo aula'"
-                        [options]="listaTipoAulas"
-                        [(ngModel)]="tipoAulasSeleccionadas"
+                    <p-multiSelect maxSelectedLabels="4" selectedItemsLabel="{0} Tipos espacio físico seleccionados"
+                        [defaultLabel]="filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones?.length === 0 ? '':'Seleccione tipo espacio físico'"
+                        [options]="lstTipoEspaciosFisicos"
+                        [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico"
                         [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
                         [ngClass]="{'w-27rem':true }"
-                        [filter]="true"
-                        [showClear]="false" 
-                        [disabled]="facultadesSeleccionadas.length === 0"
-                        optionLabel="nombre" 
+                        [filter]="false"
+                        [showClear]="true" 
+                        [disabled]="filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones?.length === 0"
+                        optionLabel="tipo" 
                         optionValue="idTipoEspacioFisico"
-                        (ngModelChange)="onTipoAulasChange()">
-                        <ng-template let-tipoAula pTemplate="item">
-                            <div class="flex align-items-center gap-2">
-                                <div>{{ tipoAula.nombre }}</div>
-                            </div>
-                        </ng-template>
+                        (ngModelChange)="onTiposEspacioFisicoChange()">
                     </p-multiSelect>
                 </div>
-
                 <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">No. aula</label>
-                    <p-inputNumber [style]="{'height': '2.0rem', 'margin-left': '10%', 'width': '90%' }"
-                        placeholder="Ingrese número de aula" [step]="1" [ngClass]="{'w-27rem':true}"
-                        [showButtons]="true" [min]="1" [(ngModel)]="numeroAulaSeleccionada" [showClear]="true"
-                        (ngModelChange)="onNumeroAulaChange()">
-                    </p-inputNumber>
+                    <label class="w-5rem align-self-center" style="text-align: right;">Nombre</label>
+                    <input type="text" class="p-inputtext" 
+                           [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.salon" 
+                           [style]="{ 'height': '2.0rem', 'margin-left': '8%', 'line-height': '1.2px'}"
+                           [ngClass]="{'w-24rem':true }"
+                           placeholder="Ingrese nombre"
+                           (ngModelChange)="inputsChange()">
                 </div>
-
-                <!--
-                <div class="mt-2 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Cupo</label>
-                    <label class="w-25rem" style="margin-left: 10%; width: 90%">30 estudiantes</label>
-                </div>
-                -->
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Recursos</label>
-                    <p-multiSelect maxSelectedLabels="4" selectedItemsLabel="{0} Recursos seleccionados"
-                        optionLabel="abreviatura" [defaultLabel]="'Seleccione recursos fisicos'"
-                        [options]="listaRecursos" [(ngModel)]="recursosSeleccionados"
-                        [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
-                        [ngClass]="{'w-27rem':true }" [filter]="false" (ngModelChange)="onFacultadesChange()">
-                        <ng-template let-facultad pTemplate="item">
-                            <div class="flex align-items-center gap-2">
-                                <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
-                            </div>
-                        </ng-template>
-                    </p-multiSelect>
-                </div>
-
             </div><!--Cierre primera columna-->
+            <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length > 0">
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Grupo</label>
+                    <p-multiSelect maxSelectedLabels="4" 
+                        selectedItemsLabel="{0} Grupos seleccionadas"
+                        [defaultLabel]="'Seleccione grupos'" 
+                        [options]="lstAgrupadorEspacioFisicoOutDTO"
+                        [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico"
+                        [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
+                        [ngClass]="{'w-27rem':true }" 
+                        [filter]="false"
+                        [showClear]="true"
+                        optionLabel="nombre" 
+                        optionValue="idAgrupadorEspacioFisico"
+                        (ngModelChange)="inputsChange()">
+                    </p-multiSelect>
+                </div>
+            </div>
             <!--Segunda columna-->
             <div class="col-6">
                 <div class="mt-1 flex justify-content-start flex-wrap">
@@ -182,7 +161,6 @@
 
             </div><!--Cierre segunda columna-->
         </div>
-
         <!--Asociar Aulas-->
         <div class="col-12 xl:col-12">
             <p-pickList [source]="listaFranjaHorariaDisponibles" [target]="listaFranjaHorariaAsignadas" sourceHeader="Franjas disponibles"

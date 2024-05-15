@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { FiltroEspacioFisicoDTO } from '../dto/espacio-fisico/in/filtro.espacio.fisico.dto';
 import { TipoEspacioFisicoOutDTO } from '../dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
 import { EspacioFisicoOutDTO } from '../dto/espacio-fisico/out/espacio.fisico.out.dto';
+import { AgrupadorEspacioFisicoOutDTO } from '../dto/espacio-fisico/out/agrupador.espacio.fisico.out.dto';
 
 
 
@@ -20,15 +21,15 @@ export class EspacioFisicoServicio{
     } 
 
     /**
-	 * Método encargado de consultar los tipos de espacios físicos por facultad
+	 * Método encargado de consultar los tipos de espacios físicos por ubicaciones
 	 * 
 	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
 	 * 
-	 * @param lstIdFacultad
+	 * @param lstUbicaciones
 	 * @return
 	 */
-    public consultarTiposEspaciosFisicosPorIdFacultad(lstIdFacultad:number[]): Observable<TipoEspacioFisicoOutDTO[]>{
-        const url = `http://localhost:8081/AdministrarEspacioFisico/consultarTiposEspaciosFisicosPorIdFacultad?lstIdFacultad=${lstIdFacultad.join(',')}`;
+    public consultarTiposEspaciosFisicosPorUbicaciones(lstUbicaciones:string[]): Observable<TipoEspacioFisicoOutDTO[]>{
+        const url = `http://localhost:8081/AdministrarEspacioFisico/consultarTiposEspaciosFisicosPorUbicaciones?lstUbicaciones=${lstUbicaciones.join(',')}`;
         return this.http.get<any>(url);
     }      
 
@@ -96,5 +97,19 @@ export class EspacioFisicoServicio{
 	public consultarEdificiosPorUbicacion(lstUbicacion: string[]): Observable<string[]>{
 		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarEdificiosPorUbicacion?lstUbicacion=${lstUbicacion}`;
         return this.http.get<string[]>(url);
+    }  
+
+	/**
+     * Método encargado de consultar los agrupadores de espacios físicos asociados a
+	 * un curso<br>
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @param idCurso
+	 * @return Lista de instancias de AgrupadorEspacioFisico
+	 */
+	public consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso(idCurso: number): Observable<AgrupadorEspacioFisicoOutDTO[]>{
+		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso?idCurso=${idCurso}`;
+        return this.http.get<AgrupadorEspacioFisicoOutDTO[]>(url);
     }  
 }
