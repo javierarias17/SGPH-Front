@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="grid">
     <div class="col-12">
         <h3>Gestionar asignaturas</h3>
@@ -8,8 +9,8 @@
 
 
 <!--<div class="card p-fluid">-->
-    <div class="p-fluid p-formgrid grid">
-        <div class="field col-6 md:col-2">
+    <div class="grid" style="width: 100%;">
+        <div class="p-fluid col sm:col-12 md:col-3">
             <label>Facultad</label>
             <p-multiSelect 
                 [ngClass]="{'w-30rem':true }"
@@ -33,7 +34,7 @@
                 </ng-template>
             </p-multiSelect>
         </div>
-        <div class="field col-6 md:col-2">
+        <div class="p-fluid col sm:col-12 md:col-3">
             <label style="text-align: right;">Programa</label>
             <p-multiSelect 
                 maxSelectedLabels="4" 
@@ -56,13 +57,11 @@
             </ng-template>
 			</p-multiSelect>
         </div>
-        <div class="field col-6 md:col-2">
+        <div class="p-fluid col sm:col-12 md:col-3">
             <label style="text-align: right;">Semestre</label>
             <p-inputNumber 
-                [ngClass]="{'w-30rem':true }"
                 [placeholder]="facultadesSeleccionadas?.length === 0 ? '':'Ingrese semestre'"
-                [step]="1" 
-                [ngClass]="{'w-30rem':true}" 
+                [step]="1"
                 [showButtons]="true" 
                 [min]="1" 
                 [max]="10"
@@ -151,3 +150,4 @@
         </tr>
     </ng-template>
 </p-table>
+<p-confirmDialog></p-confirmDialog>

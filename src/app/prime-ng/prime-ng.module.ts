@@ -18,12 +18,13 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FieldsetModule } from 'primeng/fieldset';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
     declarations: [],
     imports: [
     ],
-    exports:[        
+    exports:[  
         PaginatorModule,
         ComponentesRoutingModule,    
         TableModule,
@@ -37,11 +38,13 @@ import { FieldsetModule } from 'primeng/fieldset';
         TranslateModule,
         PanelMenuModule,
         CalendarModule,
-        TooltipModule,//Selector: p-toast
-        ConfirmDialogModule,//Selector: p-confirmDialog   
-        InputTextModule,//Directiva personalizada pInputText
+        TooltipModule,
+        ConfirmDialogModule,
+        InputTextModule,
         InputTextareaModule,
-        FieldsetModule
-    ]
+        FieldsetModule,
+        ConfirmDialogModule
+    ],
+    providers: [ConfirmationService]
 })
 export class PrimeNgModule { }

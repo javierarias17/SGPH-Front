@@ -39,4 +39,8 @@ export class AsignaturaServicio{
         const url = `${environment.url}${this.urlAsignatura}/guardarAsignatura`;
         return this.http.post<any>(url, save);   
     }
+    public inactivarAsignatura(id: number): Observable <any> {
+        const url = `${environment.url}${this.urlAsignatura}/inactivarAsignaturaPorId/${id}`;
+        return this.http.get<any>(url);   
+    }
 }

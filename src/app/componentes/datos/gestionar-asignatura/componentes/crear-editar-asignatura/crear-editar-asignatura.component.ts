@@ -7,9 +7,11 @@ import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.ou
 import { FacultadServicio } from 'src/app/componentes/servicios/facultad.servicio';
 import { ProgramaServicio } from 'src/app/componentes/servicios/programa.servicio';
 import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.out.dto';
-import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { AgrupadorDTO } from '../../model/agrupador-dto';
 import { AgrupacionPorFacultad } from '../../model/agrupacion-por-facultad';
+import { SharedService } from 'src/app/shared/service/shared.service';
+import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
+import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 @Component({
   selector: 'app-crear-editar-asignatura',
   templateUrl: './crear-editar-asignatura.component.html',
@@ -25,6 +27,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
   listaProgramas: ProgramaOutDTO[]
   idGrupoSeleccionado: number[]
   lectura: boolean
+  listaAgrupadores: AgrupadorEspacioFiscioDTO[]
   agrupadores: any[]
   constructor(
     private ref: DynamicDialogRef,     
@@ -33,6 +36,8 @@ export class CrearEditarAsignaturaComponent implements OnInit {
     private fb: FormBuilder,
     private facultadServicio: FacultadServicio,
     private programaServicio: ProgramaServicio,
+    private sharedService: SharedService,
+    private messageSerivce: ShowMessageService
   ) {}
   ngOnInit(): void {
     this.lectura = this.config.data.lectura
@@ -59,6 +64,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
     this.horasSemana().setValue(this.asignatura.horasSemana)
     this.idPrograma().setValue(this.asignatura.idPrograma)
     this.idFacultad().setValue(this.asignatura.idFacultad)
+    this.agrupador().setValue(this.asignatura.agrupadores.map(a=> a.idAgrupadorEspacioFisico))
   }
 
   agruparGruposPorFacultad() {
@@ -72,7 +78,6 @@ export class CrearEditarAsignaturaComponent implements OnInit {
       return acc;
   }, []);
     this.agrupadores = agrupacionPorFacultad
-    console.log(this.agrupadores)
   }
 
   obtenerGrupoSeleccionado(grupoSeleccionado: AgrupadorEspacioFiscioDTO[]) {
@@ -95,13 +100,14 @@ export class CrearEditarAsignaturaComponent implements OnInit {
     this.formulario = this.fb.group({
       nombre: [{value: null}, Validators.required],
       codigoAsignatura: [{value: null}, Validators.required],
-      OID: [{value: null}, Validators.required],
+      oid: [{value: null}, Validators.required],
       semestre: [{value: null}, Validators.required],
       pensum: [{value: null}, Validators.required],
       horasSemana: [{value: null}, Validators.required],
       idPrograma: [{value: null}, Validators.required],
       lstIdAgrupadorEspacioFisico: [{value: null}, Validators.required],
-      idFacultad: [{value : ""}]
+      idFacultad: [{value : ""}, Validators.required],
+      agrupadoresSeleccionados: [{value : ""}, Validators.required]
     })
   }
   
@@ -114,27 +120,33 @@ export class CrearEditarAsignaturaComponent implements OnInit {
           (error) => {
               console.error(error);
           }
-        );   
+        );
+        let idFacultades: number[] = []
+        idFacultades.push(this.idFacultad().value)
+        this.sharedService.obtenerAgrupadorEspacioFisico(idFacultades).subscribe(r => {
+          this.listaAgrupadores = r
+        })
    } else {
     this.limpiar()
    }
   }
-  onProgramaChange() {
-
-  }
-
   limpiar() {
     this.formulario.reset()
+    this.listaAgrupadores = []
   }
    guardarAsignatura() {
-    this.formulario.get("lstIdAgrupadorEspacioFisico").setValue(this.idGrupoSeleccionado)
+    this.formulario.get("lstIdAgrupadorEspacioFisico").setValue(this.agrupador().value)
     if (this.formulario.valid) {
       this.asignatura = this.formulario.value
+      this.asignatura.idAsignatura = this.config.data?.id
       this.asignaturaService.guardarAsignatura(this.asignatura).subscribe({
         next: (r) => {
+          this.messageSerivce.showMessage("success", "Asignatura guardada")
+          this.ref.close()
           console.log(r)
         },
         error: (r) => {
+          this.messageSerivce.showMessage("error", "Error al guardar")
           console.log(r)
         }
       })
@@ -155,7 +167,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
     return this.formulario.get('codigoAsignatura') as FormControl
    }
    OID(): FormControl {
-    return this.formulario.get('OID') as FormControl
+    return this.formulario.get('oid') as FormControl
    }
    semestre(): FormControl {
     return this.formulario.get('semestre') as FormControl
@@ -165,5 +177,8 @@ export class CrearEditarAsignaturaComponent implements OnInit {
    }
    horasSemana(): FormControl {
     return this.formulario.get('horasSemana') as FormControl
+   }
+   agrupador(): FormControl {
+    return this.formulario.get('agrupadoresSeleccionados') as FormControl
    }
 }

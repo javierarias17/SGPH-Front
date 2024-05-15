@@ -1,9 +1,9 @@
-<p-fieldset legend="Agrupador espacio fisico" class="m-2">
+<p-fieldset legend="Agrupador espacio fisico" class="m-2 fade-in">
     <div class="p-fluid flex flex-column" *ngIf="!lectura">
         <div class="field col-12">
             <label>Facultad</label>
             <p-multiSelect 
-                maxSelectedLabels="4" 
+                maxSelectedLabels="1" 
                 selectedItemsLabel="{0} Facultades seleccionadas" 
                 optionLabel="abreviatura" 
                 [defaultLabel]="'Seleccione facultad'"
@@ -14,7 +14,9 @@
                 optionLabel="abreviatura" 
                 optionValue="idFacultad"
                 appendTo = "body"
-                (ngModelChange)="this.onChangeFacultad()">
+                (ngModelChange)="this.onChangeFacultad()"
+                [disabled] = "this.facultadSeleccionada != null"
+                >
                 <ng-template let-facultad pTemplate="item">
                     <div class="flex align-items-center gap-2">
                         <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>

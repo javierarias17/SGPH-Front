@@ -17,6 +17,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MessageModule } from 'primeng/message';
+import { PrimeNgModule } from 'src/app/prime-ng/prime-ng.module';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 
@@ -38,7 +42,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
     DropdownModule,
     ReactiveFormsModule,
     InputTextModule,
-    SharedModule
+    SharedModule,
+    MessageModule,
+    ToastModule,
+    PrimeNgModule
   ],
   providers: [DialogService, AsignaturaServicio, FacultadServicio, ProgramaServicio]
 })

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AsignaturaOutDTO } from '../../model/asignatura-dto';
-import { LazyLoadEvent } from 'primeng/api';
+import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CrearEditarAsignaturaComponent } from '../../componentes/crear-editar-asignatura/crear-editar-asignatura.component';
 import { FiltroBase } from 'src/app/componentes/dto/filtro-base';
@@ -11,6 +11,7 @@ import { FiltroAsignaturasDTO } from '../../model/filtro-asignaturas';
 import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.out.dto';
 import { ProgramaServicio } from 'src/app/componentes/servicios/programa.servicio';
 import { FormControl } from '@angular/forms';
+import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 @Component({
   selector: 'app-bandeja-principal-asignatura',
   templateUrl: './bandeja-principal-asignatura.component.html',
@@ -25,7 +26,9 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   constructor(public dialog: DialogService, 
     private asignaturaServicio: AsignaturaServicio,
     private facultadServicio: FacultadServicio,
-    private programaServicio: ProgramaServicio
+    private programaServicio: ProgramaServicio,
+    private confirmationService: ConfirmationService,
+    private mensageService: ShowMessageService
   ) {}
 
   asignaturas: AsignaturaOutDTO[] = [{
@@ -86,7 +89,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   verAsignatura(id: number) {
     const ref = this.dialog.open(CrearEditarAsignaturaComponent, {
       height: 'auto',
-      width: '600px',
+      width: '800px',
       header: 'Información asignatura',
       data: {
         id: id,
@@ -98,26 +101,51 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   editarAsignatura(id: number) {
     const ref = this.dialog.open(CrearEditarAsignaturaComponent, {
       height: 'auto',
-      width: '600px',
+      width: '800px',
       header: 'Editar asignatura',
       data: {
         id: id,
         lectura: false
       }
     },)
+    ref.onClose.subscribe(r => {
+      this.listarAsignaturasBase()
+    })
   }
   eliminarAsignatura(id: number) {
-
+		this.confirmationService.confirm({
+      message: `¿Está seguro que desea inactivar la asignatura?`,
+      header: 'Confirmar',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {       
+        this.asignaturaServicio.inactivarAsignatura(id).subscribe({
+          next: (r) => {
+            if (r) {
+              this.mensageService.showMessage('success', "Asignatura inactiva");
+            }
+          },
+          error: () => {
+            this.mensageService.showMessage('error', "Error al inactivar");
+          }
+        })
+      },
+      reject: () => {
+        this.mensageService.showMessage('error', "Inactivado cancelado");
+      }
+    }); 
   }
   registrarAsignatura() {
     const ref = this.dialog.open(CrearEditarAsignaturaComponent, {
       height: 'auto',
-      width: '600px',
+      width: '800px',
       header: 'Registrar asignatura',
       data: {
         lectura: false
       }
     },)
+    ref.onClose.subscribe(r => {
+      this.listarAsignaturasBase()
+    })
   }
   onChangeFacultad() {
     if (this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0) {

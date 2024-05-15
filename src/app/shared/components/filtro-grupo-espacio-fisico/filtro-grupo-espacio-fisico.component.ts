@@ -14,6 +14,7 @@ export class FiltroGrupoEspacioFisicoComponent implements OnInit {
   @Output() emitirGrupoSeleccionado = new EventEmitter<AgrupadorEspacioFiscioDTO[]>();
   @Input() lectura: boolean
   @Input() agrupadoresLectura: AgrupacionPorFacultad[]
+  @Input() facultadSeleccionada: number
   lstFacultadOutDTO: FacultadOutDTO[]
   idFacultadesSeleccionadas: number[]
   agrupadoresSeleccionados: AgrupadorEspacioFiscioDTO[]
@@ -27,6 +28,11 @@ export class FiltroGrupoEspacioFisicoComponent implements OnInit {
   obtenerFacultades() {
     this.sharedService.consultarFacultades().subscribe(r => {
       this.lstFacultadOutDTO = r
+      if (this.facultadSeleccionada) {
+        this.idFacultadesSeleccionadas = []
+        this.idFacultadesSeleccionadas.push(this.facultadSeleccionada)
+        this.onChangeFacultad()
+      }
     })
   }
   onChangeFacultad() {

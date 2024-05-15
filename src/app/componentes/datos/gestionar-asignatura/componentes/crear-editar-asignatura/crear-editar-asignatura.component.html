@@ -32,154 +32,164 @@
             <label class=" col-12 md:col-2">Pénsum</label>
             <p class="label col-12 md:col-6">{{this.asignatura.pensum}}</p>
         </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Agrupadores</label>
+            <div *ngFor="let item of this.asignatura?.agrupadores">
+                <p class="label col-12 md:col-6">{{item.nombre}}</p>
+            </div>
+            
+        </div>
     </div>
 
-    <form class="flex flex-column" style="width: 500px;" *ngIf="!this.lectura" [formGroup]="formulario">
-
-        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
-            <label class="col-12 md:col-3">Facultad</label>
-            <div class="col-12 md:col-9">
-                <p-dropdown
-                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }"
-                    [placeholder]="' '" 
-                    [ngClass]="{
-                        'ng-invalid ng-dirty':
-                            this.idFacultad().invalid &&
-                            this.idFacultad().touched
-                    }"
-                    [options]="lstFacultadOutDTO" optionValue="idFacultad" optionLabel="abreviatura"
-                    formControlName="idFacultad" [showClear]="true" appendTo="body"
-                    (ngModelChange)="onFacultadChange()"
-                    >
-
-                    <ng-template let-facultad pTemplate="item">
-                        <div class="flex align-items-center gap-2">
-                            <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
-                        </div>
-                    </ng-template>
-                </p-dropdown>
-            </div>
+    <form class="grid" *ngIf="!this.lectura" [formGroup]="formulario">
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Facultad</label>
+            <p-dropdown [placeholder]="' '" [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                this.idFacultad().invalid &&
+                                this.idFacultad().touched
+                        }" [options]="lstFacultadOutDTO" optionValue="idFacultad" optionLabel="abreviatura"
+                formControlName="idFacultad" [showClear]="true" appendTo="body" (ngModelChange)="onFacultadChange()">
+                <ng-template let-facultad pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <small class="p-error block fade-in" *ngIf="this.idFacultad().invalid &&
+                                (this.idFacultad().touched)">
+                Facultad es obligatorio
+            </small>
         </div>
-        <div class=" col-12 flex justify-content-center flex-wrap" style="width: 100%;">
-            <label class="col-12 md:col-3">Programa</label>
-            <div class="col-12 md:col-9">
-                <p-dropdown
-                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }"
-                    [placeholder]="' '" [options]="listaProgramas"
-                    optionValue="idPrograma" optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true"
-                    appendTo="body" (ngModelChange)="onProgramaChange()"
-                    [ngClass]="{
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Programa</label>
+            <p-dropdown [placeholder]="' '" [options]="listaProgramas" optionValue="idPrograma"
+                optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
+                [ngClass]="{
                         'ng-invalid ng-dirty':
                             this.idPrograma().invalid &&
                             this.idPrograma().touched
-                    }"
-                    >
-                    <ng-template let-programa pTemplate="item">
-                        <div class="flex align-items-center gap-2">
-                            <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
-                        </div>
-                    </ng-template>
-                </p-dropdown>
-            </div>
+                    }">
+                <ng-template let-programa pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <small class="p-error block fade-in" *ngIf="this.idPrograma().invalid &&
+                                (this.idPrograma().touched)">
+                Programa es obligatorio
+            </small>
         </div>
-        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
-            <label class="col-12 md:col-3">Código de asignatura</label>
-            <div class="col-12 md:col-9">
-                <input type="text" pInputText 
-                    [ngClass]="{
+
+
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Código de asignatura</label>
+            <input type="text" pInputText [ngClass]="{
                         'ng-invalid ng-dirty':
                             this.codigoAsignatura().invalid &&
                             this.codigoAsignatura().touched
-                    }"
-                    formControlName="codigoAsignatura"
-                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }"
-                    placeholder=" " >
-            </div>
+                    }" formControlName="codigoAsignatura" placeholder=" ">
+            <small class="p-error block fade-in" *ngIf="this.codigoAsignatura().invalid &&
+                    (this.codigoAsignatura().touched)">
+                Código asignatura es obligatorio
+            </small>
+
         </div>
-        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
-            <label class="col-12 md:col-3">OID asignatura</label>
-            <div class="col-12 md:col-9">
-                <input type="text" pInputText 
-                [ngClass]="{
+
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">OID asignatura</label>
+
+            <input type="text" pInputText [ngClass]="{
                     'ng-invalid ng-dirty':
                         this.OID().invalid &&
                         this.OID().touched
-                }" 
-                formControlName="OID"
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }">
-            </div>
+                }" formControlName="oid">
+            <small class="p-error block fade-in" *ngIf="this.OID().invalid &&
+                    (this.OID().touched)">
+                OID asignatura es obligatorio
+            </small>
         </div>
-        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
-            <label class="col-12 md:col-3">Nombre asignatura</label>
-            <div class="col-12 md:col-9">
-                <input type="text" pInputText
-                [ngClass]="{
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Nombre asignatura</label>
+            <input type="text" pInputText [ngClass]="{
                     'ng-invalid ng-dirty':
                         this.nombre().invalid &&
                         this.nombre().touched
-                }" 
-                formControlName="nombre"
-                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }">
-            </div>
+                }" formControlName="nombre">
+            <small class="p-error block fade-in" *ngIf="this.nombre().invalid &&
+                    (this.nombre().touched)">
+                Nombre asignatura es obligatorio
+            </small>
         </div>
-        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
-            <label class="col-12 md:col-3">Semestre</label>
-            <div class="col-12 md:col-9">
-                <div class="ml-2">
-                    <p-inputNumber
-                        [ngClass]="{
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Semestre</label>
+            <p-inputNumber [ngClass]="{
                             'ng-invalid ng-dirty':
-                                this.nombre().invalid &&
-                                this.nombre().touched
-                        }" 
-                        [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '100%' }"
-                        [step]="1" 
-                        [showButtons]="true" 
-                        [min]="1" 
-                        [max]="10"
-                        formControlName="semestre"
-                        >
-                    </p-inputNumber>
-
-                </div>
-            </div>
+                                this.semestre().invalid &&
+                                this.semestre().touched
+                        }" [step]="1" [showButtons]="true" [min]="1" [max]="10" formControlName="semestre">
+            </p-inputNumber>
+            <small class="p-error block fade-in" *ngIf="this.semestre().invalid &&
+                    (this.semestre().touched)">
+                Semestre es obligatorio
+            </small>
         </div>
-        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
-            <label class="col-12 md:col-3">Horas por semana</label>
-            <div class="col-12 md:col-9">
-                <input type="text" pInputText 
-                [ngClass]="{
+
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Horas por semana</label>
+            <input type="text" pInputText [ngClass]="{
                     'ng-invalid ng-dirty':
                         this.horasSemana().invalid &&
                         this.horasSemana().touched
-                }" 
-                formControlName="horasSemana"
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }">
-            </div>
+                }" formControlName="horasSemana">
+            <small class="p-error block fade-in" *ngIf="this.horasSemana().invalid &&
+                (this.horasSemana().touched)">
+                Horas por semana es obligatorio
+            </small>
         </div>
-        <div class="col-12 flex justify-content-center flex-wrap" style="width: 100%;">
-            <label class="col-12 md:col-3">Pensum</label>
-            <div class="col-12 md:col-9">
-                <input type="text" pInputText 
-                    [ngClass]="{
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Pensum</label>
+            <input type="text" pInputText [ngClass]="{
                         'ng-invalid ng-dirty':
                             this.pensum().invalid &&
                             this.pensum().touched
-                    }" 
-                    formControlName="pensum"
-                    [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }">
-            </div>
+                    }" formControlName="pensum">
+            <small class="p-error block fade-in" *ngIf="this.pensum().invalid &&
+                    (this.pensum().touched)">
+                Pensum es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid sm:col-12 md:col-6">
+                <label class="required">Grupo</label>
+                <p-multiSelect 
+                    maxSelectedLabels="4" 
+                    optionLabel="abreviatura" 
+                    [defaultLabel]="'Seleccione grupo'"
+                    [options]="listaAgrupadores" 
+                    formControlName="agrupadoresSeleccionados"  
+                    [filter]="false"
+                    [showClear]="true"
+                    optionLabel="nombre"
+                    optionValue="idAgrupadorEspacioFisico"
+                    appendTo = "body"
+                    [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.agrupador().invalid &&
+                            this.agrupador().touched}"
+                    >
+                </p-multiSelect>
+                <small class="p-error block fade-in" *ngIf="this.agrupador().invalid &&
+                        (this.agrupador().touched)">
+                    Agrupador es obligatorio
+                </small>
         </div>
     </form>
-    
-    <app-filtro-grupo-espacio-fisico (emitirGrupoSeleccionado) = "this.obtenerGrupoSeleccionado($event)" [lectura] ="this.lectura" [agrupadoresLectura] ="this.agrupadores"></app-filtro-grupo-espacio-fisico>
 
     <div class="flex justify-content-end" style="width: 100%;" *ngIf="!this.lectura">
         <div class="m-1">
-            <button pButton pRipple label="Registrar" icon="pi pi-plus" class="p-button-success mr-2" (click)="guardarAsignatura()"></button>
+            <button pButton pRipple label="Registrar" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="guardarAsignatura()"></button>
         </div>
     </div>
 </div>
-
-
-{{this.formulario.value | json}}
