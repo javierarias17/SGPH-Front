@@ -188,7 +188,7 @@ export class GestionarCursoComponent {
         this.consultarCursosPorFiltro();
     }
 
-    public onSemestreChange(){        
+    public onSemestreChange() {        
         if( this.numeroSemestre === null){
             this.filtroCursoPlanificacionDTO.semestre=null;
         }else if(this.numeroSemestre < 1 || this.numeroSemestre > 10){

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GestionarCursoComponent } from './datos/gestionar-curso/gestionar.curso.component';
-import { GestionarAsignaturaComponent } from './datos/gestionar-asignatura/gestionar-asignatura.component';
 import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar.docente.component';
 import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/gestionar.espacio.fisico.component';
 import { InicioComponent } from './home/inicio/inicio.component';
@@ -23,7 +22,6 @@ const routes: Routes=[
     { path: 'crear-periodo-academico', component: CrearPeriodoAcademicoComponent},
     { path: 'cargar-labor-docencia', component: CargarLaborDocenciaComponent},
     { path: 'gestionar-espacio-fisico', component: GestionarEspacioFisicoComponent},
-    { path: 'gestionar-asignatura', component: GestionarAsignaturaComponent},
     { path: 'gestionar-curso', component: GestionarCursoComponent},
     { path: 'gestionar-docente', component: GestionarDocenteComponent},
     { path: 'gestionar-grupo', component: GestionarGrupoComponent},
@@ -34,7 +32,14 @@ const routes: Routes=[
     { path: 'generar-reporte-simca', component: GenerarReporteSimcaComponent},
     { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
     { path: 'gestionar-reserva-facultad', component: GestionarReservaFacultadComponent},
-    { path: 'gestionar-usuario', component: GestionarUsuarioComponent}
+    { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
+    {
+        path: 'gestionar-asignatura',
+        loadChildren: () =>
+          import(
+            "./datos/gestionar-asignatura/gestionar-asignatura.module"
+          ).then((m) => m.GestionarAsignaturaModule)
+      },
 ]
 
 @NgModule({
