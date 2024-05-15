@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { AsignaturaOutDTO } from '../datos/gestionar-asignatura/model/asignatura-dto';
 import { environment } from 'src/environments/environment';
 import { FiltroBase } from '../dto/filtro-base';
 import { FiltroAsignaturasDTO } from '../datos/gestionar-asignatura/model/filtro-asignaturas';
+import { AsignaturaOutDTO } from '../datos/gestionar-asignatura/model/asignatura-dto';
 
 @Injectable()
 export class AsignaturaServicio{
