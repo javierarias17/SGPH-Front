@@ -1,0 +1,89 @@
+<p-toast></p-toast>
+<div class="grid">
+    <div class="col-12">
+        <h3>Gestionar Grupos</h3>
+        <p>Esta pantalla permite la creación, visualización, edición y eliminación manual de grupos.</p>
+        <hr>
+    </div>
+</div>
+<div class="grid" style="width: 100%;">
+    <div class="p-fluid col sm:col-12 md:col-4">
+        <label>Facultad</label>
+        <p-multiSelect 
+            maxSelectedLabels="4" 
+            selectedItemsLabel="{0} Facultades seleccionadas" 
+            optionLabel="abreviatura" 
+            [defaultLabel]="'Seleccione facultad'"
+            [options]="lstFacultadOutDTO" 
+            [(ngModel)]="facultadesSeleccionadas"  
+            [filter]="false"
+            [showClear]="true"
+            optionLabel="abreviatura" 
+            optionValue="idFacultad"
+            (ngModelChange)="this.onChangeFacultad()"
+            appendTo = "body"
+            >
+            <ng-template let-facultad pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                </div>
+            </ng-template>
+        </p-multiSelect>
+    </div>
+</div>
+
+<div class="flex justify-content-end" style="width: 100%;">
+    <div class="m-1">
+        <button pButton pRipple label="Registrar" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarGrupo()"></button>
+    </div>
+</div>
+<p-table [value]='this.grupos' responsiveLayout="scroll" styleClass="p-datatable-gridlines" [lazy]="true"
+    (onLazyLoad)="listarGrupos($event)" dataKey="id" [paginator]="true" [rows]="10" [totalRecords]="totalRecords"
+    [loading]="cargando">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>
+                Facultad
+            </th>
+            <th>
+                Nombre
+            </th>
+            <th>
+                Observación
+            </th>
+            <th style="width: 10%;">
+                Opciones
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-obj>
+        <tr>
+            <td style="width: 20%;">
+                {{obj.nombreFacultad}}
+            </td>
+            <td style="width: 20%;">
+                {{obj.nombre}}
+            </td>
+            <td style="width: 20%;">
+                {{obj.observacion}}
+            </td>
+            <td>
+                <div class="flex">
+                    <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar Grupo" class="p-button-rounded p-button-secondary" (click)="editarGrupo(obj)"></button>
+                    <span style="margin-right: 10px;"></span>
+                    <button pButton pRipple type="button" icon="pi pi-home" pTooltip="Asignar grupo" class="p-button-rounded p-button-secondary" (click)="asignarEspacioFisico(obj)"></button>
+                </div>
+            </td>
+
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+                Aun no existen Grupos
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-confirmDialog></p-confirmDialog>
+

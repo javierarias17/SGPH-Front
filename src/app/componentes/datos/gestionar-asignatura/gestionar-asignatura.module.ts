@@ -8,7 +8,6 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
-import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FacultadServicio } from '../../servicios/facultad.servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,8 +19,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MessageModule } from 'primeng/message';
 import { PrimeNgModule } from 'src/app/prime-ng/prime-ng.module';
 import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-
 
 
 @NgModule({
@@ -47,6 +44,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ToastModule,
     PrimeNgModule
   ],
-  providers: [DialogService, AsignaturaServicio, FacultadServicio, ProgramaServicio]
+  providers: [DialogService, FacultadServicio, ProgramaServicio]
 })
 export class GestionarAsignaturaModule { }

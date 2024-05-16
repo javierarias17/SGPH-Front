@@ -39,7 +39,14 @@ const routes: Routes=[
           import(
             "./datos/gestionar-asignatura/gestionar-asignatura.module"
           ).then((m) => m.GestionarAsignaturaModule)
-      },
+    },
+    {
+      path: 'gestionar-grupos',
+      loadChildren: () =>
+        import(
+          "./planificacion-horario/gestion-grupos/gestion-grupos.module"
+        ).then((m) => m.GestionGruposModule)
+  },
 ]
 
 @NgModule({

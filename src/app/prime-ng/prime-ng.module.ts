@@ -19,6 +19,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ConfirmationService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @NgModule({
     declarations: [],
@@ -43,8 +44,9 @@ import { ConfirmationService } from 'primeng/api';
         InputTextModule,
         InputTextareaModule,
         FieldsetModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        PickListModule
     ],
-    providers: [ConfirmationService]
+    providers: [ConfirmationService, DialogService]
 })
 export class PrimeNgModule { }
