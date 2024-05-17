@@ -19,6 +19,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MessageModule } from 'primeng/message';
 import { PrimeNgModule } from 'src/app/prime-ng/prime-ng.module';
 import { ToastModule } from 'primeng/toast';
+import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
 
 
 @NgModule({
@@ -44,6 +45,6 @@ import { ToastModule } from 'primeng/toast';
     ToastModule,
     PrimeNgModule
   ],
-  providers: [DialogService, FacultadServicio, ProgramaServicio]
+  providers: [DialogService, FacultadServicio, ProgramaServicio, AsignaturaServicio]
 })
 export class GestionarAsignaturaModule { }
