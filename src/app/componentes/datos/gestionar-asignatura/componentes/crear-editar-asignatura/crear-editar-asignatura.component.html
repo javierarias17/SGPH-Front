@@ -186,10 +186,12 @@
         </div>
     </form>
 
-    <div class="flex justify-content-end" style="width: 100%;" *ngIf="!this.lectura">
+    <div class="flex justify-content-end" style="width: 100%;">
         <div class="m-1">
-            <button pButton pRipple label="Registrar" icon="pi pi-plus" class="p-button-success mr-2"
-                (click)="guardarAsignatura()"></button>
+            <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text"
+            (click)="salir()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-plus" class="p-button-text ml-2"
+                (click)="guardarAsignatura()" *ngIf="!this.lectura"></button>
         </div>
     </div>
 </div>
