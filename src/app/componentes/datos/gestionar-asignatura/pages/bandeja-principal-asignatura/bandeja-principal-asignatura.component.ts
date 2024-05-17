@@ -63,7 +63,6 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
         semestre: this.numeroSemestre
     }
     this.asignaturaServicio.filtrarAsignaturas(this.filtro).subscribe(asignaturas => {
-      console.log(asignaturas)
       this.asignaturas = asignaturas.content
       this.totalRecords = asignaturas.totalElements
       this.cargando = false;
@@ -80,7 +79,6 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
       semestre: this.numeroSemestre
     };
     this.asignaturaServicio.filtrarAsignaturas(this.filtro).subscribe(asignaturas => {
-      console.log(asignaturas)
       this.asignaturas = asignaturas.content
       this.totalRecords = asignaturas.totalElements
       this.cargando = false;
@@ -91,6 +89,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
       height: 'auto',
       width: '800px',
       header: 'Información asignatura',
+      closable: false,
       data: {
         id: id,
         lectura: true
@@ -103,6 +102,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
       height: 'auto',
       width: '800px',
       header: 'Editar asignatura',
+      closable: false,
       data: {
         id: id,
         lectura: false
@@ -139,6 +139,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
       height: 'auto',
       width: '800px',
       header: 'Registrar asignatura',
+      closable: false,
       data: {
         lectura: false
       }
@@ -165,7 +166,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
         );   
    } else {
     this.limpiar()
-    this.listarAsignaturasBase()
+    this.asignaturas = []
    }
  }
  limpiar() {
