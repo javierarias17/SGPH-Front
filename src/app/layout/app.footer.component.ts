@@ -7,4 +7,7 @@ import { LayoutService } from "./service/app.layout.service";
 })
 export class AppFooterComponent {
     constructor(public layoutService: LayoutService) { }
+
+
+    
 }

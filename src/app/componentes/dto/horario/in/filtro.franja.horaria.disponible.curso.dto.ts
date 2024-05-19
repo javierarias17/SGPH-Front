@@ -5,6 +5,8 @@ export class FiltroFranjaHorariaDisponibleCursoDTO{
 
 	public idCurso: number;
 
+	public idAsignatura: number;
+
 	public horaInicio: string;
 
 	public horaFin: string;

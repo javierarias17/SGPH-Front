@@ -120,6 +120,12 @@ export class PlanificacionManualComponent {
             (response: any) => {
             this.listaCursoPlanificacionOutDTO = response.content;
             this.totalRecords= response.totalElements;
+            this.cursoPlanificacionOutDTOSeleccionado = this.listaCursoPlanificacionOutDTO.find(curso => this.cursoPlanificacionOutDTOSeleccionado.idCurso === curso.idCurso);
+
+            if (this.asociarEspacioFisico) {
+                this.asociarEspacioFisico.actualizarDTOEntradaEnModal(this.cursoPlanificacionOutDTOSeleccionado);
+            }  
+
             },
             (error) => {
             console.error(error);
@@ -260,6 +266,7 @@ export class PlanificacionManualComponent {
     
     /*Asociar aulas*/
     public asociarAulas(cursoPlanificacionOutDTOSeleccionado: CursoPlanificacionOutDTO) {
+        this.cursoPlanificacionOutDTOSeleccionado=cursoPlanificacionOutDTOSeleccionado;
         if (this.asociarEspacioFisico) {
             this.asociarEspacioFisico.abrirModal(cursoPlanificacionOutDTOSeleccionado);
         }      
@@ -267,6 +274,7 @@ export class PlanificacionManualComponent {
 
     /*Asociar docentes*/
     public asociarDocentes(cursoPlanificacionOutDTOSeleccionado: CursoPlanificacionOutDTO) {
+        this.cursoPlanificacionOutDTOSeleccionado=cursoPlanificacionOutDTOSeleccionado;
         if (this.asociarDocente) {
             this.asociarDocente.abrirModal(cursoPlanificacionOutDTOSeleccionado);
         }      

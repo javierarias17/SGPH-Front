@@ -120,6 +120,7 @@ export class AsociarEspacioFisicoComponent {
     }
 
     private consultarFranjasHorariasDisponiblesPorCurso():void{
+        this.filtroFranjaHorariaDisponibleCursoDTO.idAsignatura=this.cursoPlanificacionOutDTOSeleccionado.idAsignatura;
         this.planificacionManualServicio.consultarFranjasHorariasDisponiblesPorCurso(this.filtroFranjaHorariaDisponibleCursoDTO).subscribe(
             (lstFranjaHorariaCursoDTO: FranjaHorariaCursoDTO[]) => {   
                 if(lstFranjaHorariaCursoDTO.length === 0){
@@ -140,6 +141,10 @@ export class AsociarEspacioFisicoComponent {
         this.consultarAulasAsignadasYDisponibles();
         this.consultarUbicaciones();
         this.consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso();
+    }
+
+    public actualizarDTOEntradaEnModal(cursoPlanificacionOutDTOSeleccionado:CursoPlanificacionOutDTO) {
+        this.cursoPlanificacionOutDTOSeleccionado = cursoPlanificacionOutDTOSeleccionado;
     }
 
     private consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso(){
@@ -277,6 +282,7 @@ export class AsociarEspacioFisicoComponent {
     public guardar() {        
         let crearActualizarHorarioCursoInDTO :CrearActualizarHorarioCursoInDTO = new CrearActualizarHorarioCursoInDTO();
         crearActualizarHorarioCursoInDTO.idCurso = this.cursoPlanificacionOutDTOSeleccionado.idCurso;
+        crearActualizarHorarioCursoInDTO.idAsignatura = this.cursoPlanificacionOutDTOSeleccionado.idAsignatura;
 
         let listaFranjaHorariaCursoAsociarInDTO:FranjaHorariaCursoAsociarInDTO[] = [];
 
@@ -295,7 +301,7 @@ export class AsociarEspacioFisicoComponent {
         this.planificacionManualServicio.crearActualizarHorarioCursoDTO(crearActualizarHorarioCursoInDTO).subscribe(
         (crearActualizarHorarioCursoOutDTO: CrearActualizarHorarioCursoOutDTO) => {   
             if(crearActualizarHorarioCursoOutDTO.esExitoso === true){
-                this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias asignadas con éxito.' });
+                this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias actualizadas con éxito.' });
                 this.consultarAulasAsignadasYDisponibles();
             }else{
                 this.messageService.add({ severity: 'error', summary: 'Existe solapamiento', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
