@@ -2,6 +2,8 @@ export class CursoPlanificacionOutDTO{
     
 	public idCurso:number;
 
+	public idAsignatura:number;
+
 	public nombrePrograma:string;
 
 	public semestre:number;

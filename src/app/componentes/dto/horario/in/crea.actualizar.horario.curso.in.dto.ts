@@ -2,5 +2,6 @@ import { FranjaHorariaCursoAsociarInDTO } from "./franja.horaria.curso.asociar.i
 
 export class CrearActualizarHorarioCursoInDTO{
 	public idCurso: number;   
+	public idAsignatura: number;  
 	public listaFranjaHorariaCursoAsociarInDTO:FranjaHorariaCursoAsociarInDTO[];
 }

@@ -23,6 +23,10 @@
                         Estudiantes':''}}</b></label>
                 </div>
                 <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Horas Asig.</label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b> {{cursoPlanificacionOutDTOSeleccionado.horasAsignadas}} de {{cursoPlanificacionOutDTOSeleccionado.horasSemana}}</b></label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
                     <label class="w-5rem align-self-center" style="text-align: right;">Docentes</label>
                     <label class="w-25rem" style="margin-left: 10%; width: 90%"><b> {{ (cursoPlanificacionOutDTOSeleccionado.docentes ?
                         cursoPlanificacionOutDTOSeleccionado.docentes.join(', ') : 'Sin asignar') | titlecase }}</b></label>
@@ -90,6 +94,15 @@
                         optionValue="idAgrupadorEspacioFisico"
                         (ngModelChange)="inputsChange()">
                     </p-multiSelect>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Nombre</label>
+                    <input type="text" class="p-inputtext" 
+                           [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.salon" 
+                           [style]="{ 'height': '2.0rem', 'margin-left': '8%', 'line-height': '1.2px'}"
+                           [ngClass]="{'w-24rem':true }"
+                           placeholder="Ingrese nombre"
+                           (ngModelChange)="inputsChange()">
                 </div>
             </div>
             <!--Segunda columna-->
