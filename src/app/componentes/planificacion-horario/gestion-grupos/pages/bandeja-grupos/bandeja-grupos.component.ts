@@ -89,6 +89,7 @@ export class BandejaGruposComponent implements OnInit {
     height: 'auto',
     width: '800px',
     header: 'Información Grupo',
+    closable: false,
     data: {
       id: id,
       lectura: true
@@ -101,6 +102,7 @@ editarGrupo(grupo: AgrupadorEspacioFiscioDTO) {
     height: 'auto',
     width: '800px',
     header: 'Editar Grupo',
+    closable: false,
     data: {
       grupo: grupo
     }
@@ -114,6 +116,7 @@ asignarEspacioFisico(grupo: AgrupadorEspacioFiscioDTO) {
     height: 'auto',
     width: '920px',
     header: 'Asignar espacio fisico',
+    closable: false,
     data: {
       grupo: grupo
     }
@@ -125,6 +128,7 @@ registrarGrupo() {
     height: 'auto',
     width: '800px',
     header: 'Registrar Grupo',
+    closable: false,
     data: {
       lectura: false
     }
