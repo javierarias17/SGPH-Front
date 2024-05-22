@@ -6,40 +6,35 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="lg:col-12 md:col-12 sm:col-12">
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-7rem align-self-center" style="text-align: right;">{{ 'gestionar.usuario.filtro.label.nombres' | translate }}</label>
-            <input type="text" class="p-inputtext" 
-            [(ngModel)]="filtroUsuarioDTO.nombre" 
-            [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-            [ngClass]="{'w-21rem':true }"
-            placeholder="Ingrese nombres"
-            (ngModelChange)="inputsChange()">
-        </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-7rem align-self-center" style="text-align: right;">{{ 'gestionar.usuario.filtro.label.identificacion' | translate }}</label>
-            <input type="text" class="p-inputtext" 
-            [(ngModel)]="filtroUsuarioDTO.numeroIdentificacion" 
-            [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-            [ngClass]="{'w-21rem':true }"
-            placeholder="Ingrese número de identificación"
-            (ngModelChange)="inputsChange()">
-        </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-7rem align-self-center" style="text-align: right;">{{ 'gestionar.usuario.filtro.label.estado' | translate }}</label>
-            <p-dropdown 
-                [style]="{ 'height': '2.0rem', 'margin-left': '8%',  'line-height': '1.2px', 'width': '91%' }"
-                placeholder="Seleccione estado usuario" 
-                [ngClass]="{'w-23rem':true}" 
-                [options]="listaEstados" 
-                [(ngModel)]="filtroUsuarioDTO.estado"
-                optionLabel="label" 
-                optionValue="value"
-                [showClear]="true"
-                (ngModelChange)="onEstadoChange()">
-            </p-dropdown>
-        </div>
+
+
+
+<div class="p-fluid p-formgrid grid">
+    <div class="field col-6 md:col-2">
+        <label>{{ 'gestionar.usuario.filtro.label.nombres' | translate }}</label>
+        <input type="text" class="p-inputtext" 
+        [(ngModel)]="filtroUsuarioDTO.nombre" 
+        placeholder="Ingrese nombres"
+        (ngModelChange)="inputsChange()">
+    </div>
+    <div class="field col-6 md:col-2">
+        <label>{{ 'gestionar.usuario.filtro.label.identificacion' | translate }}</label>
+        <input type="text" class="p-inputtext" 
+        [(ngModel)]="filtroUsuarioDTO.numeroIdentificacion" 
+        placeholder="Ingrese número de identificación"
+        (ngModelChange)="inputsChange()">
+    </div>
+    <div class="field col-6 md:col-2">
+        <label>{{ 'gestionar.usuario.filtro.label.estado' | translate }}</label>
+        <p-dropdown 
+            placeholder="Seleccione estado usuario" 
+            [options]="listaEstados" 
+            [(ngModel)]="filtroUsuarioDTO.estado"
+            optionLabel="label" 
+            optionValue="value"
+            [showClear]="true"
+            (ngModelChange)="onEstadoChange()">
+        </p-dropdown>
     </div>
 </div>
 
@@ -66,7 +61,7 @@
         </div>                        
                 
         <p-table #dt [value]="listaUsuarioOutDTO" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-            selectionMode="multiple" [rowHover]="true" dataKey="id">
+            selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines">
             <ng-template pTemplate="header">
                 <tr>
                     <th>{{ 'gestionar.usuario.tabla.label.identificacion' | translate }}</th>

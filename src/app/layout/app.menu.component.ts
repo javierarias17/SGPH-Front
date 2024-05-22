@@ -2,6 +2,8 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 import { MenuItem } from 'primeng/api';
+import { SharedService } from '../shared/service/shared.service';
+import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
 
 @Component({
     selector: 'app-menu',
@@ -41,9 +43,10 @@ export class AppMenuComponent implements OnInit {
 
     panelMenuItems: MenuItem[] = [];
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService, public periodoAcademicoService:PeriodoAcademicoService) { }
 
     ngOnInit() {
+        this.actualizarPeriodoAcademicoVigente();
         this.model = [
             {
                 label: 'Home',
@@ -73,7 +76,7 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'Planificación manual', icon: 'pi pi-fw pi-calendar', routerLink: ['planificacion-horario/planificacion-manual'] },
                     { label: 'Planificación basada en semestre anterior', icon: 'pi pi-fw pi-calendar-times', routerLink: ['planificacion-horario/planificacion-semestre-anterior'] },
-                    { label: 'Gestionar grupos', icon: 'pi pi-fw pi-calendar-times', routerLink: ['planificacion-horario/gestionar-grupos'] }
+                    { label: 'Gestionar grupos', icon: 'pi pi-fw pi-th-large', routerLink: ['planificacion-horario/gestionar-grupos'] }
                 ]
             },   
             {
@@ -312,5 +315,9 @@ export class AppMenuComponent implements OnInit {
                 ]
             }
         ];
+    }
+
+    public actualizarPeriodoAcademicoVigente(){
+        this.periodoAcademicoService.emitirDataPeriodoVigente();
     }
 }

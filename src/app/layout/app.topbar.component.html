@@ -14,8 +14,10 @@
 
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
         
-        <h2 style="color: white; display: inline-block; padding-right: 5rem;">Periodo académico: 2023-2</h2>
-
+        <div class="flex flex-row justify-content-center align-items-center">
+            <h5 style="color: white; display: inline-block; padding-right: 5rem; margin:auto;" *ngIf="periodoAcademico">Periodo académico: {{periodoAcademico}}</h5>
+            <h5 style="color: red; display: inline-block; padding-right: 5rem; margin:auto;" *ngIf="!periodoAcademico">No existe periodo académico</h5>
+        </div>
 
         <button class="p-link layout-topbar-button">
             <i class="pi pi-calendar"></i>

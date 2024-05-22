@@ -304,7 +304,7 @@ export class AsociarEspacioFisicoComponent {
                 this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias actualizadas con éxito.' });
                 this.consultarAulasAsignadasYDisponibles();
             }else{
-                this.messageService.add({ severity: 'error', summary: 'Existe solapamiento', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
+                this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
             }            
         },
         (httpErrorResponse: HttpErrorResponse) => {
