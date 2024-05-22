@@ -5,4 +5,10 @@ export class EspacioFisicoOutDTO{
 	public numeroEspacioFisico: string;
 	public idEdificio: number;
 	public idTipoEspacioFisico: number;
+
+	OID: string;
+	salon: string;
+	edificio: string;
+	ubicacion: string;
+	municipio: string;
 }

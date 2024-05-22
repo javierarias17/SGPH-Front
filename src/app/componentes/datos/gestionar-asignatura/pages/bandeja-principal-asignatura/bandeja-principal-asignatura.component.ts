@@ -12,6 +12,8 @@ import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.ou
 import { ProgramaServicio } from 'src/app/componentes/servicios/programa.servicio';
 import { FormControl } from '@angular/forms';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
+import { EstadoDocenteEnum } from 'src/app/componentes/enum/estado.docente.enum';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-bandeja-principal-asignatura',
   templateUrl: './bandeja-principal-asignatura.component.html',
@@ -23,12 +25,15 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   public listaProgramas: any[] = [];
   public programasSeleccionados: number[] = [];
   public numeroSemestre:number
+  public listaEstados:{ label: string; value: string }[] = [];
+  public estado: string
   constructor(public dialog: DialogService, 
     private asignaturaServicio: AsignaturaServicio,
     private facultadServicio: FacultadServicio,
     private programaServicio: ProgramaServicio,
     private confirmationService: ConfirmationService,
-    private mensageService: ShowMessageService
+    private mensageService: ShowMessageService,
+    private translateService: TranslateService
   ) {}
 
   asignaturas: AsignaturaOutDTO[] = [{
@@ -40,6 +45,12 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   ngOnInit(): void {
     this.consultarFacultades()
     this.listarAsignaturasBase()
+  }
+  listaEstadosCrear() {
+    Object.keys(EstadoDocenteEnum).forEach(key => {
+      const translatedLabel = this.translateService.instant('estado.' + key);
+      this.listaEstados.push({ label: translatedLabel, value: key });
+  });
   }
 
   consultarFacultades() {
@@ -60,7 +71,8 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
         pageSize: 10,
         idFacultades: this.facultadesSeleccionadas,
         idProgramas: this.programasSeleccionados,
-        semestre: this.numeroSemestre
+        semestre: this.numeroSemestre,
+        estado: this.estado
     }
     this.asignaturaServicio.filtrarAsignaturas(this.filtro).subscribe(asignaturas => {
       this.asignaturas = asignaturas.content
@@ -168,6 +180,9 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
     this.limpiar()
     this.asignaturas = []
    }
+ }
+ onEstadoChange() {
+
  }
  limpiar() {
   this.programasSeleccionados = null

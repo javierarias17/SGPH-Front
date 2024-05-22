@@ -91,7 +91,7 @@
                         <button pButton pRipple label="Subir archivo" icon="pi pi-upload" class="p-button-help" (click)="cargarArchivo()"></button>
                         <span style="margin-right: 10px;"></span>
                         <div class="my-0">
-                            <button pButton pRipple label="Crear espacio físico" icon="pi pi-plus" class="p-button-success mr-2" (click)="abrirModalCrearEditarVerEspacioFisico(null, 'Crear curso')"></button>
+                            <button pButton pRipple label="Crear espacio físico" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarEspacioFisico()"></button>
                         </div>
                     </ng-template>
                 </p-toolbar>  
@@ -121,7 +121,7 @@
                     <td>{{espacioFisicoDTO.estado | titlecase}}</td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info"></button>
+                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info" (click) = "verEspacioFisico(espacioFisicoDTO.idEspacioFisico)"></button>
                             <span style="margin-right: 10px;"></span>
                             <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary"></button>
                             <span style="margin-right: 10px;"></span>

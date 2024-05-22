@@ -41,7 +41,7 @@
     "gestionar.docente.filtro.estado.docente.ACTIVO":"Activo",
     "gestionar.docente.filtro.estado.docente.INACTIVO":"Inactivo",
     "gestionar.docente.inactivar.ACTIVO":"Inactivar",
-    "gestionar.docente.inactivar.INACTIVO":"Activar"
-
-
+    "gestionar.docente.inactivar.INACTIVO":"Activar",
+    "estado.ACTIVO":"Activo",
+    "estado.INACTIVO":"Inactivo"
 }

@@ -6,5 +6,6 @@ export interface FiltroAsignaturasDTO extends FiltroBase {
     totalElements?: number,
     idFacultades?: number [],
     idProgramas?: number [],
-    semestre?: number
+    semestre?: number,
+    estado?: string
 }

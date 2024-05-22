@@ -24,6 +24,8 @@ import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { CrearEditarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/crear-editar-espacio-fisico/crear-editar-espacio-fisico.component';
+import { EspacioFisicoServicio } from './servicios/espacio.fisico.servicio';
 
 
 @NgModule({
@@ -51,6 +53,7 @@ import { SharedModule } from '../shared/shared.module';
 		CrearEditarVerDocenteComponent,
 		HorarioEspacioFisicoComponent,
 		CrearEditarVerUsuarioComponent,
+  CrearEditarEspacioFisicoComponent,
 	],
 	imports: [
 		ReactiveFormsModule,
@@ -58,6 +61,6 @@ import { SharedModule } from '../shared/shared.module';
 		PrimeNgModule,
 		SharedModule
 	],
-	providers: []
+	providers: [EspacioFisicoServicio]
 })
 export class ComponentesModule { }

@@ -8,6 +8,8 @@ import { EstadoEspacioFisicoEnum } from '../../enum/estado.espacio.fisico.enum';
 import { TipoEspacioFisicoOutDTO } from '../../dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
 import { EspacioFisicoDTO } from '../../dto/espacio-fisico/out/espacio.fisico.dto';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from 'primeng/dynamicdialog';
+import { CrearEditarEspacioFisicoComponent } from './crear-editar-espacio-fisico/crear-editar-espacio-fisico.component';
 
 @Component({
   selector: 'app-gestionar-espacio-fisico',
@@ -45,13 +47,13 @@ export class GestionarEspacioFisicoComponent {
 	 
 	public inactivarEspacioFisicoDialog: boolean = false;
 
-	//Referencias componentes hijos
-	//@ViewChild('crearEditarVerEspacioFisico') crearEditarVerEspacioFisico: CrearEditarVerAulaComponent;
 	@ViewChild('horarioEspacioFisico') horarioEspacioFisico: HorarioEspacioFisicoComponent;
   
 	constructor(private messageService: MessageService,
         private espacioFisicoServicio:EspacioFisicoServicio,
-        private translateService: TranslateService) {
+        private translateService: TranslateService,
+        private dialog: DialogService
+    ) {
 	}
 
 	public ngOnInit():void {          
@@ -168,13 +170,41 @@ export class GestionarEspacioFisicoComponent {
 		this.filtroEspacioFisicoDTO.pagina =event.page;     
 		this.consultarEspaciosFisicos();
 	}
-		
-	//Crear, Editar y Ver espacio físico
-	/*public abrirModalCrearEditarVerEspacioFisico(idEspacioFisico: number, tituloModal: string) {
-		if (this.crearEditarVerEspacioFisico) {
-			this.crearEditarVerEspacioFisico.abrirModal(idEspacioFisico, tituloModal);
-		}      
-	}*/
+    registrarEspacioFisico() {
+        this.dialog.open(CrearEditarEspacioFisicoComponent, {
+            height: 'auto',
+            width: '800px',
+            header: 'Registrar espacio fisico',
+            closable: false,
+            data: {
+                lectura: false
+            }
+        })
+    }
+    verEspacioFisico(idEspacioFisico: number) {
+        this.dialog.open(CrearEditarEspacioFisicoComponent, {
+            height: 'auto',
+            width: '800px',
+            header: 'Ver espacio fisico',
+            closable: false,
+            data: {
+                lectura: true,
+                idEspacioFisico: idEspacioFisico
+            }
+        })
+    }
+    editarEspacioFisico(idEspacioFisico: number) {
+        this.dialog.open(CrearEditarEspacioFisicoComponent, {
+            height: 'auto',
+            width: '800px',
+            header: 'Editar espacio fisico',
+            closable: false,
+            data: {
+                lectura: false,
+                idEspacioFisico: idEspacioFisico
+            }
+        })
+    }
 	
 	/*Inactivar aula*/
 	public inactivarEspacioFisico(idEspacioFisico: number):void {
