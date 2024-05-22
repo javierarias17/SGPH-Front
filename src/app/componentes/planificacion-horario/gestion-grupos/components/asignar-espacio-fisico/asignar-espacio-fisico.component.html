@@ -9,7 +9,22 @@
             <p style="font-weight: bold;">{{this.grupoSeleccionado?.nombre}}</p>
         </div>
     </div>
-    <div class="mt-2">
+    <h5 style="font-weight: bold;" >Carácteristicas espacio fisico</h5>
+    <div class="grid mt-2">
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Ubicación</label>
+            <input type="text" pInputText [(ngModel)]="filtro.ubicacion" placeholder=" " (ngModelChange)="filtrarEspacios()">
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Tipo</label>
+            <input type="text" pInputText [(ngModel)]="filtro.tipo" placeholder=" "  (ngModelChange)="filtrarEspacios()">
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Nombre</label>
+            <input type="text" pInputText [(ngModel)]="filtro.nombre" placeholder=" "  (ngModelChange)="filtrarEspacios()">
+        </div>
+    </div>
+    <div class="mt-4">
         <p-pickList 
         [source]="espaciosFisicosDisponibles" 
         [target]="espasciosFisicosAsignados" 
@@ -17,10 +32,12 @@
         targetHeader="Espacios fisicos asignados" 
         [dragdrop]="false" 
         [responsive]="true" 
-        [sourceStyle]="{ height: '30rem' }"
-        [targetStyle]="{ height: '30rem' }"
-        breakpoint="1400px"
-        [styleClass]="'hide-source-buttons'"
+        [sourceStyle]="{'height':'250px'}"
+        [targetStyle]="{'height':'250px'}" 
+        [showSourceControls]="false" 
+        [showTargetControls]="false"
+        (onMoveToTarget)="handleMoveToTarget($event)"
+        (onMoveToSource)="handleMoveToSource($event)"
         >
             <ng-template let-espacio pTemplate="item">
                 <div class="flex flex-wrap p-2 align-items-center gap-3">
@@ -30,5 +47,13 @@
                 </div>
             </ng-template>
     </p-pickList>
+    </div>
+    <div class="flex justify-content-end mt-2" style="width: 100%;">
+        <div class="m-1">
+            <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text"
+            (click)="salir()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-plus" class="p-button-text ml-2"
+                (click)="guardar()"></button>
+        </div>
     </div>
 </div>

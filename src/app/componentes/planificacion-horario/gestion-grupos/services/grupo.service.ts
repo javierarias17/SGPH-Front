@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { an } from '@fullcalendar/core/internal-common';
 import { Observable } from 'rxjs';
 import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { environment } from 'src/environments/environment';
@@ -32,5 +33,13 @@ export class GrupoService {
   public obtenerEspacioFiscioSinAsignarAlGrupo(idGrupo: number): Observable<any> {
     const url = `${environment.url}${this.urlAgrupador}/obtenerEspaciosFisicosSinAsignarAAgrupadorId/${idGrupo}`;
     return this.httpClient.get<any>(url);
+  }
+  public obtenerEspacioFiscioDispinibleFiltro(filtro: any): Observable<any> {
+    const url = `${environment.url}${this.urlAgrupador}/consultarEspacioFisicoConFiltro`;
+    return this.httpClient.post<any>(url, filtro);
+  }
+  public guardarAsignacion(agrupacion: any): Observable<any> {
+    const url = `${environment.url}${this.urlAgrupador}/guardarAsignacion`;
+    return this.httpClient.post<AgrupadorEspacioFiscioDTO>(url, agrupacion);
   }
 }

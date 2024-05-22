@@ -80,6 +80,12 @@ export class CrearEditarGrupoComponent implements OnInit {
       this.formulario.markAllAsTouched()
     }
   }
+  salir() {
+    this.ref.close()
+  }
+  guardar() {
+    
+  }
 
   idFacultad(): FormControl {
     return this.formulario.get('idFacultad') as FormControl
