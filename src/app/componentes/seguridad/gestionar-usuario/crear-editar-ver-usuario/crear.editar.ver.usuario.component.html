@@ -2,35 +2,13 @@
     class="p-fluid">
     <hr>
 
-     <!--Información Usuario-->
-    <div class="grid" *ngIf="esEditar || esCrear"  style="margin-left: 3%;">
-        <!--<form [formGroup]="reactiveForm" #form="ngForm">
-            <div class="row">
-                <div class="col mb-2">
-                  <label for="name" class="form-label">Name:</label>
-                  <input type="text" id="name" name="name" formControlName="name" placeholder="Your name" required minlength="1" maxlength="250" class="form-control form-control-sm" [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
-                  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
-                    <div *ngIf="name.errors?.['required']">
-                      This field is required.
-                    </div>
-                    <div *ngIf="name.errors?.['minlength']">
-                      This field must have at least 1 character.
-                    </div>
-                    <div *ngIf="name.errors?.['maxlength']">
-                      This field must have at most 250 characters.
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </form>-->
-        <div class="col-12">
+    <div class="flex flex-column">
+        <form class="grid" *ngIf="esEditar || esCrear"  style="margin-left: 3%;">
             <!--Información personal-->
             <h5>Información personal</h5>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Tipo identificación</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Tipo identificación</label>
                 <p-dropdown 
-                    [style]="{ 'height': '2.0rem', 'margin-left': '7%',  'line-height': '1.2px', 'width': '91%' }"
-                    [ngClass]="{'w-23rem':true}" 
                     [options]="listaTiposIdentificacion" 
                     [(ngModel)]="usuarioInDTO.idTipoIdentificacion"
                     optionLabel="tipoIdentificacion" 
@@ -38,88 +16,68 @@
                     placeholder="Seleccione tipo de identificación">
                 </p-dropdown>
             </div>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Número identificación</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Número identificación</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.numeroIdentificacion" 
-                [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                [ngClass]="{'w-21rem':true }"
                 placeholder="Ingrese número de identificación">
             </div> 
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Primer nombre</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Primer nombre</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.primerNombre" 
-                [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                [ngClass]="{'w-21rem':true }"
                 placeholder="Ingrese primer nombre">
             </div>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Segundo nombre</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Segundo nombre</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.segundoNombre" 
-                [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                [ngClass]="{'w-21rem':true }"
                 placeholder="Ingrese segundo nombre">
             </div>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Primer apellido</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Primer apellido</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.primerApellido" 
-                [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                [ngClass]="{'w-21rem':true }"
                 placeholder="Ingrese primer apellido">
             </div>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Segundo apellido</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Segundo apellido</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.segundoApellido" 
-                [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                [ngClass]="{'w-21rem':true }"
                 placeholder="Ingrese segundo apellido">
             </div>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Correo electrónico</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Correo electrónico</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.email" 
-                [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                [ngClass]="{'w-21rem':true }"
                 placeholder="Ingrese correo electrónico">
             </div>
-             <!--Información usuario-->
              <h5>Información de usuario</h5>
-             <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Nombre usuario</label>
+             <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Nombre usuario</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.nombreUsuario" 
-                [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                [ngClass]="{'w-21rem':true }"
                 placeholder="Ingrese nombre de usuario">
             </div>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Contraseña</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Contraseña</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.password" 
-                [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                [ngClass]="{'w-21rem':true }"
                 placeholder="Ingrese contraseña">
             </div>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Estado</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Estado</label>
                 <p-dropdown 
-                    [style]="{ 'height': '2.0rem', 'margin-left': '7%',  'line-height': '1.2px', 'width': '91%' }"
-                    [ngClass]="{'w-23rem':true}" 
                     [options]="listaEstados" 
                     [(ngModel)]="usuarioInDTO.estado"
                     optionLabel="label" 
                     optionValue="value"
                     placeholder="Seleccione estado usuario">
                 </p-dropdown>
-            </div>
-            <!--Roles y permisos-->
+            </div><!--
             <h5>Asignación de roles y permisos</h5>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Facultad</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Facultad</label>
                 <p-multiSelect 
                     maxSelectedLabels="4" 
                     selectedItemsLabel="{0} Facultades seleccionadas" 
@@ -128,8 +86,6 @@
                     [defaultLabel]="'Seleccione facultad'"
                     [options]="listaFacultades" 
                     [(ngModel)]="lstIdFacultadSeleccionadas"  
-                    [style]="{ 'height': '2.0rem', 'margin-left': '7%',  'line-height': '1.2px', 'width': '90%' }" 
-                    [ngClass]="{'w-23rem':true }"
                     [filter]="true"
                     [showClear]="true"
                     (ngModelChange)="onFacultadesChange()" >
@@ -140,8 +96,8 @@
                     </ng-template>
                 </p-multiSelect>
             </div>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Programas asignados</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Programas asignados</label>
                 <p-multiSelect 
                     maxSelectedLabels="4" 
                     selectedItemsLabel="{0} Programas seleccionados" 
@@ -150,8 +106,6 @@
                     [defaultLabel]="listaProgramas.length === 0 ? '':'Seleccione programas'"
                     [options]="listaProgramas" 
                     [(ngModel)]="usuarioInDTO.lstIdPrograma"  
-                    [style]="{ 'height': '2.0rem', 'margin-left': '7%',  'line-height': '1.2px', 'width': '90%' }" 
-                    [ngClass]="{'w-23rem':true }"
                     [filter]="false"
                     [showClear]="true"
                     [disabled]="listaProgramas.length === 0" >
@@ -162,8 +116,8 @@
                 </ng-template>
                 </p-multiSelect>
             </div>
-            <div class="mt-1 flex justify-content-start flex-wrap">
-                <label class="w-10rem align-self-center" style="text-align: right;">Roles asignados</label>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Roles asignados</label>
                 <p-multiSelect 
                     maxSelectedLabels="3" 
                     selectedItemsLabel="{0} Roles seleccionados" 
@@ -172,8 +126,6 @@
                     [defaultLabel]="listaRoles.length === 0 ? '':'Seleccione roles'"
                     [options]="listaRoles" 
                     [(ngModel)]="usuarioInDTO.lstIdRol"  
-                    [style]="{ 'height': '2.0rem', 'margin-left': '7%',  'line-height': '1.2px', 'width': '90%' }" 
-                    [ngClass]="{'w-23rem':true }"
                     [filter]="false"
                     [showClear]="true"
                     [disabled]="listaRoles.length === 0">
@@ -183,9 +135,11 @@
                     </div>
                 </ng-template>
                 </p-multiSelect>
-            </div>        
-        </div>
-    </div>
+            </div>-->
+        </form>
+    </div>    
+
+     
     <div class="grid" *ngIf="esEditar || esCrear"  style="margin-left: 3%;">
         <br>
         <br>

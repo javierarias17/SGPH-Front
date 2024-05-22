@@ -72,7 +72,7 @@
             </div>
         </div>        
         <p-table #dt [value]="listaDocenteOutDTO" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-            selectionMode="multiple" [rowHover]="true" dataKey="id">
+            selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Codigo</th>
