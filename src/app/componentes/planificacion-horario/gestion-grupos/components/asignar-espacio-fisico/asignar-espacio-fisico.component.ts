@@ -86,11 +86,11 @@ export class AsignarEspacioFisicoComponent implements OnInit {
     if (this.filtro.ubicacion) {
       this.obtenerTipos()
       this.filtro.tipo = ""
-      this.filtrarEspacios()
     } else {
       this.filtro.ubicacion = ""
       this.filtro.tipo = ""
     }
+    this.filtrarEspacios()
   }
   guardar() {
     const asignacionDTO = {
