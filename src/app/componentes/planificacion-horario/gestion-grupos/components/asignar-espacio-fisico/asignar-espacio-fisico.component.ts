@@ -6,6 +6,7 @@ import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.ou
 import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { GrupoService } from '../../services/grupo.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
+import { EspacioFisicoServicio } from 'src/app/componentes/servicios/espacio.fisico.servicio';
 
 @Component({
   selector: 'app-asignar-espacio-fisico',
@@ -23,7 +24,7 @@ export class AsignarEspacioFisicoComponent implements OnInit {
 
   listaDeGruposNuevos: any = []
   listaDeGruposQuitados: any = []
-
+  lstUbicacion: string[] = [];
 
   filtro: any = {
     ubicacion: "",
@@ -35,9 +36,11 @@ export class AsignarEspacioFisicoComponent implements OnInit {
   constructor(private config: DynamicDialogConfig,
     private grupoService: GrupoService,
     private ref: DynamicDialogRef,
-    private mensajeService: ShowMessageService
+    private mensajeService: ShowMessageService,
+    private espacioFisicoServicio: EspacioFisicoServicio
   ) {}
   ngOnInit(): void {
+    this.obtenerUbicaciones()
     this.grupoSeleccionado = this.config.data?.grupo
     this.grupoService.obtenerEspacioFiscioAgrupador(this.grupoSeleccionado.idAgrupadorEspacioFisico).subscribe({
       next: (r) =>
@@ -45,8 +48,29 @@ export class AsignarEspacioFisicoComponent implements OnInit {
     })
     this.filtrarEspacios()
   }
+
+  obtenerTipos() {
+    let ubicaciones: string[] = []
+    ubicaciones.push(this.filtro.ubicacion)
+    this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(ubicaciones).subscribe(r => {
+      this.listaTipoEspacioFisico = r
+    })
+  }
+
+  obtenerUbicaciones() {
+    this.espacioFisicoServicio.consultarUbicaciones().subscribe(
+      (lstUbicacion: string[]) => {
+          this.lstUbicacion = lstUbicacion;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
   inicializarFormulario() {
   }
+
   filtrarEspacios() {
     this.filtro.idAgrupador = this.grupoSeleccionado.idAgrupadorEspacioFisico
     this.grupoService.obtenerEspacioFiscioDispinibleFiltro(this.filtro).subscribe({
@@ -56,6 +80,17 @@ export class AsignarEspacioFisicoComponent implements OnInit {
         this.espaciosFisicosDisponibles = this.quitarRepetidos(this.espaciosFisicosDisponibles)
       }
     })
+  }
+
+  onChangeUbicacion() {
+    if (this.filtro.ubicacion) {
+      this.obtenerTipos()
+      this.filtro.tipo = ""
+      this.filtrarEspacios()
+    } else {
+      this.filtro.ubicacion = ""
+      this.filtro.tipo = ""
+    }
   }
   guardar() {
     const asignacionDTO = {
