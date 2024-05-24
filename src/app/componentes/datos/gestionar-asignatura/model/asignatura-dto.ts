@@ -14,4 +14,5 @@ export interface AsignaturaOutDTO {
     lstIdAgrupadorEspacioFisico: number[];
     agrupadores: AgrupadorDTO[]
     idFacultad: string
+    estado: string
 }

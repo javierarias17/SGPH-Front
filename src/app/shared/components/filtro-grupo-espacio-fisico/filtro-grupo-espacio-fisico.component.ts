@@ -35,6 +35,7 @@ export class FiltroGrupoEspacioFisicoComponent implements OnInit {
       }
     })
   }
+
   onChangeFacultad() {
     if (this.idFacultadesSeleccionadas != null) {
       this.sharedService.obtenerAgrupadorEspacioFisico(this.idFacultadesSeleccionadas).subscribe(r => {

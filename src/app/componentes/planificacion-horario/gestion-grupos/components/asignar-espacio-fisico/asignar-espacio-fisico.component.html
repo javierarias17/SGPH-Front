@@ -11,7 +11,7 @@
     </div>
     <h5 style="font-weight: bold;" >Carácteristicas espacio fisico</h5>
     <div class="grid mt-2">
-        <div class="p-fluid col sm:col-12 md:col-6">
+        <div class="col-12 flex flex-row">
 
             <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
             <p-dropdown 
@@ -23,7 +23,7 @@
                 (ngModelChange)="onChangeUbicacion()">
             </p-dropdown>
         </div>
-        <div class="p-fluid col sm:col-12 md:col-6">
+        <div class="col-12 flex flex-row">
             <label class="w-5rem align-self-center" style="text-align: right;">Tipo</label>
             <p-dropdown 
                 [placeholder]="' '"
@@ -37,7 +37,7 @@
                 (ngModelChange)="filtrarEspacios()">
             </p-dropdown>        
         </div>
-        <div class="p-fluid col sm:col-12 md:col-6">
+        <div class="col-12 flex flex-row">
             <label class="required">Nombre</label>
             <input type="text" pInputText [(ngModel)]="filtro.nombre" placeholder=" "  (ngModelChange)="filtrarEspacios()">
         </div>

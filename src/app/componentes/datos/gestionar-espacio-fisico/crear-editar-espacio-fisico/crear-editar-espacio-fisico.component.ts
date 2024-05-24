@@ -3,6 +3,7 @@ import { DynamicDialogComponent, DynamicDialogConfig, DynamicDialogRef } from 'p
 import { EspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/espacio.fisico.dto';
 import { EspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/espacio.fisico.out.dto';
 import { EspacioFisicoServicio } from 'src/app/componentes/servicios/espacio.fisico.servicio';
+import { AgrupacionPorFacultad } from '../../gestionar-asignatura/model/agrupacion-por-facultad';
 
 @Component({
   selector: 'app-crear-editar-espacio-fisico',
@@ -11,6 +12,7 @@ import { EspacioFisicoServicio } from 'src/app/componentes/servicios/espacio.fis
 })
 export class CrearEditarEspacioFisicoComponent implements OnInit {
   espacio: EspacioFisicoOutDTO = {} as EspacioFisicoOutDTO
+  agrupadoresLectura: AgrupacionPorFacultad[]
   lectura: boolean
   constructor(
     private ref: DynamicDialogRef,
@@ -27,8 +29,26 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   infoEspacioFisico() {
     this.espacioFisicoService.consultarEspacioFisicoPorIdEspacioFisico(this.config.data.idEspacioFisico).subscribe(r => {
       this.espacio = r
+      if (r) {
+        this.agrupadores()
+      }
     })
   }
+
+  agrupadores() {
+    const agrupacionPorFacultad: AgrupacionPorFacultad[] = this.espacio.lstIdAgrupadorEspacioFisico.reduce((acc: AgrupacionPorFacultad[], agrupador) => {
+      const existingGroup = acc.find(group => group.idFacultad === agrupador.idFacultad);
+      if (existingGroup) {
+          existingGroup.agrupadorDTOs.push(agrupador);
+      } else {
+          acc.push({ idFacultad: agrupador.idFacultad, nombreFacultad: agrupador.nombreFacultad, agrupadorDTOs: [agrupador] });
+      }
+      return acc;
+    }, []);
+    this.agrupadoresLectura = agrupacionPorFacultad
+  }
+
+
   salir() {
     this.ref.close()
   }

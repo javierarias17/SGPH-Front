@@ -36,7 +36,7 @@ $gutter: 1rem; //for primeflex grid system
       margin-bottom: 1rem;
   }
     
-    .required::after{
+    .required::after {
       content: '*';
       color: red;
   }

@@ -80,7 +80,8 @@
                 [options]="listaEstados" 
                 [(ngModel)]="estado"
                 [showClear]="true"
-                (ngModelChange)="onEstadoChange()">
+                [disabled]="facultadesSeleccionadas == null || facultadesSeleccionadas?.length === 0"
+                (ngModelChange)="this.listarAsignaturasBase()">
             </p-dropdown>
         </div>                                    
     </div>
@@ -90,7 +91,7 @@
 
 <div class="flex justify-content-end" style="width: 100%;">
     <div class="m-1">
-        <button pButton pRipple label="Registrar" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarAsignatura()"></button>
+        <button pButton pRipple label="Crear asignatura" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarAsignatura()"></button>
     </div>
 </div>
 
@@ -117,6 +118,9 @@
             <th>
                 Pénsum
             </th>
+            <th>
+                Estado
+            </th>
             <th style="width: 10%;">
                 Opciones
             </th>
@@ -142,13 +146,16 @@
             <td style="width: 20%;">
                 {{asignatura.pensum}}
             </td>
+            <td style="width: 20%;">
+                {{asignatura.estado}}
+            </td>
             <td>
                 <div class="flex">
                     <button pButton pRipple type="button" icon="pi pi-search" pTooltip="Ver asignatura" class="p-button-rounded p-button-info" (click)="verAsignatura(asignatura.idAsignatura)"></button>
                     <span style="margin-right: 10px;"></span>
                     <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar asignatura" class="p-button-rounded p-button-secondary" (click)="editarAsignatura(asignatura.idAsignatura)"></button>
                     <span style="margin-right: 10px;"></span>
-                    <button pButton pRipple type="button" icon="pi pi-ban" pTooltip="Inactivar/Activar asignatura" class="p-button-rounded p-button-danger" (click)="eliminarAsignatura(asignatura.idAsignatura)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-ban" pTooltip="Inactivar/Activar asignatura" class="p-button-rounded p-button-danger" (click)="eliminarAsignatura(asignatura)"></button>
                 </div>
             </td>
 
@@ -156,7 +163,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
         <tr>
-            <td colspan="7">
+            <td colspan="8">
                 Aun no existen asignaturas
             </td>
         </tr>
