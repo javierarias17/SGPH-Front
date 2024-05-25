@@ -10,7 +10,7 @@ import { UbicacionOutDTO } from '../dto/espacio-fisico/out/ubicacion.out.dto';
 
 
 @Injectable()
-export class EspacioFisicoServicio{
+export class EspacioFisicoServicio {
 
     constructor(private http: HttpClient) {
     }

@@ -43,6 +43,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   filtro: FiltroAsignaturasDTO
 
   ngOnInit(): void {
+    this.listaEstadosCrear()
     this.consultarFacultades()
     this.listarAsignaturasBase()
   }
@@ -82,13 +83,13 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   }
 
   listarAsignaturas($event: LazyLoadEvent) {
-    console.log($event)
     this.filtro = {
       pageNumber: Math.floor($event.first / $event.rows),
       pageSize: $event.rows,
       idFacultades: this.facultadesSeleccionadas,
       idProgramas: this.programasSeleccionados,
-      semestre: this.numeroSemestre
+      semestre: this.numeroSemestre,
+      estado: this.estado
     };
     this.asignaturaServicio.filtrarAsignaturas(this.filtro).subscribe(asignaturas => {
       this.asignaturas = asignaturas.content
@@ -124,13 +125,14 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
       this.listarAsignaturasBase()
     })
   }
-  eliminarAsignatura(id: number) {
+  eliminarAsignatura(asignatura: AsignaturaOutDTO) {
+
 		this.confirmationService.confirm({
-      message: `¿Está seguro que desea inactivar la asignatura?`,
+      message: `¿Está seguro que desea ${asignatura.estado == 'ACTIVO'? 'inactiva' : 'activar'} la asignatura?`,
       header: 'Confirmar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {       
-        this.asignaturaServicio.inactivarAsignatura(id).subscribe({
+        this.asignaturaServicio.inactivarAsignatura(asignatura.idAsignatura).subscribe({
           next: (r) => {
             if (r) {
               this.mensageService.showMessage('success', "Asignatura inactiva");

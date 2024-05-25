@@ -76,7 +76,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
           acc.push({ idFacultad: agrupador.idFacultad, nombreFacultad: agrupador.nombreFacultad, agrupadorDTOs: [agrupador] });
       }
       return acc;
-  }, []);
+    }, []);
     this.agrupadores = agrupacionPorFacultad
   }
 

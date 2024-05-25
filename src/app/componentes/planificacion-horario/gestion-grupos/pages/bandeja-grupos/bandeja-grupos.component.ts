@@ -50,6 +50,7 @@ export class BandejaGruposComponent implements OnInit {
     if (this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0) { 
       this.listarGruposBase()
    } else {
+    this.grupos = []
    }
  }
 

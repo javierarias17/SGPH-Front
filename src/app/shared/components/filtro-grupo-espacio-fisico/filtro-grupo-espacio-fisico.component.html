@@ -1,4 +1,4 @@
-<p-fieldset legend="Agrupador espacio fisico" class="m-2 fade-in">
+<p-fieldset legend="Agrupador espacio fisico" class="m-2 fade-in w-100">
     <div class="p-fluid flex flex-column" *ngIf="!lectura">
         <div class="field col-12">
             <label>Facultad</label>
@@ -47,7 +47,7 @@
             <p style="font-weight: bold;">{{facultad.nombreFacultad}}</p>
 
             <div *ngFor="let agrupador of facultad.agrupadorDTOs">
-                <p>{{agrupador.nombreAgrupador}}</p>
+                <p>{{agrupador.nombre}}</p>
             </div>
         </div>
     </div>

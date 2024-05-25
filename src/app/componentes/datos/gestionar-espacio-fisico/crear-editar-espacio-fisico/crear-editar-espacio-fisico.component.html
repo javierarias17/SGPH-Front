@@ -32,6 +32,10 @@
             <label class=" col-12 md:col-2">Capacidad</label>
             <p class="label col-12 md:col-6">{{this.espacio.capacidad}}</p>
         </div>
+        <div class="p-fluid col-12">
+            <app-filtro-grupo-espacio-fisico [agrupadoresLectura] = "this.agrupadoresLectura" [lectura] = "this.lectura"></app-filtro-grupo-espacio-fisico>
+        </div>
+
     </div>
     <div class="flex justify-content-end" style="width: 100%;">
         <div class="m-1">
