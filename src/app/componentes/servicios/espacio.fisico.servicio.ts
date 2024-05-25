@@ -6,6 +6,7 @@ import { TipoEspacioFisicoOutDTO } from '../dto/espacio-fisico/out/tipo.espacio.
 import { EspacioFisicoOutDTO } from '../dto/espacio-fisico/out/espacio.fisico.out.dto';
 import { AgrupadorEspacioFisicoOutDTO } from '../dto/espacio-fisico/out/agrupador.espacio.fisico.out.dto';
 import { UbicacionOutDTO } from '../dto/espacio-fisico/out/ubicacion.out.dto';
+import { EspacioFisicoDTO } from '../dto/espacio-fisico/out/espacio.fisico.dto';
 
 
 
@@ -35,16 +36,16 @@ export class EspacioFisicoServicio {
     }      
 
 	/**
-	 * Método encargado de obtener los espacios físicos dado un conjunto de criterios de
-	 * busqueda.
+	 *  Método encargado de consultar los espacios físicos por diferentes criterios
+	 * de busqueda y retornarlos de manera paginada
 	 * 
 	 * @author Pedro Javier Arias Lasso <parias@unicauca.com.co>
 	 * 
 	 * @param filtroEspacioFisicoDTO
 	 * @return
 	 */
-	public consultarEspaciosFisicos(filtroEspacioFisicoDTO:FiltroEspacioFisicoDTO): Observable<any>{
-        return this.http.post<any>("http://localhost:8081/AdministrarEspacioFisico/consultarEspaciosFisicos",filtroEspacioFisicoDTO);
+	public consultarEspaciosFisicos(filtroEspacioFisicoDTO:FiltroEspacioFisicoDTO): Observable<EspacioFisicoDTO>{
+        return this.http.post<EspacioFisicoDTO>("http://localhost:8081/AdministrarEspacioFisico/consultarEspaciosFisicos",filtroEspacioFisicoDTO);
     }  
 
 	/**

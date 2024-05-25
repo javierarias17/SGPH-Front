@@ -5,7 +5,9 @@ export class EspacioFisicoDTO{
 	public capacidad: number;
 	public estado: EstadoEspacioFisicoEnum;
 	public salon: string;
-	public edificio:string;
-	public ubicacion:string;
+	public idEdificio: number;
+	public nombreEdificio:string;
+	public idUbicacion:number;
+	public nombreUbicacion:string;
 	public tipoEspacioFisico: string;
 }
