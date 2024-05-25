@@ -10,38 +10,45 @@
         </div>
     </div>
     <h5 style="font-weight: bold;" >Carácteristicas espacio fisico</h5>
-    <div class="grid mt-2">
-        <div class="p-fluid col sm:col-12 md:col-6">
 
-            <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
-            <p-dropdown 
-                [placeholder]="' '"
-                [options]="lstUbicacion" 
-                [(ngModel)]="filtro.ubicacion" 
-                appendTo="body"
-                [showClear]="true"
-                (ngModelChange)="onChangeUbicacion()">
-            </p-dropdown>
-        </div>
-        <div class="p-fluid col sm:col-12 md:col-6">
-            <label class="w-5rem align-self-center" style="text-align: right;">Tipo</label>
-            <p-dropdown 
-                [placeholder]="' '"
-                [options]="listaTipoEspacioFisico"
-                [(ngModel)]="filtro.tipo"
-                optionValue = "tipo"
-                optionLabel = "tipo"
-                appendTo="body"
-                [showClear]="true"
-                [disabled] = "!this.filtro.ubicacion"
-                (ngModelChange)="filtrarEspacios()">
-            </p-dropdown>        
-        </div>
-        <div class="p-fluid col sm:col-12 md:col-6">
-            <label class="required">Nombre</label>
-            <input type="text" pInputText [(ngModel)]="filtro.nombre" placeholder=" "  (ngModelChange)="filtrarEspacios()">
+    <div class="grid mt-2">
+        <!--Primera columna-->
+        <div class="col-6">
+            <div class="mt-1 flex justify-content-start flex-wrap">
+                <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
+                <p-dropdown 
+                    [placeholder]="' '"
+                    [options]="lstUbicacion" 
+                    [(ngModel)]="filtro.ubicacion" 
+                    appendTo="body"
+                    [showClear]="true"
+                    (ngModelChange)="onChangeUbicacion()">
+                </p-dropdown>
+            </div>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="w-5rem align-self-center" style="text-align: right;">Tipo</label>
+                <p-dropdown 
+                    [placeholder]="' '"
+                    [options]="listaTipoEspacioFisico"
+                    [(ngModel)]="filtro.tipo"
+                    optionValue = "tipo"
+                    optionLabel = "tipo"
+                    appendTo="body"
+                    [showClear]="true"
+                    [disabled] = "!this.filtro.ubicacion"
+                    (ngModelChange)="filtrarEspacios()">
+                </p-dropdown>        
+            </div>
+            <div class="p-fluid col sm:col-12 md:col-6">
+                <label class="required">Nombre</label>
+                <input type="text" pInputText [(ngModel)]="filtro.nombre" placeholder=" "  (ngModelChange)="filtrarEspacios()">
+            </div>
+        </div> <!--Cierre primera columna-->
+        <div class="col-6">
+            
         </div>
     </div>
+
     <div class="mt-4">
         <p-pickList 
         [source]="espaciosFisicosDisponibles" 

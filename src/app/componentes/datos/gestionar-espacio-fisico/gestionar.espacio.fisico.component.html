@@ -5,75 +5,71 @@
         <hr>
     </div>
 </div>
-<div class="row">
-    <div class="lg:col-12 md:col-12 sm:col-12">
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
-			<p-multiSelect 
-                maxSelectedLabels="4" 
-                selectedItemsLabel="{0} Ubicaciones seleccionadas" 
-                [defaultLabel]="'Seleccione ubicación'"
-                [options]="lstUbicacion" 
-                [(ngModel)]="filtroEspacioFisicoDTO.listaUbicacion"  
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
-                [ngClass]="{'w-30rem':true }"
-                [filter]="false"
-                [showClear]="true"
-                (ngModelChange)="onUbicacionesChange()" >
-			</p-multiSelect>
-        </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Edificio</label>
-			<p-multiSelect 
-                maxSelectedLabels="4" 
-                selectedItemsLabel="{0} Edificios seleccionados" 
-                [defaultLabel]="listaEdificios.length === 0 ? '':'Seleccione edificios'"
-                [options]="listaEdificios" 
-                [(ngModel)]="filtroEspacioFisicoDTO.listaEdificio"  
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
-                [ngClass]="{'w-30rem':true }"
-                [filter]="false"
-                [showClear]="true"
-                [disabled]="listaEdificios.length === 0"
-                (ngModelChange)="onEdificiosChange()" >
-			</p-multiSelect>
-        </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Tipo</label>
-			<p-multiSelect 
-                maxSelectedLabels="2" 
-                selectedItemsLabel="{0} Tipos espacios físicos seleccionados" 
-                optionLabel="tipo" 
-                [defaultLabel]="listaTipoEspacioFisico.length === 0 ? '':'Seleccione tipo espacio físico'"
-                [options]="listaTipoEspacioFisico" 
-                [(ngModel)]="tipoEspacioFisicoSeleccionados"  
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }" 
-                [ngClass]="{'w-30rem':true }"
-                [filter]="false"
-                [showClear]="true"
-                [disabled]="listaTipoEspacioFisico.length === 0"
-                (ngModelChange)="onTipoEspacioFisicoChange()" >
-                <ng-template let-tipoEspaciofisico pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                        <div><strong>{{ tipoEspaciofisico.tipo }}</strong></div>
-                    </div>
-                </ng-template>
-			</p-multiSelect>
-        </div>
-        <div class="mt-1 flex justify-content-start flex-wrap">
-            <label class="w-5rem align-self-center" style="text-align: right;">Estado</label>
-            <p-dropdown 
-                [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '70%' }"
-                [placeholder]="filtroEspacioFisicoDTO?.listaUbicacion.length === 0 ? ' ':'Seleccione estado espacio físico'" 
-                [ngClass]="{'w-30rem':true}" 
-                [options]="listaEstados" 
-                [(ngModel)]="filtroEspacioFisicoDTO.estado"
-                [showClear]="true"
-                [disabled]="filtroEspacioFisicoDTO?.listaUbicacion.length === 0"
-                (ngModelChange)="onEstadoChange()">
-            </p-dropdown>
-        </div>
-  </div>
+
+<div class="p-fluid p-formgrid grid">
+    <div class="field col-6 md:col-3">
+        <label>Ubicación</label>
+        <p-multiSelect 
+            maxSelectedLabels="4" 
+            selectedItemsLabel="{0} Ubicaciones" 
+            optionLabel="nombre" 
+            [defaultLabel]="'Seleccione ubicación'"
+            [options]="lstUbicacionOutDTO" 
+            [(ngModel)]="filtroEspacioFisicoDTO.listaIdUbicacion"  
+            [filter]="false"
+            [showClear]="true"
+            optionLabel="nombre" 
+            optionValue="idUbicacion"
+            (ngModelChange)="onUbicacionesChange()" >
+            <ng-template let-ubicacion pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ ubicacion.nombre }}</div>
+                </div>
+            </ng-template>
+        </p-multiSelect>
+    </div>
+    <div class="field col-6 md:col-3">
+        <label>Tipo</label>
+        <p-multiSelect 
+            maxSelectedLabels="4" 
+            selectedItemsLabel="{0} Tipos" 
+            optionLabel="tipo" 
+            [placeholder]="filtroEspacioFisicoDTO?.listaIdUbicacion?.length === 0 ? ' ':'Seleccione tipo espacio físico'" 
+            [options]="lstTipoEspacioFisicoOutDTO" 
+            [(ngModel)]="filtroEspacioFisicoDTO.listaIdTipoEspacioFisico"  
+            [disabled]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0"
+            [filter]="false"
+            [showClear]="true"
+            optionLabel="tipo" 
+            optionValue="idTipoEspacioFisico"
+            (ngModelChange)="onTipoEspacioFisicoChange()" >
+            <ng-template let-tipoEspacioFisicoOutDTO pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ tipoEspacioFisicoOutDTO.tipo }}</div>
+                </div>
+            </ng-template>
+        </p-multiSelect>
+    </div>
+    <div class="field col-6 md:col-3">
+        <label>Estado</label>
+        <p-dropdown 
+            [placeholder]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0 ? ' ':'Seleccione estado espacio físico'" 
+            [options]="listaEstados" 
+            [(ngModel)]="filtroEspacioFisicoDTO.estado"
+            [showClear]="true"
+            [disabled]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0"
+            (ngModelChange)="onEstadoChange()">
+        </p-dropdown>
+    </div>
+    <div class="field col-6 md:col-3">
+        <label>Nombre</label>
+        <input [disabled]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0"
+               type="text" class="p-inputtext" 
+               [(ngModel)]="filtroEspacioFisicoDTO.salon" 
+               [placeholder]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0 ? ' ':'Ingrese nombre'"
+               [style.opacity]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0 ? '0.6' : ''"
+               (ngModelChange)="inputsChange()">
+    </div>
 </div>
 
 <div class="grid">
@@ -103,8 +99,8 @@
                 <tr>
                     <th>Ubicación</th>
                     <th>Edificio</th>
-                    <th>Tipo espacio físico</th>
-                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Salón</th>
                     <th>Capacidad</th>
                     <th>Estado</th>
                     <th>Opciones</th>
@@ -113,8 +109,8 @@
             </ng-template>
             <ng-template pTemplate="body" let-espacioFisicoDTO>
                 <tr>
-                    <td>{{espacioFisicoDTO.ubicacion}}</td>
-                    <td>{{espacioFisicoDTO.edificio}}</td>
+                    <td>{{espacioFisicoDTO.nombreUbicacion}}</td>
+                    <td>{{espacioFisicoDTO?.nombreEdificio}}</td>
                     <td>{{espacioFisicoDTO.tipoEspacioFisico}}</td>
                     <td>{{espacioFisicoDTO.salon}}</td>
                     <td>{{espacioFisicoDTO.capacidad}}</td>
@@ -136,7 +132,7 @@
                 </tr>
             </ng-template>
         </p-table>
-        <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.filtroEspacioFisicoDTO.listaUbicacion!==null && this.filtroEspacioFisicoDTO.listaUbicacion.length !== 0"></p-paginator>   
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.filtroEspacioFisicoDTO.listaIdUbicacion!==null && this.filtroEspacioFisicoDTO.listaIdUbicacion.length !== 0"></p-paginator>   
     </div>   
 </div>
 

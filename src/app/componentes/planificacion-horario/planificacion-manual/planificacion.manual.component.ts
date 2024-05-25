@@ -120,7 +120,9 @@ export class PlanificacionManualComponent {
             (response: any) => {
             this.listaCursoPlanificacionOutDTO = response.content;
             this.totalRecords= response.totalElements;
-            this.cursoPlanificacionOutDTOSeleccionado = this.listaCursoPlanificacionOutDTO.find(curso => this.cursoPlanificacionOutDTOSeleccionado.idCurso === curso.idCurso);
+            if(this.cursoPlanificacionOutDTOSeleccionado){
+                this.cursoPlanificacionOutDTOSeleccionado = this.listaCursoPlanificacionOutDTO.find(curso => this.cursoPlanificacionOutDTOSeleccionado.idCurso === curso.idCurso);
+            }
 
             if (this.asociarEspacioFisico) {
                 this.asociarEspacioFisico.actualizarDTOEntradaEnModal(this.cursoPlanificacionOutDTOSeleccionado);

@@ -52,20 +52,20 @@ export class AsignarEspacioFisicoComponent implements OnInit {
   obtenerTipos() {
     let ubicaciones: string[] = []
     ubicaciones.push(this.filtro.ubicacion)
-    this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(ubicaciones).subscribe(r => {
+    /*this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(ubicaciones).subscribe(r => {
       this.listaTipoEspacioFisico = r
-    })
+    })*/
   }
 
   obtenerUbicaciones() {
-    this.espacioFisicoServicio.consultarUbicaciones().subscribe(
+    /*this.espacioFisicoServicio.consultarUbicaciones().subscribe(
       (lstUbicacion: string[]) => {
           this.lstUbicacion = lstUbicacion;
       },
       (error) => {
         console.error(error);
       }
-    );
+    );*/
   }
 
   inicializarFormulario() {

@@ -10,6 +10,7 @@ import { EspacioFisicoDTO } from '../../dto/espacio-fisico/out/espacio.fisico.dt
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CrearEditarEspacioFisicoComponent } from './crear-editar-espacio-fisico/crear-editar-espacio-fisico.component';
+import { UbicacionOutDTO } from '../../dto/espacio-fisico/out/ubicacion.out.dto';
 
 @Component({
   selector: 'app-gestionar-espacio-fisico',
@@ -31,13 +32,9 @@ export class GestionarEspacioFisicoComponent {
 
     public listaEspacioFisicoDTO: EspacioFisicoDTO[] = [];
 
-    public lstUbicacion: string[] = [];
+    public lstUbicacionOutDTO: UbicacionOutDTO[] = [];
 
-    public listaEdificios: string[] = [];
-
-    public listaTipoEspacioFisico: TipoEspacioFisicoOutDTO[] = [];
-
-    public tipoEspacioFisicoSeleccionados: TipoEspacioFisicoOutDTO[] = [];
+    public lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[] = [];
 
     public listaEstados:{ label: string; value: string }[] = [];  
 
@@ -60,8 +57,8 @@ export class GestionarEspacioFisicoComponent {
         this.filtroEspacioFisicoDTO.registrosPorPagina = this.registrosPorPagina;         
 
         this.espacioFisicoServicio.consultarUbicaciones().subscribe(
-            (lstUbicacion: string[]) => {
-                this.lstUbicacion = lstUbicacion;
+            (lstUbicacionOutDTO: UbicacionOutDTO[]) => {
+                this.lstUbicacionOutDTO = lstUbicacionOutDTO;
             },
             (error) => {
               console.error(error);
@@ -88,18 +85,17 @@ export class GestionarEspacioFisicoComponent {
 
     public onUbicacionesChange():void{
         this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
-        if(this.filtroEspacioFisicoDTO.listaUbicacion!==null && this.filtroEspacioFisicoDTO.listaUbicacion.length !== 0){
-            this.espacioFisicoServicio.consultarEdificiosPorUbicacion(this.filtroEspacioFisicoDTO.listaUbicacion).subscribe(
-                (lstEdificio: string[]) => {
-                    this.filtroEspacioFisicoDTO.listaEdificio =[];
-                    if(lstEdificio.length === 0){
-                        this.listaEdificios=[];
+        if(this.filtroEspacioFisicoDTO.listaIdUbicacion!==null && this.filtroEspacioFisicoDTO.listaIdUbicacion.length !== 0){
+            this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroEspacioFisicoDTO.listaIdUbicacion).subscribe(
+                (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
+                    this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
+                    this.filtroEspacioFisicoDTO.estado=null;
+                    this.filtroEspacioFisicoDTO.salon="";
+                    if(lstTipoEspacioFisicoOutDTO.length === 0){
+                        this.lstTipoEspacioFisicoOutDTO=[];
                     }else{
-                        this.listaEdificios = lstEdificio;
+                        this.lstTipoEspacioFisicoOutDTO = lstTipoEspacioFisicoOutDTO;
                     }
-                    this.listaTipoEspacioFisico=[];
-                    this.tipoEspacioFisicoSeleccionados=[];
-                    this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico=[];
                     this.consultarEspaciosFisicos();
                 },
                 (error) => {
@@ -107,64 +103,27 @@ export class GestionarEspacioFisicoComponent {
                 }
                 ); 
         }else{
-            this.listaEspacioFisicoDTO=[];
-            //Se limpian variables de las listas desplegables
-            this.listaEdificios=[];
-            this.listaTipoEspacioFisico=[];
-            //Se limpian valores del filtro
-            this.filtroEspacioFisicoDTO.listaUbicacion=[];
-            this.filtroEspacioFisicoDTO.listaEdificio=[];
-            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico=[];
+            this.filtroEspacioFisicoDTO.listaIdUbicacion=[];
+            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
             this.filtroEspacioFisicoDTO.estado=null;
-            //Se limpian variables de los inputs
-            this.tipoEspacioFisicoSeleccionados=[];  
+            this.filtroEspacioFisicoDTO.salon="";
+            this.listaEspacioFisicoDTO=[];
+            this.totalRecords=0;
         }
     }  
     
-    public onEdificiosChange():void{
-        this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
-        if(this.filtroEspacioFisicoDTO.listaEdificio!==null && this.filtroEspacioFisicoDTO.listaEdificio.length !== 0){
-            this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorEdificio(this.filtroEspacioFisicoDTO.listaEdificio).subscribe(
-                (lstTipoAulaOutDTO: TipoEspacioFisicoOutDTO[]) => {
-                    if(lstTipoAulaOutDTO.length === 0){
-                        this.listaTipoEspacioFisico=[];
-                        this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
-                    }else{
-                        this.listaTipoEspacioFisico = lstTipoAulaOutDTO;
-                        this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico = lstTipoAulaOutDTO.map(tipoAula => tipoAula.idTipoEspacioFisico);
-                    }
-                    this.tipoEspacioFisicoSeleccionados=[];
-                    this.consultarEspaciosFisicos();
-                },
-                (error) => {
-                  console.error(error);
-                }
-            ); 
-        }else{
-            //Se limpian variables de las listas desplegables
-            this.listaTipoEspacioFisico=[];
-             //Se limpian valores del filtro
-            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico=[];
-             //Se limpian variables de los inputs
-            this.tipoEspacioFisicoSeleccionados=[];
-            this.consultarEspaciosFisicos();
-        }
-    }   
-
     public onTipoEspacioFisicoChange():void{
-        if( this.tipoEspacioFisicoSeleccionados){
-            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico = this.tipoEspacioFisicoSeleccionados.map(tipoEspacioFisico => tipoEspacioFisico.idTipoEspacioFisico);
-        }else{
-            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
-        }
-        this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
-        this.consultarEspaciosFisicos();
+        this.inputsChange();
     }
 
     public onEstadoChange():void{     
+        this.inputsChange();
+    }
+    
+    public inputsChange(){
         this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
         this.consultarEspaciosFisicos();
-    } 
+    }
 
     public onPageChange(event: any):void {
 		this.filtroEspacioFisicoDTO.pagina =event.page;     

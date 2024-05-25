@@ -159,18 +159,18 @@ export class AsociarEspacioFisicoComponent {
     }
 
     private consultarUbicaciones():void{
-        this.espacioFisicoServicio.consultarUbicaciones().subscribe(
+        /*this.espacioFisicoServicio.consultarUbicaciones().subscribe(
             (lstNombresUbicaciones: string[]) => {
                 this.lstNombresUbicaciones = lstNombresUbicaciones;
             },
             (error) => {
               console.error(error);
             }
-        );  
+        );*/  
     } 
 
     private consultarTiposEspaciosFisicosPorUbicaciones(){
-        if(this.filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones){
+        /*if(this.filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones){
             this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroFranjaHorariaDisponibleCursoDTO.listaUbicaciones).subscribe(
                 (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
                     if(lstTipoEspacioFisicoOutDTO.length === 0){
@@ -184,7 +184,7 @@ export class AsociarEspacioFisicoComponent {
                   console.error(error);
                 }
             );  
-        }
+        }*/
     }
     
     public obtenerFormatoFranjaPresentacion(franjaHorariaCursoDTO: FranjaHorariaCursoDTO):string{

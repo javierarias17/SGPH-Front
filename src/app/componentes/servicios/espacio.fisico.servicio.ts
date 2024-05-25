@@ -5,6 +5,7 @@ import { FiltroEspacioFisicoDTO } from '../dto/espacio-fisico/in/filtro.espacio.
 import { TipoEspacioFisicoOutDTO } from '../dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
 import { EspacioFisicoOutDTO } from '../dto/espacio-fisico/out/espacio.fisico.out.dto';
 import { AgrupadorEspacioFisicoOutDTO } from '../dto/espacio-fisico/out/agrupador.espacio.fisico.out.dto';
+import { UbicacionOutDTO } from '../dto/espacio-fisico/out/ubicacion.out.dto';
 
 
 
@@ -25,11 +26,11 @@ export class EspacioFisicoServicio{
 	 * 
 	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
 	 * 
-	 * @param lstUbicaciones
+	 * @param lstIdUbicacion
 	 * @return
 	 */
-    public consultarTiposEspaciosFisicosPorUbicaciones(lstUbicaciones:string[]): Observable<TipoEspacioFisicoOutDTO[]>{
-        const url = `http://localhost:8081/AdministrarEspacioFisico/consultarTiposEspaciosFisicosPorUbicaciones?lstUbicaciones=${lstUbicaciones.join(',')}`;
+    public consultarTiposEspaciosFisicosPorUbicaciones(lstIdUbicacion:number[]): Observable<TipoEspacioFisicoOutDTO[]>{
+        const url = `http://localhost:8081/AdministrarEspacioFisico/consultarTiposEspaciosFisicosPorUbicaciones?lstIdUbicacion=${lstIdUbicacion.join(',')}`;
         return this.http.get<any>(url);
     }      
 
@@ -74,16 +75,15 @@ export class EspacioFisicoServicio{
     }  
 
 	/**
-	 * Método encargado de consultar todas las ubicaciones de los espacios físicos
-	 * <br>
+	 * Método encargado de consultar todas las ubicaciones<br>
 	 * 
 	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
 	 * 
-	 * @return Nombres de las ubicaciones
+	 * @return Lista de instancias UbicacionOutDTO
 	 */
-	public consultarUbicaciones(): Observable<string[]>{
+	public consultarUbicaciones(): Observable<UbicacionOutDTO[]>{
 		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarUbicaciones`;
-        return this.http.get<string[]>(url);
+        return this.http.get<UbicacionOutDTO[]>(url);
     }  
 
 	/**
