@@ -11,7 +11,7 @@
         <label>Ubicación</label>
         <p-multiSelect 
             maxSelectedLabels="4" 
-            selectedItemsLabel="{0} Ubicaciones" 
+            selectedItemsLabel="{0} Ubicaciones seleccionadas" 
             optionLabel="nombre" 
             [defaultLabel]="'Seleccione ubicación'"
             [options]="lstUbicacionOutDTO" 
@@ -21,18 +21,13 @@
             optionLabel="nombre" 
             optionValue="idUbicacion"
             (ngModelChange)="onUbicacionesChange()" >
-            <ng-template let-ubicacion pTemplate="item">
-                <div class="flex align-items-center gap-2">
-                    <div>{{ ubicacion.nombre }}</div>
-                </div>
-            </ng-template>
         </p-multiSelect>
     </div>
     <div class="field col-6 md:col-3">
         <label>Tipo</label>
         <p-multiSelect 
             maxSelectedLabels="4" 
-            selectedItemsLabel="{0} Tipos" 
+            selectedItemsLabel="{0} Tipos seleccionados" 
             optionLabel="tipo" 
             [placeholder]="filtroEspacioFisicoDTO?.listaIdUbicacion?.length === 0 ? ' ':'Seleccione tipo espacio físico'" 
             [options]="lstTipoEspacioFisicoOutDTO" 
@@ -42,12 +37,8 @@
             [showClear]="true"
             optionLabel="tipo" 
             optionValue="idTipoEspacioFisico"
+            emptyMessage="No hay tipos para las ubicaciones seleccionadas"
             (ngModelChange)="onTipoEspacioFisicoChange()" >
-            <ng-template let-tipoEspacioFisicoOutDTO pTemplate="item">
-                <div class="flex align-items-center gap-2">
-                    <div>{{ tipoEspacioFisicoOutDTO.tipo }}</div>
-                </div>
-            </ng-template>
         </p-multiSelect>
     </div>
     <div class="field col-6 md:col-3">
@@ -100,7 +91,7 @@
                     <th>Ubicación</th>
                     <th>Edificio</th>
                     <th>Tipo</th>
-                    <th>Salón</th>
+                    <th>Nombre</th>
                     <th>Capacidad</th>
                     <th>Estado</th>
                     <th>Opciones</th>

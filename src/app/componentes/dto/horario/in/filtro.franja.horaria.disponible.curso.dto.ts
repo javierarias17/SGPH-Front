@@ -13,7 +13,7 @@ export class FiltroFranjaHorariaDisponibleCursoDTO{
 
 	public duracion: number;
 
-	public listaUbicaciones: string[];
+	public listaIdUbicacion: number[];
 
 	public listaDiaSemanaEnum: DiaSemanaEnum[];
 
@@ -25,7 +25,7 @@ export class FiltroFranjaHorariaDisponibleCursoDTO{
 
 	
 	constructor(){	
-		this.listaUbicaciones=[]; 
+		this.listaIdUbicacion=[]; 
 		this.listaIdTipoEspacioFisico=[];
 		this.listaIdAgrupadorEspacioFisico=[];
 	}
