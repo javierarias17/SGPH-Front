@@ -127,17 +127,6 @@ export class GestionarUsuarioComponent {
     }
 
     /**
-     * Método invocado por el input de estado para consultar los usuarios
-     * por dicho estado seleccionado
-     *
-     * @author parias 
-     */
-    public onEstadoChange(): void {
-        this.filtroUsuarioDTO.pagina = this.PAGINA_CERO;
-        this.consultarUsuariosPorFiltro();
-    }
-
-    /**
      * Método invocado por los inputs de nombres y número de identificación 
      * para consultar consultar los usuarios por dichos criterios de busqueda
      *

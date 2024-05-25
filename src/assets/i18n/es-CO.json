@@ -3,36 +3,19 @@
     "general.boton.guardar":"Guardar",
     "general.boton.subir.archivo":"Subir archivo",
 
-
     "gestionar.espaciofisico.filtro.estado.espaciofisico.ACTIVO":"Activo",
     "gestionar.espaciofisico.filtro.estado.espaciofisico.INACTIVO":"Inactivo",
 
-
-    "gestionar.usuario.titulo":"Gestionar usuarios",
-    "gestionar.usuario.subtitulo":"Esta pantalla permite la gestión completa de usuarios de la aplicación, incluyendo la creación, visualización, edición y desactivación, así como la asignación de permisos correspondientes a cada usuario.",
     "gestionar.usuario.filtro.estado.usuario.ACTIVO":"Activo",
     "gestionar.usuario.filtro.estado.usuario.INACTIVO":"Inactivo",
     "gestionar.usuario.filtro.rol.usuario.ROLE_ADMINISTRADOR":"Administrador",
-    "gestionar.usuario.filtro.rol.usuario.ROLE_COORDINADOR":"Coordinador",
-    "gestionar.usuario.filtro.rol.usuario.ROLE_SECRETARIO":"Secretario",
-    "gestionar.usuario.filtro.label.nombres":"Nombres",
-    "gestionar.usuario.filtro.label.identificacion":"Identificación",
-    "gestionar.usuario.filtro.label.estado":"Estado",
-    "gestionar.usuario.label.usuario.consultados":"Usuarios consultados: ",
-    "gestionar.usuario.tabla.label.identificacion":"Identificación",
-    "gestionar.usuario.tabla.label.nombres.apellidos":"Nombres y apellidos",
-    "gestionar.usuario.tabla.label.usuario":"Usuario",
-    "gestionar.usuario.tabla.label.estado":"Estado",
-    "gestionar.usuario.tabla.label.roles.asignados":"Roles asignados",
-    "gestionar.usuario.tabla.label.programas.asignados":"Programas asignados",
-    "gestionar.usuario.tabla.label.opciones":"Opciones",
-    "gestionar.usuario.mensaje.confirmacion.inactivacion":"¿Está seguro que desea {{0}} el usuario {{1}}?",    
+    "gestionar.usuario.filtro.rol.usuario.ROLE_PLANIFICADOR":"Planificador",
+    "gestionar.usuario.filtro.rol.usuario.ROLE_PRESTAMISTA":"Prestamista",
     "gestionar.usuario.accion.inactivar":"Inactivar",
     "gestionar.usuario.accion.activar":"Activar",
+    "gestionar.usuario.mensaje.confirmacion.inactivacion":"¿Está seguro que desea {{0}} el usuario {{1}}?",    
     "gestionar.usuario.mensaje.exito.usuario.modificado.con.exito":"Usuario modificado con éxito",
     "gestionar.usuario.mensaje.exito.usuario.creado.con.exito":"Usuario creado con éxito",
-    "gestionar.usuario.tabla.campo.rol.no.asignado":"No asignado",
-    "gestionar.usuario.tabla.campo.programa.no.asignado":"No asignado",
 
     "planificacion.manual.filtro.estado.horario.PARCIALMENTE":"Parcial",
     "planificacion.manual.filtro.estado.horario.SIN_ASIGNAR":"Sin horario",
@@ -42,6 +25,7 @@
     "gestionar.docente.filtro.estado.docente.INACTIVO":"Inactivo",
     "gestionar.docente.inactivar.ACTIVO":"Inactivar",
     "gestionar.docente.inactivar.INACTIVO":"Activar",
+
     "estado.ACTIVO":"Activo",
     "estado.INACTIVO":"Inactivo"
 }

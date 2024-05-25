@@ -1,31 +1,28 @@
 <div class="grid">
     <div class="col-6">
-        <h3>{{ 'gestionar.usuario.titulo' | translate }}</h3>
-        <p>{{ 'gestionar.usuario.subtitulo' | translate }}</p>
+        <h3>Gestionar usuarios</h3>
+        <p>Esta pantalla permite la gestión completa de usuarios de la aplicación, incluyendo la creación, visualización, edición y desactivación, así como la asignación de permisos correspondientes a cada usuario.</p>
         <hr>
     </div>
 </div>
 
-
-
-
 <div class="p-fluid p-formgrid grid">
     <div class="field col-6 md:col-2">
-        <label>{{ 'gestionar.usuario.filtro.label.nombres' | translate }}</label>
+        <label>Nombres</label>
         <input type="text" class="p-inputtext" 
         [(ngModel)]="filtroUsuarioDTO.nombre" 
         placeholder="Ingrese nombres"
         (ngModelChange)="inputsChange()">
     </div>
     <div class="field col-6 md:col-2">
-        <label>{{ 'gestionar.usuario.filtro.label.identificacion' | translate }}</label>
+        <label>Identificación</label>
         <input type="text" class="p-inputtext" 
         [(ngModel)]="filtroUsuarioDTO.numeroIdentificacion" 
         placeholder="Ingrese número de identificación"
         (ngModelChange)="inputsChange()">
     </div>
     <div class="field col-6 md:col-2">
-        <label>{{ 'gestionar.usuario.filtro.label.estado' | translate }}</label>
+        <label>Estado</label>
         <p-dropdown 
             placeholder="Seleccione estado usuario" 
             [options]="listaEstados" 
@@ -33,7 +30,7 @@
             optionLabel="label" 
             optionValue="value"
             [showClear]="true"
-            (ngModelChange)="onEstadoChange()">
+            (ngModelChange)="inputsChange()">
         </p-dropdown>
     </div>
 </div>
@@ -42,7 +39,7 @@
     <div class="col-12">        
         <div class="grid" >
             <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
-                <label class="large-label">{{ 'gestionar.usuario.label.usuario.consultados' | translate }} {{totalRecords}}</label>
+                <label class="large-label">Usuarios consultados {{totalRecords}}</label>
             </div>
             <div class="col-6">
                 <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
@@ -64,13 +61,13 @@
             selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines">
             <ng-template pTemplate="header">
                 <tr>
-                    <th>{{ 'gestionar.usuario.tabla.label.identificacion' | translate }}</th>
-                    <th>{{ 'gestionar.usuario.tabla.label.nombres.apellidos' | translate }}</th>
-                    <th>{{ 'gestionar.usuario.tabla.label.usuario' | translate }}</th>
-                    <th>{{ 'gestionar.usuario.tabla.label.estado' | translate }}</th>
-                    <th>{{ 'gestionar.usuario.tabla.label.roles.asignados' | translate }}</th>
-                    <th>{{ 'gestionar.usuario.tabla.label.programas.asignados' | translate }}</th>
-                    <th>{{ 'gestionar.usuario.tabla.label.opciones' | translate }}</th>
+                    <th>Identificación</th>
+                    <th>Nombres y apellidos</th>
+                    <th>Usuario</th>
+                    <th>Estado</th>
+                    <th>Roles</th>
+                    <th>Programas asignados</th>
+                    <th>Opciones</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-usuarioOutDTO>
@@ -86,7 +83,7 @@
                             </div>      
                         </div>
                         <ng-template #noRoles>
-                            <p style = "color:red">{{'gestionar.usuario.tabla.campo.rol.no.asignado' | translate}}</p>
+                            <p style = "color:red">No asignado</p>
                         </ng-template>
                     </td>
                     <td>
@@ -96,7 +93,7 @@
                             </div>                         
                         </div>
                         <ng-template #noProgramas>
-                            <p style = "color:red">{{'gestionar.usuario.tabla.campo.programa.no.asignado' | translate}}</p>
+                            <p>N/A</p>
                         </ng-template>
                     </td>
                     <td>

@@ -13,6 +13,7 @@ import { EstadoUsuarioEnum } from '../../../enum/estado.usuario.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
 import { LenguajeServicio } from '../../../servicios/lenguaje.servicio';
+import { RolUsuarioEnum } from 'src/app/componentes/enum/rol.usuario.enum';
 
 
 @Component({
@@ -67,7 +68,12 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     public usuarioInDTO:UsuarioInDTO;
 
     public name:string;
-    
+
+    /*Bandera para habilitar la selección de programas cuando el tipo de rol es PLANIFICADOR*/
+    public esValidoGestionarProgramas:boolean; 
+    /*Bandera para deshabilitar los campos de información personal cuando la persona ya existe en BD*/
+    public esPersonaExistente:boolean; 
+
     constructor(private programaServicio: ProgramaServicio,
          private facultadServicio: FacultadServicio, 
          private usuarioServicio:UsuarioServicio,
@@ -89,7 +95,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
         this.programaServicio.consultarProgramas().subscribe(
             (lstProgramaOutDTO: ProgramaOutDTO[]) => {
-                this.listaProgramas = lstProgramaOutDTO;
                 //Se crea el mapa de programas  
                 lstProgramaOutDTO.forEach((programaOutDTO: ProgramaOutDTO) => {
                     this.mapaProgramas.set(programaOutDTO.idPrograma, programaOutDTO);                
@@ -128,6 +133,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         });
     }
     ngOnInit(): void {
+        this.esValidoGestionarProgramas=false;
         /*this.reactiveForm = new FormGroup({
             name: new FormControl(this.name, [
                 Validators.required,
@@ -150,6 +156,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         }else if(tituloModal===this.EDITAR_USUARIO){
             this.usuarioInDTO= {...usuarioOutDTOSeleccionado};
             this.esEditar = true;
+            this.esPersonaExistente=true;
         }else{
             this.usuarioInDTO= new UsuarioInDTO();
             this.esCrear=true;
@@ -174,6 +181,13 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
                 });            
             });
         }
+
+        if(this.usuarioOutDTOSeleccionado.lstIdPrograma !==null && this.usuarioOutDTOSeleccionado.lstIdPrograma.length > 0){
+            this.esValidoGestionarProgramas=true;
+        }else{
+            this.esValidoGestionarProgramas=false;
+        }
+        
 	}
 
     public onFacultadesChange(){
@@ -196,6 +210,52 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             this.usuarioInDTO.lstIdPrograma=[];
         }
     }   
+
+    /**
+     * Método invocado por 
+     *
+     * @author parias 
+     */
+    public onRolesChange(): void {
+        let rolOutDTO:RolOutDTO = this.listaRoles.find(rolOutDTO=>rolOutDTO.rolUsuario===RolUsuarioEnum.ROLE_PLANIFICADOR);
+        if(this.usuarioInDTO.lstIdRol !== null && this.usuarioInDTO.lstIdRol.includes(rolOutDTO.idRol)){
+            this.esValidoGestionarProgramas=true;
+        }else{
+            this.esValidoGestionarProgramas=false;
+        }
+    }
+
+    public onTipoIdentificacionChange():void{
+        this.onNumeroIdentificacionBlur();
+    }
+
+    public onNumeroIdentificacionBlur():void{
+        if(this.usuarioInDTO.numeroIdentificacion && this.usuarioInDTO.idTipoIdentificacion){
+            this.usuarioServicio.consultarPersonaPorIdentificacion(this.usuarioInDTO.idTipoIdentificacion, this.usuarioInDTO.numeroIdentificacion).subscribe(
+                (usuarioOutDTO: UsuarioOutDTO) => {
+                    if(usuarioOutDTO){
+                        this.usuarioInDTO.primerNombre = usuarioOutDTO.primerNombre;
+                        this.usuarioInDTO.segundoNombre = usuarioOutDTO.segundoNombre;
+                        this.usuarioInDTO.primerApellido = usuarioOutDTO.primerApellido;
+                        this.usuarioInDTO.segundoApellido = usuarioOutDTO.segundoApellido;
+                        this.usuarioInDTO.email = usuarioOutDTO.email;
+                        this.esPersonaExistente=true;
+                    }else{
+                        this.usuarioInDTO.primerNombre = null;
+                        this.usuarioInDTO.segundoNombre = null;
+                        this.usuarioInDTO.primerApellido = null;
+                        this.usuarioInDTO.segundoApellido = null;
+                        this.usuarioInDTO.email = null;
+                        this.esPersonaExistente=false;
+                    }
+                },
+                (error) => {
+                    console.error(error);
+                }
+            );  
+        }
+    }
+
 
     public obtenerNombreCompletoUsuario():string{
         return (this.usuarioOutDTOSeleccionado.primerNombre? this.usuarioOutDTOSeleccionado.primerNombre+" ": "")
@@ -240,6 +300,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     }
 
     public salir() {
+        this.listaProgramas=[];
         this.mostrarModalCRUD=false;
         this.modalClosedEmitter.emit();   
     }

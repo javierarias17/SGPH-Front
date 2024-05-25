@@ -1,11 +1,12 @@
 <p-dialog #modalDialog [(visible)]="mostrarModalCRUD" [style]="{width: '1024px'}" [header]="tituloModal" [modal]="true"
     class="p-fluid">
-    <hr>
-
     <div class="flex flex-column">
         <form class="grid" *ngIf="esEditar || esCrear"  style="margin-left: 3%;">
             <!--Información personal-->
-            <h5>Información personal</h5>
+            <div class="p-fluid col sm:col-12 md:col-12">
+                <h5>Información personal</h5>
+            </div>      
+                
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Tipo identificación</label>
                 <p-dropdown 
@@ -13,57 +14,80 @@
                     [(ngModel)]="usuarioInDTO.idTipoIdentificacion"
                     optionLabel="tipoIdentificacion" 
                     optionValue="idTipoIdentificacion"
-                    placeholder="Seleccione tipo de identificación">
+                    name="tipoIdentificacion"
+                    placeholder="Seleccione tipo de identificación"
+                    (ngModelChange)="onTipoIdentificacionChange()">
                 </p-dropdown>
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Número identificación</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.numeroIdentificacion" 
-                placeholder="Ingrese número de identificación">
+                name="numeroIdentificacion"
+                placeholder="Ingrese número de identificación"
+                (blur)="onNumeroIdentificacionBlur()">
             </div> 
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Primer nombre</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.primerNombre" 
-                placeholder="Ingrese primer nombre">
+                name="primerNombre"
+                placeholder="Ingrese primer nombre"
+                [disabled]="this.esPersonaExistente"
+                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Segundo nombre</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.segundoNombre" 
-                placeholder="Ingrese segundo nombre">
+                name="segundoNombre"
+                placeholder="Ingrese segundo nombre"
+                [disabled]="this.esPersonaExistente"
+                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Primer apellido</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.primerApellido" 
-                placeholder="Ingrese primer apellido">
+                name="primerApellido"
+                placeholder="Ingrese primer apellido"
+                [disabled]="this.esPersonaExistente"
+                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Segundo apellido</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.segundoApellido" 
-                placeholder="Ingrese segundo apellido">
+                name="segundoApellido"
+                placeholder="Ingrese segundo apellido"
+                [disabled]="this.esPersonaExistente"
+                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Correo electrónico</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.email" 
-                placeholder="Ingrese correo electrónico">
+                name="email"
+                placeholder="Ingrese correo electrónico"
+                [disabled]="this.esPersonaExistente"
+                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
             </div>
-             <h5>Información de usuario</h5>
-             <div class="p-fluid col sm:col-12 md:col-6">
+            <div class="p-fluid col sm:col-12 md:col-12">
+                <h5>Información de usuario</h5>
+            </div>    
+            <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Nombre usuario</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.nombreUsuario" 
+                name="nombreUsuario"
                 placeholder="Ingrese nombre de usuario">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Contraseña</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.password" 
-                placeholder="Ingrese contraseña">
+                placeholder="Ingrese contraseña"
+                name="password">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Estado</label>
@@ -72,50 +96,13 @@
                     [(ngModel)]="usuarioInDTO.estado"
                     optionLabel="label" 
                     optionValue="value"
-                    placeholder="Seleccione estado usuario">
+                    placeholder="Seleccione estado usuario"
+                    name="estado">
                 </p-dropdown>
-            </div><!--
-            <h5>Asignación de roles y permisos</h5>
-            <div class="p-fluid col sm:col-12 md:col-6">
-                <label class="required">Facultad</label>
-                <p-multiSelect 
-                    maxSelectedLabels="4" 
-                    selectedItemsLabel="{0} Facultades seleccionadas" 
-                    optionLabel="abreviatura" 
-                    optionValue="idFacultad"
-                    [defaultLabel]="'Seleccione facultad'"
-                    [options]="listaFacultades" 
-                    [(ngModel)]="lstIdFacultadSeleccionadas"  
-                    [filter]="true"
-                    [showClear]="true"
-                    (ngModelChange)="onFacultadesChange()" >
-                    <ng-template let-facultad pTemplate="item">
-                        <div class="flex align-items-center gap-2">
-                            <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
-                        </div>
-                    </ng-template>
-                </p-multiSelect>
             </div>
-            <div class="p-fluid col sm:col-12 md:col-6">
-                <label class="required">Programas asignados</label>
-                <p-multiSelect 
-                    maxSelectedLabels="4" 
-                    selectedItemsLabel="{0} Programas seleccionados" 
-                    optionLabel="abreviatura"
-                    optionValue="idPrograma" 
-                    [defaultLabel]="listaProgramas.length === 0 ? '':'Seleccione programas'"
-                    [options]="listaProgramas" 
-                    [(ngModel)]="usuarioInDTO.lstIdPrograma"  
-                    [filter]="false"
-                    [showClear]="true"
-                    [disabled]="listaProgramas.length === 0" >
-                <ng-template let-programa pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                        <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
-                    </div>
-                </ng-template>
-                </p-multiSelect>
-            </div>
+            <div class="p-fluid col sm:col-12 md:col-12">
+                <h5>Asignación de roles y permisos</h5>
+            </div> 
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Roles asignados</label>
                 <p-multiSelect 
@@ -128,32 +115,62 @@
                     [(ngModel)]="usuarioInDTO.lstIdRol"  
                     [filter]="false"
                     [showClear]="true"
-                    [disabled]="listaRoles.length === 0">
+                    [disabled]="listaRoles.length === 0"
+                    name="roles"
+                    (ngModelChange)="onRolesChange()">
                 <ng-template let-rol pTemplate="item">
                     <div class="flex align-items-center gap-2">
                         <div>{{ rol.nombre}}</div>
                     </div>
                 </ng-template>
                 </p-multiSelect>
-            </div>-->
+            </div>
+            <!--Selección programas a gestionar-->   
+            <div class="p-fluid col sm:col-12 md:col-6" *ngIf="esValidoGestionarProgramas">
+                <label class="required">Facultad</label>
+                <p-multiSelect 
+                    maxSelectedLabels="4" 
+                    selectedItemsLabel="{0} Facultades seleccionadas" 
+                    optionLabel="abreviatura" 
+                    optionValue="idFacultad"
+                    [defaultLabel]="'Seleccione facultad'"
+                    [options]="listaFacultades" 
+                    [(ngModel)]="lstIdFacultadSeleccionadas"  
+                    [filter]="true"
+                    [showClear]="true"
+                    (ngModelChange)="onFacultadesChange()"
+                    name="facultad" >
+                    <ng-template let-facultad pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                        </div>
+                    </ng-template>
+                </p-multiSelect>
+            </div>
+            <div class="p-fluid col sm:col-12 md:col-6" *ngIf="esValidoGestionarProgramas">
+                <label class="required">Programas asignados</label>
+                <p-multiSelect 
+                    maxSelectedLabels="4" 
+                    selectedItemsLabel="{0} Programas seleccionados" 
+                    optionLabel="abreviatura"
+                    optionValue="idPrograma" 
+                    [defaultLabel]="listaProgramas.length === 0 ? '':'Seleccione programas'"
+                    [options]="listaProgramas" 
+                    [(ngModel)]="usuarioInDTO.lstIdPrograma"  
+                    [filter]="false"
+                    [showClear]="true"
+                    [disabled]="listaProgramas.length === 0" 
+                    name="programas">
+                <ng-template let-programa pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                    </div>
+                </ng-template>
+                </p-multiSelect>
+            </div>            
         </form>
     </div>    
-
-     
-    <div class="grid" *ngIf="esEditar || esCrear"  style="margin-left: 3%;">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-    </div>
+   
     <!--Operación Ver-->
     <div class="grid" *ngIf="esVer" style="margin-left: 3%;">
         <div class="col-12">
@@ -197,19 +214,7 @@
                 </div>
             </div>
             <!--Roles y permisos-->
-            <h5>Roles y permisos</h5>
-            <!--Programas asignados-->
-            <div class="mt-1 flex justify-content-start flex-wrap align-items-start">
-                <label class="w-10rem" style="text-align: right;">Programas asignados</label>
-                <div *ngIf="usuarioOutDTOSeleccionado?.lstIdRol.length > 0; else noProgramas" class="w-25rem" style="margin-left: 10%">
-                    <div *ngFor="let idPrograma of usuarioOutDTOSeleccionado.lstIdPrograma ">
-                        <label style="display: list-item; list-style: disc inside;"><b>{{obtenerNombrePrograma(idPrograma) | titlecase }}</b></label>
-                    </div>      
-                </div>
-                <ng-template #noProgramas>
-                    <label class="w-25rem" style="margin-left: 10%; width: 90%; color:red"><b>No asignado</b></label>
-                </ng-template>
-            </div>
+            <h5>Roles y permisos</h5>            
             <!--Roles asignados-->
             <div class="mt-1 flex justify-content-start flex-wrap align-items-start">
                 <label class="w-10rem" style="text-align: right;">Roles asignados</label>
@@ -222,10 +227,21 @@
                     <label class="w-25rem" style="margin-left: 10%; width: 90%; color:red"><b>No asignado</b></label>
                 </ng-template>
             </div>
+            <!--Programas asignados-->
+            <div class="mt-1 flex justify-content-start flex-wrap align-items-start">
+                <label class="w-10rem" style="text-align: right;">Programas asignados</label>
+                <div *ngIf="usuarioOutDTOSeleccionado?.lstIdPrograma.length > 0 ; else noProgramas" class="w-25rem" style="margin-left: 10%">
+                    <div *ngFor="let idPrograma of usuarioOutDTOSeleccionado.lstIdPrograma ">
+                        <label style="display: list-item; list-style: disc inside;"><b>{{obtenerNombrePrograma(idPrograma) | titlecase }}</b></label>
+                    </div>      
+                </div>
+                <ng-template #noProgramas>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%;"><b>No aplica</b></label>
+                </ng-template>
+            </div>
         </div>
     </div>
     <ng-template pTemplate="footer">
-        <hr>
         <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text"
             (click)="salir()"></button>
         <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" *ngIf="!esVer"

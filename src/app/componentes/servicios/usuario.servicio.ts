@@ -74,4 +74,17 @@ export class UsuarioServicio{
 		const url = `http://localhost:8081/AdministrarUsuario/consultarEstadosUsuario`;
         return this.http.get<string[]>(url);
     }  	
+
+	/**
+	 * Método encargado de consultar todos los estados de usuario
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @return
+	 */
+	public consultarPersonaPorIdentificacion(idTipoIdentificacion:number, numeroIdentificacion:string) {
+	const url = `http://localhost:8081/AdministrarUsuario/consultarPersonaPorIdentificacion?idTipoIdentificacion=${idTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
+		return this.http.get<UsuarioOutDTO>(url);
+	}  	
+
 }
