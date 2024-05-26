@@ -158,7 +158,7 @@ export class AsociarEspacioFisicoComponent {
         this.espacioFisicoServicio.consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso).subscribe(
             (lstAgrupadorEspacioFisicoOutDTO: AgrupadorEspacioFisicoOutDTO[]) => {
                 this.lstAgrupadorEspacioFisicoOutDTO = lstAgrupadorEspacioFisicoOutDTO;
-                  // Se preseleccionan espacios físicos, por defecto son todos
+                  // Se preseleccionan grupos de espacios físicos, todos los que estén asociados a la asignatura
                   if((this.lstAgrupadorEspacioFisicoOutDTO!==null && this.lstAgrupadorEspacioFisicoOutDTO.length>0 )){
                     this.filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico=this.lstAgrupadorEspacioFisicoOutDTO.map(agrupadorEspacioFisicoOutDTO=> agrupadorEspacioFisicoOutDTO.idAgrupadorEspacioFisico);
                     this.inputsChange();
@@ -176,7 +176,8 @@ export class AsociarEspacioFisicoComponent {
                 this.lstUbicacionOutDTO = lstUbicacionOutDTO;
                 // Se preseleccionan espacios físicos, por defecto son todos
                 if(this.precargarUbicacionesSeleccionadas && (this.lstAgrupadorEspacioFisicoOutDTO===null || this.lstAgrupadorEspacioFisicoOutDTO.length===0 )){
-                    this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion=this.lstUbicacionOutDTO.map(ubicacionOutDTO=> ubicacionOutDTO.idUbicacion);
+                    //this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion=this.lstUbicacionOutDTO.map(ubicacionOutDTO=> ubicacionOutDTO.idUbicacion);
+                    this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion=[11,10];
                     this.onUbicacionesChange();
                 }
             },
@@ -310,6 +311,7 @@ export class AsociarEspacioFisicoComponent {
         this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion=[];
         //Se limpian checks de días
         this.diasSeleccionados=[];
+        this.horaInicioSeleccionado=null;
 
         this.precargarUbicacionesSeleccionadas=false;
         

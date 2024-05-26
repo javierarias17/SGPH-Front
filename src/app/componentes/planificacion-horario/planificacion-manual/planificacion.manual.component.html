@@ -162,38 +162,38 @@
 			</ng-template>
 			<ng-template pTemplate="body" let-CursoPlanificacionOutDTO>
 				<tr>
-				<td>{{CursoPlanificacionOutDTO.nombrePrograma}}</td>
-				<td>{{CursoPlanificacionOutDTO.semestre}}</td>
-				<td>{{CursoPlanificacionOutDTO.nombreAsignatura}}</td>
-				<td>{{CursoPlanificacionOutDTO.grupo}}</td>
-				<td>
-                    <div *ngIf="CursoPlanificacionOutDTO.horarios.length > 0; else sinHorarios">
-                        <div *ngFor="let horario of CursoPlanificacionOutDTO.horarios " style="display: flex; flex-direction: column; ">
-                            {{horario}}
+                    <td>{{CursoPlanificacionOutDTO.nombrePrograma}}</td>
+                    <td>{{CursoPlanificacionOutDTO.semestre}}</td>
+                    <td>{{CursoPlanificacionOutDTO.nombreAsignatura}}</td>
+                    <td>{{CursoPlanificacionOutDTO.grupo}}</td>
+                    <td>
+                        <div *ngIf="CursoPlanificacionOutDTO.horarios.length > 0; else sinHorarios">
+                            <div *ngFor="let horario of CursoPlanificacionOutDTO.horarios " style="display: flex; flex-direction: column; ">
+                                {{horario}}
+                            </div>
                         </div>
-                    </div>
-                    <ng-template #sinHorarios>
-                        <p style = "color:red">No asignado</p>
-                    </ng-template>
-				</td>
-				<td>{{CursoPlanificacionOutDTO.horasAsignadas}} de {{CursoPlanificacionOutDTO.horasSemana}}</td>
-				<td>
-                    <div *ngIf="CursoPlanificacionOutDTO.docentes.length > 0; else sinDocentes">
-                        <div *ngFor="let docente of CursoPlanificacionOutDTO.docentes " style="display: flex; flex-direction: column; ">
-                            {{docente | titlecase }}
-                        </div>                    
-                    </div>
-                    <ng-template #sinDocentes>
-                        <p style = "color:red">No asignado</p>
-                    </ng-template>
-				</td>
-				<td>
-					<div class="flex">
-						<button pButton pRipple type="button" icon="pi pi-users" class="p-button-rounded p-button-info p-button-outlined" (click)="asociarDocentes(CursoPlanificacionOutDTO)"></button>
-						<span style="margin-right: 10px;"></span>
-						<button pButton pRipple type="button" icon="pi pi-building" class="p-button-rounded p-button-warning p-button-outlined" (click)="asociarAulas(CursoPlanificacionOutDTO)"></button>  
-					</div>
-				</td>
+                        <ng-template #sinHorarios>
+                            <p style = "color:red">No asignado</p>
+                        </ng-template>
+                    </td>
+                    <td [ngClass]="{'red-text': CursoPlanificacionOutDTO.horasAsignadas < CursoPlanificacionOutDTO.horasSemana}">{{CursoPlanificacionOutDTO.horasAsignadas}} de {{CursoPlanificacionOutDTO.horasSemana}}</td>
+                    <td>
+                        <div *ngIf="CursoPlanificacionOutDTO.docentes.length > 0; else sinDocentes">
+                            <div *ngFor="let docente of CursoPlanificacionOutDTO.docentes " style="display: flex; flex-direction: column; ">
+                                {{docente | titlecase }}
+                            </div>                    
+                        </div>
+                        <ng-template #sinDocentes>
+                            <p style = "color:red">No asignado</p>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple type="button" icon="pi pi-users" class="p-button-rounded p-button-info p-button-outlined" (click)="asociarDocentes(CursoPlanificacionOutDTO)"></button>
+                            <span style="margin-right: 10px;"></span>
+                            <button pButton pRipple type="button" icon="pi pi-building" class="p-button-rounded p-button-warning p-button-outlined" (click)="asociarAulas(CursoPlanificacionOutDTO)"></button>  
+                        </div>
+                    </td>
 				</tr>
 			</ng-template>
         </p-table>

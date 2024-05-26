@@ -33,6 +33,7 @@
                 </div>
             </div>
         </div>
+
         <!--Caracteristicas Espacio físico-->
         <h5>Caracteristica Espacio Físico</h5>
         <div class="grid">
@@ -40,7 +41,7 @@
             <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length === 0">
                 <div class="mt-1 flex justify-content-start flex-wrap">
                     <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
-                    <p-multiSelect maxSelectedLabels="4" 
+                    <p-multiSelect maxSelectedLabels="1" 
                         selectedItemsLabel="{0} Ubicaciones seleccionadas"
                         [defaultLabel]="'Seleccione ubicación'" 
                         [options]="lstUbicacionOutDTO"
