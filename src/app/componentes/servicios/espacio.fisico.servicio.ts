@@ -7,6 +7,7 @@ import { EspacioFisicoOutDTO } from '../dto/espacio-fisico/out/espacio.fisico.ou
 import { AgrupadorEspacioFisicoOutDTO } from '../dto/espacio-fisico/out/agrupador.espacio.fisico.out.dto';
 import { UbicacionOutDTO } from '../dto/espacio-fisico/out/ubicacion.out.dto';
 import { EspacioFisicoDTO } from '../dto/espacio-fisico/out/espacio.fisico.dto';
+import { EdificioOutDTO } from '../dto/espacio-fisico/out/edificio.out.dto';
 
 
 
@@ -95,9 +96,9 @@ export class EspacioFisicoServicio {
 	 * 
 	 * @return Nombres de los edificios
 	 */
-	public consultarEdificiosPorUbicacion(lstUbicacion: string[]): Observable<string[]>{
-		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarEdificiosPorUbicacion?lstUbicacion=${lstUbicacion}`;
-        return this.http.get<string[]>(url);
+	public consultarEdificiosPorUbicacion(lstUbicacion: string[]): Observable<EdificioOutDTO[]>{
+		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarEdificiosPorUbicacion?lstIdUbicacion=${lstUbicacion}`;
+        return this.http.get<EdificioOutDTO[]>(url);
     }  
 
 	/**
@@ -112,5 +113,10 @@ export class EspacioFisicoServicio {
 	public consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso(idCurso: number): Observable<AgrupadorEspacioFisicoOutDTO[]>{
 		const url = `http://localhost:8081/AdministrarEspacioFisico/consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso?idCurso=${idCurso}`;
         return this.http.get<AgrupadorEspacioFisicoOutDTO[]>(url);
+    }
+	public obtenerListaRecursos(): Observable<any[]>{
+		const url = `http://localhost:8081/AdministrarEspacioFisico/obtenerListaRecursos`;
+        return this.http.get<any[]>(url);
     }  
+ 
 }
