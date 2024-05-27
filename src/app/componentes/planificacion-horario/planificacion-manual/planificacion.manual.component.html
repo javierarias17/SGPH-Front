@@ -144,6 +144,7 @@
     </div>
 </div>
 
+
 <div class="grid">
     <div class="col-12">
         <p-table #dt [value]="listaCursoPlanificacionOutDTO" [columns]="cols" responsiveLayout="scroll" [rows]="10"
@@ -189,13 +190,20 @@
                     </td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-users" class="p-button-rounded p-button-info p-button-outlined" (click)="asociarDocentes(CursoPlanificacionOutDTO)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-users" class="p-button-rounded p-button-info p-button-outlined" (click)="asociarDocentes(CursoPlanificacionOutDTO)" pTooltip="Gestionar docentes" tooltipPosition="top"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-building" class="p-button-rounded p-button-warning p-button-outlined" (click)="asociarAulas(CursoPlanificacionOutDTO)"></button>  
+                            <button pButton pRipple type="button" icon="pi pi-building" class="p-button-rounded p-button-warning p-button-outlined" (click)="asociarAulas(CursoPlanificacionOutDTO)" pTooltip="Gestionar horarios" tooltipPosition="top"></button>  
                         </div>
                     </td>
 				</tr>
 			</ng-template>
+            <ng-template pTemplate="emptymessage" *ngIf="mensajeResultadoBusqueda">
+                <tr>
+                    <td colspan="8">
+                        {{this.mensajeResultadoBusqueda}}
+                    </td>
+                </tr>
+            </ng-template>
         </p-table>
         <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0"></p-paginator>   
     </div>   
