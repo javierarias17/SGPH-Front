@@ -7,6 +7,9 @@ import { AgrupacionPorFacultad } from '../../gestionar-asignatura/model/agrupaci
 import { Form, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UbicacionOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/ubicacion.out.dto';
 import { EdificioOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/edificio.out.dto';
+import { ShowMessageService } from 'src/app/shared/service/show-message.service';
+import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
+import { TipoEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
 
 @Component({
   selector: 'app-crear-editar-espacio-fisico',
@@ -22,11 +25,15 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   edificios: EdificioOutDTO[]
   estados: string[] = ['ACTIVO', 'INACTIVO']
   recursosLista: any[] = []
+  gruposSeleccionados: number[]
+  lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[] = [];
   constructor(
     private ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private espacioFisicoService: EspacioFisicoServicio,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private messageService: ShowMessageService,
+    private espacioServicio: EspacioFisicoServicio
   ) {}
 
   ngOnInit(): void {
@@ -52,16 +59,36 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   onChangeUbicacion() {
     if (this.idUbicacion().value) {
       this.obtenerEdificios()
+      this.obtenerTipos()
+    }
+  }
+  obtenerTipos() {
+    if (this.idUbicacion().value) {
+      let ubicaciones: any[] = []
+      ubicaciones.push(this.idUbicacion().value)
+      this.espacioServicio.consultarTiposEspaciosFisicosPorUbicaciones(ubicaciones).subscribe(
+        (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
+            if(lstTipoEspacioFisicoOutDTO.length === 0) {
+                this.lstTipoEspacioFisicoOutDTO=[];
+            }else{
+                this.lstTipoEspacioFisicoOutDTO = lstTipoEspacioFisicoOutDTO;
+            }
+        },
+        (error) => {
+            console.error(error);
+        }
+        ); 
     }
   }
   inicializarFormulario() {
     this.formulario = this.fb.group({
       idUbicacion: ['', Validators.required],
-      idEdificio: ['', Validators.required],
+      idEdificio: ['', ],
       salon: ['', Validators.required],
       estado: ['', Validators.required],
       capacidad: ['', Validators.required],
       recursos: ['', Validators.required],
+      tipo: ['', Validators.required]
     })
   }
   infoEspacioFisico() {
@@ -91,7 +118,26 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
     this.ref.close()
   }
   guardar() {
-    
+    if (this.formulario.valid && this.gruposSeleccionados) {
+      let espacioSave: EspacioFisicoOutDTO = this.formulario.value
+      espacioSave.idEspacioFisico = this.espacio.idEspacioFisico
+      espacioSave.saveIdAgrupadores = this.gruposSeleccionados
+      espacioSave.idTipoEspacioFisico = this.tipo().value
+      this.espacioFisicoService.guardarEspacioFisico(
+        this.formulario.value
+      ).subscribe(r => {
+        if (r) {
+          this.messageService.showMessage("success","Espacio fisico guardado correctamente")
+          this.ref.close()
+        }
+      })
+    } else {
+      this.formulario.markAllAsTouched()
+    }
+  }
+  getAgrupadoresSeleccionados(r: number[]) {
+    console.log(r)
+    this.gruposSeleccionados = r
   }
   idUbicacion(): FormControl {
     return this.formulario.get('idUbicacion') as FormControl
@@ -110,5 +156,8 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
    }
    recursos(): FormControl {
     return this.formulario.get('recursos') as FormControl
+   }
+   tipo(): FormControl {
+    return this.formulario.get('tipo') as FormControl
    }
 }

@@ -44,6 +44,7 @@ export class GestionarEspacioFisicoComponent {
 	 
 	public inactivarEspacioFisicoDialog: boolean = false;
 
+    idEspacioFisicoSeleccionado: number;
 	@ViewChild('horarioEspacioFisico') horarioEspacioFisico: HorarioEspacioFisicoComponent;
   
 	constructor(private messageService: MessageService,
@@ -85,7 +86,7 @@ export class GestionarEspacioFisicoComponent {
 
     public onUbicacionesChange():void{
         this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
-        if(this.filtroEspacioFisicoDTO.listaIdUbicacion!==null && this.filtroEspacioFisicoDTO.listaIdUbicacion.length !== 0){
+        if(this.filtroEspacioFisicoDTO.listaIdUbicacion!==null && this.filtroEspacioFisicoDTO.listaIdUbicacion.length !== 0) {
             this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroEspacioFisicoDTO.listaIdUbicacion).subscribe(
                 (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
                     this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
@@ -130,7 +131,7 @@ export class GestionarEspacioFisicoComponent {
 		this.consultarEspaciosFisicos();
 	}
     registrarEspacioFisico() {
-        this.dialog.open(CrearEditarEspacioFisicoComponent, {
+        const ref = this.dialog.open(CrearEditarEspacioFisicoComponent, {
             height: 'auto',
             width: '800px',
             header: 'Registrar espacio fisico',
@@ -139,9 +140,12 @@ export class GestionarEspacioFisicoComponent {
                 lectura: false
             }
         })
+        ref.onClose.subscribe(r => {
+            this.consultarEspaciosFisicos();
+        })
     }
     verEspacioFisico(idEspacioFisico: number) {
-        this.dialog.open(CrearEditarEspacioFisicoComponent, {
+        const ref = this.dialog.open(CrearEditarEspacioFisicoComponent, {
             height: 'auto',
             width: '800px',
             header: 'Ver espacio fisico',
@@ -151,9 +155,12 @@ export class GestionarEspacioFisicoComponent {
                 idEspacioFisico: idEspacioFisico
             }
         })
+        ref.onClose.subscribe(r => {
+            this.consultarEspaciosFisicos();
+        })
     }
     editarEspacioFisico(idEspacioFisico: number) {
-        this.dialog.open(CrearEditarEspacioFisicoComponent, {
+        const ref = this.dialog.open(CrearEditarEspacioFisicoComponent, {
             height: 'auto',
             width: '800px',
             header: 'Editar espacio fisico',
@@ -163,16 +170,24 @@ export class GestionarEspacioFisicoComponent {
                 idEspacioFisico: idEspacioFisico
             }
         })
+        ref.onClose.subscribe(r => {
+            this.consultarEspaciosFisicos();
+        })
     }
 	
 	/*Inactivar aula*/
 	public inactivarEspacioFisico(idEspacioFisico: number):void {
+        this.idEspacioFisicoSeleccionado = idEspacioFisico
 		this.inactivarEspacioFisicoDialog = true;
 	}
 	
 	public confirmarInactivacion():void {
+        this.espacioFisicoServicio.activarInactivar(this.idEspacioFisicoSeleccionado).subscribe(r => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Espacio fisico guardado', life: 3000 })
+            this.consultarEspaciosFisicos();
+        })
 		this.inactivarEspacioFisicoDialog = false;
-		this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Docente inactivado', life: 3000 });
+		
 	}
 
 	/*Horario aula*/
