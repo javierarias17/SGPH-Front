@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="grid">
     <div class="col-12">
         <h3>Gestionar espacios físicos</h3>
@@ -111,7 +112,7 @@
                             <span style="margin-right: 10px;"></span>
                             <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarEspacioFisico(espacioFisicoDTO)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarEspacioFisico(espacioFisicoDTO.idEspacioFisico)"></button>
                         </div>
                     </td>
                 </tr>

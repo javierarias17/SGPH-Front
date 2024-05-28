@@ -2,17 +2,18 @@ import { AgrupadorDTO } from "src/app/componentes/datos/gestionar-asignatura/mod
 import { AgrupadorEspacioFiscioDTO } from "src/app/shared/model/AgrupadorEspacioFisicoDTO";
 
 export class EspacioFisicoOutDTO{    
-	public idEspacioFisico:number;
-	public capacidad:number;
-	public estado: boolean;
-	public numeroEspacioFisico: string;
-	public idEdificio: number;
-	public idTipoEspacioFisico: number;
+	public idEspacioFisico?:number;
+	public capacidad?:number;
+	public estado?: boolean;
+	public numeroEspacioFisico?: string;
+	public idEdificio?: number;
+	public idTipoEspacioFisico?: number;
 
-	OID: string;
-	salon: string;
-	edificio: string;
-	ubicacion: string;
-	municipio: string;
-	lstIdAgrupadorEspacioFisico: AgrupadorDTO[]
+	OID?: string;
+	salon?: string;
+	edificio?: string;
+	ubicacion?: string;
+	municipio?: string;
+	lstIdAgrupadorEspacioFisico?: AgrupadorDTO[]
+	saveIdAgrupadores? : number []
 }

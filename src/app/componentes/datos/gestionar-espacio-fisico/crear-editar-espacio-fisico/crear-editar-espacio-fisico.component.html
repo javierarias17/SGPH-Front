@@ -110,6 +110,26 @@
             </small>
         </div>
         <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Tipo</label>
+            <p-dropdown [placeholder]="' '" 
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                this.tipo().invalid &&
+                                this.tipo().touched
+                        }" 
+                        [options]="lstTipoEspacioFisicoOutDTO" 
+                        optionValue="idTipoEspacioFisico" 
+                        optionLabel="tipo"
+                        formControlName="tipo" 
+                        [showClear]="true" 
+                        appendTo="body">
+            </p-dropdown>
+            <small class="p-error block fade-in" *ngIf="this.tipo().invalid &&
+                                (this.tipo().touched)">
+                Tipo es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Capacidad</label>
             <p-inputNumber [ngClass]="{
                             'ng-invalid ng-dirty':
@@ -124,17 +144,30 @@
         </div>
         <div  class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Recursos</label>
-            <p-dropdown [placeholder]="' '" [ngClass]="{
-                            'ng-invalid ng-dirty':
-                                this.recursos().invalid &&
-                                this.recursos().touched
-                        }" [options]="recursosLista" optionValue="idRecurso" optionLabel="nombre"
-                formControlName="recursos" [showClear]="true" appendTo="body">
-            </p-dropdown>
+            <p-multiSelect 
+                maxSelectedLabels="4" 
+                optionLabel="abreviatura" 
+                [defaultLabel]="'Seleccione recurso'"
+                [options]="recursosLista" 
+                formControlName="recursos"  
+                [filter]="false"
+                [showClear]="true"
+                optionLabel="nombre"
+                optionValue="idRecurso"
+                appendTo = "body"
+                [ngClass]="{
+                    'ng-invalid ng-dirty':
+                        this.recursos().invalid &&
+                        this.recursos().touched}"
+                >
+            </p-multiSelect>    	
             <small class="p-error block fade-in" *ngIf="this.recursos().invalid &&
                                 (this.recursos().touched)">
                 Recursos es obligatorio
             </small>
+        </div>
+        <div class="p-fluid col-12">
+            <app-filtro-grupo-espacio-fisico (emitirGrupoSeleccionado) = "getAgrupadoresSeleccionados($event)" [agrupadoresLectura] = "this.agrupadoresLectura" [lectura] = "this.lectura"></app-filtro-grupo-espacio-fisico>
         </div>
     </form>
     <div class="flex justify-content-end" style="width: 100%;">

@@ -11,13 +11,13 @@ import { AgrupacionPorFacultad } from 'src/app/componentes/datos/gestionar-asign
 })
 export class FiltroGrupoEspacioFisicoComponent implements OnInit {
 
-  @Output() emitirGrupoSeleccionado = new EventEmitter<AgrupadorEspacioFiscioDTO[]>();
+  @Output() emitirGrupoSeleccionado = new EventEmitter<number[]>();
   @Input() lectura: boolean
   @Input() agrupadoresLectura: AgrupacionPorFacultad[]
   @Input() facultadSeleccionada: number
   lstFacultadOutDTO: FacultadOutDTO[]
   idFacultadesSeleccionadas: number[]
-  agrupadoresSeleccionados: AgrupadorEspacioFiscioDTO[]
+  agrupadoresSeleccionados: number[]
   listaAgrupadores: AgrupadorEspacioFiscioDTO[]
   constructor(private sharedService: SharedService,
   ) {}
@@ -46,6 +46,7 @@ export class FiltroGrupoEspacioFisicoComponent implements OnInit {
     }
   }
   onChangeAgrupador() {
+    console.log(this.agrupadoresSeleccionados)
     this.emitirGrupoSeleccionado.emit(this.agrupadoresSeleccionados)
   }
 }

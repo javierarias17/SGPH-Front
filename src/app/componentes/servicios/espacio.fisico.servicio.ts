@@ -8,6 +8,7 @@ import { AgrupadorEspacioFisicoOutDTO } from '../dto/espacio-fisico/out/agrupado
 import { UbicacionOutDTO } from '../dto/espacio-fisico/out/ubicacion.out.dto';
 import { EspacioFisicoDTO } from '../dto/espacio-fisico/out/espacio.fisico.dto';
 import { EdificioOutDTO } from '../dto/espacio-fisico/out/edificio.out.dto';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -117,6 +118,14 @@ export class EspacioFisicoServicio {
 	public obtenerListaRecursos(): Observable<any[]>{
 		const url = `http://localhost:8081/AdministrarEspacioFisico/obtenerListaRecursos`;
         return this.http.get<any[]>(url);
-    }  
+    }
+	public guardarEspacioFisico(save: EspacioFisicoDTO): Observable <EspacioFisicoDTO> {
+        const url = `${environment.url}AdministrarEspacioFisico/guardarEspacioFisico`;
+        return this.http.post<any>(url, save);   
+    }
+	public activarInactivar(id: number): Observable<any> {
+		const url = `${environment.url}AdministrarEspacioFisico/activarInactivarEspacioFisicio/${id}`;
+        return this.http.get<any>(url);  
+	}
  
 }
