@@ -50,9 +50,8 @@ export class AppMenuComponent implements OnInit {
         this.model = [
             {
                 label: 'Home',
-                items: [
-                    { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['home/inicio'] }
-                ]
+                icon: 'pi pi-fw pi-home',
+                routerLink: ['home/inicio']                 
             },
             {
                 label: 'Periodo Académico',
@@ -82,8 +81,8 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Reportes',
                 items: [
-                    { label: 'Generar reporte espacio físico', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-espacio-fisico'] },
-                    { label: 'Generar reporte docente', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-docente'] },
+                    { label: 'Ver horario espacio físico', icon: 'pi pi-fw pi-file', routerLink: ['reportes/horario-espacio-fisico'] },
+                    { label: 'Ver horario docente', icon: 'pi pi-fw pi-file', routerLink: ['reportes/horario-docente'] },
                     { label: 'Generar reporte SIMCA', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-simca'] }
                 ]
             }, 

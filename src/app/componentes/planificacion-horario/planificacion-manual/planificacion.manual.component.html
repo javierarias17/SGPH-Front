@@ -207,7 +207,7 @@
         </p-table>
         <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0"></p-paginator>   
     </div>   
-  </div>
+</div>
   
 <app-asociar-espacio-fisico #asociarEspacioFisico (modalClosedEmitter)="actualizarInformacionCursos()"></app-asociar-espacio-fisico>
 <app-asociar-docente #asociarDocente (modalClosedEmitter)="actualizarInformacionCursos()"></app-asociar-docente>

@@ -1,11 +1,10 @@
 <div class="grid">
     <div class="col-12">
-        <h3>Gestionar docentes</h3>
-        <p>Esta pantalla permite la creación, visualización, edición y eliminación manual de docentes, así como la visualización de sus horarios.</p>
+        <h3>Horarios docentes</h3>
+        <p>Esta pantalla permite visualizar los horarios de los docentes.</p>
         <hr>
     </div>
 </div>
-
 
 <div class="p-fluid p-formgrid grid">
     <div class="field col-6 md:col-3">
@@ -47,20 +46,6 @@
             <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
                 <label class="large-label">Docentes consultados: {{totalRecords}}</label>
             </div>
-            <div [class]="totalRecords!==undefined ? 'col-6': 'col-12'">
-                <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
-                    <ng-template pTemplate="left">
-                    </ng-template>
-                    <ng-template pTemplate="right">
-                        <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                        <button pButton pRipple label="Subir archivo" icon="pi pi-upload" class="p-button-help" (click)="cargarArchivo()"></button>
-                        <span style="margin-right: 10px;"></span>
-                        <div class="my-0">
-                            <button pButton pRipple label="Crear curso" icon="pi pi-plus" class="p-button-success mr-2"></button>
-                        </div>
-                    </ng-template>
-                </p-toolbar>  
-            </div>
         </div>        
         <p-table #dt [value]="listaDocenteOutDTO" responsiveLayout="scroll" [rows]="10"
             selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines">
@@ -86,12 +71,8 @@
                     <td>{{docenteOutDTO.segundoApellido}}</td>
                     <td>{{docenteOutDTO.estado | titlecase }}</td>
                     <td>
-                        <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-search" pTooltip="Ver docente" class="p-button-rounded p-button-info" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Ver curso')"></button>
-                            <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar docente" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Editar curso')"></button>
-                            <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-ban" pTooltip="Inactivar/Activar docente" class="p-button-rounded p-button-danger" (click)="inactivarDocente(docenteOutDTO)"></button>
+                        <div class="flex">            
+                            <button pButton pRipple type="button" icon="pi pi-calendar" class="p-button-rounded p-button-info p-button-outlined" pTooltip="Ver horario" tooltipPosition="top"  (click)="abrirModalHorarioDocente(docenteOutDTO)"></button>  
                         </div>
                     </td>
                 </tr>
@@ -101,7 +82,4 @@
     </div>   
 </div>
 
-<app-crear-editar-ver-docente #crearEditarVerDocente></app-crear-editar-ver-docente>
-
-<p-toast></p-toast>
-<p-confirmDialog></p-confirmDialog>
+<app-horario-docente #horarioDocente></app-horario-docente>

@@ -1,32 +1,28 @@
 import { Component, ViewChild } from '@angular/core';
 import { EspacioFisicoServicio } from '../../servicios/espacio.fisico.servicio';
-import { MessageService } from 'primeng/api';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
-import { HorarioEspacioFisicoComponent } from '../../reportes/reporte-espacio-fisico/horario-espacio-fisico/horario.espacio.fisico.component';
 import { FiltroEspacioFisicoDTO } from '../../dto/espacio-fisico/in/filtro.espacio.fisico.dto';
 import { EstadoEspacioFisicoEnum } from '../../enum/estado.espacio.fisico.enum';
 import { TipoEspacioFisicoOutDTO } from '../../dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
 import { EspacioFisicoDTO } from '../../dto/espacio-fisico/out/espacio.fisico.dto';
 import { TranslateService } from '@ngx-translate/core';
-import { DialogService } from 'primeng/dynamicdialog';
-import { CrearEditarEspacioFisicoComponent } from './crear-editar-espacio-fisico/crear-editar-espacio-fisico.component';
 import { UbicacionOutDTO } from '../../dto/espacio-fisico/out/ubicacion.out.dto';
+import { HorarioEspacioFisicoComponent } from './horario-espacio-fisico/horario.espacio.fisico.component';
 
 @Component({
-  selector: 'app-gestionar-espacio-fisico',
-  templateUrl: './gestionar.espacio.fisico.component.html',
-  styleUrls: ['./gestionar.espacio.fisico.component.css'],
+  selector: 'bandeja-reporte-espacio-fisico',
+  templateUrl: './bandeja-reporte-espacio-fisico.component.html',
+  styleUrls: ['./bandeja-reporte-espacio-fisico.component.css'],
   providers: [EspacioFisicoServicio]
 })
-export class GestionarEspacioFisicoComponent {
+export class BandejaReporteEspacioFisicoComponent {
 
     private readonly PAGINA_CERO: number = 0;   
 
-	private readonly REGISTROS_POR_PAGINA: number = 10;  
+    private readonly REGISTROS_POR_PAGINA: number = 10;  
 
-	public pagina: number = this.PAGINA_CERO;
-  
-	public registrosPorPagina: number = this.REGISTROS_POR_PAGINA;  
+    public pagina: number = this.PAGINA_CERO;
+
+    public registrosPorPagina: number = this.REGISTROS_POR_PAGINA;  
 
     public totalRecords:number;  
 
@@ -40,14 +36,14 @@ export class GestionarEspacioFisicoComponent {
 
     public filtroEspacioFisicoDTO: FiltroEspacioFisicoDTO=new FiltroEspacioFisicoDTO();
 
-	public aulaDTOSeleccionado: EspacioFisicoDTO=new EspacioFisicoDTO();   
-	 
-	public inactivarEspacioFisicoDialog: boolean = false;
- 
-	constructor(private messageService: MessageService,
-        private espacioFisicoServicio:EspacioFisicoServicio,
-        private translateService: TranslateService,
-        private dialog: DialogService
+    public aulaDTOSeleccionado: EspacioFisicoDTO=new EspacioFisicoDTO();   
+
+    public inactivarEspacioFisicoDialog: boolean = false;
+
+    @ViewChild('horarioEspacioFisico') horarioEspacioFisico: HorarioEspacioFisicoComponent;
+  
+	constructor(private espacioFisicoServicio:EspacioFisicoServicio,
+        private translateService: TranslateService
     ) {
 	}
 
@@ -127,53 +123,11 @@ export class GestionarEspacioFisicoComponent {
 		this.filtroEspacioFisicoDTO.pagina =event.page;     
 		this.consultarEspaciosFisicos();
 	}
-    registrarEspacioFisico() {
-        this.dialog.open(CrearEditarEspacioFisicoComponent, {
-            height: 'auto',
-            width: '800px',
-            header: 'Registrar espacio fisico',
-            closable: false,
-            data: {
-                lectura: false
-            }
-        })
-    }
-    verEspacioFisico(idEspacioFisico: number) {
-        this.dialog.open(CrearEditarEspacioFisicoComponent, {
-            height: 'auto',
-            width: '800px',
-            header: 'Ver espacio fisico',
-            closable: false,
-            data: {
-                lectura: true,
-                idEspacioFisico: idEspacioFisico
-            }
-        })
-    }
-    editarEspacioFisico(idEspacioFisico: number) {
-        this.dialog.open(CrearEditarEspacioFisicoComponent, {
-            height: 'auto',
-            width: '800px',
-            header: 'Editar espacio fisico',
-            closable: false,
-            data: {
-                lectura: false,
-                idEspacioFisico: idEspacioFisico
-            }
-        })
-    }
 	
-	/*Inactivar espacio físico*/
-	public inactivarEspacioFisico(idEspacioFisico: number):void {
-		this.inactivarEspacioFisicoDialog = true;
-	}
-	
-	public confirmarInactivacion():void {
-		this.inactivarEspacioFisicoDialog = false;
-		this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Docente inactivado', life: 3000 });
-	}
-
-    public obtenerNombreCompletoEspacioFisico():string{
-        return "FALTA COMPLETAR";
-    }
+    /*Horario aula*/
+	public abrirModalHorarioAula(aulaDTOSeleccionado: EspacioFisicoDTO):void {
+		if (this.horarioEspacioFisico) {
+			this.horarioEspacioFisico.abrirModal(aulaDTOSeleccionado);
+		}      
+	} 
 }

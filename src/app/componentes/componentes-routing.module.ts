@@ -12,10 +12,9 @@ import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/gestion
 import { GestionarReservaFacultadComponent } from './reservas/gestionar-reserva-facultad/gestionar.reserva.facultad.component';
 import { GestionarReservaTemporalComponent } from './reservas/gestionar-reserva-temporal/gestionar.reserva.temporal.component';
 import { GenerarReporteSimcaComponent } from './reportes/generar-reporte-simca/generar.reporte.simca.component';
-import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/generar.reporte.docente.component';
-import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte-espacio-fisico/generar.reporte.espacio.fisico.component';
 import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/cargar.labor.docencia.component';
-
+import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/bandeja-reporte-espacio-fisico.component';
+import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bandeja-reporte-docente.component';
 
 const routes: Routes=[
     { path: 'inicio', component: InicioComponent},
@@ -27,8 +26,8 @@ const routes: Routes=[
     { path: 'gestionar-grupo', component: GestionarGrupoComponent},
     { path: 'planificacion-manual', component: PlanificacionManualComponent},
     { path: 'planificacion-semestre-anterior', component: PlanificacionSemestreAnteriorComponent},
-    { path: 'generar-reporte-espacio-fisico', component: GenerarReporteEspacioFisicoComponent},
-    { path: 'generar-reporte-docente', component: GenerarReporteDocenteComponent},
+    { path: 'horario-espacio-fisico', component: BandejaReporteEspacioFisicoComponent},
+    { path: 'horario-docente', component: BandejaReporteDocenteComponent},
     { path: 'generar-reporte-simca', component: GenerarReporteSimcaComponent},
     { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
     { path: 'gestionar-reserva-facultad', component: GestionarReservaFacultadComponent},
