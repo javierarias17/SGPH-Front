@@ -20,6 +20,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
     declarations: [],
@@ -45,7 +46,8 @@ import { DialogService } from 'primeng/dynamicdialog';
         InputTextareaModule,
         FieldsetModule,
         ConfirmDialogModule,
-        PickListModule
+        PickListModule,
+        MessagesModule 
     ],
     providers: [ConfirmationService, DialogService]
 })

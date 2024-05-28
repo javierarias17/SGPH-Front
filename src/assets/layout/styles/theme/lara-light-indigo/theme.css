@@ -5865,7 +5865,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-message.p-message-error {
   background: #ffe7e6;
   border: solid #ff5757;
-  border-width: 0 0 0 6px;
+  border-width: 1px 1px 1px 6px;
   color: #ff5757;
 }
 .p-message.p-message-error .p-message-icon {

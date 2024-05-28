@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
 import { EstadoCursoHorarioEnum } from '../../enum/estado.curso.horario.enum';
-import { MessageService } from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
 import { FacultadServicio } from '../../servicios/facultad.servicio';
 import { ProgramaServicio } from '../../servicios/programa.servicio';
 import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
@@ -15,6 +15,7 @@ import { PlanificacionManualServicio } from '../../servicios/planificacion.manua
 import { TranslateService } from '@ngx-translate/core';
 import { AsociarEspacioFisicoComponent } from './asociar-espacio-fisico/asociar.espacio.fisico.component';
 import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
+import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 
 @Component({
 selector: 'app-planificacion-manual',
@@ -66,31 +67,24 @@ export class PlanificacionManualComponent {
     public infoGeneralCursosPorProgramaDTO: InfoGeneralCursosPorProgramaDTO;
 
     public abreviaturaPrograma: string = "";
-    
-    /*TEMPORALES*/    
-    deleteCursoDialog: boolean = false;
-    submitted: boolean = false;
-    cols: any[] = [];
-    rowsPerPageOptions = [5, 10, 20];
-
-    private readonly MENSAJES_PERIODO_ACADEMICO_CERRADO:string= "No existe periodo académico vigente";
-    private readonly MENSAJE_SIN_RESULTADOS:string= "No existen cursos por esos criterios de busqueda";
-
-    public mensajeResultadoBusqueda: string = null;
+   
+    public messages: Message[] = null;
 
     //Referencias componentes hijos
     @ViewChild('asociarEspacioFisico') asociarEspacioFisico: AsociarEspacioFisicoComponent;
     @ViewChild('asociarDocente') asociarDocente: AsociarDocenteComponent;
 
-    constructor(private messageService: MessageService, 
-        private facultadServicio:FacultadServicio,
+    constructor(private facultadServicio:FacultadServicio,
         private programaServicio: ProgramaServicio, 
         private asignaturaServicio:AsignaturaServicio,
         private planificacionManualServicio: PlanificacionManualServicio,
-        private translateService: TranslateService) {
+        private translateService: TranslateService,
+        public periodoAcademicoService:PeriodoAcademicoService) {
     }
 
-    public ngOnInit() {   
+    public ngOnInit() {        
+        this.consultarPeriodoAcademicoVigente();
+
         this.infoGeneralCursosPorProgramaDTO=null;
         this.filtroCursoPlanificacionDTO.registrosPorPagina = this.registrosPorPagina;        
         
@@ -122,10 +116,9 @@ export class PlanificacionManualComponent {
 
     private consultarCursosPorFiltro(){
         this.planificacionManualServicio.consultarCursosPlanificacionPorFiltro(this.filtroCursoPlanificacionDTO).subscribe(
-            (response: any) => {
-            if(response.content.length===0){
-                this.mensajeResultadoBusqueda=this.MENSAJE_SIN_RESULTADOS;
-            }
+            (response: any) => {            
+            this.consultarPeriodoAcademicoVigente();
+            
             this.listaCursoPlanificacionOutDTO = response.content;
             this.totalRecords= response.totalElements;
             if(this.cursoPlanificacionOutDTOSeleccionado){
@@ -290,15 +283,25 @@ export class PlanificacionManualComponent {
         }      
     }
     
-    public confirmarEliminacion() {
-        this.deleteCursoDialog = false;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Curso eliminado', life: 3000 });
-    }
-
     public actualizarInformacionCursos():void {
         if(this.programasSeleccionados && this.programasSeleccionados.length === 1){
             this.consultarInfoGeneralCursosPorPrograma(this.programasSeleccionados[0]);
         }
         this.consultarCursosPorFiltro();
+    }
+
+    private consultarPeriodoAcademicoVigente():void{
+        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+            (r: any) => {
+                if(r){
+                    this.messages=null;
+                }else{
+                    this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar cursos si no existe un periodo académico abierto." }];
+                }
+            },
+            (error) => {
+                console.error(error);
+            }
+        );        
     }
 }

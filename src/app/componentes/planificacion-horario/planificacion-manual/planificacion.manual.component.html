@@ -7,115 +7,117 @@
 </div>
 
 
-<!--<div class="card p-fluid">-->
-    <div class="p-fluid p-formgrid grid">
-        <div class="field col-6 md:col-2">
-            <label>Facultad</label>
-            <p-multiSelect 
-                maxSelectedLabels="4" 
-                selectedItemsLabel="{0} Facultades seleccionadas" 
-                optionLabel="abreviatura" 
-                [defaultLabel]="'Seleccione facultad'"
-                [options]="lstFacultadOutDTO" 
-                [(ngModel)]="facultadesSeleccionadas"  
-                [filter]="false"
-                [showClear]="true"
-                optionLabel="abreviatura" 
-                optionValue="idFacultad"
-                (ngModelChange)="onFacultadesChange()" >
-                <ng-template let-facultad pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                        <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
-                    </div>
-                </ng-template>
-            </p-multiSelect>
-        </div>
-        <div class="field col-6 md:col-2">
-            <label>Programa</label>
-            <p-multiSelect 
-                maxSelectedLabels="4" 
-                selectedItemsLabel="{0} Programas seleccionados" 
-                optionLabel="abreviatura" 
-                [defaultLabel]="listaProgramas.length === 0 ? '':'Seleccione programas'"
-                [options]="listaProgramas" 
-                [(ngModel)]="programasSeleccionados"  
-                [filter]="false"
-                [showClear]="true"
-                [disabled]="listaProgramas.length === 0"
-                optionLabel="abreviatura" 
-                optionValue="idPrograma"
-                (ngModelChange)="onProgramasChange()" >
-                <ng-template let-programa pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                        <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
-                    </div>
-                </ng-template>
-            </p-multiSelect>
-        </div>
-        <div class="field col-6 md:col-2">
-            <label>Asignatura</label>
-            <p-multiSelect 
-                maxSelectedLabels="1" 
-                selectedItemsLabel="{0} Asignaturas seleccionadas" 
-                optionLabel="nombre" 
-                [defaultLabel]="listaAsignaturas.length === 0 ? '':'Seleccione Asignatura'"
-                [options]="listaAsignaturas" 
-                [(ngModel)]="asignaturasSeleccionadas"  
-                [filter]="true"
-                [showClear]="true"
-                [disabled]="listaAsignaturas.length === 0"
-                optionLabel="nombre" 
-                optionValue="idAsignatura"
-                (ngModelChange)="onAsignaturasChange()" >
-                <ng-template let-asignatura pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                        <div>{{ asignatura.nombre }}-<strong>Sem {{asignatura.semestre}}</strong></div>
-                    </div>
-                </ng-template>
-            </p-multiSelect>
-        </div>
-        <div class="field col-6 md:col-2">
-            <label>Semestre</label>
-            <p-inputNumber 
-                [placeholder]="facultadesSeleccionadas.length === 0 ? '':'Ingrese semestre'"
-                [step]="1" 
-                [showButtons]="true" 
-                [min]="1" 
-                [max]="10"
-                [showClear]="true"
-                [disabled]="facultadesSeleccionadas.length === 0"
-                [(ngModel)]="numeroSemestre"
-                (ngModelChange)="onSemestreChange()">
-            </p-inputNumber>
-        </div>  
-        <div class="field col-6 md:col-2">
-            <label>Horario</label>
-            <p-dropdown 
-                [style]="{ 'height': '3rem'}" 
-                [placeholder]="facultadesSeleccionadas.length === 0 ? ' ':'Seleccione estado horario'"
-                [options]="listaHorarios" 
-                [(ngModel)]="horarioSeleccionado"
-                [showClear]="true"
-                [disabled]="facultadesSeleccionadas.length === 0"
-                (ngModelChange)="onHorarioChange()">
-            </p-dropdown>
-        </div>
-        <div class="field col-6 md:col-2">
-            <label>Docentes</label>
-            <p-inputNumber 
-                [placeholder]="facultadesSeleccionadas.length === 0 ? ' ':'Ingrese cantidad docentes'"
-                mode="decimal" 
-                [showButtons]="true" 
-                [min]="0" 
-                [max]="4"
-                [showClear]="true"
-                [disabled]="facultadesSeleccionadas.length === 0"
-                [(ngModel)]="numeroDocente"
-                (ngModelChange)="onDocenteChange()">
-            </p-inputNumber>
-        </div>                                             
+<div class="p-fluid p-formgrid grid">
+    <div class="field col-6 md:col-2">
+        <label>Facultad</label>
+        <p-multiSelect 
+            maxSelectedLabels="4" 
+            selectedItemsLabel="{0} Facultades seleccionadas" 
+            optionLabel="abreviatura" 
+            [defaultLabel]="'Seleccione facultad'"
+            [options]="lstFacultadOutDTO" 
+            [(ngModel)]="facultadesSeleccionadas"  
+            [filter]="false"
+            [showClear]="true"
+            optionLabel="abreviatura" 
+            optionValue="idFacultad"
+            (ngModelChange)="onFacultadesChange()" >
+            <ng-template let-facultad pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                </div>
+            </ng-template>
+        </p-multiSelect>
     </div>
-<!--</div>-->
+    <div class="field col-6 md:col-2">
+        <label>Programa</label>
+        <p-multiSelect 
+            maxSelectedLabels="4" 
+            selectedItemsLabel="{0} Programas seleccionados" 
+            optionLabel="abreviatura" 
+            [defaultLabel]="listaProgramas.length === 0 ? '':'Seleccione programas'"
+            [options]="listaProgramas" 
+            [(ngModel)]="programasSeleccionados"  
+            [filter]="false"
+            [showClear]="true"
+            [disabled]="listaProgramas.length === 0"
+            optionLabel="abreviatura" 
+            optionValue="idPrograma"
+            (ngModelChange)="onProgramasChange()" >
+            <ng-template let-programa pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                </div>
+            </ng-template>
+        </p-multiSelect>
+    </div>
+    <div class="field col-6 md:col-2">
+        <label>Asignatura</label>
+        <p-multiSelect 
+            maxSelectedLabels="1" 
+            selectedItemsLabel="{0} Asignaturas seleccionadas" 
+            optionLabel="nombre" 
+            [defaultLabel]="listaAsignaturas.length === 0 ? '':'Seleccione Asignatura'"
+            [options]="listaAsignaturas" 
+            [(ngModel)]="asignaturasSeleccionadas"  
+            [filter]="true"
+            [showClear]="true"
+            [disabled]="listaAsignaturas.length === 0"
+            optionLabel="nombre" 
+            optionValue="idAsignatura"
+            (ngModelChange)="onAsignaturasChange()" >
+            <ng-template let-asignatura pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ asignatura.nombre }}-<strong>Sem {{asignatura.semestre}}</strong></div>
+                </div>
+            </ng-template>
+        </p-multiSelect>
+    </div>
+    <div class="field col-6 md:col-2">
+        <label>Semestre</label>
+        <p-inputNumber 
+            [placeholder]="facultadesSeleccionadas.length === 0 ? '':'Ingrese semestre'"
+            [step]="1" 
+            [showButtons]="true" 
+            [min]="1" 
+            [max]="10"
+            [showClear]="true"
+            [disabled]="facultadesSeleccionadas.length === 0"
+            [(ngModel)]="numeroSemestre"
+            (ngModelChange)="onSemestreChange()">
+        </p-inputNumber>
+    </div>  
+    <div class="field col-6 md:col-2">
+        <label>Horario</label>
+        <p-dropdown 
+            [style]="{ 'height': '3rem'}" 
+            [placeholder]="facultadesSeleccionadas.length === 0 ? ' ':'Seleccione estado horario'"
+            [options]="listaHorarios" 
+            [(ngModel)]="horarioSeleccionado"
+            [showClear]="true"
+            [disabled]="facultadesSeleccionadas.length === 0"
+            (ngModelChange)="onHorarioChange()">
+        </p-dropdown>
+    </div>
+    <div class="field col-6 md:col-2">
+        <label>Docentes</label>
+        <p-inputNumber 
+            [placeholder]="facultadesSeleccionadas.length === 0 ? ' ':'Ingrese cantidad docentes'"
+            mode="decimal" 
+            [showButtons]="true" 
+            [min]="0" 
+            [max]="4"
+            [showClear]="true"
+            [disabled]="facultadesSeleccionadas.length === 0"
+            [(ngModel)]="numeroDocente"
+            (ngModelChange)="onDocenteChange()">
+        </p-inputNumber>
+    </div>                                             
+</div>
+
+<div *ngIf="this.messages !== null">
+    <p-messages [(value)]="messages" [enableService]="true" [closable]="false" />
+</div>
 
 <br>
 <div class="grid" *ngIf="infoGeneralCursosPorProgramaDTO === null && totalRecords!==undefined">
@@ -144,10 +146,9 @@
     </div>
 </div>
 
-
 <div class="grid">
     <div class="col-12">
-        <p-table #dt [value]="listaCursoPlanificacionOutDTO" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+        <p-table #dt [value]="listaCursoPlanificacionOutDTO" responsiveLayout="scroll" [rows]="10"
         selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines">
 			<ng-template pTemplate="header">
 				<tr>
@@ -197,13 +198,6 @@
                     </td>
 				</tr>
 			</ng-template>
-            <ng-template pTemplate="emptymessage" *ngIf="mensajeResultadoBusqueda">
-                <tr>
-                    <td colspan="8">
-                        {{this.mensajeResultadoBusqueda}}
-                    </td>
-                </tr>
-            </ng-template>
         </p-table>
         <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0"></p-paginator>   
     </div>   
@@ -211,19 +205,3 @@
   
 <app-asociar-espacio-fisico #asociarEspacioFisico (modalClosedEmitter)="actualizarInformacionCursos()"></app-asociar-espacio-fisico>
 <app-asociar-docente #asociarDocente (modalClosedEmitter)="actualizarInformacionCursos()"></app-asociar-docente>
-
-<div class="grid">
-    <div class="col-12">
-         <!-- botón eliminar fila -->
-        <p-dialog [(visible)]="deleteCursoDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>¿Está seguro que desea eliminar el curso <b>{{cursoPlanificacionOutDTOSeleccionado?.nombreAsignatura}} {{cursoPlanificacionOutDTOSeleccionado?.grupo}}</b>?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCursoDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmarEliminacion()"></button>
-            </ng-template>
-        </p-dialog>
-    </div>    
-</div>
