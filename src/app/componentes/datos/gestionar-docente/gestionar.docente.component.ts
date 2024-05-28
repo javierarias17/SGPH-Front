@@ -9,7 +9,6 @@ import { HorarioServicio } from '../../servicios/horario.servicio';
 import { FiltroDocenteDTO } from '../../dto/docente/in/filtro.docente.dto';
 import { DocenteOutDTO } from '../../dto/docente/out/docente.out.dto';
 import { CrearEditarVerDocenteComponent } from './crear-editar-ver-docente/crear.editar.ver.docente.component';
-import { HorarioDocenteComponent } from './horario-docente/horario.docente.component';
 import { EstadoDocenteEnum } from '../../enum/estado.docente.enum';
 import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-gestionar-docente',
   templateUrl: './gestionar.docente.component.html',
   styleUrls: ['./gestionar.docente.component.css'],
-  providers: [ConfirmationService, MessageService, CursoServicio, FacultadServicio, ProgramaServicio, AsignaturaServicio, HorarioServicio, DocenteServicio, LenguajeServicio]
+  providers: [DocenteServicio]
 })
 export class GestionarDocenteComponent {
 
@@ -41,14 +40,8 @@ export class GestionarDocenteComponent {
 
 	public docenteOutDTOSeleccionado: DocenteOutDTO=new DocenteOutDTO();   
 	
-	/*TEMPORALES*/    
-	submitted: boolean = false;
-	cols: any[] = [];
-	rowsPerPageOptions = [5, 10, 20];
-
 	//Referencias componentes hijos
 	@ViewChild('crearEditarVerDocente') crearEditarVerDocente: CrearEditarVerDocenteComponent;
-	@ViewChild('horarioDocente') horarioDocente: HorarioDocenteComponent;
   
 	constructor(private confirmationService: ConfirmationService,
 		private messageService: MessageService,
@@ -113,13 +106,6 @@ export class GestionarDocenteComponent {
 	public abrirModalCrearEditarVerDocente(docenteOutDTOSeleccionado: DocenteOutDTO, tituloModal: string) {
 		if (this.crearEditarVerDocente) {
 			this.crearEditarVerDocente.abrirModal(docenteOutDTOSeleccionado, tituloModal);
-		}      
-	}
-		
-	/*Horario docente*/
-	public abrirModalHorarioDocente(docenteOutDTOSeleccionado: DocenteOutDTO) {
-		if (this.horarioDocente) {
-			this.horarioDocente.abrirModal(docenteOutDTOSeleccionado);
 		}      
 	}
 

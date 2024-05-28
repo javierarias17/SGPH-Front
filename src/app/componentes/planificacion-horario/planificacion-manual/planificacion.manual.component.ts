@@ -73,6 +73,11 @@ export class PlanificacionManualComponent {
     cols: any[] = [];
     rowsPerPageOptions = [5, 10, 20];
 
+    private readonly MENSAJES_PERIODO_ACADEMICO_CERRADO:string= "No existe periodo académico vigente";
+    private readonly MENSAJE_SIN_RESULTADOS:string= "No existen cursos por esos criterios de busqueda";
+
+    public mensajeResultadoBusqueda: string = null;
+
     //Referencias componentes hijos
     @ViewChild('asociarEspacioFisico') asociarEspacioFisico: AsociarEspacioFisicoComponent;
     @ViewChild('asociarDocente') asociarDocente: AsociarDocenteComponent;
@@ -118,6 +123,9 @@ export class PlanificacionManualComponent {
     private consultarCursosPorFiltro(){
         this.planificacionManualServicio.consultarCursosPlanificacionPorFiltro(this.filtroCursoPlanificacionDTO).subscribe(
             (response: any) => {
+            if(response.content.length===0){
+                this.mensajeResultadoBusqueda=this.MENSAJE_SIN_RESULTADOS;
+            }
             this.listaCursoPlanificacionOutDTO = response.content;
             this.totalRecords= response.totalElements;
             if(this.cursoPlanificacionOutDTOSeleccionado){

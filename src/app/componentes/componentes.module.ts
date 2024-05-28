@@ -8,15 +8,13 @@ import { CrearPeriodoAcademicoComponent } from './periodo-academico/crear-period
 import { GestionarGrupoComponent } from './datos/gestionar-grupo/gestionar.grupo.component';
 import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/planificacion.manual.component';
 import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/planificacion.semestre.anterior.component';
-import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/generar.reporte.docente.component';
 import { GenerarReporteSimcaComponent } from './reportes/generar-reporte-simca/generar.reporte.simca.component';
 import { GestionarReservaTemporalComponent } from './reservas/gestionar-reserva-temporal/gestionar.reserva.temporal.component';
 import { GestionarReservaFacultadComponent } from './reservas/gestionar-reserva-facultad/gestionar.reserva.facultad.component';
 import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/gestionar.usuario.component';
 import { AsociarDocenteComponent } from './planificacion-horario/planificacion-manual/asociar-docente/asociar.docente.component';
-import { HorarioDocenteComponent } from './datos/gestionar-docente/horario-docente/horario.docente.component';
 import { CrearEditarVerDocenteComponent } from './datos/gestionar-docente/crear-editar-ver-docente/crear.editar.ver.docente.component';
-import { HorarioEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/horario-espacio-fisico/horario.espacio.fisico.component';
+import { HorarioEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/horario-espacio-fisico/horario.espacio.fisico.component';
 import { CrearEditarVerUsuarioComponent } from './seguridad/gestionar-usuario/crear-editar-ver-usuario/crear.editar.ver.usuario.component';
 import { AsociarEspacioFisicoComponent } from './planificacion-horario/planificacion-manual/asociar-espacio-fisico/asociar.espacio.fisico.component';
 import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/cargar.labor.docencia.component';
@@ -26,6 +24,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { CrearEditarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/crear-editar-espacio-fisico/crear-editar-espacio-fisico.component';
 import { EspacioFisicoServicio } from './servicios/espacio.fisico.servicio';
+import { HorarioDocenteComponent } from './reportes/reporte-docente/horario-docente/horario.docente.component';
+import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bandeja-reporte-docente.component';
+import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/bandeja-reporte-espacio-fisico.component';
 
 
 @NgModule({
@@ -44,14 +45,14 @@ import { EspacioFisicoServicio } from './servicios/espacio.fisico.servicio';
 		PlanificacionSemestreAnteriorComponent,
 		PlanificacionSemestreAnteriorComponent,
 		GenerarReporteSimcaComponent,
-		GenerarReporteDocenteComponent,
-		GenerarReporteSimcaComponent,
 		GestionarReservaTemporalComponent,
 		GestionarReservaFacultadComponent,
 		GestionarUsuarioComponent,
 		HorarioDocenteComponent,
+		BandejaReporteDocenteComponent,
 		CrearEditarVerDocenteComponent,
 		HorarioEspacioFisicoComponent,
+		BandejaReporteEspacioFisicoComponent,
 		CrearEditarVerUsuarioComponent,
   CrearEditarEspacioFisicoComponent,
 	],

@@ -71,8 +71,9 @@ export class AsociarEspacioFisicoComponent {
     /*Filtro para realizar las busqueda de los espacios físicos dispnibles*/
     public filtroFranjaHorariaDisponibleCursoDTO:FiltroFranjaHorariaDisponibleCursoDTO=new FiltroFranjaHorariaDisponibleCursoDTO();
    
-
     private precargarUbicacionesSeleccionadas:boolean;
+
+    public mensajeResultadoBusqueda: string = "";
 
     constructor(private messageService: MessageService,
         private espacioFisicoServicio: EspacioFisicoServicio,
@@ -127,8 +128,10 @@ export class AsociarEspacioFisicoComponent {
             (lstFranjaHorariaCursoDTO: FranjaHorariaCursoDTO[]) => {   
                 if(lstFranjaHorariaCursoDTO.length === 0){
                     this.listaFranjaHorariaDisponibles = [];
+                    this.mensajeResultadoBusqueda= "No hay franjas horarias disponibles.";
                 }else{
                     this.listaFranjaHorariaDisponibles = lstFranjaHorariaCursoDTO.map((franjaHorariaCursoDTO: FranjaHorariaCursoDTO) => ({check:false, franjaHorariaCursoDTO:franjaHorariaCursoDTO}));
+                    this.mensajeResultadoBusqueda= "Franjas encontradas: "+this.listaFranjaHorariaDisponibles.length;
                 } 
             },
             (error) => {
@@ -242,6 +245,7 @@ export class AsociarEspacioFisicoComponent {
         }else{
             // Se limpia la lista de franjas disponibles
             this.listaFranjaHorariaDisponibles=[];
+            this.mensajeResultadoBusqueda= "No hay franjas horarias disponibles.";
         }
     }
 
@@ -260,6 +264,7 @@ export class AsociarEspacioFisicoComponent {
 
             // Se limpia la lista de franjas disponibles
             this.listaFranjaHorariaDisponibles=[];
+            this.mensajeResultadoBusqueda= "No hay franjas horarias disponibles.";
         }
     }   
 
