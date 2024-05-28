@@ -31,40 +31,40 @@
         </div>
 
         <!--Caracteristicas Docente-->
-        <h5>Caracteristica Docente</h5>
-        
-        <div class="grid">
-            <!--Primera columna-->
-            <div class="col">
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-6rem align-self-center" style="text-align: right;">Nombres</label>
-                    <input type="text" class="p-inputtext" 
-                           [(ngModel)]="filtroDocenteDTO.nombre" 
-                           [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                           [ngClass]="{'w-24rem':true }"
-                           placeholder="Ingrese nombres"
-                           (ngModelChange)="inputsChange()">
-                </div>
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-6rem align-self-center" style="text-align: right;">Identificación</label>
-                    <input type="text" class="p-inputtext" 
-                           [(ngModel)]="filtroDocenteDTO.numeroIdentificacion" 
-                           [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                           [ngClass]="{'w-24rem':true }"
-                           placeholder="Ingrese número de identificación"
-                           (ngModelChange)="inputsChange()">
-                </div>
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-6rem align-self-center" style="text-align: right;">Código</label>
-                    <input type="text" class="p-inputtext" 
-                           [(ngModel)]="filtroDocenteDTO.codigo" 
-                           [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
-                           [ngClass]="{'w-24rem':true }"
-                           placeholder="Ingrese código docente"
-                           (ngModelChange)="inputsChange()">
-                </div>
-            </div><!--Cierre primera columna-->
-        </div><!--Cierre grid-->
+        <p-fieldset legend="Filtros de busqueda" class="m-1 fade-in w-100">
+            <div class="grid">
+                <!--Primera columna-->
+                <div class="col">
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-6rem align-self-center" style="text-align: right;">Nombres</label>
+                        <input type="text" class="p-inputtext" 
+                               [(ngModel)]="filtroDocenteDTO.nombre" 
+                               [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
+                               [ngClass]="{'w-24rem':true }"
+                               placeholder="Ingrese nombre del docente"
+                               (ngModelChange)="inputsChange()">
+                    </div>
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-6rem align-self-center" style="text-align: right;">Identificación</label>
+                        <input type="text" class="p-inputtext" 
+                               [(ngModel)]="filtroDocenteDTO.numeroIdentificacion" 
+                               [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
+                               [ngClass]="{'w-24rem':true }"
+                               placeholder="Ingrese número de identificación del docente"
+                               (ngModelChange)="inputsChange()">
+                    </div>
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-6rem align-self-center" style="text-align: right;">Código</label>
+                        <input type="text" class="p-inputtext" 
+                               [(ngModel)]="filtroDocenteDTO.codigo" 
+                               [style]="{ 'height': '2.0rem', 'margin-left': '2.4%', 'line-height': '1.2px'}"
+                               [ngClass]="{'w-24rem':true }"
+                               placeholder="Ingrese código docente"
+                               (ngModelChange)="inputsChange()">
+                    </div>
+                </div><!--Cierre primera columna-->
+            </div><!--Cierre grid-->
+        </p-fieldset>
 
         <!--Asociar Docentes-->
         <div class="col-12 xl:col-12">

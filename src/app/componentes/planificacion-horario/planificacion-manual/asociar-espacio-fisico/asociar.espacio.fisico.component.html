@@ -35,154 +35,155 @@
         </div>
 
         <!--Caracteristicas Espacio físico-->
-        <h5>Caracteristica Espacio Físico</h5>
-        <div class="grid">
-            <!--Primera columna-->
-            <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length === 0">
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
-                    <p-multiSelect maxSelectedLabels="1" 
-                        selectedItemsLabel="{0} Ubicaciones seleccionadas"
-                        [defaultLabel]="'Seleccione ubicación'" 
-                        [options]="lstUbicacionOutDTO"
-                        [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion"
-                        [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
-                        [ngClass]="{'w-27rem':true }" 
-                        [filter]="false"
-                        [showClear]="true"
-                        optionLabel="nombre" 
-                        optionValue="idUbicacion"
-                        (ngModelChange)="onUbicacionesChange()" >
-                    </p-multiSelect>
+        <p-fieldset legend="Filtros de busqueda" class="m-1 fade-in w-100">
+            <div class="grid">
+                <!--Primera columna-->
+                <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length === 0">
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
+                        <p-multiSelect maxSelectedLabels="1" 
+                            selectedItemsLabel="{0} Ubicaciones seleccionadas"
+                            [defaultLabel]="'Seleccione ubicación'" 
+                            [options]="lstUbicacionOutDTO"
+                            [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion"
+                            [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
+                            [ngClass]="{'w-27rem':true }" 
+                            [filter]="false"
+                            [showClear]="true"
+                            optionLabel="nombre" 
+                            optionValue="idUbicacion"
+                            (ngModelChange)="onUbicacionesChange()" >
+                        </p-multiSelect>
+                    </div>
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center" style="text-align: right;">Tipo</label>
+                        <p-multiSelect 
+                            [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
+                            [ngClass]="{'w-27rem':true }"
+                            maxSelectedLabels="4" 
+                            selectedItemsLabel="{0} Tipos seleccionados"
+                            [placeholder]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion?.length === 0 ? ' ':'Seleccione tipo espacio físico'" 
+                            [options]="lstTipoEspaciosFisicos"
+                            [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico"
+                            [disabled]="filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion.length === 0"
+                            [filter]="false"
+                            [showClear]="true" 
+                            optionLabel="tipo" 
+                            optionValue="idTipoEspacioFisico"
+                            emptyMessage="No hay tipos para las ubicaciones seleccionadas"
+                            (ngModelChange)="onTiposEspacioFisicoChange()">
+                        </p-multiSelect>
+                    </div>
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center" style="text-align: right;">Nombre</label>
+                        <input [style]="{ 'height': '2.0rem', 'margin-left': '8%', 'line-height': '1.2px'}"
+                               [ngClass]="{'w-24rem':true }"
+                               type="text" class="p-inputtext" 
+                               [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.salon" 
+                               [disabled]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion.length === 0"
+                               [placeholder]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion.length === 0 ? ' ':'Ingrese nombre de espacio físico'"
+                               [style.opacity]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0 ? '0.6' : ''"
+                               (ngModelChange)="inputsChange()">
+                    </div>
+                </div><!--Cierre primera columna-->
+                <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length > 0">
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center" style="text-align: right;">Grupo</label>
+                        <p-multiSelect 
+                            [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
+                            [ngClass]="{'w-27rem':true }" 
+                            maxSelectedLabels="4" 
+                            selectedItemsLabel="{0} Grupos seleccionadas"
+                            [defaultLabel]="'Seleccione grupos'" 
+                            [options]="lstAgrupadorEspacioFisicoOutDTO"
+                            [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico"                       
+                            [filter]="false"
+                            [showClear]="true"
+                            optionLabel="nombre" 
+                            optionValue="idAgrupadorEspacioFisico"
+                            (ngModelChange)="onGruposChange()">
+                        </p-multiSelect>
+                    </div>
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center" style="text-align: right;">Nombre</label>
+                        <input type="text" class="p-inputtext" 
+                               [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.salon" 
+                               [style]="{ 'height': '2.0rem', 'margin-left': '8%', 'line-height': '1.2px'}"
+                               [ngClass]="{'w-24rem':true }"
+                               placeholder="Ingrese nombre"
+                               (ngModelChange)="inputsChange()">
+                    </div>
                 </div>
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Tipo</label>
-                    <p-multiSelect 
-                        [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
-                        [ngClass]="{'w-27rem':true }"
-                        maxSelectedLabels="4" 
-                        selectedItemsLabel="{0} Tipos seleccionados"
-                        [placeholder]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion?.length === 0 ? ' ':'Seleccione tipo espacio físico'" 
-                        [options]="lstTipoEspaciosFisicos"
-                        [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico"
-                        [disabled]="filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion.length === 0"
-                        [filter]="false"
-                        [showClear]="true" 
-                        optionLabel="tipo" 
-                        optionValue="idTipoEspacioFisico"
-                        emptyMessage="No hay tipos para las ubicaciones seleccionadas"
-                        (ngModelChange)="onTiposEspacioFisicoChange()">
-                    </p-multiSelect>
-                </div>
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Nombre</label>
-                    <input [style]="{ 'height': '2.0rem', 'margin-left': '8%', 'line-height': '1.2px'}"
-                           [ngClass]="{'w-24rem':true }"
-                           type="text" class="p-inputtext" 
-                           [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.salon" 
-                           [disabled]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion.length === 0"
-                           [placeholder]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion.length === 0 ? ' ':'Ingrese nombre'"
-                           [style.opacity]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0 ? '0.6' : ''"
-                           (ngModelChange)="inputsChange()">
-                </div>
-            </div><!--Cierre primera columna-->
-            <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length > 0">
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Grupo</label>
-                    <p-multiSelect 
-                        [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
-                        [ngClass]="{'w-27rem':true }" 
-                        maxSelectedLabels="4" 
-                        selectedItemsLabel="{0} Grupos seleccionadas"
-                        [defaultLabel]="'Seleccione grupos'" 
-                        [options]="lstAgrupadorEspacioFisicoOutDTO"
-                        [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico"                       
-                        [filter]="false"
-                        [showClear]="true"
-                        optionLabel="nombre" 
-                        optionValue="idAgrupadorEspacioFisico"
-                        (ngModelChange)="onGruposChange()">
-                    </p-multiSelect>
-                </div>
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label class="w-5rem align-self-center" style="text-align: right;">Nombre</label>
-                    <input type="text" class="p-inputtext" 
-                           [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.salon" 
-                           [style]="{ 'height': '2.0rem', 'margin-left': '8%', 'line-height': '1.2px'}"
-                           [ngClass]="{'w-24rem':true }"
-                           placeholder="Ingrese nombre"
-                           (ngModelChange)="inputsChange()">
-                </div>
+                <!--Segunda columna-->
+                <div class="col-6">
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label for="address">Disponibilidad</label>
+                        <div class="grid formgrid">
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="LUNES" [(ngModel)]="diasSeleccionados" id="lunes" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="lunes">Lunes</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="MARTES" [(ngModel)]="diasSeleccionados" id="martes" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="martes">Martes</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="MIERCOLES" [(ngModel)]="diasSeleccionados" id="miercoles" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="miercoles">Miercoles</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="JUEVES" [(ngModel)]="diasSeleccionados" id="jueves" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="jueves">Jueves</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="VIERNES" [(ngModel)]="diasSeleccionados" id="viernes" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="viernes">Viernes</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="SABADO" [(ngModel)]="diasSeleccionados" id="sabado" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="sabado">Sabado</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="grid mt-1">
+                        <!--Primera columna-->
+                        <div class="col-4">
+                            <label for="address">Desde</label>
+                            <p-dropdown
+                                [style]="{ 'height': '2.0rem', 'margin-left': '0%',  'line-height': '1.2px', 'width': '100%' }"
+                                [ngClass]="{'w-30rem':true}" [options]="listaHorasInicio"
+                                [(ngModel)]="horaInicioSeleccionado" 
+                                placeholder="Hora inicio" 
+                                [showClear]="listaHorasInicio.includes(horaInicioSeleccionado)"
+                                (ngModelChange)="onHoraInicioChange()">
+                            </p-dropdown>
+                        </div>
+                        <div class="col-4">
+                            <label class="w-5rem align-self-center" style="text-align: right;">Cantidad horas</label>
+                            <p-inputNumber [style]="{'height': '2.0rem', 'margin-left': '0%', 'width': '100%' }"
+                                placeholder="Ingrese horas" [step]="1" [showButtons]="true" [min]="1" [max]="10"
+                                [(ngModel)]="cantidadHorasSeleccionada" (ngModelChange)="cantidadHorasChange()"
+                                >
+                            </p-inputNumber>
+                        </div>
+                    </div>
+    
+                </div><!--Cierre segunda columna-->
             </div>
-            <!--Segunda columna-->
-            <div class="col-6">
-                <div class="mt-1 flex justify-content-start flex-wrap">
-                    <label for="address">Disponibilidad</label>
-                    <div class="grid formgrid">
-                        <div class="col-4">
-                            <div class="field-checkbox">
-                                <p-checkbox name="group1" value="LUNES" [(ngModel)]="diasSeleccionados" id="lunes" (ngModelChange)="onDiasChange()"></p-checkbox>
-                                <label for="lunes">Lunes</label>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="field-checkbox">
-                                <p-checkbox name="group1" value="MARTES" [(ngModel)]="diasSeleccionados" id="martes" (ngModelChange)="onDiasChange()"></p-checkbox>
-                                <label for="martes">Martes</label>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="field-checkbox">
-                                <p-checkbox name="group1" value="MIERCOLES" [(ngModel)]="diasSeleccionados" id="miercoles" (ngModelChange)="onDiasChange()"></p-checkbox>
-                                <label for="miercoles">Miercoles</label>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="field-checkbox">
-                                <p-checkbox name="group1" value="JUEVES" [(ngModel)]="diasSeleccionados" id="jueves" (ngModelChange)="onDiasChange()"></p-checkbox>
-                                <label for="jueves">Jueves</label>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="field-checkbox">
-                                <p-checkbox name="group1" value="VIERNES" [(ngModel)]="diasSeleccionados" id="viernes" (ngModelChange)="onDiasChange()"></p-checkbox>
-                                <label for="viernes">Viernes</label>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="field-checkbox">
-                                <p-checkbox name="group1" value="SABADO" [(ngModel)]="diasSeleccionados" id="sabado" (ngModelChange)="onDiasChange()"></p-checkbox>
-                                <label for="sabado">Sabado</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid mt-1">
-                    <!--Primera columna-->
-                    <div class="col-4">
-                        <label for="address">Desde</label>
-                        <p-dropdown
-                            [style]="{ 'height': '2.0rem', 'margin-left': '0%',  'line-height': '1.2px', 'width': '100%' }"
-                            [ngClass]="{'w-30rem':true}" [options]="listaHorasInicio"
-                            [(ngModel)]="horaInicioSeleccionado" 
-                            placeholder="Hora inicio" 
-                            [showClear]="listaHorasInicio.includes(horaInicioSeleccionado)"
-                            (ngModelChange)="onHoraInicioChange()">
-                        </p-dropdown>
-                    </div>
-                    <div class="col-4">
-                        <label class="w-5rem align-self-center" style="text-align: right;">Cantidad horas</label>
-                        <p-inputNumber [style]="{'height': '2.0rem', 'margin-left': '0%', 'width': '100%' }"
-                            placeholder="Ingrese horas" [step]="1" [showButtons]="true" [min]="1" [max]="10"
-                            [(ngModel)]="cantidadHorasSeleccionada" (ngModelChange)="cantidadHorasChange()"
-                            >
-                        </p-inputNumber>
-                    </div>
-                </div>
-
-            </div><!--Cierre segunda columna-->
-        </div>
+        </p-fieldset>
         <!--Asociar Aulas-->
         <div class="col-12 xl:col-12">
             <div class="empty-message">{{this.mensajeResultadoBusqueda}}</div>

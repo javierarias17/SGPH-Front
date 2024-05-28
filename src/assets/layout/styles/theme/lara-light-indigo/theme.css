@@ -4227,7 +4227,10 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   color: #343a40;
 }
 .p-fieldset .p-fieldset-content {
-  padding: 1.25rem;
+  /* Se establece en 0 para no afectar el diseño del 
+   * componente gestionar horarios de la pantalla planificación manual
+   */
+  padding: 0rem;
 }
 
 .p-panel .p-panel-header {
