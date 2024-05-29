@@ -6,6 +6,8 @@ import { DocenteOutDTO } from '../../dto/docente/out/docente.out.dto';
 import { HorarioDocenteComponent } from './horario-docente/horario.docente.component';
 import { EstadoDocenteEnum } from '../../enum/estado.docente.enum';
 import { TranslateService } from '@ngx-translate/core';
+import { Message } from 'primeng/api';
+import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 
 @Component({
   selector: 'bandeja-reporte-docente',
@@ -36,12 +38,16 @@ export class BandejaReporteDocenteComponent {
 	
 	//Referencias componentes hijos
 	@ViewChild('horarioDocente') horarioDocente: HorarioDocenteComponent;
+
+	public messages: Message[] = null;
   
 	constructor(private docenteServicio:DocenteServicio,
-		private translateService: TranslateService) {
+		private translateService: TranslateService,  
+		public periodoAcademicoService:PeriodoAcademicoService) {
 	}
 
-	public ngOnInit() {   
+	public ngOnInit() { 
+		this.consultarPeriodoAcademicoVigente(); 
 		Object.keys(EstadoDocenteEnum).forEach(key => {
             const translatedLabel = this.translateService.instant('gestionar.docente.filtro.estado.docente.' + key);
             this.listaEstados.push({ label: translatedLabel, value: key });
@@ -54,13 +60,14 @@ export class BandejaReporteDocenteComponent {
 
   	private consultarDocentes() {
 		this.docenteServicio.consultarDocentes(this.filtroDocenteDTO).subscribe(
-			(response: any) => {  
-					this.listaDocenteOutDTO = response.content;
-					this.totalRecords= response.totalElements;
-					},
-					(error) => {
-						console.error(error);
-					}
+			(response: any) => {
+				this.consultarPeriodoAcademicoVigente();  
+				this.listaDocenteOutDTO = response.content;
+				this.totalRecords= response.totalElements;
+				},
+				(error) => {
+					console.error(error);
+				}
 			);
 	}
 
@@ -93,5 +100,20 @@ export class BandejaReporteDocenteComponent {
 			this.horarioDocente.abrirModal(docenteOutDTOSeleccionado);
 		}      
 	}
+
+	private consultarPeriodoAcademicoVigente():void{
+        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+            (r: any) => {
+                if(r){
+                    this.messages=null;
+                }else{
+                    this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar los horarios de los docentes." }];
+                }
+            },
+            (error) => {
+                console.error(error);
+            }
+        );        
+    }
 }
 

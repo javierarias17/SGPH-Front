@@ -7,6 +7,8 @@ import { EspacioFisicoDTO } from '../../dto/espacio-fisico/out/espacio.fisico.dt
 import { TranslateService } from '@ngx-translate/core';
 import { UbicacionOutDTO } from '../../dto/espacio-fisico/out/ubicacion.out.dto';
 import { HorarioEspacioFisicoComponent } from './horario-espacio-fisico/horario.espacio.fisico.component';
+import { Message } from 'primeng/api';
+import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 
 @Component({
   selector: 'bandeja-reporte-espacio-fisico',
@@ -40,14 +42,18 @@ export class BandejaReporteEspacioFisicoComponent {
 
     public inactivarEspacioFisicoDialog: boolean = false;
 
+    public messages: Message[] = null;
+
     @ViewChild('horarioEspacioFisico') horarioEspacioFisico: HorarioEspacioFisicoComponent;
   
 	constructor(private espacioFisicoServicio:EspacioFisicoServicio,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+		public periodoAcademicoService:PeriodoAcademicoService
     ) {
 	}
 
-	public ngOnInit():void {          
+	public ngOnInit():void {    
+        this.consultarPeriodoAcademicoVigente();       
         this.filtroEspacioFisicoDTO.registrosPorPagina = this.registrosPorPagina;         
 
         this.espacioFisicoServicio.consultarUbicaciones().subscribe(
@@ -68,11 +74,12 @@ export class BandejaReporteEspacioFisicoComponent {
     private consultarEspaciosFisicos():void{
         this.espacioFisicoServicio.consultarEspaciosFisicos(this.filtroEspacioFisicoDTO).subscribe(
             (response: any) => {
-              this.listaEspacioFisicoDTO = response.content;
-              this.totalRecords= response.totalElements;
+                this.consultarPeriodoAcademicoVigente(); 
+                this.listaEspacioFisicoDTO = response.content;
+                this.totalRecords= response.totalElements;
             },
             (error) => {
-              console.error(error);
+                console.error(error);
             }
           );
     }
@@ -130,4 +137,19 @@ export class BandejaReporteEspacioFisicoComponent {
 			this.horarioEspacioFisico.abrirModal(aulaDTOSeleccionado);
 		}      
 	} 
+
+    private consultarPeriodoAcademicoVigente():void{
+        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+            (r: any) => {
+                if(r){
+                    this.messages=null;
+                }else{
+                    this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar los horarios de los espacios físicos." }];
+                }
+            },
+            (error) => {
+                console.error(error);
+            }
+        );        
+    }
 }

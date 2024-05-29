@@ -63,6 +63,11 @@
     </div>
 </div>
 
+<div *ngIf="this.messages !== null">
+    <p-messages [(value)]="messages" [enableService]="true" [closable]="false" />
+</div>
+<br>
+
 <div class="grid">
     <div class="col-12"> 
         <div class="grid" *ngIf="totalRecords!==undefined">

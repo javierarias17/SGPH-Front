@@ -40,7 +40,6 @@ export class AsignarEspacioFisicoComponent implements OnInit {
         private mensajeService: ShowMessageService,
         private espacioFisicoServicio: EspacioFisicoServicio
     ) {}
-
     ngOnInit(): void {
         this.obtenerUbicaciones()
         this.grupoSeleccionado = this.config.data?.grupo
@@ -129,4 +128,5 @@ export class AsignarEspacioFisicoComponent implements OnInit {
 
         return Array.from(map.values());
     }
+
 }

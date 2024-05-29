@@ -1,11 +1,8 @@
 import { Component, ViewChild,EventEmitter, Output } from '@angular/core';
 import {  HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-import { FacultadServicio } from '../../../servicios/facultad.servicio';
 import { EspacioFisicoServicio } from '../../../servicios/espacio.fisico.servicio';
-import { HorarioServicio } from '../../../servicios/horario.servicio';
 import { FranjaHorariaCursoDTO } from '../../../dto/curso/out/franja.horaria.curso.dto';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
 import { CrearActualizarHorarioCursoOutDTO } from 'src/app/componentes/dto/horario/out/crea.actualizar.horario.curso.out.dto';
 import { CrearActualizarHorarioCursoInDTO } from 'src/app/componentes/dto/horario/in/crea.actualizar.horario.curso.in.dto';
 import { FranjaHorariaCursoAsociarInDTO } from 'src/app/componentes/dto/horario/in/franja.horaria.curso.asociar.in.dto';

@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="p-fluid p-formgrid grid">
-    <div class="field col-6 md:col-2">
+    <div class="field col-6 md:col-3">
         <label>Facultad</label>
         <p-multiSelect 
             maxSelectedLabels="4" 
@@ -51,6 +51,9 @@
             <th>
                 Descripción
             </th>
+            <th>
+                Cantidad E.F asignados
+            </th>
             <th style="width: 10%;">
                 Opciones
             </th>
@@ -67,14 +70,16 @@
             <td style="width: 20%;">
                 {{obj.observacion}}
             </td>
+            <td style="width: 20%;">
+                {{obj.cantidadEspaciosFisicosAsignados}}
+            </td>
             <td>
                 <div class="flex">
-                    <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar Grupo" class="p-button-rounded p-button-secondary" (click)="editarGrupo(obj)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar grupo" class="p-button-rounded p-button-secondary"  tooltipPosition="top" (click)="editarGrupo(obj)"></button>
                     <span style="margin-right: 10px;"></span>
-                    <button pButton pRipple type="button" icon="pi pi-home" pTooltip="Asignar grupo" class="p-button-rounded p-button-secondary" (click)="asignarEspacioFisico(obj)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-cog" pTooltip="Gestionar espacios físicos" class="p-button-rounded p-button-info p-button-outlined"  tooltipPosition="top" (click)="asignarEspacioFisico(obj)"></button>
                 </div>
             </td>
-
         </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
