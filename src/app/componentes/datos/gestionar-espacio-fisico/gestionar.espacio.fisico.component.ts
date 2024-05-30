@@ -43,7 +43,6 @@ export class GestionarEspacioFisicoComponent {
 	public aulaDTOSeleccionado: EspacioFisicoDTO=new EspacioFisicoDTO();   
 	 
 	public inactivarEspacioFisicoDialog: boolean = false;
-
     idEspacioFisicoSeleccionado: number;
 	constructor(private messageService: MessageService,
         private espacioFisicoServicio:EspacioFisicoServicio,

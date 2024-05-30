@@ -25,11 +25,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BandejaPrincipalPeriodoAcademicoComponent
   ],
   imports: [
-    CommonModule,
     GestionarPeriodoAcademicoRoutingModule,
     CommonModule,
-    PrimeNgModule,
-    SharedModule,
     InputNumberModule,
     FormsModule,
     TableModule,
@@ -37,13 +34,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DialogModule,
     MultiSelectModule,
     DropdownModule,
+    ReactiveFormsModule,
     InputTextModule,
+    SharedModule,
     MessageModule,
     ToastModule,
-    CalendarModule,
-    ConfirmDialogModule,
-    BrowserModule,
-    ReactiveFormsModule,
+    PrimeNgModule,
+    InputNumberModule 
   ]
 })
 export class GestionarPeriodoAcademicoModule { }

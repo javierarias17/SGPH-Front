@@ -28,6 +28,7 @@ import { HorarioDocenteComponent } from './reportes/reporte-docente/horario-doce
 import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bandeja-reporte-docente.component';
 import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/bandeja-reporte-espacio-fisico.component';
 import { BandejaPrincipalPeriodoAcademicoComponent } from './periodo-academico/gestionar-periodo-academico/pages/bandeja-principal-periodo-academico/bandeja-principal-periodo-academico.component';
+import { GestionarPeriodoAcademicoModule } from './periodo-academico/gestionar-periodo-academico/gestionar-periodo-academico.module';
 
 
 @NgModule({
@@ -54,13 +55,15 @@ import { BandejaPrincipalPeriodoAcademicoComponent } from './periodo-academico/g
 		HorarioEspacioFisicoComponent,
 		BandejaReporteEspacioFisicoComponent,
 		CrearEditarVerUsuarioComponent,
-  		CrearEditarEspacioFisicoComponent
+  		CrearEditarEspacioFisicoComponent,
+		
 	],
 	imports: [
 		ReactiveFormsModule,
 		CommonModule,
 		PrimeNgModule,
 		SharedModule
+		
 	],
 	providers: [EspacioFisicoServicio]
 })
