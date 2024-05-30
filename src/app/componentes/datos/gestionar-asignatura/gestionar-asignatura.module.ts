@@ -43,7 +43,8 @@ import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
     SharedModule,
     MessageModule,
     ToastModule,
-    PrimeNgModule
+    PrimeNgModule,
+    InputNumberModule 
   ],
   providers: [DialogService, FacultadServicio, ProgramaServicio, AsignaturaServicio]
 })

@@ -51,10 +51,7 @@ export class BandejaGruposComponent implements OnInit {
     }
 
     onChangeFacultad() {
-        if (
-            this.facultadesSeleccionadas !== null &&
-            this.facultadesSeleccionadas.length !== 0
-        ) {
+        if (this.facultadesSeleccionadas !== null && this.facultadesSeleccionadas.length !== 0) {
             this.listarGruposBase();
         } else {
             this.grupos = [];
@@ -132,6 +129,9 @@ export class BandejaGruposComponent implements OnInit {
             data: {
                 grupo: grupo,
             },
+        });
+        ref.onClose.subscribe((r) => {
+            this.listarGruposBase();
         });
     }
 

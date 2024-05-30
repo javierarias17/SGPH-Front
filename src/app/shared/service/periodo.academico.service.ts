@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PeriodoAcademicoOutDTO } from '../model/periodo.academico.out.';
+import { FiltroBase } from 'src/app/componentes/dto/filtro-base';
 
 
 @Injectable()
@@ -12,6 +13,18 @@ export class PeriodoAcademicoService{
 
     urlAgrupador: string = "AdministrarPeriodoAcademico"
     constructor(private http: HttpClient) {
+    }
+    
+    /**
+	 * Método encargado de consultar los periodos académicos por filtro<br>
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @return Lista de instancias PeriodoAcademicoOutDTO
+	 */
+    public consultarPeriodosAcademicos(filtro:any): Observable<any>{
+        const url = `${environment.url}${this.urlAgrupador}/consultarPeriodosAcademicos`;
+        return this.http.post<any>(url, filtro);
     }
 
     /**

@@ -4,7 +4,7 @@ import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisic
 import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar.docente.component';
 import { CrearEditarVerCursoComponent } from './datos/gestionar-curso/crear-editar-consultar-curso/crear.editar.ver.curso.component';
 import { InicioComponent } from './home/inicio/inicio.component';
-import { CrearPeriodoAcademicoComponent } from './periodo-academico/crear-periodo-academico/crear.periodo.academico.component';
+
 import { GestionarGrupoComponent } from './datos/gestionar-grupo/gestionar.grupo.component';
 import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/planificacion.manual.component';
 import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/planificacion.semestre.anterior.component';
@@ -27,6 +27,7 @@ import { EspacioFisicoServicio } from './servicios/espacio.fisico.servicio';
 import { HorarioDocenteComponent } from './reportes/reporte-docente/horario-docente/horario.docente.component';
 import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bandeja-reporte-docente.component';
 import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/bandeja-reporte-espacio-fisico.component';
+import { BandejaPrincipalPeriodoAcademicoComponent } from './gestionar-periodo-academico/pages/bandeja-principal-periodo-academico/bandeja-principal-periodo-academico.component';
 
 
 @NgModule({
@@ -38,7 +39,6 @@ import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio
 		AsociarDocenteComponent,
 		CrearEditarVerCursoComponent,
 		InicioComponent,
-		CrearPeriodoAcademicoComponent,
 		GestionarGrupoComponent,
 		CargarLaborDocenciaComponent,
 		PlanificacionManualComponent,
@@ -54,7 +54,7 @@ import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio
 		HorarioEspacioFisicoComponent,
 		BandejaReporteEspacioFisicoComponent,
 		CrearEditarVerUsuarioComponent,
-  CrearEditarEspacioFisicoComponent,
+  		CrearEditarEspacioFisicoComponent
 	],
 	imports: [
 		ReactiveFormsModule,

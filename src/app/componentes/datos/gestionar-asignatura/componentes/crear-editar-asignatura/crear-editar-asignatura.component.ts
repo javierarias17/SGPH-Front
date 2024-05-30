@@ -6,7 +6,6 @@ import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.ou
 import { FacultadServicio } from 'src/app/componentes/servicios/facultad.servicio';
 import { ProgramaServicio } from 'src/app/componentes/servicios/programa.servicio';
 import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.out.dto';
-import { AgrupadorDTO } from '../../model/agrupador-dto';
 import { AgrupacionPorFacultad } from '../../model/agrupacion-por-facultad';
 import { SharedService } from 'src/app/shared/service/shared.service';
 import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';

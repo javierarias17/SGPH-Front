@@ -4,7 +4,6 @@ import { GestionarCursoComponent } from './datos/gestionar-curso/gestionar.curso
 import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar.docente.component';
 import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/gestionar.espacio.fisico.component';
 import { InicioComponent } from './home/inicio/inicio.component';
-import { CrearPeriodoAcademicoComponent } from './periodo-academico/crear-periodo-academico/crear.periodo.academico.component';
 import { GestionarGrupoComponent } from './datos/gestionar-grupo/gestionar.grupo.component';
 import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/planificacion.manual.component';
 import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/planificacion.semestre.anterior.component';
@@ -18,7 +17,6 @@ import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bande
 
 const routes: Routes=[
     { path: 'inicio', component: InicioComponent},
-    { path: 'crear-periodo-academico', component: CrearPeriodoAcademicoComponent},
     { path: 'cargar-labor-docencia', component: CargarLaborDocenciaComponent},
     { path: 'gestionar-espacio-fisico', component: GestionarEspacioFisicoComponent},
     { path: 'gestionar-curso', component: GestionarCursoComponent},
@@ -32,6 +30,13 @@ const routes: Routes=[
     { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
     { path: 'gestionar-reserva-facultad', component: GestionarReservaFacultadComponent},
     { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
+    {
+      path: 'periodo-academico',
+      loadChildren: () =>
+        import(
+          "./gestionar-periodo-academico/gestionar-periodo-academico.module"
+        ).then((m) => m.GestionarPeriodoAcademicoModule)
+    },
     {
         path: 'gestionar-asignatura',
         loadChildren: () =>

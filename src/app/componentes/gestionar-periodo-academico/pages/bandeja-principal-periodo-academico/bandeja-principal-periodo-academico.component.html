@@ -1,0 +1,67 @@
+<p-toast></p-toast>
+<div class="grid">
+    <div class="col-12">
+        <h3>Gestionar periodo académico</h3>
+        <p>Esta pantalla permite gestionar el periodo académico.</p>
+        <hr>
+    </div>
+</div>
+<br>
+<br>
+<div class="flex justify-content-end" style="width: 100%;">
+    <div class="m-1">
+        <button pButton pRipple label="Registrar Periodo Académico" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarPeriodoAcademico()"></button>
+    </div>
+</div>
+<p-table [value]='this.periodos' responsiveLayout="scroll" styleClass="p-datatable-gridlines" [lazy]="true"
+    (onLazyLoad)="listarPeriodosAcademicos($event)" dataKey="id" [paginator]="true" [rows]="10" [totalRecords]="totalRecords"
+    [loading]="cargando">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>
+                Periodo
+            </th>
+            <th>
+                Fecha Inicio
+            </th>
+            <th>
+                Fecha Fin
+            </th>
+            <th>
+                Estado
+            </th>
+            <th style="width: 10%;">
+                Opciones
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-obj>
+        <tr>
+            <td style="width: 20%;">
+                {{obj.anio}}-{{obj.periodo}}
+            </td>
+            <td style="width: 20%;">
+                {{obj.fechaInicioPeriodo | date:'dd/MM/yyyy'}}
+            </td>
+            <td style="width: 20%;">
+                {{obj.fechaInicioPeriodo | date:'dd/MM/yyyy'}}
+            </td>
+            <td style="width: 20%;">
+                {{obj.estado}}
+            </td>
+            <td>
+                <div class="flex">
+                    <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar periodo académico" class="p-button-rounded p-button-secondary"  tooltipPosition="top" (click)="editarGrupo(obj)"></button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+                Aun no existen periodos académicos
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-confirmDialog></p-confirmDialog>
