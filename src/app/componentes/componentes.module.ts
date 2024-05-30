@@ -27,7 +27,7 @@ import { EspacioFisicoServicio } from './servicios/espacio.fisico.servicio';
 import { HorarioDocenteComponent } from './reportes/reporte-docente/horario-docente/horario.docente.component';
 import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bandeja-reporte-docente.component';
 import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/bandeja-reporte-espacio-fisico.component';
-import { BandejaPrincipalPeriodoAcademicoComponent } from './gestionar-periodo-academico/pages/bandeja-principal-periodo-academico/bandeja-principal-periodo-academico.component';
+import { BandejaPrincipalPeriodoAcademicoComponent } from './periodo-academico/gestionar-periodo-academico/pages/bandeja-principal-periodo-academico/bandeja-principal-periodo-academico.component';
 
 
 @NgModule({

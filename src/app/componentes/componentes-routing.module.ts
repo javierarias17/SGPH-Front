@@ -31,10 +31,10 @@ const routes: Routes=[
     { path: 'gestionar-reserva-facultad', component: GestionarReservaFacultadComponent},
     { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
     {
-      path: 'periodo-academico',
+      path: 'gestionar-periodo-academico',
       loadChildren: () =>
         import(
-          "./gestionar-periodo-academico/gestionar-periodo-academico.module"
+          "./periodo-academico/gestionar-periodo-academico/gestionar-periodo-academico.module"
         ).then((m) => m.GestionarPeriodoAcademicoModule)
     },
     {

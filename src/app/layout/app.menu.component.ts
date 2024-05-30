@@ -56,7 +56,7 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Periodo Académico',
                 items: [
-                    { label: 'Gestionar perido académico', icon: 'pi pi-fw pi-chart-pie', routerLink: ['periodo-academico/gestionar-periodo-academico'] },
+                    { label: 'Gestionar periodo académico', icon: 'pi pi-fw pi-chart-pie', routerLink: ['periodo-academico/gestionar-periodo-academico'] },
                 ]            
             },
             {
