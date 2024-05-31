@@ -67,7 +67,7 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Gestionar asignaturas', icon: 'pi pi-fw pi-book', routerLink: ['datos/gestionar-asignatura'] },
                     { label: 'Gestionar cursos', icon: 'pi pi-fw pi-star', routerLink: ['datos/gestionar-curso'] },
                     { label: 'Gestionar docentes', icon: 'pi pi-fw pi-users', routerLink: ['datos/gestionar-docente'] },
-                    { label: 'Gestionar grupos', icon: 'pi pi-fw pi-th-large', routerLink: ['datos/gestionar-grupo'] }
+                    /*{ label: 'Gestionar grupos', icon: 'pi pi-fw pi-th-large', routerLink: ['datos/gestionar-grupo'] }*/
                 ]
             },   
             {
@@ -90,7 +90,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'Reservas',
                 items: [
                     { label: 'Gestionar reserva temporal', icon: 'pi pi-fw pi-id-card', routerLink: ['reservas/gestionar-reserva-temporal'] },
-                    { label: 'Gestionar reserva facultad', icon: 'pi pi-fw pi-window-minimize', routerLink: ['reservas/gestionar-reserva-facultad'] }
+                    /*{ label: 'Gestionar reserva facultad', icon: 'pi pi-fw pi-window-minimize', routerLink: ['reservas/gestionar-reserva-facultad'] }*/
                 ]
             },        
             {

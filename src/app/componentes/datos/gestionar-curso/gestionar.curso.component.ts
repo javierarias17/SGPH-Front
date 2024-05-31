@@ -11,7 +11,8 @@ import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { CursoPlanificacionOutDTO } from '../../dto/curso/out/curso.planificacion.out.dto';
 import { FiltroCursoPlanificacionDTO } from '../../dto/curso/in/filtro.curso.planificacion.dto';
-
+import { Message } from 'primeng/api';
+import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 
 @Component({
     selector: 'app-gestionar-curso',
@@ -64,15 +65,19 @@ export class GestionarCursoComponent {
     cols: any[] = [];
     rowsPerPageOptions = [5, 10, 20];
 
+    public messages: Message[] = null;
+
     //Referencias componentes hijos
     @ViewChild('crearEditarVerCurso') crearEditarVerCurso: CrearEditarVerCursoComponent;
 
     constructor(private messageService: MessageService, 
         private cursoServicio:CursoServicio, private facultadServicio:FacultadServicio,
-        private programaServicio: ProgramaServicio, private asignaturaServicio:AsignaturaServicio) {
+        private programaServicio: ProgramaServicio, private asignaturaServicio:AsignaturaServicio,
+        public periodoAcademicoService:PeriodoAcademicoService) {
     }
 
     public ngOnInit() {   
+        this.consultarPeriodoAcademicoVigente();
         this.filtroCursoPlanificacionDTO.registrosPorPagina = this.registrosPorPagina;    
 
         this.facultadServicio.consultarFacultades().subscribe(
@@ -94,6 +99,7 @@ export class GestionarCursoComponent {
     private consultarCursosPorFiltro(){
         this.cursoServicio.consultarCursosPlanificacionPorFiltro(this.filtroCursoPlanificacionDTO).subscribe(
             (response: any) => {
+            this.consultarPeriodoAcademicoVigente();
             this.listaCursoPlanificacionOutDTO = response.content;
             this.totalRecords= response.totalElements;
             },
@@ -249,5 +255,20 @@ export class GestionarCursoComponent {
 
     public actualizarInformacionCursos():void {
         this.consultarCursosPorFiltro();
+    }
+
+    private consultarPeriodoAcademicoVigente():void{
+        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+            (r: any) => {
+                if(r){
+                    this.messages=null;
+                }else{
+                    this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar cursos si no existe un periodo académico abierto." }];
+                }
+            },
+            (error) => {
+                console.error(error);
+            }
+        );        
     }
 }
