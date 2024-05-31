@@ -175,7 +175,7 @@ export class GestionarEspacioFisicoComponent {
 	
 	/*Inactivar espacio físico*/
 	public inactivarEspacioFisico(espacioFisicoDTO: EspacioFisicoDTO):void {
-        this.mensaje = `¿Está seguro que desea ${espacioFisicoDTO.estado == 'INACTIVO' ? "activar": "inactivar"} el espacio físico ` + this.obtenerNombreCompletoEspacioFisico()
+        this.mensaje = `¿Está seguro que desea ${espacioFisicoDTO.estado == 'INACTIVO' ? "activar": "inactivar"} el espacio físico ` + "?"
         this.idEspacioFisicoSeleccionado = espacioFisicoDTO.idEspacioFisico
 		this.inactivarEspacioFisicoDialog = true;
 	}

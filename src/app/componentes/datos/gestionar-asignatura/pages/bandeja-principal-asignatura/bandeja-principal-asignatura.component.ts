@@ -135,7 +135,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
         this.asignaturaServicio.inactivarAsignatura(asignatura.idAsignatura).subscribe({
           next: (r) => {
             if (r) {
-              this.mensageService.showMessage('success', "Asignatura inactiva");
+              this.mensageService.showMessage('success', `Asignatura ${asignatura.estado == 'ACTIVO'? 'inactivada' : 'activada'}`);
               this.listarAsignaturasBase()
             }  
           },
