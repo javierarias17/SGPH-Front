@@ -77,7 +77,7 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
             height: 'auto',
             width: '800px',
             header: 'Registrar Grupo',
-            closable: false,
+            closable: true,
             data: {
                 lectura: false,
             },

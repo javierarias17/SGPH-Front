@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PeriodoAcademicoOutDTO } from 'src/app/componentes/dto/periodo-academico/periodo-academico-out-dto';
@@ -8,11 +8,10 @@ import { PeriodoAcademicoOutDTO } from 'src/app/componentes/dto/periodo-academic
   templateUrl: './crear-editar-periodo-academico.component.html',
   styleUrls: ['./crear-editar-periodo-academico.component.scss']
 })
-export class CrearEditarPeriodoAcademicoComponent {
+export class CrearEditarPeriodoAcademicoComponent implements OnInit {
 
     public formulario: FormGroup;
     public periodoAcademico: PeriodoAcademicoOutDTO;
-
 
     constructor(private formBuilder: FormBuilder,
          private confirmationService: ConfirmationService, 
@@ -20,39 +19,35 @@ export class CrearEditarPeriodoAcademicoComponent {
 
     public ngOnInit(): void {
         this.inicializarFormulario();
-        this.formulario = this.formBuilder.group({
-            
-        });
     }
 
-
     public asignarDatosFormulario():void{
-        this.fechaInicio().setValue(this.periodoAcademico.fechaInicioPeriodo);
-        this.fechaFin().setValue(this.periodoAcademico.fechaFinPeriodo);
-        this.anioPeriodo().setValue(this.periodoAcademico.anio);
-        this.numeroPeriodo().setValue(this.periodoAcademico.periodo);
+        this.fechaInicioPeriodo().setValue(this.periodoAcademico.fechaInicioPeriodo);
+        this.fechaFinPeriodo().setValue(this.periodoAcademico.fechaFinPeriodo);
+        this.anio().setValue(this.periodoAcademico.anio);
+        this.periodo().setValue(this.periodoAcademico.periodo);
     }
 
     private inicializarFormulario() {
         this.formulario = this.formBuilder.group({
-            fechaInicio: [null, Validators.required],
-            fechaFin: [null, Validators.required],
-            anioPeriodo: [null, Validators.compose([Validators.required, Validators.min(2020), Validators.max(2050)])],
-            numeroPeriodo: [null, Validators.compose([Validators.required, Validators.min(0), Validators.max(2)])]
+            fechaInicioPeriodo: [null, Validators.required],
+            fechaFinPeriodo: [null, Validators.required],
+            anio: [null, Validators.compose([Validators.required, Validators.min(2020), Validators.max(2050)])],
+            periodo: [null, Validators.compose([Validators.required, Validators.min(0), Validators.max(2)])]
         })
     }
 
-    private fechaInicio():FormControl{
-        return this.formulario.get("fechaInicio") as FormControl;
+    public fechaInicioPeriodo():FormControl{
+        return this.formulario.get("fechaInicioPeriodo") as FormControl;
     }
-    private fechaFin():FormControl{
-        return this.formulario.get("fechaFin") as FormControl;
+    public fechaFinPeriodo():FormControl{
+        return this.formulario.get("fechaFinPeriodo") as FormControl;
     }
-    private anioPeriodo():FormControl{
-        return this.formulario.get("anioPeriodo") as FormControl;
+    public anio():FormControl{
+        return this.formulario.get("anio") as FormControl;
     }
-    private numeroPeriodo():FormControl{
-        return this.formulario.get("numeroPeriodo") as FormControl;
+    public periodo():FormControl{
+        return this.formulario.get("periodo") as FormControl;
     }
     
     public onSubmit() {
