@@ -166,9 +166,9 @@
                 Recursos es obligatorio
             </small>
         </div>
-        <div class="p-fluid col-12">
+        <!-- <div class="p-fluid col-12">
             <app-filtro-grupo-espacio-fisico (emitirGrupoSeleccionado) = "getAgrupadoresSeleccionados($event)" [agrupadoresLectura] = "this.agrupadoresLectura" [lectura] = "this.lectura"></app-filtro-grupo-espacio-fisico>
-        </div>
+        </div> -->
     </form>
     <div class="flex justify-content-end" style="width: 100%;">
         <div class="m-1">
@@ -178,7 +178,4 @@
                 (click)="guardar()" *ngIf="!this.lectura"></button>
         </div>
     </div>
-</div>
-<div>
-    {{ this.formulario.value | json}}
 </div>

@@ -43,6 +43,7 @@ export class GestionarEspacioFisicoComponent {
 	public aulaDTOSeleccionado: EspacioFisicoDTO=new EspacioFisicoDTO();   
 	 
 	public inactivarEspacioFisicoDialog: boolean = false;
+    mensaje: string
     idEspacioFisicoSeleccionado: number;
 	constructor(private messageService: MessageService,
         private espacioFisicoServicio:EspacioFisicoServicio,
@@ -173,8 +174,9 @@ export class GestionarEspacioFisicoComponent {
     }
 	
 	/*Inactivar espacio físico*/
-	public inactivarEspacioFisico(idEspacioFisico: number):void {
-        this.idEspacioFisicoSeleccionado = idEspacioFisico
+	public inactivarEspacioFisico(espacioFisicoDTO: EspacioFisicoDTO):void {
+        this.mensaje = `¿Está seguro que desea ${espacioFisicoDTO.estado == 'INACTIVO' ? "activar": "inactivar"} el espacio físico ` + this.obtenerNombreCompletoEspacioFisico()
+        this.idEspacioFisicoSeleccionado = espacioFisicoDTO.idEspacioFisico
 		this.inactivarEspacioFisicoDialog = true;
 	}
 	

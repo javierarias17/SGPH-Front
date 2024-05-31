@@ -40,6 +40,7 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
     this.inicializarFormulario()
     this.obtenerUbicaciones()
     this.obtenerRecursos()
+    this.obtenerTipos()
     this.lectura = this.config.data?.lectura
     if (this.config.data?.idEspacioFisico) {
       this.infoEspacioFisico()
@@ -59,14 +60,13 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   onChangeUbicacion() {
     if (this.idUbicacion().value) {
       this.obtenerEdificios()
-      this.obtenerTipos()
+
     }
   }
   obtenerTipos() {
-    if (this.idUbicacion().value) {
       let ubicaciones: any[] = []
       ubicaciones.push(this.idUbicacion().value)
-      this.espacioServicio.consultarTiposEspaciosFisicosPorUbicaciones(ubicaciones).subscribe(
+      this.espacioServicio.consultarTiposEspaciosFisicos().subscribe(
         (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
             if(lstTipoEspacioFisicoOutDTO.length === 0) {
                 this.lstTipoEspacioFisicoOutDTO=[];
@@ -78,7 +78,6 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
             console.error(error);
         }
         ); 
-    }
   }
   inicializarFormulario() {
     this.formulario = this.fb.group({
@@ -118,7 +117,7 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
     this.ref.close()
   }
   guardar() {
-    if (this.formulario.valid && this.gruposSeleccionados) {
+    if (this.formulario.valid) {
       let espacioSave: EspacioFisicoOutDTO = this.formulario.value
       espacioSave.idEspacioFisico = this.espacio.idEspacioFisico
       espacioSave.saveIdAgrupadores = this.gruposSeleccionados

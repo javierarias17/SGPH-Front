@@ -127,5 +127,9 @@ export class EspacioFisicoServicio {
 		const url = `${environment.url}AdministrarEspacioFisico/activarInactivarEspacioFisicio/${id}`;
         return this.http.get<any>(url);  
 	}
+	public consultarTiposEspaciosFisicos(): Observable<TipoEspacioFisicoOutDTO[]>{
+		const url = `${environment.url}AdministrarEspacioFisico/consultarTiposEspaciosFisicos`;
+        return this.http.get<any>(url);
+    }  
  
 }

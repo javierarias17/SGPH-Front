@@ -112,7 +112,7 @@
                             <span style="margin-right: 10px;"></span>
                             <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarEspacioFisico(espacioFisicoDTO.idEspacioFisico)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="inactivarEspacioFisico(espacioFisicoDTO)"></button>
                         </div>
                     </td>
                 </tr>
@@ -128,7 +128,7 @@
         <p-dialog [(visible)]="inactivarEspacioFisicoDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>¿Está seguro que desea inactivar el espacio físico <b>{{obtenerNombreCompletoEspacioFisico()}}</b>?</span>
+                <span>{{mensaje}}</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="inactivarEspacioFisicoDialog = false"></button>
