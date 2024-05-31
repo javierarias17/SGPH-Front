@@ -90,9 +90,21 @@
 
 
 <div class="flex justify-content-end" style="width: 100%;">
-    <div class="m-1">
-        <button pButton pRipple label="Crear asignatura" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarAsignatura()"></button>
+    <div [class]="totalRecords!==undefined ? 'col-6': 'col-12'">
+        <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
+            <ng-template pTemplate="left">
+            </ng-template>
+            <ng-template pTemplate="right">
+                <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                <button pButton pRipple label="Subir archivo" icon="pi pi-upload" class="p-button-help" (click)="cargarArchivo()"></button>
+                <span style="margin-right: 10px;"></span>
+                <div class="my-0">
+                    <button pButton pRipple label="Crear asignatura" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarAsignatura()"></button>
+                </div>
+            </ng-template>
+        </p-toolbar>  
     </div>
+
 </div>
 
 <p-table [value]='this.asignaturas' responsiveLayout="scroll" styleClass="p-datatable-gridlines" [lazy]="true"
