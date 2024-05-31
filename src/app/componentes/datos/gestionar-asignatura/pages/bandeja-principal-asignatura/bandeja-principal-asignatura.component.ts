@@ -136,7 +136,8 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
           next: (r) => {
             if (r) {
               this.mensageService.showMessage('success', "Asignatura inactiva");
-            }
+              this.listarAsignaturasBase()
+            }  
           },
           error: () => {
             this.mensageService.showMessage('error', "Error al inactivar");

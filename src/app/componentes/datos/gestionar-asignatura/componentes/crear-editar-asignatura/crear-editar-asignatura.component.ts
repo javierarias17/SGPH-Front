@@ -99,7 +99,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
     this.formulario = this.fb.group({
       nombre: [{value: null}, Validators.required],
       codigoAsignatura: [{value: null}, Validators.required],
-      oid: [{value: null}, Validators.required],
+      oid: [{value: null}],
       semestre: [{value: null}, Validators.required],
       pensum: [{value: null}, Validators.required],
       horasSemana: [{value: null}, Validators.required],
