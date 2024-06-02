@@ -104,7 +104,7 @@ export class GenerarReporteSimcaComponent implements OnInit {
           this.base64 = r.archivoBase64
           this.dialogService.open(VisualizadorExcelComponent, {
             height: '700px',
-            width: '80%',
+            width: '95%',
             header: 'Reporte Simca',
             data: {
               base64: this.base64
