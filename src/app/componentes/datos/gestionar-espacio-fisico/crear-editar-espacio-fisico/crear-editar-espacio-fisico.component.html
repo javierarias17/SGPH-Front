@@ -32,10 +32,6 @@
             <label class=" col-12 md:col-2">Capacidad</label>
             <p class="label col-12 md:col-6">{{this.espacio.capacidad}}</p>
         </div>
-        <div class="p-fluid col-12">
-            <app-filtro-grupo-espacio-fisico [agrupadoresLectura] = "this.agrupadoresLectura" [lectura] = "this.lectura"></app-filtro-grupo-espacio-fisico>
-        </div>
-
     </div>
     <form class="grid" *ngIf="!this.lectura" [formGroup]="formulario">
         <div class="p-fluid col sm:col-12 md:col-6">

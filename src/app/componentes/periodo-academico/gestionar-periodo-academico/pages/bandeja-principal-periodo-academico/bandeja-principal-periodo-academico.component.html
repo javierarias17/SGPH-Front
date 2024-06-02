@@ -1,14 +1,18 @@
 <p-toast></p-toast>
 <div class="grid">
     <div class="col-12">
-        <h3>Gestionar periodo académico</h3>
+        <h3>Gestionar Periodo Académico</h3>
         <p>Esta pantalla permite gestionar el periodo académico.</p>
         <hr>
     </div>
 </div>
 <br>
 <br>
-<div class="flex justify-content-end" style="width: 100%;">
+<div *ngIf="this.messages !== null">
+    <p-messages [(value)]="messages" [enableService]="true" [closable]="false" />
+</div>
+
+<div class="flex justify-content-end" style="width: 100%;" *ngIf="messages!==null">
     <div class="m-1">
         <button pButton pRipple label="Registrar Periodo Académico" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarPeriodoAcademico()"></button>
     </div>
@@ -35,23 +39,26 @@
             </th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-obj>
+    <ng-template pTemplate="body" let-periodoAcademicoOutDTO>
         <tr>
-            <td style="width: 20%;">
-                {{obj.anio}}-{{obj.periodo}}
+            <td style="width: 20%;" [ngStyle]="{'font-weight': periodoAcademicoOutDTO.estado === 'ABIERTO' ? 'bold' : 'normal'}">
+                {{periodoAcademicoOutDTO.anio}}-{{periodoAcademicoOutDTO.periodo}}
             </td>
-            <td style="width: 20%;">
-                {{obj.fechaInicioPeriodo | date:'dd/MM/yyyy'}}
+            <td style="width: 20%;" [ngStyle]="{'font-weight': periodoAcademicoOutDTO.estado === 'ABIERTO' ? 'bold' : 'normal'}">
+                {{periodoAcademicoOutDTO.fechaInicioPeriodo | date:'dd/MMM/yyyy'}}
             </td>
-            <td style="width: 20%;">
-                {{obj.fechaFinPeriodo | date:'dd/MM/yyyy'}}
+            <td style="width: 20%;" [ngStyle]="{'font-weight': periodoAcademicoOutDTO.estado === 'ABIERTO' ? 'bold' : 'normal'}">
+                {{periodoAcademicoOutDTO.fechaFinPeriodo | date:'dd/MMM/yyyy'}}
             </td>
-            <td style="width: 20%;">
-                {{obj.estado}}
+            <td style="width: 20%;" [ngStyle]="{'font-weight': periodoAcademicoOutDTO.estado === 'ABIERTO' ? 'bold' : 'normal'}">
+                {{periodoAcademicoOutDTO.estado}}
             </td>
             <td>
-                <div class="flex">
-                    <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar periodo académico" class="p-button-rounded p-button-secondary"  tooltipPosition="top" (click)="editarGrupo(obj)"></button>
+                <div class="flex" *ngIf="periodoAcademicoOutDTO.estado==='ABIERTO'">
+                    <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar periodo académico" class="p-button-rounded p-button-secondary"  tooltipPosition="top" (click)="editarPeriodoAcademico(periodoAcademicoOutDTO)"></button>
+                </div>
+                <div class="flex" *ngIf="!(periodoAcademicoOutDTO.estado==='ABIERTO')">
+                    N/A
                 </div>
             </td>
         </tr>

@@ -190,16 +190,32 @@
 
             <p-pickList [source]="listaFranjaHorariaDisponibles" [target]="listaFranjaHorariaAsignadas" sourceHeader="Franjas disponibles"
                 targetHeader="Franjas asignadas" [dragdrop]="false" [responsive]="true" [sourceStyle]="{'height':'250px'}"
-                [targetStyle]="{'height':'250px'}" [showSourceControls]="false" [showTargetControls]="false">
+                [targetStyle]="{'height':'250px'}" [showSourceControls]="false" [showTargetControls]="false"
+                (onMoveToSource)="onMoveToSource($event)">
                 <ng-template let-franjaHoraria pTemplate="item">
                     <div> 
                         <span *ngIf="franjaHoraria.check">
-                            <i class="pi pi-check" style="color: green; font-size: 1.2rem;"></i>
+                            <i class="pi pi-check" style="color: green; font-size: 1.2rem;font-weight: bold;"></i>
                         </span>
                         {{obtenerFormatoFranjaPresentacion(franjaHoraria.franjaHorariaCursoDTO)}}
                     </div>                    
                 </ng-template>
             </p-pickList>
+            <!--<p-pickList [source]="listaFranjaHorariaDisponibles" [target]="listaFranjaHorariaAsignadas" sourceHeader="Franjas disponibles"
+                targetHeader="Franjas asignadas" [dragdrop]="false" [responsive]="true" [sourceStyle]="{'height':'250px'}"
+                [targetStyle]="{'height':'250px'}" [showSourceControls]="false" [showTargetControls]="false">
+                <ng-template let-franjaHoraria pTemplate="item">
+                    <div *ngIf="franjaHoraria in listaFranjaHorariaAsignadas" (contextmenu)="abrirDialogo($event, franjaHoraria)"> 
+                        <span *ngIf="franjaHoraria.check">
+                            <i class="pi pi-check" style="color: green; font-size: 1.2rem;font-weight: bold;"></i>
+                        </span>
+                        {{obtenerFormatoFranjaPresentacion(franjaHoraria.franjaHorariaCursoDTO)}}
+                        <span *ngIf="franjaHoraria.checkSecundario">
+                            <i class="pi pi-plus" style="color: rgb(7, 7, 7); font-size: 1.2rem;font-weight: bold;"></i>
+                        </span>
+                    </div>                    
+                </ng-template>
+            </p-pickList>-->
         </div>
 
     </ng-template>
@@ -223,5 +239,20 @@
     <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Aceptar"
             (click)=" mostrarErrorModal = false"></button>
+    </ng-template>
+</p-dialog>
+
+<!-- TODO: Dialogo para la opción de espacio físico secundario -->
+<p-dialog [(visible)]="mostrarDialogo" header="Establecer como secundario" [modal]="true" [style]="{ width: '450px' }">
+    <!-- Contenido del diálogo -->
+    <div *ngIf="itemSeleccionado">
+        <p>¿Quiere asignar como espacio físico secundario?</p>
+        <p>{{itemSeleccionado | json}}</p>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Aceptar"
+            (click)="mostrarDialogo = false"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Cancelar"
+            (click)="mostrarDialogo = false"></button>
     </ng-template>
 </p-dialog>

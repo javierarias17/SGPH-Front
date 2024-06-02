@@ -1,63 +1,85 @@
-<form [formGroup]="formulario" (ngSubmit)="onSubmit()">
-    <div class="p-fluid p-formgrid grid">
-        <div class="field col-12 md:col-6">
-            <label>Fecha inicio</label>
-            <p-calendar 
-            [showIcon]="true" 
-            inputId="icon"
-            formControlName="fechaInicioPeriodo"></p-calendar>
-            <!--<div class="p-error block" *ngIf="formulario.get('fechaInicio').invalid && formulario.get('fechaInicio').touched">
-                <div *ngIf="formulario.get('fechaInicio').errors.required">La fecha de inicio es requerida</div>
-            </div>-->
+<div class="flex flex-column">
+    <br>
+    <form [formGroup]="formulario">
+        <div class="p-fluid p-formgrid grid">
+            <div class="field col-12 md:col-6">
+                <label>Fecha inicio</label>
+                <p-calendar
+                appendTo = "body"
+                [showIcon]="true" 
+                inputId="icon"
+                formControlName="fechaInicioPeriodo"
+                dateFormat="dd/MM/yy"
+                (onSelect)="validarCamposBackendPeriodoAcademico()">
+                </p-calendar>
+                <div class="p-error block" *ngIf="this.formulario.get('fechaInicioPeriodo').invalid && this.formulario.get('fechaInicioPeriodo').touched">
+                    <div *ngIf="this.formulario.get('fechaInicioPeriodo').errors.required">La fecha de inicio es requerida</div>
+                    <div *ngIf="this.formulario.get('fechaInicioPeriodo').errors?.FechaInicioGreaterThanUltimaFechaFin">{{ this.formulario.get('fechaInicioPeriodo').errors?.FechaInicioGreaterThanUltimaFechaFin }}</div>
+                </div>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label>Fecha fin</label>
+                <p-calendar 
+                appendTo = "body"
+                [showIcon]="true" 
+                inputId="icon"
+                formControlName="fechaFinPeriodo"
+                dateFormat="dd/MM/yy"
+                (onSelect)="validarCamposBackendPeriodoAcademico()"></p-calendar>
+                <div class="p-error block" *ngIf="this.formulario.get('fechaFinPeriodo').invalid && this.formulario.get('fechaFinPeriodo').touched">
+                    <div *ngIf="this.formulario.get('fechaFinPeriodo').errors.required">La fecha de fin es requerida</div>
+                    <div *ngIf="this.formulario.get('fechaFinPeriodo').errors?.FechaFinGreaterThanFechaInicio">{{ this.formulario.get('fechaFinPeriodo').errors?.FechaFinGreaterThanFechaInicio }}</div>
+                </div>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label>Año</label>
+                <p-inputNumber
+                    [placeholder]="'Ingrese año'"
+                    [step]="1"
+                    [showButtons]="true"
+                    [min]="2020"
+                    [max]="2050"
+                    [showClear]="false"
+                    [disabled]="false"
+                    formControlName="anio"
+                    [required]="true"
+                    (ngModelChange)="validarCamposBackendPeriodoAcademico()">
+                </p-inputNumber>
+                <div class="p-error block" *ngIf="this.formulario.get('anio').invalid && this.formulario.get('anio').touched">
+                    <div *ngIf="this.formulario.get('anio').errors.required">El año es requerido</div>
+                    <div *ngIf="this.formulario.get('anio').errors.min || this.formulario.get('anio').errors.max">El año debe estar entre 2020 y 2050</div>
+                    <div *ngIf="this.formulario.get('anio').errors?.ExistsByAnioAndPeriodo">{{ this.formulario.get('anio').errors?.ExistsByAnioAndPeriodo }}</div>
+                </div>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label>Periodo</label>
+                <p-inputNumber
+                    [placeholder]="'Ingrese periodo'"
+                    [step]="1"
+                    [showButtons]="true"
+                    [min]="1"
+                    [max]="2"
+                    [showClear]="false"
+                    [disabled]="false"
+                    formControlName="periodo"
+                    [required]="true"
+                    (ngModelChange)="validarCamposBackendPeriodoAcademico()">
+                </p-inputNumber>
+                <div class="p-error block" *ngIf="this.formulario.get('periodo').invalid && this.formulario.get('periodo').touched">
+                    <div *ngIf="this.formulario.get('periodo').errors.required">El número de periodo es requerido</div>
+                    <div *ngIf="this.formulario.get('periodo').errors.min || formulario.get('periodo').errors.max">El número de periodo debe estar entre 1 y 2</div>
+                </div>
+            </div>                                      
         </div>
-        <div class="field col-12 md:col-6">
-            <label>Fecha fin</label>
-            <p-calendar 
-            [showIcon]="true" 
-            inputId="icon"
-            formControlName="fechaFinPeriodo"></p-calendar>
-            <!--<div class="p-error block" *ngIf="formulario.get('fechaFin').invalid && formulario.get('fechaFin').touched">
-                <div *ngIf="formulario.get('fechaFin').errors.required">La fecha de fin es requerida</div>
-            </div>-->
+    </form>
+    <br>
+    <div class="flex justify-content-end" style="width: 100%;">
+        <div class="m-1">
+            <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text"
+            (click)="salir()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-plus" class="p-button-text ml-2"
+                (click)="validarYGuardarPeriodoAcademico()"></button>
         </div>
-        <div class="field col-12 md:col-6">
-            <label>Año</label>
-            <p-inputNumber
-                [placeholder]="'Ingrese año'"
-                [step]="1"
-                [showButtons]="true"
-                [min]="2020"
-                [max]="2050"
-                [showClear]="false"
-                [disabled]="false"
-                formControlName="anio"
-                [required]="true">
-            </p-inputNumber>
-            <!--<div class="p-error block" *ngIf="formulario.get('anioPeriodo').invalid && formulario.get('anioPeriodo').touched">
-                <div *ngIf="formulario.get('anioPeriodo').errors.required">El año es requerido</div>
-                <div *ngIf="formulario.get('anioPeriodo').errors.min || formulario.get('anioPeriodo').errors.max">El año debe estar entre 2020 y 2050</div>
-            </div>-->
-        </div>
-        <div class="field col-12 md:col-6">
-            <label>Periodo</label>
-            <p-inputNumber
-                [placeholder]="'Ingrese periodo'"
-                [step]="1"
-                [showButtons]="true"
-                [min]="0"
-                [max]="2"
-                [showClear]="false"
-                [disabled]="false"
-                formControlName="periodo"
-                [required]="true">
-            </p-inputNumber>
-            <!--<div class="p-error block" *ngIf="formulario.get('numeroPeriodo').invalid && formulario.get('numeroPeriodo').touched">
-                <div *ngIf="formulario.get('numeroPeriodo').errors.required">El número de periodo es requerido</div>
-                <div *ngIf="formulario.get('numeroPeriodo').errors.min || formulario.get('numeroPeriodo').errors.max">El número de periodo debe estar entre 0 y 2</div>
-            </div>-->
-        </div>                
-        <div class="field col-12 md:col-3 mt-3" style="margin:auto" >
-            <button type="submit" pButton pRipple label="Crear periodo"></button>
-        </div>                                
     </div>
-</form>
+</div>
+

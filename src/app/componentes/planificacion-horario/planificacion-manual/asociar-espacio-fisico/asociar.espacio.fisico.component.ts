@@ -17,6 +17,7 @@ import { UbicacionOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/ubic
 
 interface FranjaHorariaItem {
     check: boolean;
+    checkSecundario: boolean;
     franjaHorariaCursoDTO: FranjaHorariaCursoDTO;
 }
 @Component({
@@ -77,6 +78,18 @@ export class AsociarEspacioFisicoComponent {
         private planificacionManualServicio: PlanificacionManualServicio) {
     }
 
+    /*TODO. Avance para espacios fisicos secundarios*/
+    mostrarDialogo: boolean = false;
+    itemSeleccionado: any;
+
+    abrirDialogo(event: MouseEvent, item: any) {
+        event.preventDefault(); // Evitar el menú contextual del navegador
+        if (this.listaFranjaHorariaAsignadas.includes(item)) {
+            this.itemSeleccionado = item;
+            this.mostrarDialogo = true;
+        }
+    }
+    
     public ngOnInit() {   
     
         this.listaHorasInicio = [
@@ -127,7 +140,7 @@ export class AsociarEspacioFisicoComponent {
                     this.listaFranjaHorariaDisponibles = [];
                     this.mensajeResultadoBusqueda= "No hay franjas horarias disponibles.";
                 }else{
-                    this.listaFranjaHorariaDisponibles = lstFranjaHorariaCursoDTO.map((franjaHorariaCursoDTO: FranjaHorariaCursoDTO) => ({check:false, franjaHorariaCursoDTO:franjaHorariaCursoDTO}));
+                    this.listaFranjaHorariaDisponibles = lstFranjaHorariaCursoDTO.map((franjaHorariaCursoDTO: FranjaHorariaCursoDTO) => ({check:false, franjaHorariaCursoDTO:franjaHorariaCursoDTO, checkSecundario:false}));
                     this.mensajeResultadoBusqueda= "Franjas encontradas: "+this.listaFranjaHorariaDisponibles.length;
                 } 
             },
@@ -220,7 +233,7 @@ export class AsociarEspacioFisicoComponent {
                 if(lstFranjaHorariaCursoDTO.length === 0){
                     this.listaFranjaHorariaAsignadas = [];
                 }else{
-                    this.listaFranjaHorariaAsignadas = lstFranjaHorariaCursoDTO.map((franjaHorariaCursoDTO: FranjaHorariaCursoDTO) => ({check:true, franjaHorariaCursoDTO:franjaHorariaCursoDTO}));
+                    this.listaFranjaHorariaAsignadas = lstFranjaHorariaCursoDTO.map((franjaHorariaCursoDTO: FranjaHorariaCursoDTO) => ({check:true, franjaHorariaCursoDTO:franjaHorariaCursoDTO, checkSecundario:false}));
                 }
                 this.modalClosedEmitter.emit(); 
             },
@@ -355,5 +368,15 @@ export class AsociarEspacioFisicoComponent {
             this.mensajeModal = httpErrorResponse.error.message;
         }
         );
+    }
+
+    /**
+     * Método en encargado de establecer los atributos check en false de la 
+     * lista izquierda del picklist cuando un item de la derecha se pasa hacia la izquierda.
+     */
+    public onMoveToSource(event: any) {
+        event.items.forEach((item: any) => {
+            item.check = false;
+        });
     }
 }
