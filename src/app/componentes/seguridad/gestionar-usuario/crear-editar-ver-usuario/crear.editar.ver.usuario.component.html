@@ -5,7 +5,7 @@
             <!--Información personal-->
             <div class="p-fluid col sm:col-12 md:col-12">
                 <h5>Información personal</h5>
-            </div>      
+            </div>     
                 
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Tipo identificación</label>
@@ -117,7 +117,8 @@
                     [showClear]="true"
                     [disabled]="listaRoles.length === 0"
                     name="roles"
-                    (ngModelChange)="onRolesChange()">
+                    (ngModelChange)="onRolesChange()"
+                    appendTo = "body">
                 <ng-template let-rol pTemplate="item">
                     <div class="flex align-items-center gap-2">
                         <div>{{ rol.nombre}}</div>
@@ -139,7 +140,8 @@
                     [filter]="true"
                     [showClear]="true"
                     (ngModelChange)="onFacultadesChange()"
-                    name="facultad" >
+                    name="facultad"
+                    appendTo = "body" >
                     <ng-template let-facultad pTemplate="item">
                         <div class="flex align-items-center gap-2">
                             <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
@@ -160,7 +162,8 @@
                     [filter]="false"
                     [showClear]="true"
                     [disabled]="listaProgramas.length === 0" 
-                    name="programas">
+                    name="programas"
+                    appendTo = "body">
                 <ng-template let-programa pTemplate="item">
                     <div class="flex align-items-center gap-2">
                         <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>

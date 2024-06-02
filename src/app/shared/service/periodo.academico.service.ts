@@ -4,6 +4,7 @@ import { Observable, Subject, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PeriodoAcademicoOutDTO } from '../model/periodo.academico.out.';
 import { FiltroBase } from 'src/app/componentes/dto/filtro-base';
+import { PeriodoAcademicoInDTO } from 'src/app/componentes/periodo-academico/gestionar-periodo-academico/model/periodo-academico-in-dto';
 
 
 @Injectable()
@@ -13,6 +14,19 @@ export class PeriodoAcademicoService{
 
     urlAgrupador: string = "AdministrarPeriodoAcademico"
     constructor(private http: HttpClient) {
+    }
+
+    /**
+	 * Método encargado de guardar o actualizar un periodo académico <br>
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @param periodoAcademicoInDTO
+	 * @return
+	 */
+     public guardarPeriodoAcademico(periodoAcademicoInDTO:PeriodoAcademicoInDTO): Observable<any>{
+        const url = `${environment.url}${this.urlAgrupador}/guardarPeriodoAcademico`;
+        return this.http.post<any>(url, periodoAcademicoInDTO);
     }
     
     /**

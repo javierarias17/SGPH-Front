@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent, Message } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
 import { PeriodoAcademicoOutDTO } from 'src/app/componentes/dto/periodo-academico/periodo-academico-out-dto';
@@ -21,15 +21,20 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
     totalRecords: number;
     cargando: boolean;
     filtro: any;
+
+    public messages: Message[] = null;
+
+
     constructor(public dialog: DialogService, 
         private periodoAcademicoService: PeriodoAcademicoService
     ) {}
     
     ngOnInit(): void {
+        this.consultarPeriodoAcademicoVigente();
     }
 
     
-    listarPeriodosAcademicosBase() {
+    private listarPeriodosAcademicosBase() {
         this.cargando = true;
         this.filtro = {
             pagina: 0,
@@ -43,7 +48,7 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
     }
 
 
-    listarPeriodosAcademicos($event: LazyLoadEvent) {        
+    public listarPeriodosAcademicos($event: LazyLoadEvent) {        
         this.filtro = {
             pagina: Math.floor($event.first / $event.rows),
             registrosPorPagina: $event.rows,
@@ -56,27 +61,28 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
         });        
     }
 
-    /*editarGrupo(grupo: AgrupadorEspacioFiscioDTO) {
-        const ref = this.dialog.open(CrearEditarGrupoComponent, {
+    public editarPeriodoAcademico(periodoAcademicoOutDTO: PeriodoAcademicoOutDTO) {
+        const ref = this.dialog.open(CrearEditarPeriodoAcademicoComponent, {
             height: 'auto',
             width: '800px',
-            header: 'Editar Grupo',
+            header: 'Editar Periodo Académico',
             closable: false,
             data: {
-                grupo: grupo,
+                periodoAcademicoOutDTO: periodoAcademicoOutDTO,
+                lectura: false,
             },
         });
         ref.onClose.subscribe((r) => {
-            this.listarGruposBase();
+            this.listarPeriodosAcademicosBase();
         });
-    }*/
-
+        
+    }
    
     public registrarPeriodoAcademico() {
         const ref = this.dialog.open(CrearEditarPeriodoAcademicoComponent, {
             height: 'auto',
             width: '800px',
-            header: 'Registrar Grupo',
+            header: 'Registrar Periodo Académico',
             closable: true,
             data: {
                 lectura: false,
@@ -85,5 +91,20 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
         ref.onClose.subscribe((r) => {
             this.listarPeriodosAcademicosBase();
         });
+    }
+
+    private consultarPeriodoAcademicoVigente():void{
+        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+            (r: any) => {
+                if(r){
+                    this.messages=null;
+                }else{
+                    this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"Cree un nuevo periodo académico para realizar la planificación de horarios" }];
+                }
+            },
+            (error) => {
+                console.error(error);
+            }
+        );        
     }
 }
