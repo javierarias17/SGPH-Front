@@ -5,11 +5,13 @@ import { SharedService } from './service/shared.service';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { ShowMessageService } from './service/show-message.service';
 import { MessageService } from 'primeng/api';
+import { VisualizadorExcelComponent } from './components/visualizador-excel/visualizador-excel.component';
 
 
 @NgModule({
   declarations: [
     FiltroGrupoEspacioFisicoComponent,
+    VisualizadorExcelComponent,
   ],
   imports: [
     CommonModule,

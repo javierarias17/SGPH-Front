@@ -29,6 +29,10 @@ import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bande
 import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/bandeja-reporte-espacio-fisico.component';
 import { BandejaPrincipalPeriodoAcademicoComponent } from './periodo-academico/gestionar-periodo-academico/pages/bandeja-principal-periodo-academico/bandeja-principal-periodo-academico.component';
 import { GestionarPeriodoAcademicoModule } from './periodo-academico/gestionar-periodo-academico/gestionar-periodo-academico.module';
+import { ProgramaServicio } from './servicios/programa.servicio';
+import { FacultadServicio } from './servicios/facultad.servicio';
+import { SharedService } from '../shared/service/shared.service';
+import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
 
 
 @NgModule({
@@ -65,6 +69,6 @@ import { GestionarPeriodoAcademicoModule } from './periodo-academico/gestionar-p
 		SharedModule
 		
 	],
-	providers: [EspacioFisicoServicio]
+	providers: [EspacioFisicoServicio, ProgramaServicio, FacultadServicio, SharedService, PeriodoAcademicoService]
 })
 export class ComponentesModule { }

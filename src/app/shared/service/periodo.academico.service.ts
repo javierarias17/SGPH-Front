@@ -7,7 +7,7 @@ import { FiltroBase } from 'src/app/componentes/dto/filtro-base';
 
 
 @Injectable()
-export class PeriodoAcademicoService{
+export class PeriodoAcademicoService {
 
     public subject =new Subject<any>;
 

@@ -12,6 +12,7 @@ export class SharedService {
 
   urlAgrupador: string = "AdministrarEspacioFisico"
   urlFacultad: string = "AdministrarFacultad"
+  urlReporte: string = "reporte";
   constructor(private http: HttpClient) { }
 
   public obtenerAgrupadorEspacioFisico(ídFacultades: number[]): Observable<AgrupadorEspacioFiscioDTO[]> {
@@ -23,5 +24,9 @@ export class SharedService {
   public consultarFacultades(): Observable<FacultadOutDTO[]>{
     const url = `${environment.url}${this.urlFacultad}/consultarFacultades`;
     return this.http.get<FacultadOutDTO[]>(url);
-}  
+  }
+  public obtenerReporteSimca(filtro: any): Observable<any> {
+    const url = `${environment.url}${this.urlReporte}/simca`;
+    return this.http.post<any>(url, filtro);
+  }  
 }
