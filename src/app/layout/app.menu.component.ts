@@ -74,7 +74,8 @@ export class AppMenuComponent implements OnInit {
                 label: 'Planificación Horario',
                 items: [
                     { label: 'Planificación manual', icon: 'pi pi-fw pi-calendar', routerLink: ['planificacion-horario/planificacion-manual'] },
-                    { label: 'Planificación basada en semestre anterior', icon: 'pi pi-fw pi-calendar-times', routerLink: ['planificacion-horario/planificacion-semestre-anterior'] },
+                    { label: 'Planificación basada en semestre anterior', icon: 'pi pi-fw pi-calendar-plus', routerLink: ['planificacion-horario/planificacion-semestre-anterior'] },
+                    { label: 'Eliminar horario por programa', icon: 'pi pi-fw pi-calendar-minus', routerLink: ['planificacion-horario/planificacion-semestre-anterior'] },
                     { label: 'Gestionar grupos', icon: 'pi pi-fw pi-th-large', routerLink: ['planificacion-horario/gestionar-grupos'] }
                 ]
             },   
