@@ -18,6 +18,7 @@ import { BandejaPrincipalPeriodoAcademicoComponent } from './pages/bandeja-princ
 import { PrimeNgModule } from 'src/app/prime-ng/prime-ng.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AutoFocusModule } from 'primeng/autofocus';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MessageModule,
     ToastModule,
     PrimeNgModule,
-    InputNumberModule 
+    InputNumberModule,
+    AutoFocusModule
   ]
 })
 export class GestionarPeriodoAcademicoModule { }

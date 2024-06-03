@@ -1,26 +1,28 @@
-
-    <p-table 
-          [value]="data" 
-          responsiveLayout="scroll" 
-          styleClass="p-datatable-gridlines"
-          [paginator]="true" [rows]="10"
-          [tableStyle]="{ 'min-height': '600px' }"
-     >
-      <ng-template pTemplate="header">
-          <tr>
-            <th *ngFor="let header of headers">{{ header }}</th>
-          </tr>
-        </ng-template>
-      <ng-template pTemplate="body" let-rowData>
+<p-table 
+    [value]="data" 
+    responsiveLayout="scroll" 
+    styleClass="p-datatable-gridlines"
+    [paginator]="true" 
+    [rows]="150"
+    [tableStyle]="{ 'min-height': '600px' }"
+    [scrollable]="true" 
+    scrollHeight="70vh" 
+>
+    <ng-template pTemplate="header">
         <tr>
-          <td *ngFor="let cell of rowData">{{ cell }}</td>
+            <th *ngFor="let header of headers" [ngStyle]="{'white-space': 'nowrap'}">{{ header }}</th>
         </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData>
+        <tr>
+            <td *ngFor="let cell of rowData" [ngStyle]="{'white-space': 'nowrap'}">{{ cell }}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
         <tr>
             <td colspan="15">
                 No hay registros
             </td>
         </tr>
     </ng-template>
-    </p-table>
+</p-table>

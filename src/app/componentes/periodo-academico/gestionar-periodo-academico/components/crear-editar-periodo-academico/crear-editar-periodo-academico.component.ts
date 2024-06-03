@@ -129,14 +129,11 @@ export class CrearEditarPeriodoAcademicoComponent implements OnInit  {
             this.guardarPeriodoAcademico(true);
         }
 
-
         if( this.fechaFinPeriodoAntes != this.fechaFinPeriodo().value ?this.fechaFinPeriodo().value.toString():null ){
             this.periodoAcademicoInDTO.fechaFinPeriodo = this.fechaFinPeriodo().value ?this.fechaFinPeriodo().value:null;
             this.fechaFinPeriodoAntes =this.periodoAcademicoInDTO.fechaFinPeriodo;
             this.guardarPeriodoAcademico(true);
         }
-
-
     }
 
     public validarYGuardarPeriodoAcademico() {
