@@ -6,7 +6,11 @@
     [rows]="150"
     [tableStyle]="{ 'min-height': '600px' }"
     [scrollable]="true" 
-    scrollHeight="70vh" 
+    scrollHeight="70vh"
+    selectionMode="single" 
+    [selection]="selectedRow"
+    [metaKeySelection]="true" 
+    (onRowSelect)="onRowSelect($event)"
 >
     <ng-template pTemplate="header">
         <tr>
@@ -14,7 +18,7 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData>
-        <tr>
+        <tr [pSelectableRow]="rowData">
             <td *ngFor="let cell of rowData" [ngStyle]="{'white-space': 'nowrap'}">{{ cell }}</td>
         </tr>
     </ng-template>

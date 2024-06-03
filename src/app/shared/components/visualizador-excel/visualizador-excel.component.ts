@@ -11,9 +11,15 @@ export class VisualizadorExcelComponent implements OnInit {
   data: any[][] = [];
   base64: string
   headers: string[] = [];
+  selectedRow: any;
   constructor(private config: DynamicDialogConfig) {
 
   }
+
+  onRowSelect(event: any) {
+    this.selectedRow = event.data;
+  }
+
   ngOnInit(): void {
     this.base64 = this.config.data.base64
     this.processDataFromBase64(this.base64);
