@@ -18,7 +18,6 @@ import { PeriodoAcademicoOutDTO } from '../../dto/periodo-academico/periodo-acad
 export class GenerarReporteSimcaComponent implements OnInit {
 
   formulario: FormGroup
-  listaPeriodo: string[] = ["2023-01", "2023-02"];
   listaProgramas: ProgramaOutDTO[]
   base64: string
   public lstFacultadOutDTO: FacultadOutDTO[] = [];

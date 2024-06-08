@@ -1,0 +1,68 @@
+<div class="grid">
+    <div class="col-12">
+        <h3>Eliminar horario por programa</h3>
+        <p>Esta pantalla permite la eliminación completa del horario para un programa</p>
+        <hr>
+        <br>
+        <br>
+        <form class="grid" [formGroup]="formulario">
+            <div class="p-fluid col sm:col-12 md:col-3">
+                <label class="required">Facultad</label>
+                <p-dropdown [placeholder]="' '" [ngClass]="{
+                                'ng-invalid ng-dirty':
+                                    this.idFacultad().invalid &&
+                                    this.idFacultad().touched
+                            }" [options]="lstFacultadOutDTO" optionValue="idFacultad" optionLabel="abreviatura"
+                    formControlName="idFacultad" [showClear]="true" appendTo="body" (ngModelChange)="onFacultadChange()">
+                    <ng-template let-facultad pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error block fade-in" *ngIf="this.idFacultad().invalid &&
+                                    (this.idFacultad().touched)">
+                    Facultad es obligatorio
+                </small>
+            </div>
+            <div class="p-fluid col sm:col-12 md:col-3">
+                <label class="required">Programa</label>
+                <p-dropdown [placeholder]="' '" [options]="listaProgramas" optionValue="idPrograma"
+                    optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
+                    [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                this.idPrograma().invalid &&
+                                this.idPrograma().touched
+                        }">
+                    <ng-template let-programa pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error block fade-in" *ngIf="this.idPrograma().invalid &&
+                                    (this.idPrograma().touched)">
+                    Programa es obligatorio
+                </small>
+            </div>
+        </form>
+
+
+        <div class="flex justify-content-start" style="width: 100%;">
+            <div class="m-1">
+                <button pButton pRipple icon="pi pi-trash" class="p-button p-button-danger" label="Eliminar horario"
+                    [disabled]="isLoading" (click)="eliminar()">
+                    <ng-container *ngIf="isLoading">
+                        <i class="pi pi-spin pi-spinner"></i>
+                    </ng-container>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- p-toast para mensajes -->
+ <p-toast></p-toast>
+
+ <!-- Modal de confirmación -->
+<p-confirmDialog></p-confirmDialog>

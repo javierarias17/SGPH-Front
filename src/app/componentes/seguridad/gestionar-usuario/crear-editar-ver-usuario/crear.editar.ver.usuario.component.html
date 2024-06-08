@@ -18,6 +18,9 @@
                     placeholder="Seleccione tipo de identificación"
                     (ngModelChange)="onTipoIdentificacionChange()">
                 </p-dropdown>
+                <div class="p-error block" *ngIf="this.formulario.get('idTipoIdentificacion').invalid && this.formulario.get('idTipoIdentificacion').touched">
+                    <div *ngIf="this.formulario.get('idTipoIdentificacion').errors.required">El tipo de identificación es requerido</div>            
+                </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Número identificación</label>
@@ -26,51 +29,55 @@
                 name="numeroIdentificacion"
                 placeholder="Ingrese número de identificación"
                 (blur)="onNumeroIdentificacionBlur()">
+                <div class="p-error block" *ngIf="this.formulario.get('numeroIdentificacion').invalid && this.formulario.get('numeroIdentificacion').touched">
+                    <div *ngIf="this.formulario.get('numeroIdentificacion').errors.required">El numero de identificación es requerido</div>            
+                </div>
             </div> 
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Primer nombre</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.primerNombre" 
                 name="primerNombre"
-                placeholder="Ingrese primer nombre"
-                [disabled]="this.esPersonaExistente"
-                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
+                placeholder="Ingrese primer nombre">
+                <div class="p-error block" *ngIf="this.formulario.get('primerNombre').invalid && this.formulario.get('primerNombre').touched">
+                    <div *ngIf="this.formulario.get('primerNombre').errors.required">El primer nombre es requerido</div>            
+                </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label>Segundo nombre</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.segundoNombre" 
                 name="segundoNombre"
-                placeholder="Ingrese segundo nombre"
-                [disabled]="this.esPersonaExistente"
-                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
+                placeholder="Ingrese segundo nombre">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Primer apellido</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.primerApellido" 
                 name="primerApellido"
-                placeholder="Ingrese primer apellido"
-                [disabled]="this.esPersonaExistente"
-                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
+                placeholder="Ingrese primer apellido">
+                <div class="p-error block" *ngIf="this.formulario.get('primerApellido').invalid && this.formulario.get('primerApellido').touched">
+                    <div *ngIf="this.formulario.get('primerApellido').errors.required">El primer apellido es requerido</div>            
+                </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label>Segundo apellido</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.segundoApellido" 
                 name="segundoApellido"
-                placeholder="Ingrese segundo apellido"
-                [disabled]="this.esPersonaExistente"
-                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
+                placeholder="Ingrese segundo apellido">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Correo electrónico</label>
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.email" 
                 name="email"
-                placeholder="Ingrese correo electrónico"
-                [disabled]="this.esPersonaExistente"
-                [style.opacity]="this.esPersonaExistente ? '0.6' : ''">
+                placeholder="Ingrese correo electrónico"          
+                (ngModelChange)="inputsChangeCorreo()"
+                >
+                <div class="p-error block" *ngIf="this.formulario.get('email').invalid && this.formulario.get('email').touched">
+                    <div *ngIf="this.formulario.get('email').errors.required">El email es requerido</div>            
+                </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-12">
                 <h5>Información de usuario</h5>
@@ -80,7 +87,11 @@
                 <input type="text" class="p-inputtext" 
                 [(ngModel)]="usuarioInDTO.nombreUsuario" 
                 name="nombreUsuario"
-                placeholder="Ingrese nombre de usuario">
+                [disabled]="true"
+                [style.opacity]="'0.6'">
+                <div class="p-error block" *ngIf="this.formulario.get('nombreUsuario').invalid && this.formulario.get('nombreUsuario').touched">
+                    <div *ngIf="this.formulario.get('nombreUsuario').errors.required">El nombreUsuario es requerido</div>            
+                </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Contraseña</label>
@@ -88,6 +99,9 @@
                 [(ngModel)]="usuarioInDTO.password" 
                 placeholder="Ingrese contraseña"
                 name="password">
+                <div class="p-error block" *ngIf="this.formulario.get('password').invalid && this.formulario.get('password').touched">
+                    <div *ngIf="this.formulario.get('password').errors.required">El password es requerido</div>            
+                </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Estado</label>
@@ -99,6 +113,9 @@
                     placeholder="Seleccione estado usuario"
                     name="estado">
                 </p-dropdown>
+                <div class="p-error block" *ngIf="this.formulario.get('estado').invalid && this.formulario.get('estado').touched">
+                    <div *ngIf="this.formulario.get('estado').errors.required">El estado requerido</div>            
+                </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-12">
                 <h5>Asignación de roles y permisos</h5>
@@ -125,6 +142,9 @@
                     </div>
                 </ng-template>
                 </p-multiSelect>
+                <div class="p-error block" *ngIf="this.formulario.get('lstIdRol').invalid && this.formulario.get('lstIdRol').touched">
+                    <div *ngIf="this.formulario.get('lstIdRol').errors.required">El rol es requerido</div>            
+                </div>
             </div>
             <!--Selección programas a gestionar-->   
             <div class="p-fluid col sm:col-12 md:col-6" *ngIf="esValidoGestionarProgramas">
@@ -248,6 +268,6 @@
         <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text"
             (click)="salir()"></button>
         <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" *ngIf="!esVer"
-            (click)="guardar()"></button>
+            (click)="validarYGuardarUsuario()"></button>
     </ng-template>
 </p-dialog>

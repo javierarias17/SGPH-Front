@@ -33,6 +33,7 @@ import { ProgramaServicio } from './servicios/programa.servicio';
 import { FacultadServicio } from './servicios/facultad.servicio';
 import { SharedService } from '../shared/service/shared.service';
 import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
+import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/eliminar-horario-programa.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { PeriodoAcademicoService } from '../shared/service/periodo.academico.ser
 		BandejaReporteEspacioFisicoComponent,
 		CrearEditarVerUsuarioComponent,
   		CrearEditarEspacioFisicoComponent,
+    EliminarHorarioProgramaComponent,
 		
 	],
 	imports: [

@@ -5,5 +5,4 @@ export class PeriodoAcademicoOutDTO{
     public fechaInicioPeriodo: Date;
     public fechaFinPeriodo: Date;
     public estado: string;
-    public anioPeriodo: string;
 }

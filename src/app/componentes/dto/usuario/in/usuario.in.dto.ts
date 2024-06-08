@@ -15,4 +15,18 @@ export class UsuarioInDTO{
     public estado: EstadoUsuarioEnum;
     public lstIdRol: number[];
     public lstIdPrograma: number[];
+
+
+    constructor(){
+        this.idTipoIdentificacion=null;
+        this.numeroIdentificacion=null;
+        this.codigoTipoIdentificacion=null;
+        this.primerNombre=null;
+        this.segundoNombre=null;
+        this.email=null;
+        this.nombreUsuario=null;
+        this.password=null;
+        this.estado=null;
+        this.lstIdRol=[];
+    }
 }

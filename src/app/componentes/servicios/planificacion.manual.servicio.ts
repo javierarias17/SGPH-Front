@@ -129,4 +129,17 @@ export class PlanificacionManualServicio{
         const url = `http://localhost:8081/PlanificacionManual/consultarFranjasEspacioFisicoPorIdEspacioFisico?idEspacioFisico=${idEspacioFisico}`;
         return this.http.get<FranjaHorariaEspacioFisicoDTO[]>(url);
     }  
+
+	/**
+	 * Método encargado de eliminar todo el horario de un programa
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @param eliminarHorarioDTO Información necesaria para eliminar el horario de
+	 *                           un programa
+	 * @return Booleano que indica si se eliminó con exito el horario
+	 */
+	public eliminarHorarioPrograma(eliminarHorarioDTO:any): Observable<Boolean>{
+		return this.http.post<Boolean>("http://localhost:8081/PlanificacionManual/eliminarHorarioPrograma",eliminarHorarioDTO);
+    }  
 }

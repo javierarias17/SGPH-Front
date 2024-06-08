@@ -14,6 +14,7 @@ import { GenerarReporteSimcaComponent } from './reportes/generar-reporte-simca/g
 import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/cargar.labor.docencia.component';
 import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/bandeja-reporte-espacio-fisico.component';
 import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bandeja-reporte-docente.component';
+import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/eliminar-horario-programa.component';
 
 const routes: Routes=[
     { path: 'inicio', component: InicioComponent},
@@ -25,6 +26,7 @@ const routes: Routes=[
     { path: 'planificacion-manual', component: PlanificacionManualComponent},
     { path: 'planificacion-semestre-anterior', component: PlanificacionSemestreAnteriorComponent},
     { path: 'horario-espacio-fisico', component: BandejaReporteEspacioFisicoComponent},
+    { path: 'eliminar-horario-programa', component: EliminarHorarioProgramaComponent},
     { path: 'horario-docente', component: BandejaReporteDocenteComponent},
     { path: 'generar-reporte-simca', component: GenerarReporteSimcaComponent},
     { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
