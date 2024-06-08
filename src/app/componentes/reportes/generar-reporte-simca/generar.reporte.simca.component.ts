@@ -42,8 +42,8 @@ export class GenerarReporteSimcaComponent implements OnInit {
   inicializarFormulario() {
     this.formulario = this.fb.group({
       periodo: [{value: null}, Validators.required],
-      idFacultad: [{value: null}],
-      idPrograma: [{value: null}],
+      idFacultad: [{value: null}, Validators.required],
+      idPrograma: [{value: null}, Validators.required],
     })
   }
   obtenerPeriodosAbiertos() {

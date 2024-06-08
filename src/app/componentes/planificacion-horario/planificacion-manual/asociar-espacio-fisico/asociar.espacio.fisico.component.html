@@ -168,7 +168,8 @@
                                 [(ngModel)]="horaInicioSeleccionado" 
                                 placeholder="Hora inicio" 
                                 [showClear]="listaHorasInicio.includes(horaInicioSeleccionado)"
-                                (ngModelChange)="onHoraInicioChange()">
+                                (ngModelChange)="onHoraInicioChange()"
+                                appendTo="body">
                             </p-dropdown>
                         </div>
                         <div class="col-4">
