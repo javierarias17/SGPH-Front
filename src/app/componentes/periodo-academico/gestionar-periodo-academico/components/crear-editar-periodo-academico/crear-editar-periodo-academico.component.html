@@ -12,7 +12,7 @@
                 inputId="icon"
                 formControlName="fechaInicioPeriodo"
                 dateFormat="dd/MM/yy"
-                (onSelect)="validarCamposBackendPeriodoAcademico()">
+                (ngModelChange)="validarCamposBackendPeriodoAcademico()">
                 </p-calendar>
                 <div class="p-error block" *ngIf="this.formulario.get('fechaInicioPeriodo').invalid && this.formulario.get('fechaInicioPeriodo').touched">
                     <div *ngIf="this.formulario.get('fechaInicioPeriodo').errors.required">Fecha inicio es requerida</div>
@@ -28,7 +28,7 @@
                 inputId="icon"
                 formControlName="fechaFinPeriodo"
                 dateFormat="dd/MM/yy"
-                (onSelect)="validarCamposBackendPeriodoAcademico()"></p-calendar>
+                (ngModelChange)="validarCamposBackendPeriodoAcademico()"></p-calendar>
                 <div class="p-error block" *ngIf="this.formulario.get('fechaFinPeriodo').invalid && this.formulario.get('fechaFinPeriodo').touched">
                     <div *ngIf="this.formulario.get('fechaFinPeriodo').errors.required">Fecha fin es requerida</div>
                     <div *ngIf="this.formulario.get('fechaFinPeriodo').errors?.FechaFinGreaterThanFechaInicio">{{ this.formulario.get('fechaFinPeriodo').errors?.FechaFinGreaterThanFechaInicio }}</div>
