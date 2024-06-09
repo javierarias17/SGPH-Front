@@ -135,11 +135,25 @@ export class PlanificacionManualServicio{
 	 * 
 	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
 	 * 
-	 * @param eliminarHorarioDTO Información necesaria para eliminar el horario de
+	 * @param eliminarHorarioInDTO Información necesaria para eliminar el horario de
 	 *                           un programa
 	 * @return Booleano que indica si se eliminó con exito el horario
 	 */
-	public eliminarHorarioPrograma(eliminarHorarioDTO:any): Observable<Boolean>{
-		return this.http.post<Boolean>("http://localhost:8081/PlanificacionManual/eliminarHorarioPrograma",eliminarHorarioDTO);
+	public eliminarHorarioPrograma(eliminarHorarioInDTO:any): Observable<Boolean>{
+		return this.http.post<Boolean>("http://localhost:8081/PlanificacionManual/eliminarHorarioPrograma",eliminarHorarioInDTO);
     }  
+
+	/**
+	 * Método encargado de generar un horario base para un programa partiendo del
+	 * horario del semestre anterior del mismo</br>
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @param generarHorarioBaseInDTO Información requerida para generar el horario
+	 *                                base
+	 * @return
+	 */
+	public generarHorarioBasadoEnSemestreAnteriorPorPrograma(generarHorarioBaseInDTO:any): Observable<any>{
+		return this.http.post<any>("http://localhost:8081/PlanificacionManual/generarHorarioBasadoEnSemestreAnteriorPorPrograma",generarHorarioBaseInDTO);
+    } 
 }

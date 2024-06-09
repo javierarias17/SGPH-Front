@@ -106,13 +106,13 @@ export class EliminarHorarioProgramaComponent {
 
     public eliminar(): void {
         if (this.formulario.valid) {
-            let eliminarHorarioDTO = {
+            let eliminarHorarioInDTO = {
                 idPrograma: this.idPrograma().value,
             };
 
 
             let programaOutDTO:ProgramaOutDTO = this.listaProgramas.find(programaOutDTO=> {
-                return programaOutDTO.idPrograma===eliminarHorarioDTO.idPrograma
+                return programaOutDTO.idPrograma===eliminarHorarioInDTO.idPrograma
             });
 
             this.confirmationService.confirm({
@@ -123,7 +123,7 @@ export class EliminarHorarioProgramaComponent {
                 accept: () => {
                     this.isLoading = true;
                     this.planificacionManualServicio
-                        .eliminarHorarioPrograma(eliminarHorarioDTO)
+                        .eliminarHorarioPrograma(eliminarHorarioInDTO)
                         .subscribe(
                             (r: Boolean) => {
                                 this.isLoading = false;

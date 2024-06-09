@@ -1,9 +1,171 @@
 <div class="grid">
     <div class="col-12">
-        <h3>Planificación basada en semestre anterior</h3>
-        <p>Esta pantalla permite realiza la planificación de horarios basándose en el semestre anterior.</p>
+        <h3>Generar horario base a partir del semestre anterior</h3>
+        <p>Esta pantalla permite generar un horario base para un programa a partir de su horario del semestre anterior.</p>
         <hr>
         <br>
         <br>
+        <p-fieldset legend="Generación semestre anterior">     
+            <br>       
+            <form class="grid" [formGroup]="formulario">
+                <div class="p-fluid col sm:col-12 md:col-3">
+                    <label>Periodo académico vigente</label>
+                    <p-dropdown [placeholder]="' '" [ngClass]="{
+                                    'ng-invalid ng-dirty':
+                                        this.periodo().invalid &&
+                                        this.periodo().touched
+                                }" [options]="lstPeriodoAcademicosTodos"
+                        formControlName="periodo" [showClear]="true" optionValue="idPeriodoAcademico" optionLabel="anioPeriodo" appendTo="body">
+                        <ng-template let-periodo pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div><strong>{{ periodo.anio }}</strong>-{{ periodo.periodo }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error block fade-in" *ngIf="this.periodo().invalid &&
+                                        this.periodo().touched">
+                        Periodo es obligatorio
+                    </small>
+                </div>
+                <div class="p-fluid col sm:col-12 md:col-3">
+                    <label class="required">Periodo académico anterior</label>
+                    <p-dropdown [placeholder]="' '" [ngClass]="{
+                                    'ng-invalid ng-dirty':
+                                        this.periodoAnterior().invalid &&
+                                        this.periodoAnterior().touched
+                                }" [options]="lstPeriodoAcademicosSinVigente"
+                        formControlName="periodoAnterior" [showClear]="true" optionValue="idPeriodoAcademico" optionLabel="anioPeriodo" appendTo="body">
+                        <ng-template let-periodo pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div><strong>{{ periodo.anio }}</strong>-{{ periodo.periodo }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error block fade-in" *ngIf="this.periodoAnterior().invalid &&
+                                        this.periodoAnterior().touched">
+                        Periodo académico anterior es obligatorio
+                    </small>
+                </div>
+                <div class="p-fluid col sm:col-12 md:col-6">
+                </div>
+                <div class="p-fluid col sm:col-12 md:col-3">
+                    <label class="required">Facultad</label>
+                    <p-dropdown [placeholder]="' '" [ngClass]="{
+                                    'ng-invalid ng-dirty':
+                                        this.idFacultad().invalid &&
+                                        this.idFacultad().touched
+                                }" [options]="lstFacultadOutDTO" optionValue="idFacultad" optionLabel="abreviatura"
+                        formControlName="idFacultad" [showClear]="true" appendTo="body" 
+                        (ngModelChange)="onFacultadChange()">
+                        <ng-template let-facultad pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error block fade-in" *ngIf="this.idFacultad().invalid &&
+                                        (this.idFacultad().touched)">
+                        Facultad es obligatorio
+                    </small>
+                </div>
+                <div class="p-fluid col sm:col-12 md:col-3">
+                    <label class="required">Programa</label>
+                    <p-dropdown [placeholder]="' '" [options]="listaProgramas" optionValue="idPrograma"
+                        optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
+                        [ngClass]="{
+                                'ng-invalid ng-dirty':
+                                    this.idPrograma().invalid &&
+                                    this.idPrograma().touched
+                            }"
+                        (ngModelChange)="onProgramasChange()">
+                        <ng-template let-programa pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error block fade-in" *ngIf="this.idPrograma().invalid &&
+                                        (this.idPrograma().touched)">
+                        Programa es obligatorio
+                    </small>
+                </div>
+                <div class="p-fluid col sm:col-12 md:col-3">
+                    <label>Asignaturas a excluir (Opcional)</label>
+                    <p-multiSelect 
+                        maxSelectedLabels="1" 
+                        selectedItemsLabel="{0} Asignaturas seleccionadas" 
+                        optionLabel="nombre" 
+                        [defaultLabel]="listaAsignaturas.length === 0 ? '':'Seleccione Asignaturas'"
+                        [options]="listaAsignaturas" 
+                        formControlName="lstIdAsignatura"  
+                        [filter]="true"
+                        [showClear]="true"
+                        [disabled]="listaAsignaturas.length === 0"
+                        optionLabel="nombre" 
+                        optionValue="idAsignatura">
+                        <ng-template let-asignatura pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ asignatura.nombre }}-<strong>Sem {{asignatura.semestre}}</strong></div>
+                            </div>
+                        </ng-template>
+                    </p-multiSelect>
+                </div>
+            </form>
+            <div class="flex justify-content-start" style="width: 100%;">
+                <div class="m-1">
+                    <button pButton pRipple icon="pi pi-clone" class="p-button" label="Generar horario"
+                        [disabled]="isLoading" (click)="generarHorario()">
+                        <ng-container *ngIf="isLoading">
+                            <i class="pi pi-spin pi-spinner"></i>
+                        </ng-container>
+                    </button>
+                </div>
+            </div>
+        </p-fieldset>
+
+    <pre>CANTIDAD CURSOS ACTUALIZADOS: {{cantidadCursosActualizados}}</pre>
+    <pre>CANTIDAD DE CURSOS NUEVOS: {{cantidadCursosNoCorrelacionados}}</pre>
+    <pre>Errores y/o restrcciones presentadas:</pre>
+
+    <p-table 
+        [value]="this.listaErrores" 
+        responsiveLayout="scroll" 
+        styleClass="p-datatable-gridlines"
+        [paginator]="true" 
+        [rows]="150"
+        [tableStyle]="{ 'min-height': '600px' }"
+        [scrollable]="true" 
+        scrollHeight="70vh"
+        selectionMode="single" 
+        >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Curso</th>
+                <th>Franja</th>
+                <th>Causa</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-mensaje>
+            <tr>
+                <td>{{ mensaje[0] }}</td>
+                <td>{{ mensaje[1] }}</td>
+                <td>{{ mensaje[2] }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="15">
+                    No hay registros
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
     </div>
 </div>
+
+ <!-- p-toast para mensajes -->
+ <p-toast></p-toast>
+
+ <!-- Modal de confirmación -->
+<p-confirmDialog></p-confirmDialog>
