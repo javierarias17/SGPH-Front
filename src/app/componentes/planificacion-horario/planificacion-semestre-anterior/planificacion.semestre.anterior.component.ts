@@ -203,10 +203,8 @@ export class PlanificacionSemestreAnteriorComponent {
                                 this.isLoading = false;
                                 this.messageService.add({
                                     severity: 'error',
-                                    summary: 'Fallido',
-                                    detail:
-                                        'Se produjo un error al generar el horario base para el programa: ' +
-                                        httpErrorResponse.error.message,
+                                    summary: 'Error generación',
+                                    detail: httpErrorResponse.error.message,
                                     life: 9000,
                                 });
                             }
