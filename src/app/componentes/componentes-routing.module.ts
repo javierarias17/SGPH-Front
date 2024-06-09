@@ -52,7 +52,7 @@ const routes: Routes=[
         import(
           "./planificacion-horario/gestion-grupos/gestion-grupos.module"
         ).then((m) => m.GestionGruposModule)
-  },
+  }
 ]
 
 @NgModule({

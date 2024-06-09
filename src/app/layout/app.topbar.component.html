@@ -23,7 +23,17 @@
             <i class="pi pi-calendar"></i>
             <span>Calendar</span>
         </button>
-        <button class="p-link layout-topbar-button">
+        <p-overlayPanel #op>
+            <div class="flex flex-row justify-content-between" style="width: 150px;">
+                <div>Usuario: <b>{{username}}</b></div>
+                <button (click)="cerrarSesion()" class="p-link" pTooltip="cerrar sesión">
+                    <i class="pi pi-sign-out"></i>
+                    <span></span>
+                </button>
+            </div>
+        </p-overlayPanel>
+        
+        <button class="p-link layout-topbar-button" (click)="op.toggle($event)">
             <i class="pi pi-user"></i>
             <span>Profile</span>
         </button>
