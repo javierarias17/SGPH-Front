@@ -95,8 +95,20 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
       this.espacio = r
       if (r) {
         this.agrupadores()
+        if (!this.lectura) {
+          this.setFormulario()
+        }
       }
     })
+  }
+  setFormulario() {
+    this.idEdificio().setValue(this.espacio.idEdificio)
+    this.idUbicacion().setValue(this.espacio.idUbicacion)
+    this.salon().setValue(this.espacio.salon)
+    this.estado().setValue(this.espacio.estado)
+    this.capacidad().setValue(this.espacio.capacidad)
+    this.tipo().setValue(this.espacio.idTipoEspacioFisico)
+    this.recursos().setValue(this.espacio.recursos.map(r => r.idRecurso))
   }
 
   agrupadores() {

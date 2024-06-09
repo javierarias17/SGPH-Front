@@ -1,20 +1,16 @@
 <div class="flex flex-column">
     <div class="grid" *ngIf="this.lectura">
         <div class="p-fluid col-12 flex">
-            <label class=" col-12 md:col-2">Municipio</label>
-            <p class="label col-12 md:col-6">{{this.espacio.municipio}}</p>
-        </div>
-        <div class="p-fluid col-12 flex">
             <label class=" col-12 md:col-2">Ubicación</label>
-            <p class="label col-12 md:col-6">{{this.espacio.ubicacion}}</p>
+            <p class="label col-12 md:col-6">{{this.espacio.nombreUbicacion}}</p>
         </div>
         <div class="p-fluid col-12 flex">
             <label class=" col-12 md:col-2">Edificio</label>
-            <p class="label col-12 md:col-6">{{this.espacio.edificio}}</p>
+            <p class="label col-12 md:col-6">{{this.espacio.nombreEdificio}}</p>
         </div>
         <div class="p-fluid col-12 flex">
             <label class=" col-12 md:col-2">Tipo espacio fisico</label>
-            <p class="label col-12 md:col-6">{{this.espacio.idTipoEspacioFisico}}</p>
+            <p class="label col-12 md:col-6">{{this.espacio.nombreTipoEspacioFisico}}</p>
         </div>
         <div class="p-fluid col-12 flex">
             <label class=" col-12 md:col-2">OID espacio físico</label>
@@ -31,6 +27,14 @@
         <div class="p-fluid col-12 flex">
             <label class=" col-12 md:col-2">Capacidad</label>
             <p class="label col-12 md:col-6">{{this.espacio.capacidad}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Recursos</label>
+            <div *ngFor="let recurso of this.espacio.recursos">
+                <p *ngIf="recurso.cantidad">{{recurso.cantidad}}</p>
+                <p class="label col-12 md:col-6">{{recurso.nombre}}</p>
+                
+            </div>
         </div>
     </div>
     <form class="grid" *ngIf="!this.lectura" [formGroup]="formulario">

@@ -1,6 +1,4 @@
 import { AgrupadorDTO } from "src/app/componentes/datos/gestionar-asignatura/model/agrupador-dto";
-import { AgrupadorEspacioFiscioDTO } from "src/app/shared/model/AgrupadorEspacioFisicoDTO";
-
 export class EspacioFisicoOutDTO{    
 	public idEspacioFisico?:number;
 	public capacidad?:number;
@@ -11,9 +9,12 @@ export class EspacioFisicoOutDTO{
 
 	OID?: string;
 	salon?: string;
-	edificio?: string;
-	ubicacion?: string;
+	nombreEdificio?: string;
+	idUbicacion?: number;
+	nombreUbicacion?: string;
+	nombreTipoEspacioFisico?: string;
 	municipio?: string;
 	lstIdAgrupadorEspacioFisico?: AgrupadorDTO[]
 	saveIdAgrupadores? : number []
+	recursos?: any
 }

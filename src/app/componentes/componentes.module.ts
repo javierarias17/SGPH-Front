@@ -61,7 +61,7 @@ import { EliminarHorarioProgramaComponent } from './planificacion-horario/elimin
 		BandejaReporteEspacioFisicoComponent,
 		CrearEditarVerUsuarioComponent,
   		CrearEditarEspacioFisicoComponent,
-    EliminarHorarioProgramaComponent,
+        EliminarHorarioProgramaComponent,
 		
 	],
 	imports: [
