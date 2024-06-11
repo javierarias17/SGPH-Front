@@ -185,8 +185,8 @@ export class PlanificacionSemestreAnteriorComponent {
                 accept: () => {
                     this.isLoading = true;
                     this.planificacionManualServicio.generarHorarioBasadoEnSemestreAnteriorPorPrograma(generarHorarioBaseInDTO)
-                        .subscribe(
-                            (generarHorarioBaseOutDTO: any) => {
+                    .subscribe(
+                        (generarHorarioBaseOutDTO: any) => {
                                 this.isLoading = false;
                                 this.listaErrores=generarHorarioBaseOutDTO.lstMensajesDelProceso;
                                 this.cantidadCursosActualizados = generarHorarioBaseOutDTO.cantidadCursosActualizados;
@@ -211,6 +211,7 @@ export class PlanificacionSemestreAnteriorComponent {
                         );
                 },
                 reject: () => {
+                    this.isLoading = false;
                     this.messageService.add({
                         severity: 'info',
                         summary: 'Operación cancelada',

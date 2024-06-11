@@ -123,9 +123,14 @@ export class HorarioDocenteComponent {
 			this.agregarPosicion(fila+i,columna);
 		}
 		}
-		return franjaCurso ? franjaCurso.nombreCurso : '';
+		return franjaCurso ? franjaCurso.nombreCurso: '';
 	}
 
+	public obtenerNombreEspacioFisico(dia: DiaSemanaEnum, horaInicio: Date): string {
+		const franjaCurso = this.listaFranjaHorariaDocenteDTO.find(f => f.dia === dia && f.horaInicio === horaInicio);
+		return franjaCurso ? franjaCurso.salon : '';
+	}
+	
 	public obtenerColorPorMateria(materia: string): string {
 		const colorBase = this.stringToHslColor(materia);
 		return colorBase;

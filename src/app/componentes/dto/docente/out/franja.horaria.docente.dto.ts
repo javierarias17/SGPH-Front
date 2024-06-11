@@ -9,4 +9,6 @@ export class FranjaHorariaDocenteDTO{
 	public horaFin: Date;
 
 	public nombreCurso:string;
+
+	public salon: string;
 }
