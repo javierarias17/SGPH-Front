@@ -8,7 +8,7 @@ import { AuthGuardGuard } from './auth-guard.guard';
     imports: [
         RouterModule.forRoot([
             {
-                path: '', component: AppLayoutComponent, canActivate: [AuthGuardGuard],
+                path: '', component: AppLayoutComponent,
                 children: [
                     { path: '', redirectTo: '/home/inicio', pathMatch: 'full' },
                     //{ path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
