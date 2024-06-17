@@ -11,4 +11,6 @@ export class FranjaHorariaEspacioFisicoDTO{
 	public horaFin: Date;
 
 	public nombreCurso:string;
+
+	public esPrincipal: boolean;
 }

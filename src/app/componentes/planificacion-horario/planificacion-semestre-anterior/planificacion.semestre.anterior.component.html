@@ -90,7 +90,7 @@
                     </small>
                 </div>
                 <div class="p-fluid col sm:col-12 md:col-3">
-                    <label>Asignaturas a excluir (Opcional)</label>
+                    <label>Cursos a excluir (Opcional)</label>
                     <p-multiSelect 
                         maxSelectedLabels="1" 
                         selectedItemsLabel="{0} Asignaturas seleccionadas" 
@@ -122,20 +122,28 @@
                 </div>
             </div>
         </p-fieldset>
+    </div>
+</div>
 
-    <pre>CANTIDAD CURSOS ACTUALIZADOS: {{cantidadCursosActualizados}}</pre>
-    <pre>CANTIDAD DE CURSOS NUEVOS: {{cantidadCursosNoCorrelacionados}}</pre>
-    <pre>Errores y/o restrcciones presentadas:</pre>
+ <!-- p-toast para mensajes -->
+ <p-toast></p-toast>
 
+ <!-- Modal de confirmación -->
+<p-confirmDialog></p-confirmDialog>
+<br>
+<br>
+<p-card *ngIf="!ocultarResultadoGeneracion"> 
+    <h4>Resultado generación:</h4>    
+    <pre>Cursos con horario completo: {{cantidadCursosHorarioCompleto}}</pre>
+    <pre>Cantidad de cursos horario parcial: {{cantidadCursosHorarioParcial}}</pre>
+    <pre>Cantidad de cursos sin horario: {{cantidadCursosSinHorario}}</pre>
+    <pre><strong>Errores de franjas no ingresadas:</strong></pre>   
     <p-table 
-        [value]="this.listaErrores" 
-        responsiveLayout="scroll" 
+        [value]="this.lstMensajesDelProceso" 
         styleClass="p-datatable-gridlines"
-        [paginator]="true" 
+        [paginator]="false" 
         [rows]="150"
-        [tableStyle]="{ 'min-height': '600px' }"
-        [scrollable]="true" 
-        scrollHeight="70vh"
+        [scrollable]="false" 
         selectionMode="single" 
         >
         <ng-template pTemplate="header">
@@ -147,9 +155,9 @@
         </ng-template>
         <ng-template pTemplate="body" let-mensaje>
             <tr>
-                <td>{{ mensaje[0] }}</td>
-                <td>{{ mensaje[1] }}</td>
-                <td>{{ mensaje[2] }}</td>
+                <td><strong>{{ mensaje[0] }}</strong></td>
+                <td><strong>{{ mensaje[1] }}</strong></td>
+                <td><strong>{{ mensaje[2] }}</strong></td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -160,12 +168,4 @@
             </tr>
         </ng-template>
     </p-table>
-
-    </div>
-</div>
-
- <!-- p-toast para mensajes -->
- <p-toast></p-toast>
-
- <!-- Modal de confirmación -->
-<p-confirmDialog></p-confirmDialog>
+</p-card>

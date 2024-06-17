@@ -122,6 +122,14 @@ export class HorarioEspacioFisicoComponent {
 		return franjaCurso ? franjaCurso.nombreCurso : '';
 	}
 
+	public configurarBorderSegunIndicador(dia: DiaSemanaEnum, horaInicio: Date): string {
+		const franjaCurso = this.listaFranjaHorariaAulaDTO.find(f => f.dia === dia && f.horaInicio === horaInicio);
+		if(franjaCurso && franjaCurso.esPrincipal===false){
+			return '5px dashed #000';
+		}
+		return null;
+	}
+
 	public obtenerColorPorMateria(materia: string): string {
 		const colorBase = this.stringToHslColor(materia);
 		return colorBase;

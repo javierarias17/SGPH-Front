@@ -98,8 +98,8 @@ export class PlanificacionManualServicio{
 	 * @param idCurso
 	 * @return
 	 */
-	  public consultarFranjasHorariaCursoPorIdCurso(idCurso:number): Observable<FranjaHorariaCursoDTO[]>{
-        const url = `http://localhost:8081/PlanificacionManual/consultarFranjasHorariaCursoPorIdCurso?idCurso=${idCurso}`;
+	  public consultarFranjasHorariaCursoPorIdCurso(idCurso:number, esPrincipal:boolean): Observable<FranjaHorariaCursoDTO[]>{
+        const url = `http://localhost:8081/PlanificacionManual/consultarFranjasHorariaCursoPorIdCurso?idCurso=${idCurso}&esPrincipal=${esPrincipal}`;
         return this.http.get<FranjaHorariaCursoDTO[]>(url);
     }
 	

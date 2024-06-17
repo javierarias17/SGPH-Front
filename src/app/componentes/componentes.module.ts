@@ -34,6 +34,7 @@ import { FacultadServicio } from './servicios/facultad.servicio';
 import { SharedService } from '../shared/service/shared.service';
 import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
 import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/eliminar-horario-programa.component';
+import { ResultadoGeneracionHorarioComponent } from './planificacion-horario/planificacion-semestre-anterior/resultado-generacion-horario/resultado-generacion-horario.component';
 
 
 @NgModule({
@@ -62,7 +63,7 @@ import { EliminarHorarioProgramaComponent } from './planificacion-horario/elimin
 		CrearEditarVerUsuarioComponent,
   		CrearEditarEspacioFisicoComponent,
         EliminarHorarioProgramaComponent,
-		
+        ResultadoGeneracionHorarioComponent		
 	],
 	imports: [
 		ReactiveFormsModule,
