@@ -17,6 +17,7 @@ import { SharedService } from 'src/app/shared/service/shared.service';
 import { FacultadServicio } from '../../servicios/facultad.servicio';
 import { ProgramaServicio } from '../../servicios/programa.servicio';
 import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
+import { ResultadoGeneracionHorarioComponent } from './resultado-generacion-horario/resultado-generacion-horario.component';
 
 @Component({
     selector: 'app-planificacion-semestre-anterior',
@@ -27,6 +28,7 @@ import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
 export class PlanificacionSemestreAnteriorComponent {
     public formulario: FormGroup;
     public isLoading: boolean = false;
+    public ocultarResultadoGeneracion:boolean =true;
 
     public listaProgramas: ProgramaOutDTO[] = [];
     public lstFacultadOutDTO: FacultadOutDTO[] = [];
@@ -158,10 +160,14 @@ export class PlanificacionSemestreAnteriorComponent {
         return this.formulario.get('lstIdAsignatura') as FormControl;
     }
 
-    public listaErrores: string[]=[];
-    public cantidadCursosActualizados: number=0;
+    public lstMensajesDelProceso: string[]=[];
+    public cantidadCursosHorarioCompleto: number=0;
+    public cantidadCursosHorarioParcial: number=0;
+    public cantidadCursosSinHorario: number=0;
     public cantidadCursosNoCorrelacionados: number=0;
+
     public generarHorario(): void {
+        this.ocultarResultadoGeneracion=true;    
         if (this.formulario.valid) {
             this.isLoading = true
             let generarHorarioBaseInDTO = {
@@ -185,12 +191,16 @@ export class PlanificacionSemestreAnteriorComponent {
                 accept: () => {
                     this.isLoading = true;
                     this.planificacionManualServicio.generarHorarioBasadoEnSemestreAnteriorPorPrograma(generarHorarioBaseInDTO)
-                        .subscribe(
-                            (generarHorarioBaseOutDTO: any) => {
+                    .subscribe(
+                        (generarHorarioBaseOutDTO: any) => {
+                                this.ocultarResultadoGeneracion=false;    
                                 this.isLoading = false;
-                                this.listaErrores=generarHorarioBaseOutDTO.lstMensajesDelProceso;
-                                this.cantidadCursosActualizados = generarHorarioBaseOutDTO.cantidadCursosActualizados;
+                                this.cantidadCursosHorarioCompleto=generarHorarioBaseOutDTO.cantidadCursosHorarioCompleto;
+                                this.cantidadCursosHorarioParcial=generarHorarioBaseOutDTO.cantidadCursosHorarioParcial;
+                                this.cantidadCursosSinHorario=generarHorarioBaseOutDTO.cantidadCursosSinHorario;
                                 this.cantidadCursosNoCorrelacionados=generarHorarioBaseOutDTO.cantidadCursosNoCorrelacionados;
+                                this.lstMensajesDelProceso=generarHorarioBaseOutDTO.lstMensajesDelProceso;
+                                //this.mostrarResultadoGeneracion(this.listaErrores,this.cantidadCursosActualizados, this.cantidadCursosNoCorrelacionados);
                                 this.messageService.add({
                                     severity: 'success',
                                     summary: 'Éxito',
@@ -203,16 +213,15 @@ export class PlanificacionSemestreAnteriorComponent {
                                 this.isLoading = false;
                                 this.messageService.add({
                                     severity: 'error',
-                                    summary: 'Fallido',
-                                    detail:
-                                        'Se produjo un error al generar el horario base para el programa: ' +
-                                        httpErrorResponse.error.message,
+                                    summary: 'Error generación',
+                                    detail: httpErrorResponse.error.message,
                                     life: 9000,
                                 });
                             }
                         );
                 },
                 reject: () => {
+                    this.isLoading = false;
                     this.messageService.add({
                         severity: 'info',
                         summary: 'Operación cancelada',
@@ -243,5 +252,19 @@ export class PlanificacionSemestreAnteriorComponent {
                     console.error(error);
                 }
             );
+    }
+
+    private mostrarResultadoGeneracion(listaErrores: string[],cantidadCursosActualizados: number,cantidadCursosNoCorrelacionados: number):void  {
+        const ref = this.dialogService.open(ResultadoGeneracionHorarioComponent, {
+          height: 'auto',
+          width: '800px',
+          header: 'Resultado generación horario',
+          closable: true,
+          data: {
+            listaErrores: listaErrores,
+            cantidadCursosActualizados: cantidadCursosActualizados,
+            cantidadCursosNoCorrelacionados: cantidadCursosNoCorrelacionados
+          }
+        },)
     }
 }

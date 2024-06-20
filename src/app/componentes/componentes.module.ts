@@ -38,6 +38,7 @@ import { CursoServicio } from './servicios/curso.servicio';
 import { AsignaturaServicio } from './servicios/asignatura.servicio';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
+import { ResultadoGeneracionHorarioComponent } from './planificacion-horario/planificacion-semestre-anterior/resultado-generacion-horario/resultado-generacion-horario.component';
 
 
 @NgModule({
@@ -66,7 +67,7 @@ import { ToastModule } from 'primeng/toast';
 		CrearEditarVerUsuarioComponent,
   		CrearEditarEspacioFisicoComponent,
         EliminarHorarioProgramaComponent,
-		
+        ResultadoGeneracionHorarioComponent		
 	],
 	imports: [
 		ReactiveFormsModule,

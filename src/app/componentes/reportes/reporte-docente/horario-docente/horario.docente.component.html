@@ -44,6 +44,8 @@
                         [ngStyle]="{'background-color': obtenerColorPorMateria(obtenerNombreCurso(dia, horaInicio))}"
                         [style.gridRow]="generarFilasParaFranja(dia, horaInicio)">
                             {{ configurarFranjaCurso( dia, horaInicio,fila,columna) }}
+                            <br>
+                            {{ obtenerNombreEspacioFisico( dia, horaInicio) }}
                     </div>      
                 </ng-container>
             </ng-container>

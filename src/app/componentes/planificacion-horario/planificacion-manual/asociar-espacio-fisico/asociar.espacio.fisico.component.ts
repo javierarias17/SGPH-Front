@@ -228,7 +228,7 @@ export class AsociarEspacioFisicoComponent {
      * Método que consulta las franjas horarias asignadas que se mostrarán en el pickList derecho
      */
     private consultarFranjasAsignadasCurso() {
-        this.planificacionManualServicio.consultarFranjasHorariaCursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso).subscribe(
+        this.planificacionManualServicio.consultarFranjasHorariaCursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso, true).subscribe(
             (lstFranjaHorariaCursoDTO: FranjaHorariaCursoDTO[]) => {        
                 if(lstFranjaHorariaCursoDTO.length === 0){
                     this.listaFranjaHorariaAsignadas = [];

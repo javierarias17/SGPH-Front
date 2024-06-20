@@ -48,7 +48,8 @@
                 <ng-container *ngFor="let dia of dias; let columna=index">
                     <div class="grid-item"
                         *ngIf="!esPosicionOcupada(fila,columna)"   
-                        [ngStyle]="{'background-color': obtenerColorPorMateria(obtenerNombreCurso(dia, horaInicio))}"
+                        [ngStyle]="{'background-color': obtenerColorPorMateria(obtenerNombreCurso(dia, horaInicio)),
+                                    'border': configurarBorderSegunIndicador(dia, horaInicio)  }"                    
                         [style.gridRow]="generarFilasParaFranja(dia, horaInicio)">
                         {{ configurarFranjaCurso( dia, horaInicio,fila,columna) }}
                     </div>      
