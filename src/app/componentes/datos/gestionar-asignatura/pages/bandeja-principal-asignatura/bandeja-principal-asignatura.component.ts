@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AsignaturaOutDTO } from '../../model/asignatura-dto';
 import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -14,12 +14,17 @@ import { FormControl } from '@angular/forms';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { EstadoDocenteEnum } from 'src/app/componentes/enum/estado.docente.enum';
 import { TranslateService } from '@ngx-translate/core';
+import * as XLSX from 'xlsx';
+import { FileUpload } from 'primeng/fileupload';
 @Component({
   selector: 'app-bandeja-principal-asignatura',
   templateUrl: './bandeja-principal-asignatura.component.html',
   styleUrls: ['./bandeja-principal-asignatura.component.scss']
 })
 export class BandejaPrincipalAsignaturaComponent implements OnInit {
+  mostrarDialogoBandera: boolean = false
+  base64String: any;
+  @ViewChild('fileUpload') fileUpload: FileUpload;
   public facultadesSeleccionadas: number[] = [];
   public lstFacultadOutDTO: FacultadOutDTO[] = [];
   public listaProgramas: any[] = [];
@@ -184,6 +189,9 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
     this.asignaturas = []
    }
  }
+ cargarArchivo() {
+  this.mostrarDialogoBandera = true
+ }
  onEstadoChange() {
 
  }
@@ -198,4 +206,26 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
  public onSemestreChange() {        
   this.listarAsignaturasBase()
  }
+ cancelar() {
+  this.mostrarDialogoBandera = false
+  this.base64String = null
+  this.fileUpload.clear();
+ }
+ cargar() {
+  this.asignaturaServicio.cargaMasiva({ base64: this.base64String} as any).subscribe(r => {
+    if (r) {
+      this.cancelar()
+      this.mensageService.showMessage("success", "Asignaturas guardadas correctamente")
+      this.listarAsignaturasBase()
+    }
+  })
+ }
+ onUpload(event: any) {
+  const file = event.files[0];
+  const reader: FileReader = new FileReader();
+  reader.onload = (e: any) => {
+    this.base64String = e.target.result.split(',')[1];
+  };
+  reader.readAsDataURL(file);
+}
 }

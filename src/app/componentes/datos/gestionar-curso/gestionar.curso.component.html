@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="grid">
 	<div class="col-12">
 		<h3>Gestionar cursos</h3>
@@ -123,7 +124,7 @@
                     </ng-template>
                     <ng-template pTemplate="right">
                         <div class="my-0">
-                            <button pButton pRipple label="Crear curso" icon="pi pi-plus" class="p-button-success mr-2" (click)="abrirModalCrearEditarVerCurso(usuarioOutDTO, 'Crear curso')"></button>
+                            <button pButton pRipple label="Crear curso" icon="pi pi-plus" class="p-button-success mr-2" (click)="crear()"></button>
                         </div>
                     </ng-template>
                 </p-toolbar>  
@@ -150,9 +151,9 @@
 				<!--<td>{{cursoPlanificacionOutDTO.horasSemana}}</td>-->
 				<td>
 					<div class="flex">
-						<button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info" (click)="abrirModalCrearEditarVerCurso(cursoPlanificacionOutDTO, 'Ver curso')"></button>
+						<button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info" (click)="ver(cursoPlanificacionOutDTO)"></button>
 						<span style="margin-right: 10px;"></span>
-						<button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerCurso(cursoPlanificacionOutDTO, 'Editar curso')"></button>
+						<button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="editar(cursoPlanificacionOutDTO)"></button>
 						<span style="margin-right: 10px;"></span>
 						<button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="eliminarCurso(cursoPlanificacionOutDTO)"></button>
 					</div>
@@ -163,8 +164,6 @@
         <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0"></p-paginator>   
     </div>   
 </div>
-  
-<app-crear-editar-ver-curso #crearEditarVerCurso></app-crear-editar-ver-curso>
 
 <div class="grid">
     <div class="col-12">
@@ -176,7 +175,7 @@
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCursoDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmarEliminacion()"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmarEliminacion(cursoPlanificacionOutDTOSeleccionado.idCurso)"></button>
             </ng-template>
         </p-dialog>
     </div>    

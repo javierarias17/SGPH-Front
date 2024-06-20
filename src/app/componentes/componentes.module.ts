@@ -34,6 +34,10 @@ import { FacultadServicio } from './servicios/facultad.servicio';
 import { SharedService } from '../shared/service/shared.service';
 import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
 import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/eliminar-horario-programa.component';
+import { CursoServicio } from './servicios/curso.servicio';
+import { AsignaturaServicio } from './servicios/asignatura.servicio';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -68,9 +72,18 @@ import { EliminarHorarioProgramaComponent } from './planificacion-horario/elimin
 		ReactiveFormsModule,
 		CommonModule,
 		PrimeNgModule,
-		SharedModule
+		SharedModule,
+		MessageModule,
+		ToastModule,
 		
 	],
-	providers: [EspacioFisicoServicio, ProgramaServicio, FacultadServicio, SharedService, PeriodoAcademicoService]
+	providers: [EspacioFisicoServicio, 
+		ProgramaServicio, 
+		FacultadServicio, 
+		SharedService, 
+		PeriodoAcademicoService,
+		CursoServicio,
+		AsignaturaServicio
+	]
 })
 export class ComponentesModule { }

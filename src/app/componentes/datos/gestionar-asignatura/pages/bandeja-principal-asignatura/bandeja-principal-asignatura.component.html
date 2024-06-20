@@ -95,7 +95,7 @@
             <ng-template pTemplate="left">
             </ng-template>
             <ng-template pTemplate="right">
-                <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                
                 <button pButton pRipple label="Subir archivo" icon="pi pi-upload" class="p-button-help" (click)="cargarArchivo()"></button>
                 <span style="margin-right: 10px;"></span>
                 <div class="my-0">
@@ -182,3 +182,12 @@
     </ng-template>
 </p-table>
 <p-confirmDialog></p-confirmDialog>
+<p-dialog [(visible)]="mostrarDialogoBandera" header="Cargar masiva" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center" style="width: 400px;">
+            <p-fileUpload #fileUpload name="basic" accept=".xlsx, .xls" maxFileSize="1000000" (onUpload)="onUpload($event)" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Cancelar" (click)="cancelar()"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Cargar" [disabled] = "!this.base64String" (click)="cargar()"></button>
+    </ng-template>
+</p-dialog>

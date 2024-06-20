@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { InfoGeneralCursosPorProgramaDTO } from '../dto/curso/out/info.general.cursos.por.programa.dto';
 import { FiltroCursoPlanificacionDTO } from '../dto/curso/in/filtro.curso.planificacion.dto';
+import { CursoDTO } from '../dto/curso/curso-dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class CursoServicio{
 
-    
+    urlCurso: string = "AdministrarCurso"
     constructor(private http: HttpClient) {
     }
 
@@ -36,5 +38,17 @@ export class CursoServicio{
 	 public consultarInfoGeneralCursosPorPrograma(idPrograma:number): Observable<InfoGeneralCursosPorProgramaDTO>{
         const url = `http://localhost:8081/PlanificacionManual/consultarInfoGeneralCursosPorPrograma?idPrograma=${idPrograma}`;
         return this.http.get<InfoGeneralCursosPorProgramaDTO>(url);
-    } 
+    }
+	public consultarCursoPorId(idCurso: number) : Observable<CursoDTO> {
+		const ur = environment.url + this.urlCurso + `/obtenerCurso/${idCurso}`
+		return this.http.get<CursoDTO>(ur)
+	}
+	public guardarCurso(curso: any): Observable<any> {
+		const ur = environment.url + this.urlCurso + `/guardarCurso`
+		return this.http.post(ur,curso)
+	}
+	public eliminarCurso(curso: number): Observable<any> {
+		const ur = environment.url + this.urlCurso + `/eliminarCurso/${curso}`
+		return this.http.get(ur)
+	}
 }

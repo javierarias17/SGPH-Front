@@ -13,6 +13,8 @@ import { CursoPlanificacionOutDTO } from '../../dto/curso/out/curso.planificacio
 import { FiltroCursoPlanificacionDTO } from '../../dto/curso/in/filtro.curso.planificacion.dto';
 import { Message } from 'primeng/api';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
+import { DialogService } from 'primeng/dynamicdialog';
+import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 
 @Component({
     selector: 'app-gestionar-curso',
@@ -66,14 +68,15 @@ export class GestionarCursoComponent {
     rowsPerPageOptions = [5, 10, 20];
 
     public messages: Message[] = null;
-
-    //Referencias componentes hijos
-    @ViewChild('crearEditarVerCurso') crearEditarVerCurso: CrearEditarVerCursoComponent;
-
-    constructor(private messageService: MessageService, 
-        private cursoServicio:CursoServicio, private facultadServicio:FacultadServicio,
-        private programaServicio: ProgramaServicio, private asignaturaServicio:AsignaturaServicio,
-        public periodoAcademicoService:PeriodoAcademicoService) {
+    constructor(
+        private cursoServicio:CursoServicio, 
+        private facultadServicio:FacultadServicio,
+        private programaServicio: ProgramaServicio, 
+        private asignaturaServicio:AsignaturaServicio,
+        public periodoAcademicoService:PeriodoAcademicoService,
+        private dialog: DialogService,
+        private messageService: ShowMessageService
+    ) {
     }
 
     public ngOnInit() {   
@@ -234,12 +237,40 @@ export class GestionarCursoComponent {
         this.filtroCursoPlanificacionDTO.pagina =event.page;     
         this.consultarCursosPorFiltro();
     }
-       
-    /*Crear, Editar y Ver curso*/
-    public abrirModalCrearEditarVerCurso(cursoPlanificacionOutDTOSeleccionado: CursoPlanificacionOutDTO, tituloModal: string) {
-        if (this.crearEditarVerCurso) {
-            this.crearEditarVerCurso.abrirModal(cursoPlanificacionOutDTOSeleccionado, tituloModal);
-        }      
+    crear() {
+        this.dialog.open(CrearEditarVerCursoComponent, {
+            height: 'auto',
+            width: '800px',
+            header: 'Crear curso',
+            closable: false,
+            data: {
+              lectura: false
+            }
+        })
+    }
+    ver(curso: CursoPlanificacionOutDTO) {
+        this.dialog.open(CrearEditarVerCursoComponent, {
+            height: 'auto',
+            width: '800px',
+            header: 'Información curso',
+            closable: false,
+            data: {
+              id: curso.idCurso,
+              lectura: true
+            }
+        })
+    }
+    editar(curso: CursoPlanificacionOutDTO) {
+        this.dialog.open(CrearEditarVerCursoComponent, {
+            height: 'auto',
+            width: '800px',
+            header: 'Editar curso',
+            closable: false,
+            data: {
+              id: curso.idCurso,
+              lectura: false
+            }
+        })
     }
     
     /*Eliminar curso*/
@@ -248,9 +279,14 @@ export class GestionarCursoComponent {
         this.deleteCursoDialog = true;
     }
    
-    public confirmarEliminacion() {
+    public confirmarEliminacion(idCurso: number) {
         this.deleteCursoDialog = false;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Curso eliminado', life: 3000 });
+        this.cursoServicio.eliminarCurso(idCurso).subscribe(r => {
+            if (r) {
+                this.messageService.showMessage('success', "Curso eliminado")
+                this.consultarCursosPorFiltro()
+            }
+        })
     }
 
     public actualizarInformacionCursos():void {

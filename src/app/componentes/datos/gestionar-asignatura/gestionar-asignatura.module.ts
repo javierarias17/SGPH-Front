@@ -20,6 +20,7 @@ import { MessageModule } from 'primeng/message';
 import { PrimeNgModule } from 'src/app/prime-ng/prime-ng.module';
 import { ToastModule } from 'primeng/toast';
 import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
+import { FileUploadModule } from 'primeng/fileupload';
 
 
 @NgModule({
@@ -43,8 +44,8 @@ import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
     SharedModule,
     MessageModule,
     ToastModule,
+    FileUploadModule,
     PrimeNgModule,
-    InputNumberModule 
   ],
   providers: [DialogService, FacultadServicio, ProgramaServicio, AsignaturaServicio]
 })
