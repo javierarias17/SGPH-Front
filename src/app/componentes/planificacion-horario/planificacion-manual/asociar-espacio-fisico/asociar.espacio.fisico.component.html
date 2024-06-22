@@ -1,4 +1,4 @@
-<p-dialog #modalDialog [(visible)]="mostrarAsociarAulaModal" [style]="{width: '1024px'}" header="Gestionar horarios" [modal]="true"
+<p-dialog #modalDialog [(visible)]="mostrarAsociarAulaModal" [style]="{width: '1024px'}" [header]="this.nombreHeader" [modal]="true"
     class="p-fluid">
     <ng-template pTemplate="content">
 
@@ -116,7 +116,7 @@
                 </div>
                 <!--Segunda columna-->
                 <div class="col-6">
-                    <div class="mt-1 flex justify-content-start flex-wrap">
+                    <div class="mt-1 flex justify-content-start flex-wrap" *ngIf="esPrincipal">
                         <label for="address">Disponibilidad</label>
                         <div class="grid formgrid">
                             <div class="col-4">
@@ -158,7 +158,7 @@
                         </div>
                     </div>
     
-                    <div class="grid mt-1">
+                    <div class="grid mt-1" *ngIf="esPrincipal">
                         <!--Primera columna-->
                         <div class="col-4">
                             <label for="address">Desde</label>

@@ -45,7 +45,9 @@
                         [style.gridRow]="generarFilasParaFranja(dia, horaInicio)">
                             {{ configurarFranjaCurso( dia, horaInicio,fila,columna) }}
                             <br>
-                            {{ obtenerNombreEspacioFisico( dia, horaInicio) }}
+                            {{ obtenerNombreEspacioFisico( dia, horaInicio, true) }}
+                            <br>
+                            {{ obtenerNombreEspacioFisico( dia, horaInicio, false) }}
                     </div>      
                 </ng-container>
             </ng-container>

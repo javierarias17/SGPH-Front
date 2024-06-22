@@ -137,8 +137,8 @@
 				<th>Programa</th>
 				<th>Semestre</th>
 				<th>Asignatura</th>
-				<th>Grupo</th>				
-				<!--<th>Horas semana</th>-->
+				<th>Grupo</th>	
+                <th>Cupo</th>				
 				<th>Opciones</th>
 				</tr>
 			</ng-template>
@@ -148,7 +148,7 @@
 				<td>{{cursoPlanificacionOutDTO.semestre}}</td>
 				<td>{{cursoPlanificacionOutDTO.nombreAsignatura}}</td>
 				<td>{{cursoPlanificacionOutDTO.grupo}}</td>
-				<!--<td>{{cursoPlanificacionOutDTO.horasSemana}}</td>-->
+                <td>{{cursoPlanificacionOutDTO.cupo}}</td>
 				<td>
 					<div class="flex">
 						<button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info" (click)="ver(cursoPlanificacionOutDTO)"></button>

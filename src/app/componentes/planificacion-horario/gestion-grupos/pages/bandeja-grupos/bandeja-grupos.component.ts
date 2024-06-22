@@ -97,7 +97,7 @@ export class BandejaGruposComponent implements OnInit {
         const ref = this.dialog.open(CrearEditarGrupoComponent, {
             height: 'auto',
             width: '800px',
-            header: 'Información Grupo',
+            header: 'Información Agrupador',
             closable: false,
             data: {
                 id: id,
@@ -110,7 +110,7 @@ export class BandejaGruposComponent implements OnInit {
         const ref = this.dialog.open(CrearEditarGrupoComponent, {
             height: 'auto',
             width: '800px',
-            header: 'Editar Grupo',
+            header: 'Editar Agrupador',
             closable: false,
             data: {
                 grupo: grupo,
@@ -139,7 +139,7 @@ export class BandejaGruposComponent implements OnInit {
         const ref = this.dialog.open(CrearEditarGrupoComponent, {
             height: 'auto',
             width: '800px',
-            header: 'Registrar Grupo',
+            header: 'Registrar Agrupador',
             closable: false,
             data: {
                 lectura: false,

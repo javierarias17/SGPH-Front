@@ -126,10 +126,17 @@ export class HorarioDocenteComponent {
 		return franjaCurso ? franjaCurso.nombreCurso: '';
 	}
 
-	public obtenerNombreEspacioFisico(dia: DiaSemanaEnum, horaInicio: Date): string {
+	public obtenerNombreEspacioFisico(dia: DiaSemanaEnum, horaInicio: Date, esPrincipal:boolean): string {
 		const franjaCurso = this.listaFranjaHorariaDocenteDTO.find(f => f.dia === dia && f.horaInicio === horaInicio);
-		return franjaCurso ? franjaCurso.salon : '';
+
+		if(esPrincipal===true){
+			return franjaCurso ? franjaCurso.salon : '';
+		}else{
+			return franjaCurso ? franjaCurso.salonSecundario : '';
+		}
 	}
+
+
 	
 	public obtenerColorPorMateria(materia: string): string {
 		const colorBase = this.stringToHslColor(materia);

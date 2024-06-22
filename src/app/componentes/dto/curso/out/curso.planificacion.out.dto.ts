@@ -14,6 +14,8 @@ export class CursoPlanificacionOutDTO{
 
 	public horarios: string[];
 
+	public horariosSecundarios: string[];
+
 	public docentes: string[];
 
 	public horasAsignadas:number;
@@ -21,4 +23,6 @@ export class CursoPlanificacionOutDTO{
 	public horasSemana:number;
 
 	public cupo:number;
+
+	public aplicaEspacioSecundario:boolean;
 }

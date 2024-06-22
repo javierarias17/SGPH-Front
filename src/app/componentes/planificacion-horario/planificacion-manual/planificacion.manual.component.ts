@@ -268,10 +268,10 @@ export class PlanificacionManualComponent {
     }
     
     /*Asociar aulas*/
-    public asociarAulas(cursoPlanificacionOutDTOSeleccionado: CursoPlanificacionOutDTO) {
+    public asociarAulas(cursoPlanificacionOutDTOSeleccionado: CursoPlanificacionOutDTO, esPrincipal:boolean) {
         this.cursoPlanificacionOutDTOSeleccionado=cursoPlanificacionOutDTOSeleccionado;
         if (this.asociarEspacioFisico) {
-            this.asociarEspacioFisico.abrirModal(cursoPlanificacionOutDTOSeleccionado);
+            this.asociarEspacioFisico.abrirModal(cursoPlanificacionOutDTOSeleccionado, esPrincipal);
         }      
     }
 

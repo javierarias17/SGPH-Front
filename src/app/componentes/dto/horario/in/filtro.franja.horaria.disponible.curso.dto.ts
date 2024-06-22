@@ -23,6 +23,7 @@ export class FiltroFranjaHorariaDisponibleCursoDTO{
 
 	public salon: string;
 
+	public esPrincipal:boolean;
 	
 	constructor(){	
 		this.listaIdUbicacion=[]; 

@@ -129,16 +129,16 @@
         <label class="large-label">Información cursos {{this.programasSeleccionados[0]?.abreviatura}}:</label>
     </div>
     <div class="col-2">
-        <label class="large-label">Sin horario <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosSinHorario}}</b></label>
-    </div>
-    <div class="col-2">
-        <label class="large-label">Horario parcial <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosHorarioParcial}}</b></label>
+        <label class="large-label">Total cursos <b>{{infoGeneralCursosPorProgramaDTO?.totalCursos}}</b></label>
     </div>
     <div class="col-2">
         <label class="large-label">Horario completo <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosConHorario}}</b></label>
     </div>
     <div class="col-2">
-        <label class="large-label">Total cursos <b>{{infoGeneralCursosPorProgramaDTO?.totalCursos}}</b></label>
+        <label class="large-label">Sin horario <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosSinHorario}}</b></label>
+    </div>
+    <div class="col-2">
+        <label class="large-label">Horario parcial <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosHorarioParcial}}</b></label>
     </div>
     <div class="col-2">
         <label class="large-label">Cursos sin docentes <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosSinDocente}}</b></label>
@@ -151,14 +151,15 @@
         selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines">
 			<ng-template pTemplate="header">
 				<tr>
-				<th>Programa</th>
-				<th>Semestre</th>
+				<th>Prog.</th>
+				<th>Sem.</th>
 				<th>Asignatura</th>
-				<th>Grupo</th>
+				<th>Gru.</th>
 				<th>Horario</th>
-				<th>Horas asignadas</th>
+				<th>Horas. asig.</th>
 				<th>Docente</th>
-				<th>Opciones</th>
+				<th>Principal</th>
+                <th>Secundario</th>
 				</tr>
 			</ng-template>
 			<ng-template pTemplate="body" let-CursoPlanificacionOutDTO>
@@ -190,9 +191,17 @@
                     </td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-users" class="p-button-rounded p-button-info p-button-outlined" (click)="asociarDocentes(CursoPlanificacionOutDTO)" pTooltip="Docentes" tooltipPosition="top"></button>
+                            <button pButton pRipple type="button" icon="pi pi-users" class="p-button-rounded p-button-secondary" (click)="asociarDocentes(CursoPlanificacionOutDTO)" pTooltip="Docentes" tooltipPosition="top"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-building" class="p-button-rounded p-button-warning p-button-outlined" (click)="asociarAulas(CursoPlanificacionOutDTO)" pTooltip="Horarios" tooltipPosition="top"></button>  
+                            <button pButton pRipple type="button" icon="pi pi-calendar" class="p-button-rounded p-button-info " (click)="asociarAulas(CursoPlanificacionOutDTO, true)" pTooltip="Horarios ppal." tooltipPosition="top"></button>  
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex" *ngIf="CursoPlanificacionOutDTO.aplicaEspacioSecundario">
+                            <button pButton pRipple type="button" icon="pi pi-calendar-plus" class="p-button-rounded p-button-primary " (click)="asociarAulas(CursoPlanificacionOutDTO, false)" pTooltip="Horarios sec." tooltipPosition="top"></button>  
+                        </div>
+                        <div class="flex" *ngIf="!CursoPlanificacionOutDTO.aplicaEspacioSecundario">
+                            N/A
                         </div>
                     </td>
 				</tr>

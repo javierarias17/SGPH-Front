@@ -66,12 +66,16 @@ export class AsociarEspacioFisicoComponent {
     
     public listaHorasInicio: {label: string; formato:string}[] = [];
 
-    /*Filtro para realizar las busqueda de los espacios físicos dispnibles*/
+    /*Filtro para realizar las busqueda de los espacios físicos disponibles*/
     public filtroFranjaHorariaDisponibleCursoDTO:FiltroFranjaHorariaDisponibleCursoDTO=new FiltroFranjaHorariaDisponibleCursoDTO();
    
     private precargarUbicacionesSeleccionadas:boolean;
 
     public mensajeResultadoBusqueda: string = "";
+
+    private esPrincipal: boolean = true;
+
+    public nombreHeader:string="";
 
     constructor(private messageService: MessageService,
         private espacioFisicoServicio: EspacioFisicoServicio,
@@ -150,7 +154,11 @@ export class AsociarEspacioFisicoComponent {
           );
     }
 
-    public abrirModal(cursoPlanificacionOutDTOSeleccionado:CursoPlanificacionOutDTO) {
+    public abrirModal(cursoPlanificacionOutDTOSeleccionado:CursoPlanificacionOutDTO,  esPrincipal:boolean) {
+        this.esPrincipal=esPrincipal;
+        this.filtroFranjaHorariaDisponibleCursoDTO.esPrincipal=esPrincipal;
+        this.nombreHeader = esPrincipal===true?'Gestionar horario principal':'Gestionar horario secundario';
+
         this.precargarUbicacionesSeleccionadas=true;
         this.cursoPlanificacionOutDTOSeleccionado = cursoPlanificacionOutDTOSeleccionado;
         this.mostrarAsociarAulaModal=true;
@@ -228,7 +236,7 @@ export class AsociarEspacioFisicoComponent {
      * Método que consulta las franjas horarias asignadas que se mostrarán en el pickList derecho
      */
     private consultarFranjasAsignadasCurso() {
-        this.planificacionManualServicio.consultarFranjasHorariaCursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso, true).subscribe(
+        this.planificacionManualServicio.consultarFranjasHorariaCursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso,  this.esPrincipal).subscribe(
             (lstFranjaHorariaCursoDTO: FranjaHorariaCursoDTO[]) => {        
                 if(lstFranjaHorariaCursoDTO.length === 0){
                     this.listaFranjaHorariaAsignadas = [];
@@ -320,13 +328,16 @@ export class AsociarEspacioFisicoComponent {
         this.filtroFranjaHorariaDisponibleCursoDTO.horaInicio=null;
         this.filtroFranjaHorariaDisponibleCursoDTO.horaFin=null;
         this.filtroFranjaHorariaDisponibleCursoDTO.salon=null;
-        this.filtroFranjaHorariaDisponibleCursoDTO.listaDiaSemanaEnum=[];
+        //this.filtroFranjaHorariaDisponibleCursoDTO.listaDiaSemanaEnum=[];
         this.filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico=[];
         this.filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico=[];
         this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion=[];
         //Se limpian checks de días
-        this.diasSeleccionados=[];
+        //this.diasSeleccionados=[];
         this.horaInicioSeleccionado=null;
+
+        // Se limpia la lista de franjas disponibles
+        this.listaFranjaHorariaDisponibles=[];
 
         this.precargarUbicacionesSeleccionadas=false;
         
@@ -353,21 +364,40 @@ export class AsociarEspacioFisicoComponent {
 
         crearActualizarHorarioCursoInDTO.listaFranjaHorariaCursoAsociarInDTO = listaFranjaHorariaCursoAsociarInDTO;
 
-        this.planificacionManualServicio.crearActualizarHorarioCursoDTO(crearActualizarHorarioCursoInDTO).subscribe(
-        (crearActualizarHorarioCursoOutDTO: CrearActualizarHorarioCursoOutDTO) => {   
-            if(crearActualizarHorarioCursoOutDTO.esExitoso === true){
-                this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias actualizadas con éxito.' });
-                this.consultarFranjasAsignadasCurso();
-            }else{
-                this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
-            }            
-        },
-        (httpErrorResponse: HttpErrorResponse) => {
-            console.error(httpErrorResponse);
-            this.mostrarErrorModal = true;
-            this.mensajeModal = httpErrorResponse.error.message;
+
+        if(this.esPrincipal===true){
+            this.planificacionManualServicio.crearActualizarHorarioCursoDTO(crearActualizarHorarioCursoInDTO).subscribe(
+            (crearActualizarHorarioCursoOutDTO: CrearActualizarHorarioCursoOutDTO) => {   
+                if(crearActualizarHorarioCursoOutDTO.esExitoso === true){
+                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias actualizadas con éxito.' });
+                    this.consultarFranjasAsignadasCurso();
+                }else{
+                    this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
+                }            
+            },
+            (httpErrorResponse: HttpErrorResponse) => {
+                console.error(httpErrorResponse);
+                this.mostrarErrorModal = true;
+                this.mensajeModal = httpErrorResponse.error.message;
+            }
+            );
+        }else{
+            this.planificacionManualServicio.crearActualizarHorarioSecundarioCurso(crearActualizarHorarioCursoInDTO).subscribe(
+                (crearActualizarHorarioCursoOutDTO: CrearActualizarHorarioCursoOutDTO) => {   
+                    if(crearActualizarHorarioCursoOutDTO.esExitoso === true){
+                        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias actualizadas con éxito.' });
+                        this.consultarFranjasAsignadasCurso();
+                    }else{
+                        this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
+                    }            
+                },
+                (httpErrorResponse: HttpErrorResponse) => {
+                    console.error(httpErrorResponse);
+                    this.mostrarErrorModal = true;
+                    this.mensajeModal = httpErrorResponse.error.message;
+                }
+                );
         }
-        );
     }
 
     /**

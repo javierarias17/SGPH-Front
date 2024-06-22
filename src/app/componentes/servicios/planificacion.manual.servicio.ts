@@ -51,6 +51,10 @@ export class PlanificacionManualServicio{
 		return this.http.post<any>("http://localhost:8081/PlanificacionManual/crearActualizarHorarioCursoDTO",crearActualizarHorarioCursoInDTO);
 	}
 
+	public crearActualizarHorarioSecundarioCurso(crearActualizarHorarioCursoInDTO:CrearActualizarHorarioCursoInDTO): Observable<CrearActualizarHorarioCursoOutDTO>{
+		return this.http.post<any>("http://localhost:8081/PlanificacionManual/crearActualizarHorarioSecundarioCurso",crearActualizarHorarioCursoInDTO);
+	}
+
 	public crearActualizarDocentesCursoDTO(crearActualizarDocentesCursoInDTO:CrearActualizarDocentesCursoInDTO): Observable<CrearActualizarDocentesCursoOutDTO>{
 		return this.http.post<any>("http://localhost:8081/PlanificacionManual/crearActualizarDocentesCursoDTO",crearActualizarDocentesCursoInDTO);
 	}

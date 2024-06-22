@@ -1,8 +1,8 @@
 <p-toast></p-toast>
 <div class="grid">
     <div class="col-12">
-        <h3>Gestionar Grupos de espacios físicos</h3>
-        <p>Esta pantalla permite la creación y configuración de grupos de espacios físicos.</p>
+        <h3>Gestionar Agrupadores de espacios físicos</h3>
+        <p>Esta pantalla permite la creación y configuración de agrupadores de espacios físicos.</p>
         <hr>
     </div>
 </div>
@@ -34,7 +34,7 @@
 
 <div class="flex justify-content-end" style="width: 100%;">
     <div class="m-1">
-        <button pButton pRipple label="Registrar grupo" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarGrupo()"></button>
+        <button pButton pRipple label="Registrar agrupador" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarGrupo()"></button>
     </div>
 </div>
 <p-table [value]='this.grupos' responsiveLayout="scroll" styleClass="p-datatable-gridlines" [lazy]="true"
@@ -77,7 +77,7 @@
                 <div class="flex">
                     <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar grupo" class="p-button-rounded p-button-secondary"  tooltipPosition="top" (click)="editarGrupo(obj)"></button>
                     <span style="margin-right: 10px;"></span>
-                    <button pButton pRipple type="button" icon="pi pi-cog" pTooltip="Gestionar espacios físicos" class="p-button-rounded p-button-info p-button-outlined"  tooltipPosition="top" (click)="asignarEspacioFisico(obj)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-cog" pTooltip="Gestionar espacios físicos" class="p-button-rounded p-button-info"  tooltipPosition="top" (click)="asignarEspacioFisico(obj)"></button>
                 </div>
             </td>
         </tr>

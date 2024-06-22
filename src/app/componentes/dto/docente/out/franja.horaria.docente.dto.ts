@@ -11,4 +11,6 @@ export class FranjaHorariaDocenteDTO{
 	public nombreCurso:string;
 
 	public salon: string;
+
+	public salonSecundario:string;
 }
