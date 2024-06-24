@@ -138,6 +138,8 @@ export class AsociarEspacioFisicoComponent {
      */
     private consultarFranjasDisponiblesCurso():void{
         this.filtroFranjaHorariaDisponibleCursoDTO.idAsignatura=this.cursoPlanificacionOutDTOSeleccionado.idAsignatura;
+        this.mensajeResultadoBusqueda= "Buscando...";
+        this.listaFranjaHorariaDisponibles = [];
         this.planificacionManualServicio.consultarFranjasHorariasDisponiblesPorCurso(this.filtroFranjaHorariaDisponibleCursoDTO).subscribe(
             (lstFranjaHorariaCursoDTO: FranjaHorariaCursoDTO[]) => {   
                 if(lstFranjaHorariaCursoDTO.length === 0){
@@ -149,6 +151,7 @@ export class AsociarEspacioFisicoComponent {
                 } 
             },
             (error) => {
+                this.mensajeResultadoBusqueda= "Se produjo un error consultando las franjas";
                 console.error(error);
             }
           );

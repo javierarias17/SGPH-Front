@@ -9,7 +9,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class GrupoService {
-  urlAgrupador: string = "AdministrarEspacioFisico"
+  urlAgrupador: string = "AdministrarAgrupador"
+  urlEspacioFisico: string = "AdministrarEspacioFisico"
   
   constructor(private httpClient: HttpClient) { }
 
@@ -18,24 +19,20 @@ export class GrupoService {
     const url = `${environment.url}${this.urlAgrupador}/filtrarGrupos`;
     return this.httpClient.post<AgrupadorEspacioFiscioDTO[]>(url, filtro);
   }
-  public inactivarGrupo(idGrupo: number): Observable<any> {
-    const url = `${environment.url}${this.urlAgrupador}/inactivarGrupo/${idGrupo}`;
-    return this.httpClient.get<AgrupadorEspacioFiscioDTO[]>(url);
-  }
   public guardarGrupo(grupo: AgrupadorEspacioFiscioDTO): Observable<AgrupadorEspacioFiscioDTO> {
     const url = `${environment.url}${this.urlAgrupador}/guardarGrupo`;
     return this.httpClient.post<AgrupadorEspacioFiscioDTO>(url, grupo);
   }
   public obtenerEspacioFiscioAgrupador(idGrupo: number): Observable<any> {
-    const url = `${environment.url}${this.urlAgrupador}/obtenerEspaciosFisicosAsignadosAAgrupadorId/${idGrupo}`;
+    const url = `${environment.url}${this.urlEspacioFisico}/obtenerEspaciosFisicosAsignadosAAgrupadorId/${idGrupo}`;
     return this.httpClient.get<any>(url);
   }
   public obtenerEspacioFiscioSinAsignarAlGrupo(idGrupo: number): Observable<any> {
-    const url = `${environment.url}${this.urlAgrupador}/obtenerEspaciosFisicosSinAsignarAAgrupadorId/${idGrupo}`;
+    const url = `${environment.url}${this.urlEspacioFisico}/obtenerEspaciosFisicosSinAsignarAAgrupadorId/${idGrupo}`;
     return this.httpClient.get<any>(url);
   }
   public obtenerEspacioFiscioDispinibleFiltro(filtro: any): Observable<any> {
-    const url = `${environment.url}${this.urlAgrupador}/consultarEspacioFisicoConFiltro`;
+    const url = `${environment.url}${this.urlEspacioFisico}/consultarEspacioFisicoConFiltro`;
     return this.httpClient.post<any>(url, filtro);
   }
   public guardarAsignacion(agrupacion: any): Observable<any> {

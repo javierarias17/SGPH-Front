@@ -2,15 +2,15 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AgrupadorEspacioFiscioDTO } from '../model/AgrupadorEspacioFisicoDTO';
 import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
+import { AgrupadorEspacioFiscioDTO } from '../model/AgrupadorEspacioFisicoDTO';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
 
-  urlAgrupador: string = "AdministrarEspacioFisico"
+  urlAgrupador: string = "AdministrarAgrupador"
   urlFacultad: string = "AdministrarFacultad"
   urlReporte: string = "reporte";
   constructor(private http: HttpClient) { }
