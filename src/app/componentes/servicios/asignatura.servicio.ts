@@ -43,7 +43,7 @@ export class AsignaturaServicio{
         const url = `${environment.url}${this.urlAsignatura}/inactivarAsignaturaPorId/${id}`;
         return this.http.get<any>(url);   
     }
-    public cargaMasiva(save: any): Observable <boolean> {
+    public cargaMasiva(save: any): Observable <any> {
         const url = `${environment.url}${this.urlAsignatura}/cargaMasiva`;
         return this.http.post<any>(url, save);   
     }
