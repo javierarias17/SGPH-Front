@@ -119,7 +119,7 @@ export class EspacioFisicoServicio {
 		const url = `http://localhost:8081/AdministrarEspacioFisico/obtenerListaRecursos`;
         return this.http.get<any[]>(url);
     }
-	public guardarEspacioFisico(save: EspacioFisicoDTO): Observable <EspacioFisicoDTO> {
+	public guardarEspacioFisico(save: EspacioFisicoOutDTO): Observable <EspacioFisicoDTO> {
         const url = `${environment.url}AdministrarEspacioFisico/guardarEspacioFisico`;
         return this.http.post<any>(url, save);   
     }

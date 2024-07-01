@@ -4,7 +4,7 @@ export interface AsignaturaOutDTO {
     idAsignatura: number;
     nombre: string;
     codigoAsignatura: string;
-    OID: string;
+    oid: string;
     semestre: number;
     pensum: string;
     horasSemana: number;
