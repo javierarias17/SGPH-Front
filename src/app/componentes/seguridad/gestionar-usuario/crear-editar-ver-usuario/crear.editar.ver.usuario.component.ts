@@ -11,9 +11,10 @@ import { RolOutDTO } from '../../../dto/usuario/out/rol.out.dto';
 import { MessageService } from 'primeng/api';
 import { EstadoUsuarioEnum } from '../../../enum/estado.usuario.enum';
 import { TranslateService } from '@ngx-translate/core';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder, AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { LenguajeServicio } from '../../../servicios/lenguaje.servicio';
-import { RolUsuarioEnum } from 'src/app/componentes/enum/rol.usuario.enum';
+import { RolUsuarioEnum } from '../../../enum/rol.usuario.enum';
+import { Observable, map } from 'rxjs';
 
 
 @Component({
@@ -137,10 +138,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         });
     }
     ngOnInit(): void {
-        this.usuarioInDTO= new UsuarioInDTO();
-        this.esValidoGestionarProgramas=false;
-        this.inicializarFormulario();
-        this.asignarDatosFormulario();
+    
     }
 
 
@@ -190,7 +188,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             numeroIdentificacion: [null, [Validators.required]],
             primerNombre: [null, [Validators.required]],
             primerApellido: [null, [Validators.required]],
-            email: [null, [Validators.required]],
+            email: [null, [Validators.required],[this.emailValidator()]],
             nombreUsuario: [ null, [Validators.required]],
             password: [null, [Validators.required]],
             estado: [ null, [Validators.required]],
@@ -215,8 +213,42 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         }
     }
 
+    private emailValidator(): AsyncValidatorFn {
+        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
+                map((error) => {
+                    for (let key in error) {                    
+                        if (key === 'ExistsByEmail') {
+                            return { "ExistsByEmail": error[key]};
+                        }
+                    }
+                    return null;
+                })
+            );
+        };
+    }   
+
+    public  validarCamposBackendPeriodoAcademico():void{
+        this.usuarioInDTO.esValidar=true;
+        this.usuarioInDTO.idTipoIdentificacion=this.idTipoIdentificacion().value;
+        this.usuarioInDTO.numeroIdentificacion=this.numeroIdentificacion().value;
+        this.usuarioInDTO.primerNombre=this.primerNombre().value;
+        this.usuarioInDTO.primerApellido=this.primerApellido().value;
+        this.usuarioInDTO.email=this.email().value;
+        this.usuarioInDTO.nombreUsuario=this.nombreUsuario().value;
+        this.usuarioInDTO.password=this.password().value;
+        this.usuarioInDTO.estado=this.estado().value;    
+        this.usuarioInDTO.lstIdRol=this.lstIdRol().value;    
+
+        this.formulario.controls['email'].updateValueAndValidity();
+    }
+
 	public abrirModal(usuarioOutDTOSeleccionado: UsuarioOutDTO, tituloModal: string) {
         this.usuarioInDTO= new UsuarioInDTO();
+        this.esValidoGestionarProgramas=false;
+        this.inicializarFormulario();
+        this.asignarDatosFormulario();
+
         this.esVer = false;
         this.esCrear = false;
         this.esEditar = false;
@@ -290,8 +322,8 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
      * @author parias 
      */
     public onRolesChange(): void {
-        let rolOutDTO:RolOutDTO = this.listaRoles.find(rolOutDTO=>rolOutDTO.rolUsuario===RolUsuarioEnum.ROLE_PLANIFICADOR);
-        if(this.usuarioInDTO.lstIdRol !== null && this.usuarioInDTO.lstIdRol.includes(rolOutDTO.idRol)){
+        let rolOutDTO:RolOutDTO | undefined = this.listaRoles.find(rolOutDTO=>rolOutDTO.rolUsuario===RolUsuarioEnum.ROLE_PLANIFICADOR);
+        if(rolOutDTO && this.usuarioInDTO.lstIdRol !== null && this.usuarioInDTO.lstIdRol.includes(rolOutDTO.idRol)){
             this.esValidoGestionarProgramas=true;
         }else{
             this.esValidoGestionarProgramas=false;

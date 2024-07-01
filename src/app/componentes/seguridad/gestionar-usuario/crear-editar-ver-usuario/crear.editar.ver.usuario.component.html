@@ -73,7 +73,7 @@
                 [(ngModel)]="usuarioInDTO.email" 
                 name="email"
                 placeholder="Ingrese correo electrónico"          
-                (ngModelChange)="inputsChangeCorreo()"
+                (ngModelChange)="inputsChangeCorreo(); validarCamposBackendPeriodoAcademico()"
                 >
                 <div class="p-error block" *ngIf="this.formulario.get('email').invalid && this.formulario.get('email').touched">
                     <div *ngIf="this.formulario.get('email').errors.required">El email es requerido</div>            

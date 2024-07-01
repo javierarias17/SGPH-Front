@@ -2,7 +2,6 @@ import { Component, OnInit} from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { FormBuilder, FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { PeriodoAcademicoOutDTO } from 'src/app/componentes/dto/periodo-academico/periodo-academico-out-dto';
 import { PeriodoAcademicoInDTO } from '../../model/periodo-academico-in-dto';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
@@ -13,8 +12,7 @@ import { catchError, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-crear-editar-periodo-academico',
-  templateUrl: './crear-editar-periodo-academico.component.html',
-  styleUrls: ['./crear-editar-periodo-academico.component.scss']
+  templateUrl: './crear-editar-periodo-academico.component.html'
 })
 export class CrearEditarPeriodoAcademicoComponent implements OnInit  {
 
