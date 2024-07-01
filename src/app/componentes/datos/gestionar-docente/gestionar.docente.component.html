@@ -56,7 +56,7 @@
                         <button pButton pRipple label="Subir archivo" icon="pi pi-upload" class="p-button-help" (click)="cargarArchivo()"></button>
                         <span style="margin-right: 10px;"></span>
                         <div class="my-0">
-                            <button pButton pRipple label="Crear curso" icon="pi pi-plus" class="p-button-success mr-2"></button>
+                            <button pButton pRipple label="Crear docente" icon="pi pi-plus" class="p-button-success mr-2" (click) = "crearDocente()"></button>
                         </div>
                     </ng-template>
                 </p-toolbar>  
@@ -87,9 +87,9 @@
                     <td>{{docenteOutDTO.estado | titlecase }}</td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-search" pTooltip="Ver docente" class="p-button-rounded p-button-info" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Ver curso')"></button>
+                            <button pButton pRipple type="button" icon="pi pi-search" pTooltip="Ver docente" class="p-button-rounded p-button-info" (click) = "verDocente(docenteOutDTO)"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar docente" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerDocente(docenteOutDTO, 'Editar curso')"></button>
+                            <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar docente" class="p-button-rounded p-button-secondary" (click) = "editarDocente(docenteOutDTO)"></button>
                             <span style="margin-right: 10px;"></span>
                             <button pButton pRipple type="button" icon="pi pi-ban" pTooltip="Inactivar/Activar docente" class="p-button-rounded p-button-danger" (click)="inactivarDocente(docenteOutDTO)"></button>
                         </div>
@@ -100,8 +100,5 @@
         <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords"></p-paginator>   
     </div>   
 </div>
-
-<app-crear-editar-ver-docente #crearEditarVerDocente></app-crear-editar-ver-docente>
-
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>

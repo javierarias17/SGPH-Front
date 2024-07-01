@@ -8,10 +8,12 @@ import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
 import { HorarioServicio } from '../../servicios/horario.servicio';
 import { FiltroDocenteDTO } from '../../dto/docente/in/filtro.docente.dto';
 import { DocenteOutDTO } from '../../dto/docente/out/docente.out.dto';
-import { CrearEditarVerDocenteComponent } from './crear-editar-ver-docente/crear.editar.ver.docente.component';
+
 import { EstadoDocenteEnum } from '../../enum/estado.docente.enum';
 import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from 'primeng/dynamicdialog';
+import { CrearEditardocenteComponent } from './crear-editar-docente/crear-editar-docente.component';
 
 @Component({
   selector: 'app-gestionar-docente',
@@ -39,14 +41,12 @@ export class GestionarDocenteComponent {
   	public filtroDocenteDTO:FiltroDocenteDTO=new FiltroDocenteDTO();
 
 	public docenteOutDTOSeleccionado: DocenteOutDTO=new DocenteOutDTO();   
-	
-	//Referencias componentes hijos
-	@ViewChild('crearEditarVerDocente') crearEditarVerDocente: CrearEditarVerDocenteComponent;
-  
+
 	constructor(private confirmationService: ConfirmationService,
 		private messageService: MessageService,
 		private docenteServicio:DocenteServicio,
-		private translateService: TranslateService) {
+		private translateService: TranslateService,
+		private dialogService: DialogService) {
 	}
 
 	public ngOnInit() {   
@@ -101,14 +101,6 @@ export class GestionarDocenteComponent {
 		this.filtroDocenteDTO.pagina =event.page;     
 		this.consultarDocentes();
 	}
-		
-	/*Crear, Editar y Ver docente*/
-	public abrirModalCrearEditarVerDocente(docenteOutDTOSeleccionado: DocenteOutDTO, tituloModal: string) {
-		if (this.crearEditarVerDocente) {
-			this.crearEditarVerDocente.abrirModal(docenteOutDTOSeleccionado, tituloModal);
-		}      
-	}
-
 	/*Inactivar Docente*/
 	public inactivarDocente(docenteOutDTOSeleccionado: DocenteOutDTO) {
 		this.docenteOutDTOSeleccionado = { ...docenteOutDTOSeleccionado};
@@ -118,13 +110,62 @@ export class GestionarDocenteComponent {
             message: `¿Está seguro que desea inactivar/activar el docente <strong>${nombreCompleto}</strong>?`,
             header: 'Confirmar',
             icon: 'pi pi-exclamation-triangle',
-            accept: () => {             
-              this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Docente activado/inactivado', life: 3000 });
+            accept: () => {
+				console.log(this.docenteOutDTOSeleccionado.estado)
+				if (this.docenteOutDTOSeleccionado.estado && this.docenteOutDTOSeleccionado.estado === EstadoDocenteEnum.ACTIVO) {
+					this.docenteOutDTOSeleccionado.estado = EstadoDocenteEnum.INACTIVO
+				} else {
+					this.docenteOutDTOSeleccionado.estado = EstadoDocenteEnum.ACTIVO
+				}
+				this.docenteServicio.guardarDocente(this.docenteOutDTOSeleccionado).subscribe(r => {
+					this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Docente activado/inactivado', life: 3000 });
+				})
             },
             reject: () => {
               this.messageService.add({ severity: 'error', summary: 'Cancelado', detail: 'Operación cancelada', life: 3000 });
             }
           }); 
+	}
+	idTipoIdentificacion
+	numeroIdentificacion
+	crearDocente() {
+		const ref = this.dialogService.open(CrearEditardocenteComponent, {
+			height: 'auto',
+			width: '800px',
+			header: 'Crear docente',
+			closable: false,
+			data: {
+			  lectura: false
+			}
+		  },)
+	}
+	editarDocente(docente: DocenteOutDTO) {
+		const ref = this.dialogService.open(CrearEditardocenteComponent, {
+			height: 'auto',
+			width: '800px',
+			header: 'Editar docente',
+			closable: false,
+			data: {
+				idTipoIdentificacion: docente.idTipoIdentificacion,
+				numeroIdentificacion: docente.numeroIdentificacion,
+				id: docente.idPersona,
+			  	lectura: false
+			}
+		  },)
+	}
+	verDocente(docente: DocenteOutDTO) {
+		const ref = this.dialogService.open(CrearEditardocenteComponent, {
+			height: 'auto',
+			width: '800px',
+			header: 'Ver docente',
+			closable: false,
+			data: {
+				idTipoIdentificacion: docente.idTipoIdentificacion,
+				numeroIdentificacion: docente.numeroIdentificacion,
+				id: docente.idPersona,
+			  	lectura: true
+			}
+		  },)
 	}
 }
 

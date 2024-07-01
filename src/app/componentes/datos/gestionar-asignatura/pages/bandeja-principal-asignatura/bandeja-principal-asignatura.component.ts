@@ -213,10 +213,13 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
  }
  cargar() {
   this.asignaturaServicio.cargaMasiva({ base64: this.base64String} as any).subscribe(r => {
-    if (r) {
+    if (r && !r.error) {
       this.cancelar()
       this.mensageService.showMessage("success", "Asignaturas guardadas correctamente")
       this.listarAsignaturasBase()
+    } else {
+      this.cancelar()
+      this.mensageService.showMessage("error", r.descripcion)
     }
   })
  }

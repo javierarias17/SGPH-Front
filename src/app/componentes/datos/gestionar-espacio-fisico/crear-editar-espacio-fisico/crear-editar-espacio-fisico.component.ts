@@ -27,6 +27,7 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   recursosLista: any[] = []
   gruposSeleccionados: number[]
   lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[] = [];
+  recursosActuales: any[]
   constructor(
     private ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
@@ -94,6 +95,7 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
     this.espacioFisicoService.consultarEspacioFisicoPorIdEspacioFisico(this.config.data.idEspacioFisico).subscribe(r => {
       this.espacio = r
       if (r) {
+        this.recursosActuales = r.recursos
         this.agrupadores()
         if (!this.lectura) {
           this.setFormulario()
@@ -132,10 +134,9 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
     if (this.formulario.valid) {
       let espacioSave: EspacioFisicoOutDTO = this.formulario.value
       espacioSave.idEspacioFisico = this.espacio.idEspacioFisico
-      espacioSave.saveIdAgrupadores = this.gruposSeleccionados
       espacioSave.idTipoEspacioFisico = this.tipo().value
       this.espacioFisicoService.guardarEspacioFisico(
-        this.formulario.value
+        espacioSave
       ).subscribe(r => {
         if (r) {
           this.messageService.showMessage("success","Espacio fisico guardado correctamente")

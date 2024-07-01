@@ -1,12 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DocenteOutDTO } from '../dto/docente/out/docente.out.dto';
 import { FiltroDocenteDTO } from '../dto/docente/in/filtro.docente.dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class DocenteServicio{
-
+    urlDocente: string = "AdministrarDocente"
     constructor(private http: HttpClient) {
     }
 
@@ -36,5 +37,16 @@ export class DocenteServicio{
     public consultarDocentePorIdCurso(idCurso:number): Observable<DocenteOutDTO[]>{
         const url = `http://localhost:8081/AdministrarDocente/consultarDocentePorIdCurso?idCurso=${idCurso}`;
         return this.http.get<any>(url);
-    } 
+    }
+	consultarDocentePorIdentificacion(idTipoIdentificacion: number, numeroIdentificacion: string): Observable<DocenteOutDTO> {
+		const params = new HttpParams()
+		  .set('idTipoIdentificacion', idTipoIdentificacion.toString())
+		  .set('numeroIdentificacion', numeroIdentificacion);
+		  const url = `${environment.url}${this.urlDocente}/consultarDocentePorIdentificacion`;
+		return this.http.get<DocenteOutDTO>(url, { params });
+	  }
+    guardarDocente(save: DocenteOutDTO): Observable <DocenteOutDTO> {
+        const url = `${environment.url}${this.urlDocente}/guardarDocente`;
+        return this.http.post<any>(url, save);   
+    }
 }

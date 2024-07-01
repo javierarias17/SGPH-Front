@@ -57,7 +57,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
   asignarDatosFormulario() {
     this.nombre().setValue(this.asignatura.nombre)
     this.codigoAsignatura().setValue(this.asignatura.codigoAsignatura)
-    this.OID().setValue(this.asignatura.OID)
+    this.OID().setValue(this.asignatura.oid)
     this.semestre().setValue(this.asignatura.semestre)
     this.pensum().setValue(this.asignatura.pensum)
     this.horasSemana().setValue(this.asignatura.horasSemana)

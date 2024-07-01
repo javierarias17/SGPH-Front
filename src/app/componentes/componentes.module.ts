@@ -13,7 +13,7 @@ import { GestionarReservaTemporalComponent } from './reservas/gestionar-reserva-
 import { GestionarReservaFacultadComponent } from './reservas/gestionar-reserva-facultad/gestionar.reserva.facultad.component';
 import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/gestionar.usuario.component';
 import { AsociarDocenteComponent } from './planificacion-horario/planificacion-manual/asociar-docente/asociar.docente.component';
-import { CrearEditarVerDocenteComponent } from './datos/gestionar-docente/crear-editar-ver-docente/crear.editar.ver.docente.component';
+
 import { HorarioEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/horario-espacio-fisico/horario.espacio.fisico.component';
 import { CrearEditarVerUsuarioComponent } from './seguridad/gestionar-usuario/crear-editar-ver-usuario/crear.editar.ver.usuario.component';
 import { AsociarEspacioFisicoComponent } from './planificacion-horario/planificacion-manual/asociar-espacio-fisico/asociar.espacio.fisico.component';
@@ -39,6 +39,9 @@ import { AsignaturaServicio } from './servicios/asignatura.servicio';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { ResultadoGeneracionHorarioComponent } from './planificacion-horario/planificacion-semestre-anterior/resultado-generacion-horario/resultado-generacion-horario.component';
+import { DocenteServicio } from './servicios/docente.servicio';
+import { UsuarioServicio } from './servicios/usuario.servicio';
+import { CrearEditardocenteComponent } from './datos/gestionar-docente/crear-editar-docente/crear-editar-docente.component';
 
 
 @NgModule({
@@ -61,13 +64,14 @@ import { ResultadoGeneracionHorarioComponent } from './planificacion-horario/pla
 		GestionarUsuarioComponent,
 		HorarioDocenteComponent,
 		BandejaReporteDocenteComponent,
-		CrearEditarVerDocenteComponent,
+
 		HorarioEspacioFisicoComponent,
 		BandejaReporteEspacioFisicoComponent,
 		CrearEditarVerUsuarioComponent,
   		CrearEditarEspacioFisicoComponent,
         EliminarHorarioProgramaComponent,
-        ResultadoGeneracionHorarioComponent		
+        ResultadoGeneracionHorarioComponent,
+		CrearEditardocenteComponent
 	],
 	imports: [
 		ReactiveFormsModule,
@@ -84,7 +88,9 @@ import { ResultadoGeneracionHorarioComponent } from './planificacion-horario/pla
 		SharedService, 
 		PeriodoAcademicoService,
 		CursoServicio,
-		AsignaturaServicio
+		AsignaturaServicio,
+		DocenteServicio,
+		UsuarioServicio
 	]
 })
 export class ComponentesModule { }
