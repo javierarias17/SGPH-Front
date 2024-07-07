@@ -60,9 +60,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     /** Listas de tipo de identificación para el selector único tipo de identificación*/
     public listaTiposIdentificacion:TipoIdentificacionOutDTO[] = [];  
 
-    /** Listas de facultades seleccionadas en el selector*/
-    public lstIdFacultadSeleccionadas: number[] = [];    
-
     /** Usuario que ingresa al componente*/    
 	public usuarioOutDTOSeleccionado:UsuarioOutDTO;
     /** Usuario de tipo UsuarioInDTO para las operaciones de Crear y Editar*/  
@@ -138,7 +135,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         });
     }
     ngOnInit(): void {
-    
+        this.usuarioInDTO= new UsuarioInDTO();
     }
 
 
@@ -147,11 +144,14 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         this.numeroIdentificacion().setValue(this.usuarioInDTO.numeroIdentificacion);
         this.primerNombre().setValue(this.usuarioInDTO.primerNombre);
         this.primerApellido().setValue(this.usuarioInDTO.primerApellido);
+        this.segundoNombre().setValue(this.usuarioInDTO.segundoNombre);
+        this.segundoApellido().setValue(this.usuarioInDTO.segundoApellido);
         this.email().setValue(this.usuarioInDTO.email);
         this.nombreUsuario().setValue(this.usuarioInDTO.nombreUsuario);
         this.password().setValue(this.usuarioInDTO.password);
         this.estado().setValue(this.usuarioInDTO.estado);
         this.lstIdRol().setValue(this.usuarioInDTO.lstIdRol);
+        this.lstIdPrograma().setValue(this.usuarioInDTO.lstIdPrograma);
     }
 
     public idTipoIdentificacion():FormControl{
@@ -165,6 +165,12 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     }
     public primerApellido():FormControl{
         return this.formulario.get("primerApellido") as FormControl;
+    }
+    public segundoNombre():FormControl{
+        return this.formulario.get("segundoNombre") as FormControl;
+    }
+    public segundoApellido():FormControl{
+        return this.formulario.get("segundoApellido") as FormControl;
     }
     public email():FormControl{
         return this.formulario.get("email") as FormControl;
@@ -181,39 +187,78 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     public lstIdRol():FormControl{
         return this.formulario.get("lstIdRol") as FormControl;
     }
+    public lstIdPrograma():FormControl{
+        return this.formulario.get("lstIdPrograma") as FormControl;
+    }
+    public lstIdFacultadSeleccionadas():FormControl{
+        return this.formulario.get("lstIdFacultadSeleccionadas") as FormControl;
+    }
 
     private inicializarFormulario() {
         this.formulario = this.formBuilder.group({
-            idTipoIdentificacion: [null, [Validators.required]],
-            numeroIdentificacion: [null, [Validators.required]],
+            idTipoIdentificacion: [null, [Validators.required],[this.existeTipoYNumeroIdentificacionValidator()]],
+            numeroIdentificacion: [null, [Validators.required],[this.existeTipoYNumeroIdentificacionValidator()]],
             primerNombre: [null, [Validators.required]],
             primerApellido: [null, [Validators.required]],
-            email: [null, [Validators.required],[this.emailValidator()]],
-            nombreUsuario: [ null, [Validators.required]],
+            segundoNombre: [null],
+            segundoApellido: [null],
+            email: [null, [Validators.required],[this.existeEmailValidator()]],
+            nombreUsuario: [ { value: null, disabled: true }, [Validators.required],[this.existeNombreUsuarioValidator()]],
             password: [null, [Validators.required]],
             estado: [ null, [Validators.required]],
-            lstIdRol: [ null, [Validators.required]]
+            lstIdRol: [ null, [Validators.required]],
+            lstIdPrograma: [ null],
+            lstIdFacultadSeleccionadas: [ null]
+            //lstIdPrograma: [ null, [Validators.],[this.existeAlMenosUnProgramaParaRolPlanificadorValidator()]]
         })
     }
+   
+    private existeAlMenosUnProgramaParaRolPlanificadorValidator(): AsyncValidatorFn {
+        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
+                map((error) => {
+                    for (let key in error) {                    
+                        if (key === 'ExistsAtLeastOneProgramForPlanificadorRole') {
+                            return { "ExistsAtLeastOneProgramForPlanificadorRole": error[key]};
+                        }
+                    }
+                    return null;
+                })
+            );
+        };
+    }  
 
-    public validarYGuardarUsuario() {
-        if (this.formulario.valid) { 
-            this.usuarioInDTO.idTipoIdentificacion=this.idTipoIdentificacion().value;
-            this.usuarioInDTO.numeroIdentificacion=this.numeroIdentificacion().value;
-            this.usuarioInDTO.primerNombre=this.primerNombre().value;
-            this.usuarioInDTO.primerApellido=this.primerApellido().value;
-            this.usuarioInDTO.email=this.email().value;
-            this.usuarioInDTO.nombreUsuario=this.nombreUsuario().value;
-            this.usuarioInDTO.password=this.password().value;
-            this.usuarioInDTO.estado=this.estado().value;    
-            this.usuarioInDTO.lstIdRol=this.lstIdRol().value;    
-            this.guardarUsuario();    
-        }else{
-            this.formulario.markAllAsTouched();
-        }
-    }
+    private existeNombreUsuarioValidator(): AsyncValidatorFn {
+        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
+                map((error) => {
+                    for (let key in error) {                    
+                        if (key === 'ExistsByNombreUsuario') {
+                            return { "ExistsByNombreUsuario": error[key]};
+                        }
+                    }
+                    return null;
+                })
+            );
+        };
+    }  
 
-    private emailValidator(): AsyncValidatorFn {
+    private existeTipoYNumeroIdentificacionValidator(): AsyncValidatorFn {
+        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
+                map((error) => {
+                    for (let key in error) {                    
+                        if (key === 'ExistsByTipoAndNumeroIdentificacion') {
+                            return { "ExistsByTipoAndNumeroIdentificacion": error[key]};
+                        }
+                    }
+                    return null;
+                })
+            );
+        };
+    }  
+
+    private existeEmailValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
             return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
                 map((error) => {
@@ -226,28 +271,62 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
                 })
             );
         };
-    }   
+    }  
 
-    public  validarCamposBackendPeriodoAcademico():void{
+    public validarYGuardarUsuario() {
+        if (this.formulario.valid) {
+            this.usuarioInDTO.esValidar=false; 
+            this.usuarioInDTO.idTipoIdentificacion=this.idTipoIdentificacion().value;
+            this.usuarioInDTO.numeroIdentificacion=this.numeroIdentificacion().value;
+            this.usuarioInDTO.primerNombre=this.primerNombre().value;
+            this.usuarioInDTO.primerApellido=this.primerApellido().value;
+            this.usuarioInDTO.segundoNombre=this.segundoNombre().value;
+            this.usuarioInDTO.segundoApellido=this.segundoApellido().value;
+            this.usuarioInDTO.email=this.email().value;
+            this.usuarioInDTO.nombreUsuario=this.nombreUsuario().value;
+            this.usuarioInDTO.password=this.password().value;
+            this.usuarioInDTO.estado=this.estado().value;    
+            this.usuarioInDTO.lstIdRol=this.lstIdRol().value;    
+            this.usuarioInDTO.lstIdPrograma=this.lstIdPrograma().value;
+            this.guardarUsuario();    
+        }else{
+            this.formulario.markAllAsTouched();
+            // Obtener los campos inválidos
+            const camposInvalidos = Object.keys(this.formulario.controls).filter(controlName =>
+                this.formulario.get(controlName).invalid
+            );
+            console.log('Campos inválidos:', camposInvalidos);
+        }
+    }
+
+    public  validarCamposBackendUsuario():void{
         this.usuarioInDTO.esValidar=true;
         this.usuarioInDTO.idTipoIdentificacion=this.idTipoIdentificacion().value;
         this.usuarioInDTO.numeroIdentificacion=this.numeroIdentificacion().value;
         this.usuarioInDTO.primerNombre=this.primerNombre().value;
         this.usuarioInDTO.primerApellido=this.primerApellido().value;
+        this.usuarioInDTO.segundoNombre=this.segundoNombre().value;
+        this.usuarioInDTO.segundoApellido=this.segundoApellido().value;
         this.usuarioInDTO.email=this.email().value;
         this.usuarioInDTO.nombreUsuario=this.nombreUsuario().value;
         this.usuarioInDTO.password=this.password().value;
         this.usuarioInDTO.estado=this.estado().value;    
         this.usuarioInDTO.lstIdRol=this.lstIdRol().value;    
+        this.usuarioInDTO.lstIdPrograma=this.lstIdPrograma().value;
 
         this.formulario.controls['email'].updateValueAndValidity();
+        if(this.idTipoIdentificacion().value && this.numeroIdentificacion().value){
+            this.formulario.controls['numeroIdentificacion'].updateValueAndValidity();
+        }
+        this.formulario.controls['nombreUsuario'].updateValueAndValidity();
+        this.formulario.controls['lstIdPrograma'].updateValueAndValidity();
     }
 
 	public abrirModal(usuarioOutDTOSeleccionado: UsuarioOutDTO, tituloModal: string) {
         this.usuarioInDTO= new UsuarioInDTO();
         this.esValidoGestionarProgramas=false;
         this.inicializarFormulario();
-        this.asignarDatosFormulario();
+        this.asignarDatosFormulario();        
 
         this.esVer = false;
         this.esCrear = false;
@@ -275,9 +354,9 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
                 }
             })
     
-            this.lstIdFacultadSeleccionadas = [... new Set(lstIdFacultad)];
+            this.lstIdFacultadSeleccionadas().setValue([... new Set(lstIdFacultad)]);
     
-            this.lstIdFacultadSeleccionadas.forEach(idFacultad => {
+            this.lstIdFacultadSeleccionadas().value.forEach(idFacultad => {
                 this.mapaProgramas.forEach(programaOutDTO => {
                     if(programaOutDTO.idFacultad===idFacultad){
                         this.listaProgramas.push(programaOutDTO);
@@ -292,17 +371,18 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             this.esValidoGestionarProgramas=false;
         }
         this.inicializarFormulario();
-        this.asignarDatosFormulario();
+        this.asignarDatosFormulario(); 
+        this.desactivarActivarCamposPersona();
 	}
 
     public onFacultadesChange(){
-        if(this.lstIdFacultadSeleccionadas!==null && this.lstIdFacultadSeleccionadas.length !== 0){
-            this.programaServicio.consultarProgramasPorIdFacultad(this.lstIdFacultadSeleccionadas).subscribe(
+        if(this.lstIdFacultadSeleccionadas().value!==null && this.lstIdFacultadSeleccionadas().value.length !== 0){
+            this.programaServicio.consultarProgramasPorIdFacultad(this.lstIdFacultadSeleccionadas().value).subscribe(
                 (lstProgramaOutDTO: ProgramaOutDTO[]) => {
                     if(lstProgramaOutDTO.length === 0){
                         this.listaProgramas=[];
                     }else{
-                        this.usuarioInDTO.lstIdPrograma=[];
+                        this.lstIdPrograma().setValue([]);
                         this.listaProgramas = lstProgramaOutDTO;
                     }
                 },
@@ -312,7 +392,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
                 );   
         }else{
             this.listaProgramas=[];
-            this.usuarioInDTO.lstIdPrograma=[];
+            this.lstIdPrograma().setValue([]);
         }
     }   
 
@@ -323,36 +403,35 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
      */
     public onRolesChange(): void {
         let rolOutDTO:RolOutDTO | undefined = this.listaRoles.find(rolOutDTO=>rolOutDTO.rolUsuario===RolUsuarioEnum.ROLE_PLANIFICADOR);
-        if(rolOutDTO && this.usuarioInDTO.lstIdRol !== null && this.usuarioInDTO.lstIdRol.includes(rolOutDTO.idRol)){
+        if(rolOutDTO && this.lstIdRol().value !== null && this.lstIdRol().value.includes(rolOutDTO.idRol)){
             this.esValidoGestionarProgramas=true;
         }else{
             this.esValidoGestionarProgramas=false;
         }
     }
 
-    public onTipoIdentificacionChange():void{
-        this.onNumeroIdentificacionBlur();
-    }
-
     public onNumeroIdentificacionBlur():void{
-        if(this.usuarioInDTO.numeroIdentificacion && this.usuarioInDTO.idTipoIdentificacion){
-            this.usuarioServicio.consultarPersonaPorIdentificacion(this.usuarioInDTO.idTipoIdentificacion, this.usuarioInDTO.numeroIdentificacion).subscribe(
+        if(this.numeroIdentificacion().value && this.idTipoIdentificacion().value){
+            this.usuarioServicio.consultarPersonaPorIdentificacion(this.idTipoIdentificacion().value, this.numeroIdentificacion().value).subscribe(
                 (usuarioOutDTO: UsuarioOutDTO) => {
                     if(usuarioOutDTO){
-                        this.usuarioInDTO.primerNombre = usuarioOutDTO.primerNombre;
-                        this.usuarioInDTO.segundoNombre = usuarioOutDTO.segundoNombre;
-                        this.usuarioInDTO.primerApellido = usuarioOutDTO.primerApellido;
-                        this.usuarioInDTO.segundoApellido = usuarioOutDTO.segundoApellido;
-                        this.usuarioInDTO.email = usuarioOutDTO.email;
+                        this.usuarioInDTO.esDocente=usuarioOutDTO.esDocente;
+                        this.primerNombre().setValue(usuarioOutDTO.primerNombre);
+                        this.segundoNombre().setValue(usuarioOutDTO.segundoNombre);
+                        this.primerApellido().setValue(usuarioOutDTO.primerApellido);
+                        this.segundoApellido().setValue(usuarioOutDTO.segundoApellido);
+                        this.email().setValue(usuarioOutDTO.email);
                         this.esPersonaExistente=true;
                     }else{
-                        this.usuarioInDTO.primerNombre = null;
-                        this.usuarioInDTO.segundoNombre = null;
-                        this.usuarioInDTO.primerApellido = null;
-                        this.usuarioInDTO.segundoApellido = null;
-                        this.usuarioInDTO.email = null;
+                        this.usuarioInDTO.esDocente=false;
+                        this.primerNombre().setValue(null);
+                        this.segundoNombre().setValue(null);
+                        this.primerApellido().setValue(null);
+                        this.segundoApellido().setValue(null);
+                        this.email().setValue(null);
                         this.esPersonaExistente=false;
                     }
+                    this.desactivarActivarCamposPersona();                  
                 },
                 (error) => {
                     console.error(error);
@@ -361,18 +440,32 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         }
     }
 
+    private desactivarActivarCamposPersona():void{
+        if(this.usuarioInDTO.esDocente===true){
+            this.primerNombre().disable()
+            this.segundoNombre().disable()
+            this.primerApellido().disable()
+            this.segundoApellido().disable()
+            this.email().disable()
+        }else{
+            this.primerNombre().enable()
+            this.segundoNombre().enable()
+            this.primerApellido().enable()
+            this.segundoApellido().enable()
+            this.email().enable()
+        }
+    }
+
     public inputsChangeCorreo(): void {
-        if (this.usuarioInDTO.email) {
-            const partes = this.usuarioInDTO.email.split('@');
+        if (this.email().value) {
+            const partes = this.email().value.split('@');
 
             if (partes.length > 1 && partes[0]) {
-                this.usuarioInDTO.nombreUsuario = partes[0];
+                this.nombreUsuario().setValue(partes[0]);
             } else {
-                this.usuarioInDTO.nombreUsuario = '';
+                this.nombreUsuario().setValue('');
             }
-        } else {
-            this.usuarioInDTO.nombreUsuario = '';
-        }
+        } 
     }
 
     public obtenerNombreCompletoUsuario():string{

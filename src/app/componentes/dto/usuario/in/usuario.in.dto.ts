@@ -15,6 +15,7 @@ export class UsuarioInDTO{
     public estado: EstadoUsuarioEnum | null;
     public lstIdRol: number[];
     public lstIdPrograma: number[];
+    public esDocente: boolean;
 
     public esValidar: boolean;
 
@@ -31,5 +32,6 @@ export class UsuarioInDTO{
         this.password=null;
         this.estado=null;
         this.lstIdRol=[];
+        this.esDocente=false;
     }
 }

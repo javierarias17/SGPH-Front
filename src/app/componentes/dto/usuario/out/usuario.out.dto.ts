@@ -14,6 +14,8 @@ export class UsuarioOutDTO{
     public estado: EstadoUsuarioEnum;
     public lstIdRol: number[];
     public lstIdPrograma: number[];
+    public esDocente: boolean;
 
     public esValidar: boolean;
+
 }
