@@ -15,6 +15,7 @@ import { FormControl, FormGroup, Validators, FormBuilder, AsyncValidatorFn, Abst
 import { LenguajeServicio } from '../../../servicios/lenguaje.servicio';
 import { RolUsuarioEnum } from '../../../enum/rol.usuario.enum';
 import { Observable, map } from 'rxjs';
+import { PersonaInDTO } from 'src/app/componentes/dto/persona/persona.in.dto';
 
 
 @Component({
@@ -64,6 +65,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 	public usuarioOutDTOSeleccionado:UsuarioOutDTO;
     /** Usuario de tipo UsuarioInDTO para las operaciones de Crear y Editar*/  
     public usuarioInDTO:UsuarioInDTO;
+    public personaInDTO:PersonaInDTO;
 
     public name:string;
 
@@ -140,13 +142,13 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
 
     public asignarDatosFormulario():void{
-        this.idTipoIdentificacion().setValue(this.usuarioInDTO.idTipoIdentificacion);
-        this.numeroIdentificacion().setValue(this.usuarioInDTO.numeroIdentificacion);
-        this.primerNombre().setValue(this.usuarioInDTO.primerNombre);
-        this.primerApellido().setValue(this.usuarioInDTO.primerApellido);
-        this.segundoNombre().setValue(this.usuarioInDTO.segundoNombre);
-        this.segundoApellido().setValue(this.usuarioInDTO.segundoApellido);
-        this.email().setValue(this.usuarioInDTO.email);
+        this.idTipoIdentificacion().setValue(this.personaInDTO.idTipoIdentificacion);
+        this.numeroIdentificacion().setValue(this.personaInDTO.numeroIdentificacion);
+        this.primerNombre().setValue(this.personaInDTO.primerNombre);
+        this.primerApellido().setValue(this.personaInDTO.primerApellido);
+        this.segundoNombre().setValue(this.personaInDTO.segundoNombre);
+        this.segundoApellido().setValue(this.personaInDTO.segundoApellido);
+        this.email().setValue(this.personaInDTO.email);
         this.nombreUsuario().setValue(this.usuarioInDTO.nombreUsuario);
         this.password().setValue(this.usuarioInDTO.password);
         this.estado().setValue(this.usuarioInDTO.estado);
@@ -218,8 +220,8 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
                 map((error) => {
                     for (let key in error) {                    
-                        if (key === 'ExistsAtLeastOneProgramForPlanificadorRole') {
-                            return { "ExistsAtLeastOneProgramForPlanificadorRole": error[key]};
+                        if (key === 'ExisteAlMenosUnProgramaParaRolPlanificador') {
+                            return { "ExisteAlMenosUnProgramaParaRolPlanificador": error[key]};
                         }
                     }
                     return null;
@@ -233,8 +235,8 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
                 map((error) => {
                     for (let key in error) {                    
-                        if (key === 'ExistsByNombreUsuario') {
-                            return { "ExistsByNombreUsuario": error[key]};
+                        if (key === 'ExisteNombreUsuario') {
+                            return { "ExisteNombreUsuario": error[key]};
                         }
                     }
                     return null;
@@ -263,8 +265,8 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
                 map((error) => {
                     for (let key in error) {                    
-                        if (key === 'ExistsByEmail') {
-                            return { "ExistsByEmail": error[key]};
+                        if (key === 'ExisteEmail') {
+                            return { "ExisteEmail": error[key]};
                         }
                     }
                     return null;
@@ -275,14 +277,16 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
     public validarYGuardarUsuario() {
         if (this.formulario.valid) {
+            this.personaInDTO.esValidar=false; 
+            this.personaInDTO.idTipoIdentificacion=this.idTipoIdentificacion().value;
+            this.personaInDTO.numeroIdentificacion=this.numeroIdentificacion().value;
+            this.personaInDTO.primerNombre=this.primerNombre().value;
+            this.personaInDTO.primerApellido=this.primerApellido().value;
+            this.personaInDTO.segundoNombre=this.segundoNombre().value;
+            this.personaInDTO.segundoApellido=this.segundoApellido().value;
+            this.personaInDTO.email=this.email().value;
+
             this.usuarioInDTO.esValidar=false; 
-            this.usuarioInDTO.idTipoIdentificacion=this.idTipoIdentificacion().value;
-            this.usuarioInDTO.numeroIdentificacion=this.numeroIdentificacion().value;
-            this.usuarioInDTO.primerNombre=this.primerNombre().value;
-            this.usuarioInDTO.primerApellido=this.primerApellido().value;
-            this.usuarioInDTO.segundoNombre=this.segundoNombre().value;
-            this.usuarioInDTO.segundoApellido=this.segundoApellido().value;
-            this.usuarioInDTO.email=this.email().value;
             this.usuarioInDTO.nombreUsuario=this.nombreUsuario().value;
             this.usuarioInDTO.password=this.password().value;
             this.usuarioInDTO.estado=this.estado().value;    
@@ -300,14 +304,16 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     }
 
     public  validarCamposBackendUsuario():void{
+        this.personaInDTO.esValidar=true;
+        this.personaInDTO.idTipoIdentificacion=this.idTipoIdentificacion().value;
+        this.personaInDTO.numeroIdentificacion=this.numeroIdentificacion().value;
+        this.personaInDTO.primerNombre=this.primerNombre().value;
+        this.personaInDTO.primerApellido=this.primerApellido().value;
+        this.personaInDTO.segundoNombre=this.segundoNombre().value;
+        this.personaInDTO.segundoApellido=this.segundoApellido().value;
+        this.personaInDTO.email=this.email().value;
+        
         this.usuarioInDTO.esValidar=true;
-        this.usuarioInDTO.idTipoIdentificacion=this.idTipoIdentificacion().value;
-        this.usuarioInDTO.numeroIdentificacion=this.numeroIdentificacion().value;
-        this.usuarioInDTO.primerNombre=this.primerNombre().value;
-        this.usuarioInDTO.primerApellido=this.primerApellido().value;
-        this.usuarioInDTO.segundoNombre=this.segundoNombre().value;
-        this.usuarioInDTO.segundoApellido=this.segundoApellido().value;
-        this.usuarioInDTO.email=this.email().value;
         this.usuarioInDTO.nombreUsuario=this.nombreUsuario().value;
         this.usuarioInDTO.password=this.password().value;
         this.usuarioInDTO.estado=this.estado().value;    
@@ -415,7 +421,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             this.usuarioServicio.consultarPersonaPorIdentificacion(this.idTipoIdentificacion().value, this.numeroIdentificacion().value).subscribe(
                 (usuarioOutDTO: UsuarioOutDTO) => {
                     if(usuarioOutDTO){
-                        this.usuarioInDTO.esDocente=usuarioOutDTO.esDocente;
                         this.primerNombre().setValue(usuarioOutDTO.primerNombre);
                         this.segundoNombre().setValue(usuarioOutDTO.segundoNombre);
                         this.primerApellido().setValue(usuarioOutDTO.primerApellido);
@@ -423,7 +428,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
                         this.email().setValue(usuarioOutDTO.email);
                         this.esPersonaExistente=true;
                     }else{
-                        this.usuarioInDTO.esDocente=false;
                         this.primerNombre().setValue(null);
                         this.segundoNombre().setValue(null);
                         this.primerApellido().setValue(null);
@@ -441,19 +445,19 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     }
 
     private desactivarActivarCamposPersona():void{
-        if(this.usuarioInDTO.esDocente===true){
+        //if(this.usuarioInDTO.esDocente===true){
             this.primerNombre().disable()
             this.segundoNombre().disable()
             this.primerApellido().disable()
             this.segundoApellido().disable()
             this.email().disable()
-        }else{
+        //}else{
             this.primerNombre().enable()
             this.segundoNombre().enable()
             this.primerApellido().enable()
             this.segundoApellido().enable()
             this.email().enable()
-        }
+        //}
     }
 
     public inputsChangeCorreo(): void {

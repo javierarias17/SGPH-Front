@@ -132,6 +132,10 @@ export class AsociarDocenteComponent {
 
     public salir():void{
         this.mostrarAsociarDocenteModal=false;
+        this.listaDocentesAsignados=[];
+        this.listaDocentesDisponibles=[];
+        this.lstNombreDocentesAsignados=[];
+        this.cursoPlanificacionOutDTOSeleccionado=null;
         this.modalClosedEmitter.emit();  
     }
     public guardar():void{

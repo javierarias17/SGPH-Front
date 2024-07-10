@@ -1,5 +1,6 @@
 import { EstadoUsuarioEnum } from "../../../enum/estado.usuario.enum";
 export class UsuarioOutDTO{
+    public idUsuario: number;
     public idPersona: number;
     public idTipoIdentificacion: number;
     public numeroIdentificacion: string;
@@ -14,8 +15,6 @@ export class UsuarioOutDTO{
     public estado: EstadoUsuarioEnum;
     public lstIdRol: number[];
     public lstIdPrograma: number[];
-    public esDocente: boolean;
 
     public esValidar: boolean;
-
 }
