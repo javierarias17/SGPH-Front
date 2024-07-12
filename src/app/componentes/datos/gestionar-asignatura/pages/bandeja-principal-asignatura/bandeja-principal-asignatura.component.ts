@@ -3,19 +3,16 @@ import { AsignaturaOutDTO } from '../../model/asignatura-dto';
 import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CrearEditarAsignaturaComponent } from '../../componentes/crear-editar-asignatura/crear-editar-asignatura.component';
-import { FiltroBase } from 'src/app/componentes/dto/filtro-base';
-import { AsignaturaServicio } from 'src/app/componentes/servicios/asignatura.servicio';
 import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
-import { FacultadServicio } from 'src/app/componentes/servicios/facultad.servicio';
 import { FiltroAsignaturasDTO } from '../../model/filtro-asignaturas';
 import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.out.dto';
-import { ProgramaServicio } from 'src/app/componentes/servicios/programa.servicio';
-import { FormControl } from '@angular/forms';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { EstadoDocenteEnum } from 'src/app/componentes/enum/estado.docente.enum';
 import { TranslateService } from '@ngx-translate/core';
-import * as XLSX from 'xlsx';
 import { FileUpload } from 'primeng/fileupload';
+import { AsignaturaService } from 'src/app/componentes/servicios/asignatura.service';
+import { ProgramaService } from 'src/app/componentes/servicios/programa.service';
+import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
 @Component({
   selector: 'app-bandeja-principal-asignatura',
   templateUrl: './bandeja-principal-asignatura.component.html',
@@ -33,9 +30,9 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   public listaEstados:{ label: string; value: string }[] = [];
   public estado: string
   constructor(public dialog: DialogService, 
-    private asignaturaServicio: AsignaturaServicio,
-    private facultadServicio: FacultadServicio,
-    private programaServicio: ProgramaServicio,
+    private asignaturaService: AsignaturaService,
+    private facultadService: FacultadService,
+    private programaService: ProgramaService,
     private confirmationService: ConfirmationService,
     private mensageService: ShowMessageService,
     private translateService: TranslateService
@@ -60,7 +57,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   }
 
   consultarFacultades() {
-    this.facultadServicio.consultarFacultades().subscribe(
+    this.facultadService.consultarFacultades().subscribe(
       (lstFacultadOutDTO: FacultadOutDTO[]) => {
           this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
       },
@@ -80,7 +77,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
         semestre: this.numeroSemestre,
         estado: this.estado
     }
-    this.asignaturaServicio.filtrarAsignaturas(this.filtro).subscribe(asignaturas => {
+    this.asignaturaService.filtrarAsignaturas(this.filtro).subscribe(asignaturas => {
       this.asignaturas = asignaturas.content
       this.totalRecords = asignaturas.totalElements
       this.cargando = false;
@@ -96,7 +93,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
       semestre: this.numeroSemestre,
       estado: this.estado
     };
-    this.asignaturaServicio.filtrarAsignaturas(this.filtro).subscribe(asignaturas => {
+    this.asignaturaService.filtrarAsignaturas(this.filtro).subscribe(asignaturas => {
       this.asignaturas = asignaturas.content
       this.totalRecords = asignaturas.totalElements
       this.cargando = false;
@@ -137,7 +134,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
       header: 'Confirmar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {       
-        this.asignaturaServicio.inactivarAsignatura(asignatura.idAsignatura).subscribe({
+        this.asignaturaService.inactivarAsignatura(asignatura.idAsignatura).subscribe({
           next: (r) => {
             if (r) {
               this.mensageService.showMessage('success', `Asignatura ${asignatura.estado == 'ACTIVO'? 'inactivada' : 'activada'}`);
@@ -170,7 +167,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   }
   onChangeFacultad() {
     if (this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0) {
-      this.programaServicio.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas.map(facultad => facultad)).subscribe(
+      this.programaService.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas.map(facultad => facultad)).subscribe(
           (lstProgramaOutDTO: ProgramaOutDTO[]) => {
               if(lstProgramaOutDTO.length === 0){
                   this.listaProgramas=[];
@@ -212,7 +209,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   this.fileUpload.clear();
  }
  cargar() {
-  this.asignaturaServicio.cargaMasiva({ base64: this.base64String} as any).subscribe(r => {
+  this.asignaturaService.cargaMasiva({ base64: this.base64String} as any).subscribe(r => {
     if (r && !r.error) {
       this.cancelar()
       this.mensageService.showMessage("success", "Asignaturas guardadas correctamente")

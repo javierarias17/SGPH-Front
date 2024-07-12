@@ -4,11 +4,11 @@ import { BandejaGruposComponent } from './pages/bandeja-grupos/bandeja-grupos.co
 import { CrearEditarGrupoComponent } from './components/crear-editar-grupo/crear-editar-grupo.component';
 import { PrimeNgModule } from 'src/app/prime-ng/prime-ng.module';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { GrupoService } from './services/grupo.service';
 import { GestionGruposRoutingModule } from './gestion-grupos-routing.module';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AsignarEspacioFisicoComponent } from './components/asignar-espacio-fisico/asignar-espacio-fisico.component';
+import { FacultadService } from '../../servicios/facultad.service';
+import { AgrupadorService } from './services/agrupador.service';
 
 
 
@@ -25,6 +25,6 @@ import { AsignarEspacioFisicoComponent } from './components/asignar-espacio-fisi
     GestionGruposRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [ GrupoService, FacultadServicio ]
+  providers: [ AgrupadorService, FacultadService ]
 })
 export class GestionGruposModule { }

@@ -1,28 +1,30 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UsuarioOutDTO } from '../../../dto/usuario/out/usuario.out.dto';
 import { UsuarioInDTO } from '../../../dto/usuario/in/usuario.in.dto';
-import { ProgramaServicio } from '../../../servicios/programa.servicio';
 import { ProgramaOutDTO } from '../../../dto/programa/out/programa.out.dto';
 import { FacultadOutDTO } from '../../../dto/facultad/out/facultad.out.dto';
-import { FacultadServicio } from '../../../servicios/facultad.servicio';
-import { UsuarioServicio } from '../../../servicios/usuario.servicio';
+import { UsuarioService} from '../../../servicios/usuario.service';
 import { TipoIdentificacionOutDTO } from '../../../dto/usuario/out/tipo.identificacion.out.dto';
 import { RolOutDTO } from '../../../dto/usuario/out/rol.out.dto';
 import { MessageService } from 'primeng/api';
 import { EstadoUsuarioEnum } from '../../../enum/estado.usuario.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { FormControl, FormGroup, Validators, FormBuilder, AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
-import { LenguajeServicio } from '../../../servicios/lenguaje.servicio';
+import { LenguajeService } from '../../../servicios/lenguaje.service';
 import { RolUsuarioEnum } from '../../../enum/rol.usuario.enum';
 import { Observable, map } from 'rxjs';
 import { PersonaInDTO } from 'src/app/componentes/dto/persona/persona.in.dto';
+import { PersonaService } from 'src/app/componentes/servicios/persona.service';
+import { PersonaOutDTO } from 'src/app/componentes/dto/persona/persona.out.dto';
+import { ProgramaService } from 'src/app/componentes/servicios/programa.service';
+import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
 
 
 @Component({
   selector: 'app-crear-editar-ver-usuario',
   templateUrl: './crear.editar.ver.usuario.component.html',
   styleUrls: ['./crear.editar.ver.usuario.component.css'],
-  providers: [ FacultadServicio, UsuarioServicio, LenguajeServicio]
+  providers: [ FacultadService, UsuarioService, LenguajeService]
 
 })
 export class CrearEditarVerUsuarioComponent implements OnInit {   
@@ -77,14 +79,15 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     
     public formulario: FormGroup;
 
-    constructor(private programaServicio: ProgramaServicio,
-         private facultadServicio: FacultadServicio, 
-         private usuarioServicio:UsuarioServicio,
+    constructor(private programaService: ProgramaService,
+         private facultadService: FacultadService, 
+         private usuarioService:UsuarioService,
          private messageService: MessageService,
          private translateService: TranslateService,
-         private formBuilder: FormBuilder,){
+         private formBuilder: FormBuilder,
+         private personaService:PersonaService){
 
-        this.facultadServicio.consultarFacultades().subscribe(
+        this.facultadService.consultarFacultades().subscribe(
             (lstFacultadOutDTO: FacultadOutDTO[]) => {
                 this.listaFacultades = lstFacultadOutDTO;
                 //Se crea el mapa de facultades  
@@ -97,7 +100,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             }
         ); 
 
-        this.programaServicio.consultarProgramas().subscribe(
+        this.programaService.consultarProgramas().subscribe(
             (lstProgramaOutDTO: ProgramaOutDTO[]) => {
                 //Se crea el mapa de programas  
                 lstProgramaOutDTO.forEach((programaOutDTO: ProgramaOutDTO) => {
@@ -109,7 +112,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             }
         ); 
 
-        this.usuarioServicio.consultarRoles().subscribe(
+        this.usuarioService.consultarRoles().subscribe(
             (lstRolOutDTO: RolOutDTO[]) => {   
                 this.listaRoles = lstRolOutDTO.map((rolOutDTO:RolOutDTO) => ({ idRol: rolOutDTO.idRol, rolUsuario:rolOutDTO.rolUsuario, nombre:this.translateService.instant('gestionar.usuario.filtro.rol.usuario.' + rolOutDTO.rolUsuario) }));  
                 //Se crea el mapa de roles  
@@ -122,7 +125,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             }
         );
 
-        this.usuarioServicio.consultarTiposIdentificacion().subscribe(
+        this.usuarioService.consultarTiposIdentificacion().subscribe(
             (lstTipoIdentificacionOutDTO: TipoIdentificacionOutDTO[]) => {               
                 this.listaTiposIdentificacion = lstTipoIdentificacionOutDTO;
             },
@@ -217,7 +220,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
    
     private existeAlMenosUnProgramaParaRolPlanificadorValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-            return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
+            return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
                 map((error) => {
                     for (let key in error) {                    
                         if (key === 'ExisteAlMenosUnProgramaParaRolPlanificador') {
@@ -232,7 +235,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
     private existeNombreUsuarioValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-            return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
+            return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
                 map((error) => {
                     for (let key in error) {                    
                         if (key === 'ExisteNombreUsuario') {
@@ -247,7 +250,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
     private existeTipoYNumeroIdentificacionValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-            return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
+            return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
                 map((error) => {
                     for (let key in error) {                    
                         if (key === 'ExistsByTipoAndNumeroIdentificacion') {
@@ -262,7 +265,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
     private existeEmailValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-            return this.usuarioServicio.guardarUsuario(this.usuarioInDTO).pipe(
+            return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
                 map((error) => {
                     for (let key in error) {                    
                         if (key === 'ExisteEmail') {
@@ -383,7 +386,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
     public onFacultadesChange(){
         if(this.lstIdFacultadSeleccionadas().value!==null && this.lstIdFacultadSeleccionadas().value.length !== 0){
-            this.programaServicio.consultarProgramasPorIdFacultad(this.lstIdFacultadSeleccionadas().value).subscribe(
+            this.programaService.consultarProgramasPorIdFacultad(this.lstIdFacultadSeleccionadas().value).subscribe(
                 (lstProgramaOutDTO: ProgramaOutDTO[]) => {
                     if(lstProgramaOutDTO.length === 0){
                         this.listaProgramas=[];
@@ -418,14 +421,14 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
     public onNumeroIdentificacionBlur():void{
         if(this.numeroIdentificacion().value && this.idTipoIdentificacion().value){
-            this.usuarioServicio.consultarPersonaPorIdentificacion(this.idTipoIdentificacion().value, this.numeroIdentificacion().value).subscribe(
-                (usuarioOutDTO: UsuarioOutDTO) => {
-                    if(usuarioOutDTO){
-                        this.primerNombre().setValue(usuarioOutDTO.primerNombre);
-                        this.segundoNombre().setValue(usuarioOutDTO.segundoNombre);
-                        this.primerApellido().setValue(usuarioOutDTO.primerApellido);
-                        this.segundoApellido().setValue(usuarioOutDTO.segundoApellido);
-                        this.email().setValue(usuarioOutDTO.email);
+            this.personaService.consultarPersonaPorIdentificacion(this.idTipoIdentificacion().value, this.numeroIdentificacion().value).subscribe(
+                (personaOutDTO: PersonaOutDTO) => {
+                    if(personaOutDTO){
+                        this.primerNombre().setValue(personaOutDTO.primerNombre);
+                        this.segundoNombre().setValue(personaOutDTO.segundoNombre);
+                        this.primerApellido().setValue(personaOutDTO.primerApellido);
+                        this.segundoApellido().setValue(personaOutDTO.segundoApellido);
+                        this.email().setValue(personaOutDTO.email);
                         this.esPersonaExistente=true;
                     }else{
                         this.primerNombre().setValue(null);
@@ -496,7 +499,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     }
 
     private guardarUsuario() {
-        this.usuarioServicio.guardarUsuario(this.usuarioInDTO).subscribe(
+        this.usuarioService.guardarUsuario(this.usuarioInDTO).subscribe(
             (usuarioOutDTO: UsuarioOutDTO) => {
                 let mensajeDetalle = "";
                 if(this.usuarioInDTO.idPersona){

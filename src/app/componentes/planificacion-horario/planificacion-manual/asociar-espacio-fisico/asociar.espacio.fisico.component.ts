@@ -1,7 +1,6 @@
 import { Component, ViewChild,EventEmitter, Output } from '@angular/core';
 import {  HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-import { EspacioFisicoServicio } from '../../../servicios/espacio.fisico.servicio';
 import { FranjaHorariaCursoDTO } from '../../../dto/curso/out/franja.horaria.curso.dto';
 import { CrearActualizarHorarioCursoOutDTO } from 'src/app/componentes/dto/horario/out/crea.actualizar.horario.curso.out.dto';
 import { CrearActualizarHorarioCursoInDTO } from 'src/app/componentes/dto/horario/in/crea.actualizar.horario.curso.in.dto';
@@ -10,10 +9,11 @@ import { FiltroFranjaHorariaDisponibleCursoDTO } from 'src/app/componentes/dto/h
 import { DiaSemanaEnum } from 'src/app/componentes/enum/dia.semana.enum';
 import { FormatoPresentacionFranjaHorariaCursoDTO } from 'src/app/componentes/dto/espacio-fisico/out/formato.presentacion.franja.horaria.curso.dto';
 import { CursoPlanificacionOutDTO } from 'src/app/componentes/dto/curso/out/curso.planificacion.out.dto';
-import { PlanificacionManualServicio } from 'src/app/componentes/servicios/planificacion.manual.servicio';
+import { PlanificacionManualService } from 'src/app/componentes/servicios/planificacion.manual.service';
 import { TipoEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
 import { AgrupadorEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.out.dto';
 import { UbicacionOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/ubicacion.out.dto';
+import { EspacioFisicoService } from 'src/app/componentes/servicios/espacio.fisico.service';
 
 interface FranjaHorariaItem {
     check: boolean;
@@ -24,7 +24,7 @@ interface FranjaHorariaItem {
     selector: 'app-asociar-espacio-fisico',
     templateUrl: './asociar.espacio.fisico.component.html',
     styleUrls: ['./asociar.espacio.fisico.component.css'],
-    providers: [MessageService, EspacioFisicoServicio, PlanificacionManualServicio]
+    providers: [MessageService, EspacioFisicoService, PlanificacionManualService]
 })
 export class AsociarEspacioFisicoComponent {
     
@@ -78,8 +78,8 @@ export class AsociarEspacioFisicoComponent {
     public nombreHeader:string="";
 
     constructor(private messageService: MessageService,
-        private espacioFisicoServicio: EspacioFisicoServicio,
-        private planificacionManualServicio: PlanificacionManualServicio) {
+        private espacioFisicoService: EspacioFisicoService,
+        private planificacionManualService: PlanificacionManualService) {
     }
 
     /*TODO. Avance para espacios fisicos secundarios*/
@@ -120,7 +120,7 @@ export class AsociarEspacioFisicoComponent {
          * y poder acceder a su nombre rápidamente a través de su identificador único
          * idEspacioFisico. 
          */
-        this.planificacionManualServicio.consultarFormatoPresentacionFranjaHorariaCurso().subscribe(
+        this.planificacionManualService.consultarFormatoPresentacionFranjaHorariaCurso().subscribe(
             (lstFormatoPresentacionFranjaHorariaCursoDTO: FormatoPresentacionFranjaHorariaCursoDTO[]) => {         
                 lstFormatoPresentacionFranjaHorariaCursoDTO.forEach((formatoPresentacion: FormatoPresentacionFranjaHorariaCursoDTO) => {
                 const objetoAulaDTO = {abreviaturaFacultad:null, nombreEdificio:null, nombreCompletoEspacioFisico:formatoPresentacion.nombreCompletoEspacioFisico}
@@ -140,7 +140,7 @@ export class AsociarEspacioFisicoComponent {
         this.filtroFranjaHorariaDisponibleCursoDTO.idAsignatura=this.cursoPlanificacionOutDTOSeleccionado.idAsignatura;
         this.mensajeResultadoBusqueda= "Buscando...";
         this.listaFranjaHorariaDisponibles = [];
-        this.planificacionManualServicio.consultarFranjasHorariasDisponiblesPorCurso(this.filtroFranjaHorariaDisponibleCursoDTO).subscribe(
+        this.planificacionManualService.consultarFranjasHorariasDisponiblesPorCurso(this.filtroFranjaHorariaDisponibleCursoDTO).subscribe(
             (lstFranjaHorariaCursoDTO: FranjaHorariaCursoDTO[]) => {   
                 if(lstFranjaHorariaCursoDTO.length === 0){
                     this.listaFranjaHorariaDisponibles = [];
@@ -179,7 +179,7 @@ export class AsociarEspacioFisicoComponent {
     }
 
     private consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso(){
-        this.espacioFisicoServicio.consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso).subscribe(
+        this.espacioFisicoService.consultarAgrupadoresEspaciosFisicosAsociadosACursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso).subscribe(
             (lstAgrupadorEspacioFisicoOutDTO: AgrupadorEspacioFisicoOutDTO[]) => {
                 this.lstAgrupadorEspacioFisicoOutDTO = lstAgrupadorEspacioFisicoOutDTO;
                   // Se preseleccionan grupos de espacios físicos, todos los que estén asociados a la asignatura
@@ -195,7 +195,7 @@ export class AsociarEspacioFisicoComponent {
     }
 
     private consultarUbicaciones():void{
-        this.espacioFisicoServicio.consultarUbicaciones().subscribe(
+        this.espacioFisicoService.consultarUbicaciones().subscribe(
             (lstUbicacionOutDTO: UbicacionOutDTO[]) => {
                 this.lstUbicacionOutDTO = lstUbicacionOutDTO;
                 // Se preseleccionan espacios físicos, por defecto son todos
@@ -213,7 +213,7 @@ export class AsociarEspacioFisicoComponent {
 
     private consultarTiposEspaciosFisicosPorUbicaciones(){
         if(this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion){
-            this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion).subscribe(
+            this.espacioFisicoService.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion).subscribe(
                 (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
                     // Cada vez que se consulta los tipos de espacios físicos se limpia el filtro
                     this.filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico=[];
@@ -239,7 +239,7 @@ export class AsociarEspacioFisicoComponent {
      * Método que consulta las franjas horarias asignadas que se mostrarán en el pickList derecho
      */
     private consultarFranjasAsignadasCurso() {
-        this.planificacionManualServicio.consultarFranjasHorariaCursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso,  this.esPrincipal).subscribe(
+        this.planificacionManualService.consultarFranjasHorariaCursoPorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso,  this.esPrincipal).subscribe(
             (lstFranjaHorariaCursoDTO: FranjaHorariaCursoDTO[]) => {        
                 if(lstFranjaHorariaCursoDTO.length === 0){
                     this.listaFranjaHorariaAsignadas = [];
@@ -369,7 +369,7 @@ export class AsociarEspacioFisicoComponent {
 
 
         if(this.esPrincipal===true){
-            this.planificacionManualServicio.crearActualizarHorarioCursoDTO(crearActualizarHorarioCursoInDTO).subscribe(
+            this.planificacionManualService.crearActualizarHorarioCursoDTO(crearActualizarHorarioCursoInDTO).subscribe(
             (crearActualizarHorarioCursoOutDTO: CrearActualizarHorarioCursoOutDTO) => {   
                 if(crearActualizarHorarioCursoOutDTO.esExitoso === true){
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias actualizadas con éxito.' });
@@ -385,7 +385,7 @@ export class AsociarEspacioFisicoComponent {
             }
             );
         }else{
-            this.planificacionManualServicio.crearActualizarHorarioSecundarioCurso(crearActualizarHorarioCursoInDTO).subscribe(
+            this.planificacionManualService.crearActualizarHorarioSecundarioCurso(crearActualizarHorarioCursoInDTO).subscribe(
                 (crearActualizarHorarioCursoOutDTO: CrearActualizarHorarioCursoOutDTO) => {   
                     if(crearActualizarHorarioCursoOutDTO.esExitoso === true){
                         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias actualizadas con éxito.' });

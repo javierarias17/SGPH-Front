@@ -1,6 +1,5 @@
 
 import { Component, ViewChild } from '@angular/core';
-import { DocenteServicio } from '../../servicios/docente.servicio';
 import { FiltroDocenteDTO } from '../../dto/docente/in/filtro.docente.dto';
 import { DocenteOutDTO } from '../../dto/docente/out/docente.out.dto';
 import { HorarioDocenteComponent } from './horario-docente/horario.docente.component';
@@ -8,12 +7,13 @@ import { EstadoDocenteEnum } from '../../enum/estado.docente.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { Message } from 'primeng/api';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
+import { DocenteService } from '../../servicios/docente.service';
 
 @Component({
   selector: 'bandeja-reporte-docente',
   templateUrl: './bandeja-reporte-docente.component.html',
   styleUrls: ['./bandeja-reporte-docente.component.css'],
-  providers: [DocenteServicio]
+  providers: [DocenteService]
 })
 export class BandejaReporteDocenteComponent {
 
@@ -41,7 +41,7 @@ export class BandejaReporteDocenteComponent {
 
 	public messages: Message[] = null;
   
-	constructor(private docenteServicio:DocenteServicio,
+	constructor(private docenteService:DocenteService,
 		private translateService: TranslateService,  
 		public periodoAcademicoService:PeriodoAcademicoService) {
 	}
@@ -59,7 +59,7 @@ export class BandejaReporteDocenteComponent {
 	}
 
   	private consultarDocentes() {
-		this.docenteServicio.consultarDocentes(this.filtroDocenteDTO).subscribe(
+		this.docenteService.consultarDocentes(this.filtroDocenteDTO).subscribe(
 			(response: any) => {
 				this.consultarPeriodoAcademicoVigente();  
 				this.listaDocenteOutDTO = response.content;

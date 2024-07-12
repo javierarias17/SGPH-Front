@@ -2,26 +2,25 @@ import { Component, ViewChild } from '@angular/core';
 import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
 import { EstadoCursoHorarioEnum } from '../../enum/estado.curso.horario.enum';
 import { Message, MessageService } from 'primeng/api';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
-import { ProgramaServicio } from '../../servicios/programa.servicio';
-import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
-import { HorarioServicio } from '../../servicios/horario.servicio';
+import { ProgramaService } from '../../servicios/programa.service';
+import { AsignaturaService } from '../../servicios/asignatura.service';
 import { AsociarDocenteComponent } from './asociar-docente/asociar.docente.component';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { InfoGeneralCursosPorProgramaDTO } from '../../dto/curso/out/info.general.cursos.por.programa.dto';
 import { CursoPlanificacionOutDTO } from '../../dto/curso/out/curso.planificacion.out.dto';
 import { FiltroCursoPlanificacionDTO } from '../../dto/curso/in/filtro.curso.planificacion.dto';
-import { PlanificacionManualServicio } from '../../servicios/planificacion.manual.servicio';
+import { PlanificacionManualService } from '../../servicios/planificacion.manual.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AsociarEspacioFisicoComponent } from './asociar-espacio-fisico/asociar.espacio.fisico.component';
-import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
+import { FacultadService } from '../../servicios/facultad.service';
+import { LenguajeService } from '../../servicios/lenguaje.service';
 
 @Component({
 selector: 'app-planificacion-manual',
 templateUrl: './planificacion.manual.component.html',
 styleUrls: ['./planificacion.manual.component.css'],
-providers: [MessageService, FacultadServicio, ProgramaServicio, AsignaturaServicio, HorarioServicio, PlanificacionManualServicio, LenguajeServicio]
+providers: [MessageService, FacultadService, ProgramaService, AsignaturaService, PlanificacionManualService, LenguajeService]
 })
 export class PlanificacionManualComponent {
 
@@ -74,10 +73,10 @@ export class PlanificacionManualComponent {
     @ViewChild('asociarEspacioFisico') asociarEspacioFisico: AsociarEspacioFisicoComponent;
     @ViewChild('asociarDocente') asociarDocente: AsociarDocenteComponent;
 
-    constructor(private facultadServicio:FacultadServicio,
-        private programaServicio: ProgramaServicio, 
-        private asignaturaServicio:AsignaturaServicio,
-        private planificacionManualServicio: PlanificacionManualServicio,
+    constructor(private facultadService:FacultadService,
+        private programaService: ProgramaService, 
+        private asignaturaService:AsignaturaService,
+        private planificacionManualService: PlanificacionManualService,
         private translateService: TranslateService,
         public periodoAcademicoService:PeriodoAcademicoService) {
     }
@@ -88,7 +87,7 @@ export class PlanificacionManualComponent {
         this.infoGeneralCursosPorProgramaDTO=null;
         this.filtroCursoPlanificacionDTO.registrosPorPagina = this.registrosPorPagina;        
         
-        this.facultadServicio.consultarFacultades().subscribe(
+        this.facultadService.consultarFacultades().subscribe(
             (lstFacultadOutDTO: FacultadOutDTO[]) => {
                 this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
             },
@@ -104,7 +103,7 @@ export class PlanificacionManualComponent {
     }
 
     private consultarInfoGeneralCursosPorPrograma(idPrograma:number):void{
-        this.planificacionManualServicio.consultarInfoGeneralCursosPorPrograma(idPrograma).subscribe(
+        this.planificacionManualService.consultarInfoGeneralCursosPorPrograma(idPrograma).subscribe(
             (infoGeneralCursosPorProgramaDTO: InfoGeneralCursosPorProgramaDTO) => {
                 this.infoGeneralCursosPorProgramaDTO = infoGeneralCursosPorProgramaDTO;
             },
@@ -115,7 +114,7 @@ export class PlanificacionManualComponent {
     }
 
     private consultarCursosPorFiltro(){
-        this.planificacionManualServicio.consultarCursosPlanificacionPorFiltro(this.filtroCursoPlanificacionDTO).subscribe(
+        this.planificacionManualService.consultarCursosPlanificacionPorFiltro(this.filtroCursoPlanificacionDTO).subscribe(
             (response: any) => {            
             this.consultarPeriodoAcademicoVigente();
             
@@ -139,7 +138,7 @@ export class PlanificacionManualComponent {
     public onFacultadesChange(){
         this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
         if(this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0){
-            this.programaServicio.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas).subscribe(
+            this.programaService.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas).subscribe(
                 (lstProgramaOutDTO: ProgramaOutDTO[]) => {
                     if(lstProgramaOutDTO.length === 0){
                         this.listaProgramas=[];
@@ -187,7 +186,7 @@ export class PlanificacionManualComponent {
             this.filtroCursoPlanificacionDTO.listaIdPrograma = this.programasSeleccionados;
 
             if(this.programasSeleccionados.length === 1){
-                this.asignaturaServicio.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0]).subscribe(
+                this.asignaturaService.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0]).subscribe(
                     (response: any) => {
                         if(response.length === 0){
                             this.listaAsignaturas=[];

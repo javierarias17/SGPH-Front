@@ -6,10 +6,12 @@ import { TipoIdentificacionOutDTO } from '../dto/usuario/out/tipo.identificacion
 import { UsuarioInDTO } from '../dto/usuario/in/usuario.in.dto';
 import { UsuarioOutDTO } from '../dto/usuario/out/usuario.out.dto';
 import { RolOutDTO } from '../dto/usuario/out/rol.out.dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
-export class UsuarioServicio{
+export class UsuarioService{
 
+	urlUsuario: string = "AdministrarUsuario"
     constructor(private http: HttpClient) {
     }
 
@@ -23,7 +25,8 @@ export class UsuarioServicio{
 	 * @return
 	 */
     public consultarUsuariosPorFiltro(filtroUsuarioDTO:FiltroUsuarioDTO): Observable<any>{
-        return this.http.post<any>("http://localhost:8081/AdministrarUsuario/consultarUsuariosPorFiltro",filtroUsuarioDTO);
+		const url = `${environment.url}${this.urlUsuario}/consultarUsuariosPorFiltro`;
+        return this.http.post<any>(url, filtroUsuarioDTO);   
     } 
 
 	/**
@@ -35,7 +38,8 @@ export class UsuarioServicio{
 	 * @return
 	 */
 	public guardarUsuario(usuarioInDTO: UsuarioInDTO) {
-		return this.http.post<UsuarioOutDTO>("http://localhost:8081/AdministrarUsuario/guardarUsuario",usuarioInDTO);
+		const url = `${environment.url}${this.urlUsuario}/guardarUsuario`;
+        return this.http.post<UsuarioOutDTO>(url, usuarioInDTO);   
 	}
 
 	/**
@@ -47,7 +51,7 @@ export class UsuarioServicio{
 	 * @return
 	 */
 	public consultarTiposIdentificacion() {
-		const url = `http://localhost:8081/AdministrarUsuario/consultarTiposIdentificacion`;
+		const url = `${environment.url}${this.urlUsuario}/consultarTiposIdentificacion`;
         return this.http.get<TipoIdentificacionOutDTO[]>(url);
     }  
 
@@ -59,7 +63,7 @@ export class UsuarioServicio{
 	 * @return
 	 */
 	public consultarRoles() {
-		const url = `http://localhost:8081/AdministrarUsuario/consultarRoles`;
+		const url = `${environment.url}${this.urlUsuario}/consultarRoles`;
         return this.http.get<RolOutDTO[]>(url);
     }  
 
@@ -71,20 +75,7 @@ export class UsuarioServicio{
 	 * @return
 	 */
 	public consultarEstadosUsuario() {
-		const url = `http://localhost:8081/AdministrarUsuario/consultarEstadosUsuario`;
+		const url = `${environment.url}${this.urlUsuario}/consultarEstadosUsuario`;
         return this.http.get<string[]>(url);
     }  	
-
-	/**
-	 * Método encargado de consultar todos los estados de usuario
-	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
-	 * 
-	 * @return
-	 */
-	public consultarPersonaPorIdentificacion(idTipoIdentificacion:number, numeroIdentificacion:string) {
-	const url = `http://localhost:8081/AdministrarUsuario/consultarPersonaPorIdentificacion?idTipoIdentificacion=${idTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
-		return this.http.get<UsuarioOutDTO>(url);
-	}  	
-
 }

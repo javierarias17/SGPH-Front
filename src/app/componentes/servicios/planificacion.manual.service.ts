@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { InfoGeneralCursosPorProgramaDTO } from '../dto/curso/out/info.general.cursos.por.programa.dto';
 import { FiltroCursoPlanificacionDTO } from '../dto/curso/in/filtro.curso.planificacion.dto';
 import { CrearActualizarHorarioCursoInDTO } from '../dto/horario/in/crea.actualizar.horario.curso.in.dto';
@@ -12,11 +12,13 @@ import { FiltroFranjaHorariaDisponibleCursoDTO } from '../dto/horario/in/filtro.
 import { FranjaHorariaDocenteDTO } from '../dto/docente/out/franja.horaria.docente.dto';
 import { FranjaHorariaEspacioFisicoDTO } from '../dto/espacio-fisico/out/franja.horaria.espacio.fisico.dto';
 import { FormatoPresentacionFranjaHorariaCursoDTO } from '../dto/espacio-fisico/out/formato.presentacion.franja.horaria.curso.dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
-export class PlanificacionManualServicio{
+export class PlanificacionManualService{
 
-    
+    urlPlanificacionManual: string = "PlanificacionManual"
+
     constructor(private http: HttpClient) {
     }
 
@@ -30,7 +32,8 @@ export class PlanificacionManualServicio{
 	 * @return
 	 */
     public consultarCursosPlanificacionPorFiltro(filtroCursoPlanificacionDTO:FiltroCursoPlanificacionDTO): Observable<any>{
-        return this.http.post<any>("http://localhost:8081/PlanificacionManual/consultarCursosPlanificacionPorFiltro",filtroCursoPlanificacionDTO);
+		const url = `${environment.url}${this.urlPlanificacionManual}/consultarCursosPlanificacionPorFiltro`;
+        return this.http.post<any>(url, filtroCursoPlanificacionDTO);  
     }  
 
 	/**
@@ -43,20 +46,24 @@ export class PlanificacionManualServicio{
 	 * @return
 	 */
 	 public consultarInfoGeneralCursosPorPrograma(idPrograma:number): Observable<InfoGeneralCursosPorProgramaDTO>{
-        const url = `http://localhost:8081/PlanificacionManual/consultarInfoGeneralCursosPorPrograma?idPrograma=${idPrograma}`;
+		let params = new HttpParams().set('idPrograma', idPrograma);
+        const url = `${environment.url}${this.urlPlanificacionManual}/consultarInfoGeneralCursosPorPrograma`;
         return this.http.get<InfoGeneralCursosPorProgramaDTO>(url);
     } 
 
 	public crearActualizarHorarioCursoDTO(crearActualizarHorarioCursoInDTO:CrearActualizarHorarioCursoInDTO): Observable<CrearActualizarHorarioCursoOutDTO>{
-		return this.http.post<any>("http://localhost:8081/PlanificacionManual/crearActualizarHorarioCursoDTO",crearActualizarHorarioCursoInDTO);
+		const url = `${environment.url}${this.urlPlanificacionManual}/crearActualizarHorarioCursoDTO`;
+        return this.http.post<any>(url, crearActualizarHorarioCursoInDTO);  
 	}
 
-	public crearActualizarHorarioSecundarioCurso(crearActualizarHorarioCursoInDTO:CrearActualizarHorarioCursoInDTO): Observable<CrearActualizarHorarioCursoOutDTO>{
-		return this.http.post<any>("http://localhost:8081/PlanificacionManual/crearActualizarHorarioSecundarioCurso",crearActualizarHorarioCursoInDTO);
+	public crearActualizarHorarioSecundarioCurso(crearActualizarHorarioCursoInDTO: CrearActualizarHorarioCursoInDTO): Observable<CrearActualizarHorarioCursoOutDTO> {
+		const url = `${environment.url}${this.urlPlanificacionManual}/crearActualizarHorarioSecundarioCurso`;
+		return this.http.post<any>(url, crearActualizarHorarioCursoInDTO);  
 	}
 
-	public crearActualizarDocentesCursoDTO(crearActualizarDocentesCursoInDTO:CrearActualizarDocentesCursoInDTO): Observable<CrearActualizarDocentesCursoOutDTO>{
-		return this.http.post<any>("http://localhost:8081/PlanificacionManual/crearActualizarDocentesCursoDTO",crearActualizarDocentesCursoInDTO);
+	public crearActualizarDocentesCursoDTO(crearActualizarDocentesCursoInDTO: CrearActualizarDocentesCursoInDTO): Observable<CrearActualizarDocentesCursoOutDTO> {
+		const url = `${environment.url}${this.urlPlanificacionManual}/crearActualizarDocentesCursoDTO`;
+		return this.http.post<any>(url, crearActualizarDocentesCursoInDTO);
 	}
 
 	/**
@@ -69,9 +76,10 @@ export class PlanificacionManualServicio{
 	 * @param filtroFranjaHorariaDisponibleCursoDTO
 	 * @return
 	 */
-    public consultarFranjasHorariasDisponiblesPorCurso(filtroFranjaHorariaDisponibleCursoDTO:FiltroFranjaHorariaDisponibleCursoDTO): Observable<FranjaHorariaCursoDTO[]>{
-		return this.http.post<FranjaHorariaCursoDTO[]>("http://localhost:8081/PlanificacionManual/consultarFranjasHorariasDisponiblesPorCurso",filtroFranjaHorariaDisponibleCursoDTO);
-    }  
+	public consultarFranjasHorariasDisponiblesPorCurso(filtroFranjaHorariaDisponibleCursoDTO: FiltroFranjaHorariaDisponibleCursoDTO): Observable<FranjaHorariaCursoDTO[]> {
+		const url = `${environment.url}${this.urlPlanificacionManual}/consultarFranjasHorariasDisponiblesPorCurso`;
+		return this.http.post<FranjaHorariaCursoDTO[]>(url, filtroFranjaHorariaDisponibleCursoDTO);
+	}
 
 	/**
 	 * 
@@ -88,11 +96,11 @@ export class PlanificacionManualServicio{
 	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
 	 * 
 	 * @return
-	 */
-    public consultarFormatoPresentacionFranjaHorariaCurso(): Observable<FormatoPresentacionFranjaHorariaCursoDTO[]>{
-        const url = `http://localhost:8081/PlanificacionManual/consultarFormatoPresentacionFranjaHorariaCurso`;
-        return this.http.get<FormatoPresentacionFranjaHorariaCursoDTO[]>(url);
-    }
+	 */	
+	public consultarFormatoPresentacionFranjaHorariaCurso(): Observable<FormatoPresentacionFranjaHorariaCursoDTO[]> {
+		const url = `${environment.url}${this.urlPlanificacionManual}/consultarFormatoPresentacionFranjaHorariaCurso`;
+		return this.http.get<FormatoPresentacionFranjaHorariaCursoDTO[]>(url);
+	}
 	
 	/**
 	 * Método encargado de obtener los espacios físicos asociadas a un curso.
@@ -102,10 +110,14 @@ export class PlanificacionManualServicio{
 	 * @param idCurso
 	 * @return
 	 */
-	  public consultarFranjasHorariaCursoPorIdCurso(idCurso:number, esPrincipal:boolean): Observable<FranjaHorariaCursoDTO[]>{
-        const url = `http://localhost:8081/PlanificacionManual/consultarFranjasHorariaCursoPorIdCurso?idCurso=${idCurso}&esPrincipal=${esPrincipal}`;
-        return this.http.get<FranjaHorariaCursoDTO[]>(url);
-    }
+	public consultarFranjasHorariaCursoPorIdCurso(idCurso: number, esPrincipal: boolean): Observable<FranjaHorariaCursoDTO[]> {
+		let params = new HttpParams()
+		  .set('idCurso', idCurso.toString())
+		  .set('esPrincipal', esPrincipal.toString());
+	
+		const url = `${environment.url}${this.urlPlanificacionManual}/consultarFranjasHorariaCursoPorIdCurso`;
+		return this.http.get<FranjaHorariaCursoDTO[]>(url, { params });
+	}
 	
 
 	 /**
@@ -116,10 +128,11 @@ export class PlanificacionManualServicio{
 	 * @param idPersona
 	 * @return
 	 */
-	 public consultarFranjasDocentePorIdPersona(idPersona:number): Observable<FranjaHorariaDocenteDTO[]>{
-        const url = `http://localhost:8081/PlanificacionManual/consultarFranjasDocentePorIdPersona?idPersona=${idPersona}`;
-        return this.http.get<FranjaHorariaDocenteDTO[]>(url);
-    }  
+	public consultarFranjasDocentePorIdPersona(idPersona: number): Observable<FranjaHorariaDocenteDTO[]> {
+		let params = new HttpParams().set('idPersona', idPersona.toString());
+		const url = `${environment.url}${this.urlPlanificacionManual}/consultarFranjasDocentePorIdPersona`;
+		return this.http.get<FranjaHorariaDocenteDTO[]>(url, { params });
+	} 
 
 	/**
 	 * Método encargado de obtener todas las franjas horarias de un espacio físico
@@ -129,10 +142,11 @@ export class PlanificacionManualServicio{
 	 * @param idEspacioFisico
 	 * @return
 	 */
-    public consultarFranjasEspacioFisicoPorIdEspacioFisico(idEspacioFisico:number): Observable<FranjaHorariaEspacioFisicoDTO[]>{
-        const url = `http://localhost:8081/PlanificacionManual/consultarFranjasEspacioFisicoPorIdEspacioFisico?idEspacioFisico=${idEspacioFisico}`;
-        return this.http.get<FranjaHorariaEspacioFisicoDTO[]>(url);
-    }  
+	public consultarFranjasEspacioFisicoPorIdEspacioFisico(idEspacioFisico: number): Observable<FranjaHorariaEspacioFisicoDTO[]> {
+		let params = new HttpParams().set('idEspacioFisico', idEspacioFisico.toString());
+		const url = `${environment.url}${this.urlPlanificacionManual}/consultarFranjasEspacioFisicoPorIdEspacioFisico`;
+		return this.http.get<FranjaHorariaEspacioFisicoDTO[]>(url, { params });
+	  }
 
 	/**
 	 * Método encargado de eliminar todo el horario de un programa
@@ -143,9 +157,10 @@ export class PlanificacionManualServicio{
 	 *                           un programa
 	 * @return Booleano que indica si se eliminó con exito el horario
 	 */
-	public eliminarHorarioPrograma(eliminarHorarioInDTO:any): Observable<Boolean>{
-		return this.http.post<Boolean>("http://localhost:8081/PlanificacionManual/eliminarHorarioPrograma",eliminarHorarioInDTO);
-    }  
+	public eliminarHorarioPrograma(eliminarHorarioInDTO: any): Observable<Boolean> {
+		const url = `${environment.url}${this.urlPlanificacionManual}/eliminarHorarioPrograma`;
+		return this.http.post<Boolean>(url, eliminarHorarioInDTO);
+	}
 
 	/**
 	 * Método encargado de generar un horario base para un programa partiendo del
@@ -157,7 +172,8 @@ export class PlanificacionManualServicio{
 	 *                                base
 	 * @return
 	 */
-	public generarHorarioBasadoEnSemestreAnteriorPorPrograma(generarHorarioBaseInDTO:any): Observable<any>{
-		return this.http.post<any>("http://localhost:8081/PlanificacionManual/generarHorarioBasadoEnSemestreAnteriorPorPrograma",generarHorarioBaseInDTO);
-    } 
+	public generarHorarioBasadoEnSemestreAnteriorPorPrograma(generarHorarioBaseInDTO: any): Observable<any> {
+		const url = `${environment.url}${this.urlPlanificacionManual}/generarHorarioBasadoEnSemestreAnteriorPorPrograma`;
+		return this.http.post<any>(url, generarHorarioBaseInDTO);
+	}
 }

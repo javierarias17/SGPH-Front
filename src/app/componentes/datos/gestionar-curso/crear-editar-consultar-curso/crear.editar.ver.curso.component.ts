@@ -1,19 +1,17 @@
-import { Component, ViewChild } from '@angular/core';
-import { CursoPlanificacionOutDTO } from '../../../dto/curso/out/curso.planificacion.out.dto';
+import { Component} from '@angular/core';
 import { CursoDTO } from 'src/app/componentes/dto/curso/curso-dto';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
 import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.out.dto';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FacultadServicio } from 'src/app/componentes/servicios/facultad.servicio';
-import { ProgramaServicio } from 'src/app/componentes/servicios/programa.servicio';
-import { SharedService } from 'src/app/shared/service/shared.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
-import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
-import { CursoServicio } from 'src/app/componentes/servicios/curso.servicio';
-import { AsignaturaServicio } from 'src/app/componentes/servicios/asignatura.servicio';
+import { CursoService} from 'src/app/componentes/servicios/curso.service';
 import { AsignaturaOutDTO } from '../../gestionar-asignatura/model/asignatura-dto';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
+import { AsignaturaService } from 'src/app/componentes/servicios/asignatura.service';
+import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
+import { ProgramaService } from 'src/app/componentes/servicios/programa.service';
+import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
 
 @Component({
   selector: 'app-crear-editar-ver-curso',
@@ -40,10 +38,10 @@ export class CrearEditarVerCursoComponent {
     private ref: DynamicDialogRef,     
     private config: DynamicDialogConfig,
     private messageSerivce: ShowMessageService,
-    private facultadServicio: FacultadServicio,
-    private programaServicio: ProgramaServicio,
-    private cursoService: CursoServicio,
-    private asignaturaService: AsignaturaServicio,
+    private facultadService: FacultadService,
+    private programaService: ProgramaService,
+    private cursoService: CursoService,
+    private asignaturaService: AsignaturaService,
     private periodoService: PeriodoAcademicoService
   ) {}
   ngOnInit(): void {
@@ -83,7 +81,7 @@ export class CrearEditarVerCursoComponent {
       }
   }
   obtenerFacultades() {
-    this.facultadServicio.consultarFacultades().subscribe(
+    this.facultadService.consultarFacultades().subscribe(
       (lstFacultadOutDTO: FacultadOutDTO[]) => {
           this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
       },
@@ -106,7 +104,7 @@ export class CrearEditarVerCursoComponent {
   
   onFacultadChange() {
     if (this.idFacultad().value!==null) {
-      this.programaServicio.consultarProgramasPorIdFacultad([this.idFacultad().value]).subscribe(
+      this.programaService.consultarProgramasPorIdFacultad([this.idFacultad().value]).subscribe(
           (r: ProgramaOutDTO[]) => {
               this.listaProgramas = r
           },

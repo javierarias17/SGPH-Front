@@ -11,19 +11,18 @@ import {
 import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { PlanificacionManualServicio } from '../../servicios/planificacion.manual.servicio';
+import { PlanificacionManualService } from '../../servicios/planificacion.manual.service';
 import { DialogService } from 'primeng/dynamicdialog';
-import { SharedService } from 'src/app/shared/service/shared.service';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
-import { ProgramaServicio } from '../../servicios/programa.servicio';
-import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
+import { ProgramaService } from '../../servicios/programa.service';
+import { AsignaturaService } from '../../servicios/asignatura.service';
 import { ResultadoGeneracionHorarioComponent } from './resultado-generacion-horario/resultado-generacion-horario.component';
+import { FacultadService } from '../../servicios/facultad.service';
 
 @Component({
     selector: 'app-planificacion-semestre-anterior',
     templateUrl: './planificacion.semestre.anterior.component.html',
     styleUrls: ['./planificacion.semestre.anterior.component.css'],
-	providers: [PlanificacionManualServicio, AsignaturaServicio]
+	providers: [PlanificacionManualService, AsignaturaService]
 })
 export class PlanificacionSemestreAnteriorComponent {
     public formulario: FormGroup;
@@ -40,15 +39,14 @@ export class PlanificacionSemestreAnteriorComponent {
 
     constructor(
         private fb: FormBuilder,
-        private programaServicio: ProgramaServicio,
-        private facultadServicio: FacultadServicio,
-        private sharedService: SharedService,
+        private programaService: ProgramaService,
+        private facultadService: FacultadService,
         private dialogService: DialogService,
-        private planificacionManualServicio: PlanificacionManualServicio,
+        private planificacionManualService: PlanificacionManualService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         public periodoAcademicoService: PeriodoAcademicoService,
-		private asignaturaServicio:AsignaturaServicio
+		private asignaturaService:AsignaturaService
     ) {}
 
     public ngOnInit(): void {
@@ -85,7 +83,7 @@ export class PlanificacionSemestreAnteriorComponent {
 	}
 
     private obtenerFacultades() {
-        this.facultadServicio.consultarFacultades().subscribe(
+        this.facultadService.consultarFacultades().subscribe(
             (lstFacultadOutDTO: FacultadOutDTO[]) => {
                 this.lstFacultadOutDTO = lstFacultadOutDTO.map(
                     (facultadOutDTO: FacultadOutDTO) => ({
@@ -103,7 +101,7 @@ export class PlanificacionSemestreAnteriorComponent {
 
     public onFacultadChange() {
         if (this.idFacultad().value !== null) {
-            this.programaServicio
+            this.programaService
                 .consultarProgramasPorIdFacultad([this.idFacultad().value])
                 .subscribe(
                     (r: ProgramaOutDTO[]) => {
@@ -122,7 +120,7 @@ export class PlanificacionSemestreAnteriorComponent {
 
 	public onProgramasChange(){        
 		if(this.idPrograma().value){
-			this.asignaturaServicio.consultarAsignaturasPorIdPrograma(this.idPrograma().value).subscribe(
+			this.asignaturaService.consultarAsignaturasPorIdPrograma(this.idPrograma().value).subscribe(
 				(response: any) => {
 					if(response.length === 0){
 						this.listaAsignaturas=[];
@@ -190,7 +188,7 @@ export class PlanificacionSemestreAnteriorComponent {
                 icon: 'pi pi-exclamation-triangle',
                 accept: () => {
                     this.isLoading = true;
-                    this.planificacionManualServicio.generarHorarioBasadoEnSemestreAnteriorPorPrograma(generarHorarioBaseInDTO)
+                    this.planificacionManualService.generarHorarioBasadoEnSemestreAnteriorPorPrograma(generarHorarioBaseInDTO)
                     .subscribe(
                         (generarHorarioBaseOutDTO: any) => {
                                 this.ocultarResultadoGeneracion=false;    

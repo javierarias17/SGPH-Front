@@ -1,11 +1,9 @@
-import { Component, ViewChild} from '@angular/core';
+import { Component} from '@angular/core';
 import { MessageService} from 'primeng/api';
-import { CursoServicio } from '../../servicios/curso.servicio';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
-import { ProgramaServicio } from '../../servicios/programa.servicio';
+import { CursoService } from '../../servicios/curso.service';
+import { ProgramaService } from '../../servicios/programa.service';
 import { EstadoCursoHorarioEnum } from '../../enum/estado.curso.horario.enum';
-import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
-import { HorarioServicio } from '../../servicios/horario.servicio';
+import { AsignaturaService } from '../../servicios/asignatura.service';
 import { CrearEditarVerCursoComponent } from './crear-editar-consultar-curso/crear.editar.ver.curso.component';
 import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
@@ -15,12 +13,13 @@ import { Message } from 'primeng/api';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
-
+import { PlanificacionManualService } from '../../servicios/planificacion.manual.service';
+import { FacultadService } from '../../servicios/facultad.service';
 @Component({
     selector: 'app-gestionar-curso',
     templateUrl: './gestionar.curso.component.html',
     styleUrls: ['./gestionar.curso.component.css'],
-    providers: [MessageService, CursoServicio, FacultadServicio, ProgramaServicio, AsignaturaServicio, HorarioServicio]
+    providers: [MessageService, CursoService, FacultadService, ProgramaService, AsignaturaService, PlanificacionManualService]
 })
 export class GestionarCursoComponent {
 
@@ -69,13 +68,14 @@ export class GestionarCursoComponent {
 
     public messages: Message[] = null;
     constructor(
-        private cursoServicio:CursoServicio, 
-        private facultadServicio:FacultadServicio,
-        private programaServicio: ProgramaServicio, 
-        private asignaturaServicio:AsignaturaServicio,
+        private cursoService:CursoService, 
+        private facultadService:FacultadService,
+        private programaService: ProgramaService, 
+        private asignaturaService:AsignaturaService,
         public periodoAcademicoService:PeriodoAcademicoService,
         private dialog: DialogService,
-        private messageService: ShowMessageService
+        private messageService: ShowMessageService,
+        private PlanificacionManualService:PlanificacionManualService
     ) {
     }
 
@@ -83,7 +83,7 @@ export class GestionarCursoComponent {
         this.consultarPeriodoAcademicoVigente();
         this.filtroCursoPlanificacionDTO.registrosPorPagina = this.registrosPorPagina;    
 
-        this.facultadServicio.consultarFacultades().subscribe(
+        this.facultadService.consultarFacultades().subscribe(
             (lstFacultadOutDTO: FacultadOutDTO[]) => {
                 this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
             },
@@ -100,7 +100,7 @@ export class GestionarCursoComponent {
     }
 
     private consultarCursosPorFiltro(){
-        this.cursoServicio.consultarCursosPlanificacionPorFiltro(this.filtroCursoPlanificacionDTO).subscribe(
+        this.PlanificacionManualService.consultarCursosPlanificacionPorFiltro(this.filtroCursoPlanificacionDTO).subscribe(
             (response: any) => {
             this.consultarPeriodoAcademicoVigente();
             this.listaCursoPlanificacionOutDTO = response.content;
@@ -115,7 +115,7 @@ export class GestionarCursoComponent {
     public onFacultadesChange(){
         this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
         if(this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0){
-            this.programaServicio.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas.map(facultad => facultad.idFacultad)).subscribe(
+            this.programaService.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas.map(facultad => facultad.idFacultad)).subscribe(
                 (lstProgramaOutDTO: ProgramaOutDTO[]) => {
                     if(lstProgramaOutDTO.length === 0){
                         this.listaProgramas=[];
@@ -161,7 +161,7 @@ export class GestionarCursoComponent {
             this.filtroCursoPlanificacionDTO.listaIdPrograma = this.programasSeleccionados.map(programa => programa.idPrograma);
 
             if(this.programasSeleccionados.length === 1){
-                this.asignaturaServicio.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0].idPrograma).subscribe(
+                this.asignaturaService.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0].idPrograma).subscribe(
                     (response: any) => {
                         if(response.length === 0){
                             this.listaAsignaturas=[];
@@ -281,7 +281,7 @@ export class GestionarCursoComponent {
    
     public confirmarEliminacion(idCurso: number) {
         this.deleteCursoDialog = false;
-        this.cursoServicio.eliminarCurso(idCurso).subscribe(r => {
+        this.cursoService.eliminarCurso(idCurso).subscribe(r => {
             if (r) {
                 this.messageService.showMessage('success', "Curso eliminado")
                 this.consultarCursosPorFiltro()

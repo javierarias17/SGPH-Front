@@ -1,6 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { an } from '@fullcalendar/core/internal-common';
 import { Observable } from 'rxjs';
 import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { environment } from 'src/environments/environment';
@@ -8,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class GrupoService {
+export class AgrupadorService {
   urlAgrupador: string = "AdministrarAgrupador"
   urlEspacioFisico: string = "AdministrarEspacioFisico"
   

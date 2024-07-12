@@ -1,25 +1,19 @@
-import { Component, ViewChild } from '@angular/core';
-import { DocenteServicio } from '../../servicios/docente.servicio';
+import { Component } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { CursoServicio } from '../../servicios/curso.servicio';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
-import { ProgramaServicio } from '../../servicios/programa.servicio';
-import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
-import { HorarioServicio } from '../../servicios/horario.servicio';
 import { FiltroDocenteDTO } from '../../dto/docente/in/filtro.docente.dto';
 import { DocenteOutDTO } from '../../dto/docente/out/docente.out.dto';
 
 import { EstadoDocenteEnum } from '../../enum/estado.docente.enum';
-import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CrearEditardocenteComponent } from './crear-editar-docente/crear-editar-docente.component';
+import { DocenteService } from '../../servicios/docente.service';
 
 @Component({
   selector: 'app-gestionar-docente',
   templateUrl: './gestionar.docente.component.html',
   styleUrls: ['./gestionar.docente.component.css'],
-  providers: [DocenteServicio]
+  providers: [DocenteService]
 })
 export class GestionarDocenteComponent {
 
@@ -44,7 +38,7 @@ export class GestionarDocenteComponent {
 
 	constructor(private confirmationService: ConfirmationService,
 		private messageService: MessageService,
-		private docenteServicio:DocenteServicio,
+		private docenteService:DocenteService,
 		private translateService: TranslateService,
 		private dialogService: DialogService) {
 	}
@@ -61,7 +55,7 @@ export class GestionarDocenteComponent {
 	}
 
   	private consultarDocentes() {
-		this.docenteServicio.consultarDocentes(this.filtroDocenteDTO).subscribe(
+		this.docenteService.consultarDocentes(this.filtroDocenteDTO).subscribe(
 			(response: any) => {  
 					this.listaDocenteOutDTO = response.content;
 					this.totalRecords= response.totalElements;
@@ -117,7 +111,7 @@ export class GestionarDocenteComponent {
 				} else {
 					this.docenteOutDTOSeleccionado.estado = EstadoDocenteEnum.ACTIVO
 				}
-				this.docenteServicio.guardarDocente(this.docenteOutDTOSeleccionado).subscribe(r => {
+				this.docenteService.guardarDocente(this.docenteOutDTOSeleccionado).subscribe(r => {
 					this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Docente activado/inactivado', life: 3000 });
 				})
             },

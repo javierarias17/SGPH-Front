@@ -5,23 +5,21 @@ import {
     FormGroup,
     Validators,
 } from '@angular/forms';
-import { ProgramaServicio } from '../../servicios/programa.servicio';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
-import { PlanificacionManualServicio } from '../../servicios/planificacion.manual.servicio';
-import { SharedService } from 'src/app/shared/service/shared.service';
-import { DialogService } from 'primeng/dynamicdialog';
+import { ProgramaService } from '../../servicios/programa.service';
+import { PlanificacionManualService } from '../../servicios/planificacion.manual.service';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { PeriodoAcademicoOutDTO } from '../../dto/periodo-academico/periodo-academico-out-dto';
+import { FacultadService } from '../../servicios/facultad.service';
 
 @Component({
     selector: 'app-eliminar-horario-programa',
     templateUrl: './eliminar-horario-programa.component.html',
     styleUrls: ['./eliminar-horario-programa.component.scss'],
-    providers: [PlanificacionManualServicio],
+    providers: [PlanificacionManualService],
 })
 export class EliminarHorarioProgramaComponent {
     public formulario: FormGroup;
@@ -34,11 +32,9 @@ export class EliminarHorarioProgramaComponent {
 
     constructor(
         private fb: FormBuilder,
-        private programaServicio: ProgramaServicio,
-        private facultadServicio: FacultadServicio,
-        private sharedService: SharedService,
-        private dialogService: DialogService,
-        private planificacionManualServicio: PlanificacionManualServicio,
+        private programaService: ProgramaService,
+        private facultadService: FacultadService,
+        private planificacionManualService: PlanificacionManualService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         public periodoAcademicoService:PeriodoAcademicoService
@@ -58,7 +54,7 @@ export class EliminarHorarioProgramaComponent {
     }
 
     private obtenerFacultades() {
-        this.facultadServicio.consultarFacultades().subscribe(
+        this.facultadService.consultarFacultades().subscribe(
             (lstFacultadOutDTO: FacultadOutDTO[]) => {
                 this.lstFacultadOutDTO = lstFacultadOutDTO.map(
                     (facultadOutDTO: FacultadOutDTO) => ({
@@ -76,7 +72,7 @@ export class EliminarHorarioProgramaComponent {
 
     public onFacultadChange() {
         if (this.idFacultad().value !== null) {
-            this.programaServicio
+            this.programaService
                 .consultarProgramasPorIdFacultad([this.idFacultad().value])
                 .subscribe(
                     (r: ProgramaOutDTO[]) => {
@@ -122,7 +118,7 @@ export class EliminarHorarioProgramaComponent {
                 icon: 'pi pi-exclamation-triangle',
                 accept: () => {
                     this.isLoading = true;
-                    this.planificacionManualServicio
+                    this.planificacionManualService
                         .eliminarHorarioPrograma(eliminarHorarioInDTO)
                         .subscribe(
                             (r: Boolean) => {

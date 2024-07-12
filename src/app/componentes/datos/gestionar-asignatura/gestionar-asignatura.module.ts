@@ -9,9 +9,9 @@ import { ButtonModule } from 'primeng/button';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
+import { FacultadService } from '../../servicios/facultad.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProgramaServicio } from '../../servicios/programa.servicio';
+import { ProgramaService } from '../../servicios/programa.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -19,7 +19,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MessageModule } from 'primeng/message';
 import { PrimeNgModule } from 'src/app/prime-ng/prime-ng.module';
 import { ToastModule } from 'primeng/toast';
-import { AsignaturaServicio } from '../../servicios/asignatura.servicio';
+import { AsignaturaService } from '../../servicios/asignatura.service';
 import { FileUploadModule } from 'primeng/fileupload';
 
 
@@ -47,6 +47,6 @@ import { FileUploadModule } from 'primeng/fileupload';
     FileUploadModule,
     PrimeNgModule,
   ],
-  providers: [DialogService, FacultadServicio, ProgramaServicio, AsignaturaServicio]
+  providers: [DialogService, FacultadService, ProgramaService, AsignaturaService]
 })
 export class GestionarAsignaturaModule { }

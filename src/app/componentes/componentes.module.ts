@@ -23,25 +23,23 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { CrearEditarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/crear-editar-espacio-fisico/crear-editar-espacio-fisico.component';
-import { EspacioFisicoServicio } from './servicios/espacio.fisico.servicio';
 import { HorarioDocenteComponent } from './reportes/reporte-docente/horario-docente/horario.docente.component';
 import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bandeja-reporte-docente.component';
 import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/bandeja-reporte-espacio-fisico.component';
-import { BandejaPrincipalPeriodoAcademicoComponent } from './periodo-academico/gestionar-periodo-academico/pages/bandeja-principal-periodo-academico/bandeja-principal-periodo-academico.component';
-import { GestionarPeriodoAcademicoModule } from './periodo-academico/gestionar-periodo-academico/gestionar-periodo-academico.module';
-import { ProgramaServicio } from './servicios/programa.servicio';
-import { FacultadServicio } from './servicios/facultad.servicio';
+import { ProgramaService } from './servicios/programa.service';
 import { SharedService } from '../shared/service/shared.service';
 import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
 import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/eliminar-horario-programa.component';
-import { CursoServicio } from './servicios/curso.servicio';
-import { AsignaturaServicio } from './servicios/asignatura.servicio';
+import { CursoService } from './servicios/curso.service';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { ResultadoGeneracionHorarioComponent } from './planificacion-horario/planificacion-semestre-anterior/resultado-generacion-horario/resultado-generacion-horario.component';
-import { DocenteServicio } from './servicios/docente.servicio';
-import { UsuarioServicio } from './servicios/usuario.servicio';
+import { DocenteService } from './servicios/docente.service';
+import { UsuarioService } from './servicios/usuario.service';
 import { CrearEditardocenteComponent } from './datos/gestionar-docente/crear-editar-docente/crear-editar-docente.component';
+import { AsignaturaService } from './servicios/asignatura.service';
+import { EspacioFisicoService } from './servicios/espacio.fisico.service';
+import { FacultadService } from './servicios/facultad.service';
 
 
 @NgModule({
@@ -82,15 +80,15 @@ import { CrearEditardocenteComponent } from './datos/gestionar-docente/crear-edi
 		ToastModule,
 		
 	],
-	providers: [EspacioFisicoServicio, 
-		ProgramaServicio, 
-		FacultadServicio, 
+	providers: [EspacioFisicoService, 
+		ProgramaService, 
+		FacultadService, 
 		SharedService, 
 		PeriodoAcademicoService,
-		CursoServicio,
-		AsignaturaServicio,
-		DocenteServicio,
-		UsuarioServicio
+		CursoService,
+		AsignaturaService,
+		DocenteService,
+		UsuarioService
 	]
 })
 export class ComponentesModule { }

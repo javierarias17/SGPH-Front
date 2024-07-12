@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { EspacioFisicoServicio } from '../../servicios/espacio.fisico.servicio';
+import { EspacioFisicoService } from '../../servicios/espacio.fisico.service';
 import { FiltroEspacioFisicoDTO } from '../../dto/espacio-fisico/in/filtro.espacio.fisico.dto';
 import { EstadoEspacioFisicoEnum } from '../../enum/estado.espacio.fisico.enum';
 import { TipoEspacioFisicoOutDTO } from '../../dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
@@ -14,7 +14,7 @@ import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academic
   selector: 'bandeja-reporte-espacio-fisico',
   templateUrl: './bandeja-reporte-espacio-fisico.component.html',
   styleUrls: ['./bandeja-reporte-espacio-fisico.component.css'],
-  providers: [EspacioFisicoServicio]
+  providers: [EspacioFisicoService]
 })
 export class BandejaReporteEspacioFisicoComponent {
 
@@ -46,7 +46,7 @@ export class BandejaReporteEspacioFisicoComponent {
 
     @ViewChild('horarioEspacioFisico') horarioEspacioFisico: HorarioEspacioFisicoComponent;
   
-	constructor(private espacioFisicoServicio:EspacioFisicoServicio,
+	constructor(private espacioFisicoService:EspacioFisicoService,
         private translateService: TranslateService,
 		public periodoAcademicoService:PeriodoAcademicoService
     ) {
@@ -56,7 +56,7 @@ export class BandejaReporteEspacioFisicoComponent {
         this.consultarPeriodoAcademicoVigente();       
         this.filtroEspacioFisicoDTO.registrosPorPagina = this.registrosPorPagina;         
 
-        this.espacioFisicoServicio.consultarUbicaciones().subscribe(
+        this.espacioFisicoService.consultarUbicaciones().subscribe(
             (lstUbicacionOutDTO: UbicacionOutDTO[]) => {
                 this.lstUbicacionOutDTO = lstUbicacionOutDTO;
             },
@@ -72,7 +72,7 @@ export class BandejaReporteEspacioFisicoComponent {
 	}
 
     private consultarEspaciosFisicos():void{
-        this.espacioFisicoServicio.consultarEspaciosFisicos(this.filtroEspacioFisicoDTO).subscribe(
+        this.espacioFisicoService.consultarEspaciosFisicos(this.filtroEspacioFisicoDTO).subscribe(
             (response: any) => {
                 this.consultarPeriodoAcademicoVigente(); 
                 this.listaEspacioFisicoDTO = response.content;
@@ -87,7 +87,7 @@ export class BandejaReporteEspacioFisicoComponent {
     public onUbicacionesChange():void{
         this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
         if(this.filtroEspacioFisicoDTO.listaIdUbicacion!==null && this.filtroEspacioFisicoDTO.listaIdUbicacion.length !== 0){
-            this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroEspacioFisicoDTO.listaIdUbicacion).subscribe(
+            this.espacioFisicoService.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroEspacioFisicoDTO.listaIdUbicacion).subscribe(
                 (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
                     this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
                     this.filtroEspacioFisicoDTO.estado=null;

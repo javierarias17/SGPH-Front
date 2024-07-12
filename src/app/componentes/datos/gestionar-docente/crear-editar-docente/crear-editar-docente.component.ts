@@ -1,19 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
-import { FacultadServicio } from 'src/app/componentes/servicios/facultad.servicio';
-import { ProgramaServicio } from 'src/app/componentes/servicios/programa.servicio';
-import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.out.dto';
 
-import { SharedService } from 'src/app/shared/service/shared.service';
-import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { DocenteOutDTO } from 'src/app/componentes/dto/docente/out/docente.out.dto';
-import { DocenteServicio } from 'src/app/componentes/servicios/docente.servicio';
 import { TipoIdentificacionOutDTO } from 'src/app/componentes/dto/usuario/out/tipo.identificacion.out.dto';
-import { UsuarioServicio } from 'src/app/componentes/servicios/usuario.servicio';
 import { EstadoDocenteEnum } from 'src/app/componentes/enum/estado.docente.enum';
+import { UsuarioService } from 'src/app/componentes/servicios/usuario.service';
+import { DocenteService } from 'src/app/componentes/servicios/docente.service';
 
 @Component({
   selector: 'app-crear-editar-docente',
@@ -31,10 +25,10 @@ export class CrearEditardocenteComponent implements OnInit {
   constructor(
     private ref: DynamicDialogRef,     
     private config: DynamicDialogConfig,
-    private docenteService: DocenteServicio,
+    private docenteService: DocenteService,
     private fb: FormBuilder,
     private messageSerivce: ShowMessageService,
-    private usuarioService: UsuarioServicio
+    private usuarioService: UsuarioService
   ) {}
   ngOnInit(): void {
     this.obtenerIdentificaciones()

@@ -2,20 +2,20 @@ import { Component, ViewChild } from '@angular/core';
 import { UsuarioOutDTO } from '../../dto/usuario/out/usuario.out.dto';
 import { EstadoUsuarioEnum } from '../../enum/estado.usuario.enum';
 import { FiltroUsuarioDTO } from '../../dto/usuario/in/filtro.usuario.dto';
-import { UsuarioServicio } from '../../servicios/usuario.servicio';
+import { UsuarioService } from '../../servicios/usuario.service';
 import { MessageService } from 'primeng/api';
-import { ProgramaServicio } from '../../servicios/programa.servicio';
+import { ProgramaService } from '../../servicios/programa.service';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { CrearEditarVerUsuarioComponent } from './crear-editar-ver-usuario/crear.editar.ver.usuario.component';
 import { RolOutDTO } from '../../dto/usuario/out/rol.out.dto';
 import { TranslateService } from '@ngx-translate/core';
-import { LenguajeServicio } from '../../servicios/lenguaje.servicio';
+import { LenguajeService } from '../../servicios/lenguaje.service';
 
 @Component({
     selector: 'app-gestionar-usuario',
     templateUrl: './gestionar.usuario.component.html',
     styleUrls: ['./gestionar.usuario.component.css'],
-	providers:[MessageService, UsuarioServicio, ProgramaServicio, LenguajeServicio]
+	providers:[MessageService, UsuarioService, ProgramaService, LenguajeService]
 })
 export class GestionarUsuarioComponent {
     private readonly PAGINA_CERO: number = 0;
@@ -53,15 +53,15 @@ export class GestionarUsuarioComponent {
 
     constructor(
         private messageService: MessageService,
-        private usuarioServicio: UsuarioServicio,
-        private programaServicio: ProgramaServicio,
+        private usuarioService: UsuarioService,
+        private programaService: ProgramaService,
         private translateService: TranslateService
     ) {
     }
 
     public ngOnInit() {
 
-        this.programaServicio.consultarProgramas().subscribe(
+        this.programaService.consultarProgramas().subscribe(
             (lstProgramaOutDTO: ProgramaOutDTO[]) => {         
                 lstProgramaOutDTO.forEach((programaOutDTO: ProgramaOutDTO) => {
                 this.mapaProgramas.set(programaOutDTO.idPrograma, programaOutDTO);
@@ -72,7 +72,7 @@ export class GestionarUsuarioComponent {
             }
         );
 
-        this.usuarioServicio.consultarRoles().subscribe(
+        this.usuarioService.consultarRoles().subscribe(
             (lstRolOutDTO: RolOutDTO[]) => {   
                 let listaRoles:RolOutDTO[] = lstRolOutDTO;  
                 //Se crea el mapa de roles  
@@ -102,7 +102,7 @@ export class GestionarUsuarioComponent {
      * @author parias 
      */
     private consultarUsuariosPorFiltro() {
-        this.usuarioServicio
+        this.usuarioService
             .consultarUsuariosPorFiltro(this.filtroUsuarioDTO)
             .subscribe(
                 (response: any) => {
@@ -227,7 +227,7 @@ export class GestionarUsuarioComponent {
      * @author parias 
      */
     private guardar() {
-        this.usuarioServicio.guardarUsuario(this.usuarioOutDTOSeleccionado).subscribe(
+        this.usuarioService.guardarUsuario(this.usuarioOutDTOSeleccionado).subscribe(
             (usuarioOutDTO: UsuarioOutDTO) => {
                 this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario '+EstadoUsuarioEnum[this.usuarioOutDTOSeleccionado.estado]+' con éxito.' });
                 this.consultarUsuariosPorFiltro();

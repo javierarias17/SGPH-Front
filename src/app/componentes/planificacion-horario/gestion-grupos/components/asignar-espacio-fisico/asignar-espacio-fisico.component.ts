@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TipoEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
 import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
-import { GrupoService } from '../../services/grupo.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
-import { EspacioFisicoServicio } from 'src/app/componentes/servicios/espacio.fisico.servicio';
 import { UbicacionOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/ubicacion.out.dto';
+import { EspacioFisicoService } from 'src/app/componentes/servicios/espacio.fisico.service';
+import { AgrupadorService } from '../../services/agrupador.service';
 
 @Component({
 selector: 'app-asignar-espacio-fisico',
@@ -35,15 +33,15 @@ export class AsignarEspacioFisicoComponent implements OnInit {
     } as any
 
     constructor(private config: DynamicDialogConfig,
-        private grupoService: GrupoService,
+        private agrupadorService: AgrupadorService,
         private ref: DynamicDialogRef,
         private mensajeService: ShowMessageService,
-        private espacioFisicoServicio: EspacioFisicoServicio
+        private espacioFisicoService: EspacioFisicoService
     ) {}
     ngOnInit(): void {
         this.obtenerUbicaciones()
         this.grupoSeleccionado = this.config.data?.grupo
-        this.grupoService.obtenerEspacioFiscioAgrupador(this.grupoSeleccionado.idAgrupadorEspacioFisico).subscribe({
+        this.agrupadorService.obtenerEspacioFiscioAgrupador(this.grupoSeleccionado.idAgrupadorEspacioFisico).subscribe({
         next: (r) =>
             this.espasciosFisicosAsignados = r
         })
@@ -53,13 +51,13 @@ export class AsignarEspacioFisicoComponent implements OnInit {
     obtenerTipos() {
         let ubicaciones: number[] = []
         ubicaciones.push(this.filtro.ubicacion)
-        this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(ubicaciones).subscribe(r => {
+        this.espacioFisicoService.consultarTiposEspaciosFisicosPorUbicaciones(ubicaciones).subscribe(r => {
         this.listaTipoEspacioFisico = r
         })
     }
 
     obtenerUbicaciones() {
-        this.espacioFisicoServicio.consultarUbicaciones().subscribe(
+        this.espacioFisicoService.consultarUbicaciones().subscribe(
         (lstUbicacion: UbicacionOutDTO[]) => {
             this.lstUbicacion = lstUbicacion;
         },
@@ -74,7 +72,7 @@ export class AsignarEspacioFisicoComponent implements OnInit {
 
     filtrarEspacios() {
         this.filtro.idAgrupador = this.grupoSeleccionado.idAgrupadorEspacioFisico
-        this.grupoService.obtenerEspacioFiscioDispinibleFiltro(this.filtro).subscribe({
+        this.agrupadorService.obtenerEspacioFiscioDispinibleFiltro(this.filtro).subscribe({
         next: (r) => {
             this.espaciosFisicosDisponibles = r
             this.espaciosFisicosDisponibles = this.espaciosFisicosDisponibles.concat(this.listaDeGruposQuitados)
@@ -99,7 +97,7 @@ export class AsignarEspacioFisicoComponent implements OnInit {
         agregados: this.listaDeGruposNuevos,
         idGrupo: this.grupoSeleccionado.idAgrupadorEspacioFisico
         }
-        this.grupoService.guardarAsignacion(asignacionDTO).subscribe(r => {
+        this.agrupadorService.guardarAsignacion(asignacionDTO).subscribe(r => {
         if (r && r.error) {
             this.mensajeService.showMessage("error", r.descripcion)
         } else {

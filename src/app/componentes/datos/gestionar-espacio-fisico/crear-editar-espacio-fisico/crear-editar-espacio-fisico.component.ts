@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicDialogComponent, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { EspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/espacio.fisico.dto';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { EspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/espacio.fisico.out.dto';
-import { EspacioFisicoServicio } from 'src/app/componentes/servicios/espacio.fisico.servicio';
 import { AgrupacionPorFacultad } from '../../gestionar-asignatura/model/agrupacion-por-facultad';
-import { Form, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UbicacionOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/ubicacion.out.dto';
 import { EdificioOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/edificio.out.dto';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
-import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { TipoEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
+import { EspacioFisicoService } from 'src/app/componentes/servicios/espacio.fisico.service';
 
 @Component({
   selector: 'app-crear-editar-espacio-fisico',
@@ -31,10 +29,9 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   constructor(
     private ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
-    private espacioFisicoService: EspacioFisicoServicio,
+    private espacioFisicoService: EspacioFisicoService,
     private fb: FormBuilder,
     private messageService: ShowMessageService,
-    private espacioServicio: EspacioFisicoServicio
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +64,7 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   obtenerTipos() {
       let ubicaciones: any[] = []
       ubicaciones.push(this.idUbicacion().value)
-      this.espacioServicio.consultarTiposEspaciosFisicos().subscribe(
+      this.espacioFisicoService.consultarTiposEspaciosFisicos().subscribe(
         (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
             if(lstTipoEspacioFisicoOutDTO.length === 0) {
                 this.lstTipoEspacioFisicoOutDTO=[];

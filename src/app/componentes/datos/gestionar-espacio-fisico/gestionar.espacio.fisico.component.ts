@@ -1,8 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { EspacioFisicoServicio } from '../../servicios/espacio.fisico.servicio';
+import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
-import { HorarioEspacioFisicoComponent } from '../../reportes/reporte-espacio-fisico/horario-espacio-fisico/horario.espacio.fisico.component';
 import { FiltroEspacioFisicoDTO } from '../../dto/espacio-fisico/in/filtro.espacio.fisico.dto';
 import { EstadoEspacioFisicoEnum } from '../../enum/estado.espacio.fisico.enum';
 import { TipoEspacioFisicoOutDTO } from '../../dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
@@ -11,12 +8,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CrearEditarEspacioFisicoComponent } from './crear-editar-espacio-fisico/crear-editar-espacio-fisico.component';
 import { UbicacionOutDTO } from '../../dto/espacio-fisico/out/ubicacion.out.dto';
+import { EspacioFisicoService } from '../../servicios/espacio.fisico.service';
 
 @Component({
   selector: 'app-gestionar-espacio-fisico',
   templateUrl: './gestionar.espacio.fisico.component.html',
   styleUrls: ['./gestionar.espacio.fisico.component.css'],
-  providers: [EspacioFisicoServicio]
+  providers: [EspacioFisicoService]
 })
 export class GestionarEspacioFisicoComponent {
 
@@ -46,7 +44,7 @@ export class GestionarEspacioFisicoComponent {
     mensaje: string
     idEspacioFisicoSeleccionado: number;
 	constructor(private messageService: MessageService,
-        private espacioFisicoServicio:EspacioFisicoServicio,
+        private espacioFisicoService:EspacioFisicoService,
         private translateService: TranslateService,
         private dialog: DialogService
     ) {
@@ -55,7 +53,7 @@ export class GestionarEspacioFisicoComponent {
 	public ngOnInit():void {          
         this.filtroEspacioFisicoDTO.registrosPorPagina = this.registrosPorPagina;         
 
-        this.espacioFisicoServicio.consultarUbicaciones().subscribe(
+        this.espacioFisicoService.consultarUbicaciones().subscribe(
             (lstUbicacionOutDTO: UbicacionOutDTO[]) => {
                 this.lstUbicacionOutDTO = lstUbicacionOutDTO;
             },
@@ -71,7 +69,7 @@ export class GestionarEspacioFisicoComponent {
 	}
 
     private consultarEspaciosFisicos():void{
-        this.espacioFisicoServicio.consultarEspaciosFisicos(this.filtroEspacioFisicoDTO).subscribe(
+        this.espacioFisicoService.consultarEspaciosFisicos(this.filtroEspacioFisicoDTO).subscribe(
             (response: any) => {
               this.listaEspacioFisicoDTO = response.content;
               this.totalRecords= response.totalElements;
@@ -85,7 +83,7 @@ export class GestionarEspacioFisicoComponent {
     public onUbicacionesChange():void{
         this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
         if(this.filtroEspacioFisicoDTO.listaIdUbicacion!==null && this.filtroEspacioFisicoDTO.listaIdUbicacion.length !== 0) {
-            this.espacioFisicoServicio.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroEspacioFisicoDTO.listaIdUbicacion).subscribe(
+            this.espacioFisicoService.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroEspacioFisicoDTO.listaIdUbicacion).subscribe(
                 (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
                     this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
                     this.filtroEspacioFisicoDTO.estado=null;
@@ -181,7 +179,7 @@ export class GestionarEspacioFisicoComponent {
 	}
 	
 	public confirmarInactivacion():void {
-        this.espacioFisicoServicio.activarInactivar(this.idEspacioFisicoSeleccionado).subscribe(r => {
+        this.espacioFisicoService.activarInactivar(this.idEspacioFisicoSeleccionado).subscribe(r => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Espacio fisico guardado', life: 3000 })
             this.consultarEspaciosFisicos();
         })

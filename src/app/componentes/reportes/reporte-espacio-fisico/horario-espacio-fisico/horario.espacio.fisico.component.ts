@@ -2,13 +2,13 @@ import { Component, ViewChild } from '@angular/core';
 import { EspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/espacio.fisico.dto';
 import { FranjaHorariaEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/franja.horaria.espacio.fisico.dto';
 import { DiaSemanaEnum } from 'src/app/componentes/enum/dia.semana.enum';
-import { PlanificacionManualServicio } from 'src/app/componentes/servicios/planificacion.manual.servicio';
+import { PlanificacionManualService } from 'src/app/componentes/servicios/planificacion.manual.service';
 
 @Component({
   selector: 'app-horario-espacio-fisico',
   templateUrl: './horario.espacio.fisico.component.html',
   styleUrls: ['./horario.espacio.fisico.component.css'],
-  providers: [PlanificacionManualServicio]
+  providers: [PlanificacionManualService]
 })
 export class HorarioEspacioFisicoComponent {
 	
@@ -38,7 +38,7 @@ export class HorarioEspacioFisicoComponent {
 		DiaSemanaEnum.DOMINGO
 	];
 	
-	constructor(private planificacionManualServicio: PlanificacionManualServicio){
+	constructor(private planificacionManualService: PlanificacionManualService){
 		for (let i = 7; i <= 22; i++) {
 			const hora = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
 			this.horas.push(hora);
@@ -60,7 +60,7 @@ export class HorarioEspacioFisicoComponent {
 		this.listaFranjaHorariaAulaDTO = [];
 		// Verificar si idAula es válido y realizar la consulta
 		if (this.espacioFisicoDTOSeleccionado.idEspacioFisico) {  					
-		this.planificacionManualServicio.consultarFranjasEspacioFisicoPorIdEspacioFisico(this.espacioFisicoDTOSeleccionado.idEspacioFisico).subscribe(
+		this.planificacionManualService.consultarFranjasEspacioFisicoPorIdEspacioFisico(this.espacioFisicoDTOSeleccionado.idEspacioFisico).subscribe(
 			(listaFranjaHorariaAulaDTO: FranjaHorariaEspacioFisicoDTO[]) => {
 				this.listaFranjaHorariaAulaDTO = listaFranjaHorariaAulaDTO;
 			},

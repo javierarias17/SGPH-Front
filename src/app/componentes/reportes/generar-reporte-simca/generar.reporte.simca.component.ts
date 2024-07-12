@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProgramaServicio } from '../../servicios/programa.servicio';
+import { ProgramaService } from '../../servicios/programa.service';
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
-import { FacultadServicio } from '../../servicios/facultad.servicio';
 import { SharedService } from 'src/app/shared/service/shared.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { VisualizadorExcelComponent } from 'src/app/shared/components/visualizador-excel/visualizador-excel.component';
 import * as XLSX from 'xlsx';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { PeriodoAcademicoOutDTO } from '../../dto/periodo-academico/periodo-academico-out-dto';
+import { FacultadService } from '../../servicios/facultad.service';
 @Component({
   selector: 'app-generar-reporte-simca',
   templateUrl: './generar.reporte.simca.component.html',
@@ -24,8 +24,8 @@ export class GenerarReporteSimcaComponent implements OnInit {
   periodosAcademicos: PeriodoAcademicoOutDTO[] = [];
   isLoading: boolean = false
   constructor(private fb: FormBuilder,
-     private programaServicio: ProgramaServicio,
-     private facultadServicio: FacultadServicio,
+     private programaService: ProgramaService,
+     private facultadService: FacultadService,
      private sharedService: SharedService,
      private dialogService: DialogService,
      private periodoAcademicoService: PeriodoAcademicoService
@@ -50,7 +50,7 @@ export class GenerarReporteSimcaComponent implements OnInit {
 
   }
   obtenerFacultades() {
-    this.facultadServicio.consultarFacultades().subscribe(
+    this.facultadService.consultarFacultades().subscribe(
       (lstFacultadOutDTO: FacultadOutDTO[]) => {
           this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
       },
@@ -70,7 +70,7 @@ export class GenerarReporteSimcaComponent implements OnInit {
   }
   onFacultadChange() {
     if (this.idFacultad().value!==null) {
-      this.programaServicio.consultarProgramasPorIdFacultad([this.idFacultad().value]).subscribe(
+      this.programaService.consultarProgramasPorIdFacultad([this.idFacultad().value]).subscribe(
           (r: ProgramaOutDTO[]) => {
               this.listaProgramas = r
           },

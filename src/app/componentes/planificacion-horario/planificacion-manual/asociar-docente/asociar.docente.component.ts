@@ -1,16 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { BehaviorSubject } from 'rxjs';
 import { DocenteOutDTO } from 'src/app/componentes/dto/docente/out/docente.out.dto';
 import { FiltroDocenteDTO } from 'src/app/componentes/dto/docente/in/filtro.docente.dto';
 import { CrearActualizarDocentesCursoInDTO } from 'src/app/componentes/dto/horario/in/crea.actualizar.docentes.curso.in.dto';
 import { CrearActualizarDocentesCursoOutDTO } from 'src/app/componentes/dto/horario/out/crea.actualizar.docentes.curso.out.dto';
-import { DocenteServicio } from 'src/app/componentes/servicios/docente.servicio';
-import { HorarioServicio } from 'src/app/componentes/servicios/horario.servicio';
 import { EstadoDocenteEnum } from 'src/app/componentes/enum/estado.docente.enum';
 import { CursoPlanificacionOutDTO } from 'src/app/componentes/dto/curso/out/curso.planificacion.out.dto';
-import { PlanificacionManualServicio } from 'src/app/componentes/servicios/planificacion.manual.servicio';
+import { PlanificacionManualService } from 'src/app/componentes/servicios/planificacion.manual.service';
+import { DocenteService } from 'src/app/componentes/servicios/docente.service';
 
 
 interface DocenteItem {
@@ -22,7 +20,7 @@ interface DocenteItem {
   selector: 'app-asociar-docente',
   templateUrl: './asociar.docente.component.html',
   styleUrls: ['./asociar.docente.component.css'],
-  providers: [MessageService, DocenteServicio, HorarioServicio, PlanificacionManualServicio]
+  providers: [MessageService, DocenteService, PlanificacionManualService]
 })
 export class AsociarDocenteComponent {
 
@@ -49,9 +47,8 @@ export class AsociarDocenteComponent {
     public filtroDocenteDTO:FiltroDocenteDTO=new FiltroDocenteDTO();
    
     constructor(private messageService: MessageService, 
-        private docenteServicio:DocenteServicio, 
-        private horarioServicio:HorarioServicio,
-        private planificacionManualServicio: PlanificacionManualServicio) {
+        private docenteService:DocenteService, 
+        private planificacionManualService: PlanificacionManualService) {
     }
 
     public ngOnInit() { 
@@ -66,7 +63,7 @@ export class AsociarDocenteComponent {
     }
 
     private consultarDocentesAsignados() {
-        this.docenteServicio.consultarDocentePorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso).subscribe(
+        this.docenteService.consultarDocentePorIdCurso(this.cursoPlanificacionOutDTOSeleccionado.idCurso).subscribe(
             (lstDocenteOutDTO: DocenteOutDTO[]) => {        
                 if(lstDocenteOutDTO.length === 0){
                     this.listaDocentesAsignados = [];
@@ -83,7 +80,7 @@ export class AsociarDocenteComponent {
     }
 
     private consultarDocentesDisponibles() {
-        this.docenteServicio.consultarDocentes(this.filtroDocenteDTO).subscribe(
+        this.docenteService.consultarDocentes(this.filtroDocenteDTO).subscribe(
             (response: any) => {  
                 let lstDocenteOutDTO = response.content;                        
                 if(lstDocenteOutDTO.length === 0){
@@ -147,7 +144,7 @@ export class AsociarDocenteComponent {
             crearActualizarDocentesCursoInDTO.listaIdPersona = [];
         }
 
-        this.planificacionManualServicio.crearActualizarDocentesCursoDTO(crearActualizarDocentesCursoInDTO).subscribe(
+        this.planificacionManualService.crearActualizarDocentesCursoDTO(crearActualizarDocentesCursoInDTO).subscribe(
             (crearActualizarDocentesCursoOutDTO: CrearActualizarDocentesCursoOutDTO) => {   
                 if(crearActualizarDocentesCursoOutDTO.esExitoso === true){
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Docentes asignados con éxito.' });

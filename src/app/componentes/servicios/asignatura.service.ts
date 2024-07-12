@@ -7,7 +7,7 @@ import { FiltroAsignaturasDTO } from '../datos/gestionar-asignatura/model/filtro
 import { AsignaturaOutDTO } from '../datos/gestionar-asignatura/model/asignatura-dto';
 
 @Injectable()
-export class AsignaturaServicio{
+export class AsignaturaService{
 
     urlAsignatura: string = "AdministrarAsignatura"
     constructor(private http: HttpClient) {
@@ -22,7 +22,8 @@ export class AsignaturaServicio{
 	 * @return
 	 */
     public consultarAsignaturasPorIdPrograma(idPrograma:number): Observable<any>{
-        const url = `http://localhost:8081/AdministrarAsignatura/consultarAsignaturasPorIdPrograma?idPrograma=${idPrograma}`;
+        let params = new HttpParams().set('idPrograma', idPrograma);
+        const url = `${environment.url}${this.urlAsignatura}/consultarAsignaturasPorIdPrograma`;
         return this.http.get<any>(url);
     }
 

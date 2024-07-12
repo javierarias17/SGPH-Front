@@ -12,7 +12,7 @@ export class PeriodoAcademicoService {
 
     public subject =new Subject<any>;
 
-    urlAgrupador: string = "AdministrarPeriodoAcademico"
+    urlAdministrarPeriodoAcademico: string = "AdministrarPeriodoAcademico"
     constructor(private http: HttpClient) {
     }
 
@@ -25,7 +25,7 @@ export class PeriodoAcademicoService {
 	 * @return
 	 */
      public guardarPeriodoAcademico(periodoAcademicoInDTO:PeriodoAcademicoInDTO): Observable<any>{
-        const url = `${environment.url}${this.urlAgrupador}/guardarPeriodoAcademico`;
+        const url = `${environment.url}${this.urlAdministrarPeriodoAcademico}/guardarPeriodoAcademico`;
         return this.http.post<any>(url, periodoAcademicoInDTO);
     }
     
@@ -37,7 +37,7 @@ export class PeriodoAcademicoService {
 	 * @return Lista de instancias PeriodoAcademicoOutDTO
 	 */
     public consultarPeriodosAcademicos(filtro:any): Observable<any>{
-        const url = `${environment.url}${this.urlAgrupador}/consultarPeriodosAcademicos`;
+        const url = `${environment.url}${this.urlAdministrarPeriodoAcademico}/consultarPeriodosAcademicos`;
         return this.http.post<any>(url, filtro);
     }
 
@@ -49,7 +49,7 @@ export class PeriodoAcademicoService {
 	 * @return
 	 */
     public consultarPeriodoAcademicoVigente(): Observable<PeriodoAcademicoOutDTO>{
-        const url = `${environment.url}${this.urlAgrupador}/consultarPeriodoAcademicoVigente`;
+        const url = `${environment.url}${this.urlAdministrarPeriodoAcademico}/consultarPeriodoAcademicoVigente`;
         return this.http.get<PeriodoAcademicoOutDTO>(url);
     }
 

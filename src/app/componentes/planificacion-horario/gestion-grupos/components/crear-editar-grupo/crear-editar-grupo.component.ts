@@ -7,10 +7,10 @@ import {
 } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
-import { FacultadServicio } from 'src/app/componentes/servicios/facultad.servicio';
 import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
-import { GrupoService } from '../../services/grupo.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
+import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
+import { AgrupadorService } from '../../services/agrupador.service';
 
 @Component({
     selector: 'app-crear-editar-grupo',
@@ -23,10 +23,10 @@ export class CrearEditarGrupoComponent implements OnInit {
     grupo: AgrupadorEspacioFiscioDTO;
     public lstFacultadOutDTO: FacultadOutDTO[] = [];
     constructor(
-        private facultadService: FacultadServicio,
+        private facultadService: FacultadService,
         private fb: FormBuilder,
         private config: DynamicDialogConfig,
-        private grupoService: GrupoService,
+        private agrupadorService: AgrupadorService,
         private messageService: ShowMessageService,
         private ref: DynamicDialogRef
     ) {}
@@ -81,7 +81,7 @@ export class CrearEditarGrupoComponent implements OnInit {
             let grupo: AgrupadorEspacioFiscioDTO = this.formulario.value;
             grupo.idAgrupadorEspacioFisico =
                 this.grupo?.idAgrupadorEspacioFisico;
-            this.grupoService.guardarGrupo(grupo).subscribe({
+            this.agrupadorService.guardarGrupo(grupo).subscribe({
                 next: (r) => {
                     if (r) {
                         this.messageService.showMessage(

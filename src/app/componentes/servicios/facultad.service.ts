@@ -2,9 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { FacultadOutDTO } from '../dto/facultad/out/facultad.out.dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
-export class FacultadServicio{
+export class FacultadService{
+
+    urlAdministrarFacultad: string = "AdministrarFacultad";
 
     constructor(private http: HttpClient) {
     }
@@ -17,7 +20,7 @@ export class FacultadServicio{
 	 * @return
 	 */
     public consultarFacultades(): Observable<FacultadOutDTO[]>{
-        const url = `http://localhost:8081/AdministrarFacultad/consultarFacultades`;
+        const url = `${environment.url}${this.urlAdministrarFacultad}/consultarFacultades`;
         return this.http.get<FacultadOutDTO[]>(url);
     }  
 }

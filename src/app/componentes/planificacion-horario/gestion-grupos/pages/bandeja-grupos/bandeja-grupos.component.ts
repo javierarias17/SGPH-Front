@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { GrupoService } from '../../services/grupo.service';
 import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
-import { FacultadServicio } from 'src/app/componentes/servicios/facultad.servicio';
-import { ConfirmationService, LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent } from 'primeng/api';
 import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { CrearEditarGrupoComponent } from '../../components/crear-editar-grupo/crear-editar-grupo.component';
 import { DialogService } from 'primeng/dynamicdialog';
-import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { AsignarEspacioFisicoComponent } from '../../components/asignar-espacio-fisico/asignar-espacio-fisico.component';
+import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
+import { AgrupadorService } from '../../services/agrupador.service';
 
 @Component({
     selector: 'app-bandeja-grupos',
@@ -24,8 +23,8 @@ export class BandejaGruposComponent implements OnInit {
     cargando: boolean;
     filtro: any;
     constructor(
-        private grupoService: GrupoService,
-        private facultadServicio: FacultadServicio,
+        private agrupadorService: AgrupadorService,
+        private facultadService: FacultadService,
         private dialog: DialogService
     ) {}
     
@@ -34,7 +33,7 @@ export class BandejaGruposComponent implements OnInit {
     }
 
     consultarFacultades() {
-        this.facultadServicio.consultarFacultades().subscribe(
+        this.facultadService.consultarFacultades().subscribe(
             (lstFacultadOutDTO: FacultadOutDTO[]) => {
                 this.lstFacultadOutDTO = lstFacultadOutDTO.map(
                     (facultadOutDTO: FacultadOutDTO) => ({
@@ -66,7 +65,7 @@ export class BandejaGruposComponent implements OnInit {
                 pageSize: 10,
                 listaIdFacultades: this.facultadesSeleccionadas,
             };
-            this.grupoService
+            this.agrupadorService
                 .obtenerAgrupadorEspacioFisico(this.filtro)
                 .subscribe((r) => {
                     this.grupos = r.content;
@@ -83,7 +82,7 @@ export class BandejaGruposComponent implements OnInit {
                 pageSize: $event.rows,
                 idFacultades: this.facultadesSeleccionadas,
             };
-            this.grupoService
+            this.agrupadorService
                 .obtenerAgrupadorEspacioFisico(this.filtro)
                 .subscribe((r) => {
                     this.grupos = r.content;
