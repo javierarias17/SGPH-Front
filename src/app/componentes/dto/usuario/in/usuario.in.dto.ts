@@ -9,7 +9,7 @@ export class UsuarioInDTO{
     public lstIdRol: number[];
     public lstIdPrograma: number[];
 
-    public esValidar: boolean;
+    public esValidar?: boolean;
 
     constructor(){
         this.idUsuario=null;

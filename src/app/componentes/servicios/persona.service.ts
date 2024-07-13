@@ -18,7 +18,7 @@ export class PersonaService{
     }
 
 	public consultarPersonaPorIdentificacion(idTipoIdentificacion:number, numeroIdentificacion:string) {
-        const url = `${environment.url}${this.urlPersona}/consultarPersonaPorIdentificacion=${idTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
+        const url = `${environment.url}${this.urlPersona}/consultarPersonaPorIdentificacion?idTipoIdentificacion=${idTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         return this.http.get<PersonaOutDTO>(url);
     }  
 }

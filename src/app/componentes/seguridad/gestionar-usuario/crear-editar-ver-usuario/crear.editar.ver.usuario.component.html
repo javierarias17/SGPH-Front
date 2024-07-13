@@ -2,8 +2,6 @@
     class="p-fluid">
     <div class="flex flex-column">
         <form [formGroup]="formulario" class="grid" *ngIf="esEditar || esCrear"  style="margin-left: 3%;">
-
-            <pre>{{this.usuarioInDTO | json}}</pre>
             <!--Información personal-->
             <div class="p-fluid col sm:col-12 md:col-12">
                 <h5>Información personal</h5>
@@ -18,7 +16,7 @@
                     formControlName="idTipoIdentificacion" 
                     name="idTipoIdentificacion"
                     placeholder="Seleccione tipo de identificación"
-                    (ngModelChange)="onNumeroIdentificacionBlur(); validarCamposBackendUsuario()">
+                    (ngModelChange)="onNumeroIdentificacionBlur(); validarCamposBackendUsuarioYPersona()">
                 </p-dropdown>
                 <div class="p-error block" *ngIf="this.formulario.get('idTipoIdentificacion').invalid && this.formulario.get('idTipoIdentificacion').touched">
                     <div *ngIf="this.formulario.get('idTipoIdentificacion').errors.required">El tipo de identificación es requerido</div>            
@@ -31,10 +29,9 @@
                 name="numeroIdentificacion"
                 placeholder="Ingrese número de identificación"
                 (blur)="onNumeroIdentificacionBlur()"
-                (ngModelChange)=" validarCamposBackendUsuario()">                
+                (ngModelChange)=" validarCamposBackendUsuarioYPersona()">                
                 <div class="p-error block" *ngIf="this.formulario.get('numeroIdentificacion').invalid && this.formulario.get('numeroIdentificacion').touched">
                     <div *ngIf="this.formulario.get('numeroIdentificacion').errors.required">El numero de identificación es requerido</div>            
-                    <div *ngIf="this.formulario.get('numeroIdentificacion').errors?.ExistsByTipoAndNumeroIdentificacion">{{ this.formulario.get('numeroIdentificacion').errors?.ExistsByTipoAndNumeroIdentificacion }}</div>
                 </div>
             </div> 
             <div class="p-fluid col sm:col-12 md:col-6">
@@ -43,7 +40,7 @@
                 formControlName="primerNombre"  
                 name="primerNombre"
                 placeholder="Ingrese primer nombre"
-                [style.opacity]="this.usuarioInDTO.esDocente ? '0.6' : '1'">
+                [style.opacity]="this.esPersonaExistente ? '0.6' : '1'">
                 <div class="p-error block" *ngIf="this.formulario.get('primerNombre').invalid && this.formulario.get('primerNombre').touched">
                     <div *ngIf="this.formulario.get('primerNombre').errors.required">El primer nombre es requerido</div>            
                 </div>
@@ -53,8 +50,8 @@
                 <input type="text" class="p-inputtext" 
                 formControlName="segundoNombre"  
                 name="segundoNombre"
-                placeholder="Ingrese segundo nombre"
-                [style.opacity]="this.usuarioInDTO.esDocente ? '0.6' : '1'">
+                [placeholder]="this.esPersonaExistente? '':'Ingrese segundo nombre'"
+                [style.opacity]="this.esPersonaExistente ? '0.6' : '1'">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Primer apellido</label>
@@ -62,7 +59,7 @@
                 formControlName="primerApellido"  
                 name="primerApellido"
                 placeholder="Ingrese primer apellido"
-                [style.opacity]="this.usuarioInDTO.esDocente ? '0.6' : '1'">
+                [style.opacity]="this.esPersonaExistente ? '0.6' : '1'">
                 <div class="p-error block" *ngIf="this.formulario.get('primerApellido').invalid && this.formulario.get('primerApellido').touched">
                     <div *ngIf="this.formulario.get('primerApellido').errors.required">El primer apellido es requerido</div>            
                 </div>
@@ -72,8 +69,8 @@
                 <input type="text" class="p-inputtext" 
                 formControlName="segundoApellido"  
                 name="segundoApellido"
-                placeholder="Ingrese segundo apellido"
-                [style.opacity]="this.usuarioInDTO.esDocente ? '0.6' : '1'">
+                [placeholder]="this.esPersonaExistente? '':'Ingrese segundo apellido'"
+                [style.opacity]="this.esPersonaExistente ? '0.6' : '1'">
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
                 <label class="required">Correo electrónico</label>
@@ -81,11 +78,11 @@
                 formControlName="email" 
                 name="email"
                 placeholder="Ingrese correo electrónico" 
-                (ngModelChange)="inputsChangeCorreo(); validarCamposBackendUsuario()"
-                [style.opacity]="this.usuarioInDTO.esDocente ? '0.6' : '1'">  
+                (ngModelChange)="inputsChangeCorreo(); validarCamposBackendUsuarioYPersona()"
+                [style.opacity]="this.esPersonaExistente ? '0.6' : '1'">  
                 <div class="p-error block" *ngIf="this.formulario.get('email').invalid && this.formulario.get('email').touched">
                     <div *ngIf="this.formulario.get('email').errors.required">El email es requerido</div>
-                    <div *ngIf="this.formulario.get('email').errors?.ExistsByEmail">{{ this.formulario.get('email').errors?.ExistsByEmail }}</div>            
+                    <div *ngIf="this.formulario.get('email').errors?.ExisteEmail">{{ this.formulario.get('email').errors?.ExisteEmail }}</div>            
                 </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-12">
@@ -97,9 +94,8 @@
                 formControlName="nombreUsuario"  
                 name="nombreUsuario"
                 [style.opacity]="'0.6'">
-                <div class="p-error block" *ngIf="this.formulario.get('nombreUsuario').invalid && this.formulario.get('nombreUsuario').touched">
-                    <div *ngIf="this.formulario.get('nombreUsuario').errors.required">El nombreUsuario es requerido</div>
-                    <div *ngIf="this.formulario.get('nombreUsuario').errors?.ExistsByNombreUsuario">{{ this.formulario.get('nombreUsuario').errors?.ExistsByNombreUsuario }}</div>
+                <div class="p-error block" *ngIf="this.formulario.get('email').invalid && this.formulario.get('email').touched">
+                    <div *ngIf="this.formulario.get('email').errors?.ExisteNombreUsuario">{{ this.formulario.get('email').errors?.ExisteNombreUsuario }}</div>
                 </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-6">
@@ -158,25 +154,23 @@
             <!--Selección programas a gestionar-->   
             <div class="p-fluid col sm:col-12 md:col-6" *ngIf="esValidoGestionarProgramas">
                 <label class="required">Facultad</label>
-                <p-multiSelect 
-                    maxSelectedLabels="4" 
-                    selectedItemsLabel="{0} Facultades seleccionadas" 
-                    optionLabel="abreviatura" 
-                    optionValue="idFacultad"
-                    [defaultLabel]="'Seleccione facultad'"
+                <p-dropdown 
                     [options]="listaFacultades" 
-                    formControlName="lstIdFacultadSeleccionadas"  
-                    name="facultad"
-                    [filter]="true"
-                    [showClear]="true"
-                    (ngModelChange)="onFacultadesChange()"
-                    appendTo = "body" >
+                    optionValue="idFacultad" 
+                    optionLabel="abreviatura"
+                    formControlName="idFacultad" 
+                    [showClear]="false" 
+                    appendTo="body" 
+                    (ngModelChange)="onFacultadesChange()">
                     <ng-template let-facultad pTemplate="item">
                         <div class="flex align-items-center gap-2">
                             <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
                         </div>
                     </ng-template>
-                </p-multiSelect>
+                </p-dropdown>
+                <div class="p-error block" *ngIf="this.formulario.get('idFacultad').invalid && this.formulario.get('idFacultad').touched">
+                    <div *ngIf="this.formulario.get('idFacultad').errors.required">Facultad es requerido</div>
+                </div>
             </div>
             <div class="p-fluid col sm:col-12 md:col-6" *ngIf="esValidoGestionarProgramas">
                 <label class="required">Programas asignados</label>
@@ -201,7 +195,6 @@
                 </p-multiSelect>
                 <div class="p-error block" *ngIf="this.formulario.get('lstIdPrograma').invalid && this.formulario.get('lstIdPrograma').touched">
                     <div *ngIf="this.formulario.get('lstIdPrograma').errors.required">Programa es requerido</div>
-                    <div *ngIf="this.formulario.get('lstIdPrograma').errors?.ExistsAtLeastOneProgramForPlanificadorRole">{{ this.formulario.get('lstIdPrograma').errors?.ExistsAtLeastOneProgramForPlanificadorRole }}</div>
                 </div>
             </div>            
         </form>
@@ -251,7 +244,6 @@
             </div>
             <!--Roles y permisos-->
             <h5>Roles y permisos</h5>            
-            <!--Roles asignados-->
             <div class="mt-1 flex justify-content-start flex-wrap align-items-start">
                 <label class="w-10rem" style="text-align: right;">Roles asignados</label>
                 <div *ngIf="usuarioOutDTOSeleccionado?.lstIdRol.length > 0; else noRoles" class="w-25rem" style="margin-left: 10%">

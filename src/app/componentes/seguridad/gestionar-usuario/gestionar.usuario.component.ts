@@ -249,7 +249,16 @@ export class GestionarUsuarioComponent {
         this.usuarioOutDTOSeleccionado.estado = this.usuarioOutDTOSeleccionado.estado === EstadoUsuarioEnum.ACTIVO 
         ? EstadoUsuarioEnum.INACTIVO 
         : EstadoUsuarioEnum.ACTIVO;
-        this.guardar();       
+
+        this.usuarioService.cambiarEstadoUsuarioPorIdUsuario(this.usuarioOutDTOSeleccionado.idUsuario).subscribe(
+            (usuarioOutDTO: UsuarioOutDTO) => {
+                this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario '+EstadoUsuarioEnum[this.usuarioOutDTOSeleccionado.estado]+' con éxito.' });
+                this.consultarUsuariosPorFiltro();
+            },
+            (error) => {
+              console.error(error);
+            }
+        ); 
     }
 
     /**

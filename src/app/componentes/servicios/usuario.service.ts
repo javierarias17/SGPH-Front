@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FiltroUsuarioDTO } from '../dto/usuario/in/filtro.usuario.dto';
@@ -78,4 +78,17 @@ export class UsuarioService{
 		const url = `${environment.url}${this.urlUsuario}/consultarEstadosUsuario`;
         return this.http.get<string[]>(url);
     }  	
+
+	/**
+	 * Método encargado de consultar todos los estados de usuario
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @return
+	 */
+	public cambiarEstadoUsuarioPorIdUsuario(idUsuario:number) {
+		const params = new HttpParams().set('idUsuario', idUsuario.toString());
+		const url = `${environment.url}${this.urlUsuario}/cambiarEstadoUsuarioPorIdUsuario`;
+		return this.http.get<UsuarioOutDTO>(url, { params });
+    }  
 }
