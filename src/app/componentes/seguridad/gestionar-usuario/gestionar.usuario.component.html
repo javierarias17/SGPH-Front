@@ -50,7 +50,7 @@
                         <button pButton pRipple label="Subir archivo" icon="pi pi-upload" class="p-button-help" (click)="cargarArchivo()"></button>
                         <span style="margin-right: 10px;"></span>
                         <div class="my-0">
-                            <button pButton pRipple label="Crear usuario" icon="pi pi-plus" class="p-button-success mr-2" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Crear usuario')"></button>
+                            <button pButton pRipple label="Crear usuario" icon="pi pi-plus" class="p-button-success mr-2" (click)="crearUsuario()"></button>
                         </div>
                     </ng-template>
                 </p-toolbar>  
@@ -98,9 +98,9 @@
                     </td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Ver usuario')"></button>
+                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-info" (click)="verUsuario(usuarioOutDTO)"></button>
                             <span style="margin-right: 10px;"></span>
-                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="abrirModalCrearEditarVerUsuario(usuarioOutDTO, 'Editar usuario')"></button>
+                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" (click)="editarUsuario(usuarioOutDTO)"></button>
                             <span style="margin-right: 10px;"></span>
                             <button pButton pRipple type="button" icon="pi pi-ban" class="p-button-rounded p-button-danger" (click)="cambiarEstadoUsuario(usuarioOutDTO)"></button>
                         </div>
@@ -112,8 +112,7 @@
     </div>   
 </div>
 
-<app-crear-editar-ver-usuario #crearEditarVerUsuario (modalClosedEmitter)="actualizarInformacionUsuarios()"></app-crear-editar-ver-usuario>
- <!-- p-toast para mensajes -->
+<!-- p-toast para mensajes -->
  <p-toast></p-toast>
  
 <div class="grid">

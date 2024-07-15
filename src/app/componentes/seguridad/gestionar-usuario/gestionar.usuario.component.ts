@@ -10,6 +10,7 @@ import { CrearEditarVerUsuarioComponent } from './crear-editar-ver-usuario/crear
 import { RolOutDTO } from '../../dto/usuario/out/rol.out.dto';
 import { TranslateService } from '@ngx-translate/core';
 import { LenguajeService } from '../../servicios/lenguaje.service';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'app-gestionar-usuario',
@@ -48,14 +49,12 @@ export class GestionarUsuarioComponent {
     cols: any[] = [];
     rowsPerPageOptions = [5, 10, 20];
 
-    //Referencia al componente hijo
-    @ViewChild('crearEditarVerUsuario') crearEditarVerUsuario: CrearEditarVerUsuarioComponent;
-
     constructor(
         private messageService: MessageService,
         private usuarioService: UsuarioService,
         private programaService: ProgramaService,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+        public dialog: DialogService
     ) {
     }
 
@@ -206,9 +205,7 @@ export class GestionarUsuarioComponent {
      * @author parias 
      */
     public abrirModalCrearEditarVerUsuario(usuarioOutDTOSeleccionado: UsuarioOutDTO, tituloModal: string ) {
-        if (this.crearEditarVerUsuario) {
-            this.crearEditarVerUsuario.abrirModal(usuarioOutDTOSeleccionado, tituloModal);
-        }
+
     }
 
     /**
@@ -219,23 +216,6 @@ export class GestionarUsuarioComponent {
     public cambiarEstadoUsuario(usuarioOutDTOSeleccionado: UsuarioOutDTO) {
         this.usuarioOutDTOSeleccionado = { ...usuarioOutDTOSeleccionado };
         this.inactivarUsuarioDialog = true;
-    }
-
-    /**
-     * Método encargado de actualizar la información del usuario seleccionado
-     *
-     * @author parias 
-     */
-    private guardar() {
-        this.usuarioService.guardarUsuario(this.usuarioOutDTOSeleccionado).subscribe(
-            (usuarioOutDTO: UsuarioOutDTO) => {
-                this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario '+EstadoUsuarioEnum[this.usuarioOutDTOSeleccionado.estado]+' con éxito.' });
-                this.consultarUsuariosPorFiltro();
-            },
-            (error) => {
-              console.error(error);
-            }
-        ); 
     }
 
     /**
@@ -281,5 +261,54 @@ export class GestionarUsuarioComponent {
      */
     public actualizarInformacionUsuarios():void{
         this.consultarUsuariosPorFiltro();
+    }
+
+
+    public crearUsuario(){
+        const ref = this.dialog.open(CrearEditarVerUsuarioComponent, {
+            height: 'auto',
+            width: '800px',
+            header: 'Crear usuario',
+            closable: false,
+            data: {
+              usuarioOutDTOSeleccionado: null,
+              lectura: false
+            }
+          },)
+          ref.onClose.subscribe(r => {
+            this.consultarUsuariosPorFiltro();
+          })
+    }
+
+    public editarUsuario(usuarioOutDTOSeleccionado:UsuarioOutDTO){
+        const ref = this.dialog.open(CrearEditarVerUsuarioComponent, {
+            height: 'auto',
+            width: '800px',
+            header: 'Editar usuario',
+            closable: false,
+            data: {
+              usuarioOutDTOSeleccionado: usuarioOutDTOSeleccionado,
+              lectura: false
+            }
+          },)
+          ref.onClose.subscribe(r => {
+            this.consultarUsuariosPorFiltro();
+          })
+    }
+
+    public verUsuario(usuarioOutDTOSeleccionado:UsuarioOutDTO){
+        const ref = this.dialog.open(CrearEditarVerUsuarioComponent, {
+            height: 'auto',
+            width: '800px',
+            header: 'Ver usuario',
+            closable: false,
+            data: {
+                usuarioOutDTOSeleccionado: usuarioOutDTOSeleccionado,
+                lectura: true
+            }
+          },)
+          ref.onClose.subscribe(r => {
+            this.consultarUsuariosPorFiltro();
+          })
     }
 }

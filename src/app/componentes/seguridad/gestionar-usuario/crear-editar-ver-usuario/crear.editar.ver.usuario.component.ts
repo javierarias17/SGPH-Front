@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UsuarioOutDTO } from '../../../dto/usuario/out/usuario.out.dto';
 import { UsuarioInDTO } from '../../../dto/usuario/in/usuario.in.dto';
 import { ProgramaOutDTO } from '../../../dto/programa/out/programa.out.dto';
@@ -12,12 +12,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormControl, FormGroup, Validators, FormBuilder, AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { LenguajeService } from '../../../servicios/lenguaje.service';
 import { RolUsuarioEnum } from '../../../enum/rol.usuario.enum';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { PersonaInDTO } from 'src/app/componentes/dto/persona/persona.in.dto';
 import { PersonaService } from 'src/app/componentes/servicios/persona.service';
 import { PersonaOutDTO } from 'src/app/componentes/dto/persona/persona.out.dto';
 import { ProgramaService } from 'src/app/componentes/servicios/programa.service';
 import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 
 @Component({
@@ -27,20 +28,6 @@ import { FacultadService } from 'src/app/componentes/servicios/facultad.service'
   providers: [ LenguajeService]
 })
 export class CrearEditarVerUsuarioComponent implements OnInit {   
-    /** Constante que determina el tipo de operación 'Ver usuario'*/
-    private readonly VER_USUARIO :string =  "Ver usuario";
-    /** Constante que determina el tipo de operación 'Editar usuario'*/
-    private readonly EDITAR_USUARIO :string =  "Editar usuario";
-
-    /** Evento para notificar al padre que el modal se ha cerrado*/
-    @Output() modalClosedEmitter = new EventEmitter<void>();
-
-	public mostrarModalCRUD: boolean = false;
-	public tituloModal: string = "";
-
-    public esVer: boolean = false;
-    public esCrear: boolean = false;
-    public esEditar: boolean = false;
     
     /** Mapa de todos los programas para accederlos rápidamente por el identificador*/
     public mapaProgramas: Map<number, ProgramaOutDTO> = new Map<number, ProgramaOutDTO>();
@@ -69,7 +56,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     /*Bandera para deshabilitar los campos de información personal cuando la persona ya existe en BD*/
     public esPersonaExistente:boolean; 
 
-    
+    public lectura: boolean;
     public formulario: FormGroup;
 
     constructor(private programaService: ProgramaService,
@@ -78,131 +65,96 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
          private messageService: MessageService,
          private translateService: TranslateService,
          private formBuilder: FormBuilder,
-         private personaService:PersonaService){
-
-        this.facultadService.consultarFacultades().subscribe(
-            (lstFacultadOutDTO: FacultadOutDTO[]) => {
+         private personaService:PersonaService,
+         private config: DynamicDialogConfig,
+         private ref: DynamicDialogRef){
+    }
+    public ngOnInit(): void {
+        this.lectura=this.config.data.lectura;
+        this.inicializarFormulario() ;
+        forkJoin([
+            this.facultadService.consultarFacultades(),
+            this.programaService.consultarProgramas(),
+            this.usuarioService.consultarRoles(),
+            this.usuarioService.consultarTiposIdentificacion()
+          ]).subscribe(
+            ([lstFacultadOutDTO, lstProgramaOutDTO, lstRolOutDTO, lstTipoIdentificacionOutDTO]) => {
                 this.listaFacultades = lstFacultadOutDTO;
-            },
-            (error) => {
-              console.error(error);
-            }
-        ); 
 
-        this.programaService.consultarProgramas().subscribe(
-            (lstProgramaOutDTO: ProgramaOutDTO[]) => {
                 //Se crea el mapa de programas  
                 lstProgramaOutDTO.forEach((programaOutDTO: ProgramaOutDTO) => {
                     this.mapaProgramas.set(programaOutDTO.idPrograma, programaOutDTO);                
                 });
-            },
-            (error) => {
-              console.error(error);
-            }
-        ); 
 
-        this.usuarioService.consultarRoles().subscribe(
-            (lstRolOutDTO: RolOutDTO[]) => {   
                 this.listaRoles = lstRolOutDTO.map((rolOutDTO:RolOutDTO) => ({ idRol: rolOutDTO.idRol, rolUsuario:rolOutDTO.rolUsuario, nombre:this.translateService.instant('gestionar.usuario.filtro.rol.usuario.' + rolOutDTO.rolUsuario) }));  
                 //Se crea el mapa de roles  
                 this.listaRoles.forEach(rolOutDTO =>{
                     this.mapaRoles.set(rolOutDTO.idRol, rolOutDTO);        
-                });      
-            },
-            (error) => {
-              console.error(error);
-            }
-        );
+                });   
 
-        this.usuarioService.consultarTiposIdentificacion().subscribe(
-            (lstTipoIdentificacionOutDTO: TipoIdentificacionOutDTO[]) => {               
                 this.listaTiposIdentificacion = lstTipoIdentificacionOutDTO;
+      
+                Object.keys(EstadoUsuarioEnum).forEach(key => {
+                const translatedLabel = this.translateService.instant('gestionar.usuario.filtro.estado.usuario.' + key);
+                this.listaEstados.push({ label: translatedLabel, value: key });
+                });
+
+                this.lectura=this.config.data.lectura;
+                this.inicializarFormulario();
+                this.esPersonaExistente=false;  
+                this.usuarioInDTO= new UsuarioInDTO();
+                this.personaInDTO=new PersonaInDTO();
+        
+                if(this.config.data?.usuarioOutDTOSeleccionado){
+                    this.usuarioOutDTOSeleccionado=this.config.data?.usuarioOutDTOSeleccionado;
+                    this.usuarioInDTO= {...this.usuarioOutDTOSeleccionado};
+                    this.personaInDTO.idPersona=this.usuarioOutDTOSeleccionado.idPersona;
+                    this.personaInDTO.idTipoIdentificacion=this.usuarioOutDTOSeleccionado.idTipoIdentificacion;
+                    this.personaInDTO.numeroIdentificacion=this.usuarioOutDTOSeleccionado.numeroIdentificacion;
+                    this.personaInDTO.primerNombre=this.usuarioOutDTOSeleccionado.primerNombre;
+                    this.personaInDTO.primerApellido=this.usuarioOutDTOSeleccionado.primerApellido;
+                    this.personaInDTO.segundoNombre=this.usuarioOutDTOSeleccionado.segundoNombre;
+                    this.personaInDTO.segundoApellido=this.usuarioOutDTOSeleccionado.segundoApellido;
+                    this.personaInDTO.email=this.usuarioOutDTOSeleccionado.email;
+                    this.esPersonaExistente=true;                       
+                }
+        
+                if(this.lectura===false){
+                    let lstIdFacultad:number[] =[];
+                    this.usuarioInDTO.lstIdPrograma.forEach(idPrograma =>{
+                        let programaOutDTO = this.mapaProgramas.get(idPrograma);
+                        if(programaOutDTO){
+                            lstIdFacultad.push(programaOutDTO.idFacultad);
+                        }
+                    })
+            
+                    this.idFacultad().setValue(lstIdFacultad.length > 0 ? lstIdFacultad[0]:undefined);    
+                    
+                    this.mapaProgramas.forEach(programaOutDTO => {
+                        if(programaOutDTO.idFacultad===this.idFacultad().value){
+                            this.listaProgramas.push(programaOutDTO);
+                        }
+                    });            
+                   
+                    this.asignarDatosFormulario();
+                    if(this.esPersonaExistente===true){
+                        this.desactivarCamposPersona();
+                    }else{
+                        this.activarCamposPersona();
+                    }
+                    this.onRolesChange();
+                }
             },
             (error) => {
-              console.error(error);
+              console.error('Error fetching data:', error);
             }
-        );
-
-        Object.keys(EstadoUsuarioEnum).forEach(key => {
-            const translatedLabel = this.translateService.instant('gestionar.usuario.filtro.estado.usuario.' + key);
-            this.listaEstados.push({ label: translatedLabel, value: key });
-        });
+          );       
     }
-    public ngOnInit(): void {
-    }
-
-    public abrirModal(usuarioOutDTOSeleccionado: UsuarioOutDTO, tituloModal: string) {
-        this.usuarioInDTO= new UsuarioInDTO();
-        this.personaInDTO=new PersonaInDTO();
-        this.esValidoGestionarProgramas=false;
-               
-        this.esVer = false;
-        this.esCrear = false;
-        this.esEditar = false;
-        this.mostrarModalCRUD=true;
-        this.usuarioOutDTOSeleccionado = usuarioOutDTOSeleccionado;
-        this.tituloModal = tituloModal;
-        
-        this.inicializarFormulario();
-        this.asignarDatosFormulario();   
-
-        if(tituloModal===this.VER_USUARIO){
-            this.esVer=true;
-        }else if(tituloModal===this.EDITAR_USUARIO){
-            this.usuarioInDTO= {...usuarioOutDTOSeleccionado};
-            this.personaInDTO.idPersona=usuarioOutDTOSeleccionado.idPersona;
-            this.personaInDTO.idTipoIdentificacion=usuarioOutDTOSeleccionado.idTipoIdentificacion;
-            this.personaInDTO.numeroIdentificacion=usuarioOutDTOSeleccionado.numeroIdentificacion;
-            this.personaInDTO.primerNombre=usuarioOutDTOSeleccionado.primerNombre;
-            this.personaInDTO.primerApellido=usuarioOutDTOSeleccionado.primerApellido;
-            this.personaInDTO.segundoNombre=usuarioOutDTOSeleccionado.segundoNombre;
-            this.personaInDTO.segundoApellido=usuarioOutDTOSeleccionado.segundoApellido;
-            this.personaInDTO.email=usuarioOutDTOSeleccionado.email;
-            this.esEditar = true;
-            this.esPersonaExistente=true;            
-        }else{
-            this.esCrear=true;
-            this.esPersonaExistente=false; 
-        }       
-
-        if(this.usuarioOutDTOSeleccionado.lstIdPrograma !==null && this.usuarioOutDTOSeleccionado.lstIdPrograma.length > 0){
-            this.esValidoGestionarProgramas=true;
-        }else{
-            this.esValidoGestionarProgramas=false;
-        }
-        this.inicializarFormulario();
-        this.asignarDatosFormulario(); 
-
-        if(this.esPersonaExistente===true){
-            this.desactivarCamposPersona();
-        }else{
-            this.activarCamposPersona();
-        }
-
-        if(tituloModal !== this.VER_USUARIO){
-            let lstIdFacultad:number[] =[];
-            this.usuarioInDTO.lstIdPrograma.forEach(idPrograma =>{
-                let programaOutDTO = this.mapaProgramas.get(idPrograma);
-                if(programaOutDTO){
-                    lstIdFacultad.push(programaOutDTO.idFacultad);
-                }
-            })
-    
-            this.idFacultad().setValue(lstIdFacultad[0]);    
-            
-            this.mapaProgramas.forEach(programaOutDTO => {
-                if(programaOutDTO.idFacultad===this.idFacultad().value){
-                    this.listaProgramas.push(programaOutDTO);
-                }
-            });            
-           
-        }
-	}
 
     private inicializarFormulario() {
         this.formulario = this.formBuilder.group({
             idTipoIdentificacion: [null, [Validators.required]],
-            numeroIdentificacion: [null, [Validators.required]],
+            numeroIdentificacion: [null, [Validators.required],this.existeUsuarioConPersonaValidator()],
             primerNombre: [null, [Validators.required]],
             primerApellido: [null, [Validators.required]],
             segundoNombre: [null],
@@ -217,7 +169,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         })
     }
 
-    public asignarDatosFormulario():void{
+    private asignarDatosFormulario():void{
         this.idTipoIdentificacion().setValue(this.personaInDTO.idTipoIdentificacion);
         this.numeroIdentificacion().setValue(this.personaInDTO.numeroIdentificacion);
         this.primerNombre().setValue(this.personaInDTO.primerNombre);
@@ -273,6 +225,53 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         return this.formulario.get("idFacultad") as FormControl;
     }
 
+    /*private existeUsuarioConPersonaValidator(): AsyncValidatorFn {
+        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
+                map((error) => {
+                    for (let key in error) {                    
+                        if (key === 'ExisteIdPersonaUsuario') {
+                            return { "ExisteIdPersonaUsuario": error[key]};
+                        }
+                    }
+                    return null;
+                })
+            );
+        };
+    }  */
+
+    public existeUsuarioConPersonaValidator(): AsyncValidatorFn {
+        return (control: AbstractControl): Observable<ValidationErrors | null> => {
+                      
+            if (!this.numeroIdentificacion().value || !this.idTipoIdentificacion().value) {
+                return of(null); 
+            }
+    
+            return this.personaService.consultarPersonaPorIdentificacion(this.idTipoIdentificacion().value, this.numeroIdentificacion().value).pipe(
+            switchMap((personaOutDTO: PersonaOutDTO) => {
+                if (personaOutDTO) {
+                    this.usuarioInDTO.idPersona =  personaOutDTO.idPersona;
+
+                    return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
+                        map((error) => {
+                            for (let key in error) {                    
+                                if (key === 'ExisteIdPersonaUsuario') {
+                                    return { "ExisteIdPersonaUsuario": error[key]};
+                                }
+                            }
+                            return null;
+                    }))                
+                } else {
+                    this.personaInDTO.idPersona=null;
+                    this.usuarioInDTO.idPersona=null;
+                    return of(null);
+                }
+            }),
+            catchError(() => of(null)) 
+            );
+        };
+    }           
+
     private existeNombreUsuarioValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
             return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
@@ -315,15 +314,15 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         }else{
             this.formulario.markAllAsTouched();
             // Obtener los campos inválidos
-            /*const camposInvalidos = Object.keys(this.formulario.controls).filter(controlName =>
+            const camposInvalidos = Object.keys(this.formulario.controls).filter(controlName =>
                 this.formulario.get(controlName).invalid
             );
-            console.log('Campos inválidos:', camposInvalidos);*/
+            console.log('Campos inválidos:', camposInvalidos);
         }
     }
 
     public  validarCamposBackendUsuarioYPersona():void{
-        this.personaInDTO.esValidar=true;
+                this.personaInDTO.esValidar=true;
         this.establecerValoresPersonaInDTO();
         
         this.usuarioInDTO.esValidar=true;
@@ -398,21 +397,11 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             this.personaService.consultarPersonaPorIdentificacion(this.idTipoIdentificacion().value, this.numeroIdentificacion().value).subscribe(
                 (personaOutDTO: PersonaOutDTO) => {
                     if(personaOutDTO){
-                        this.personaInDTO.idPersona=personaOutDTO.idPersona;
-                        this.primerNombre().setValue(personaOutDTO.primerNombre);
-                        this.segundoNombre().setValue(personaOutDTO.segundoNombre);
-                        this.primerApellido().setValue(personaOutDTO.primerApellido);
-                        this.segundoApellido().setValue(personaOutDTO.segundoApellido);
-                        this.email().setValue(personaOutDTO.email);
+                        this.establecerCamposPersona(personaOutDTO);
                         this.esPersonaExistente=true;
                         this.desactivarCamposPersona();
                     }else{
-                        this.personaInDTO.idPersona=null;
-                        this.primerNombre().setValue(null);
-                        this.segundoNombre().setValue(null);
-                        this.primerApellido().setValue(null);
-                        this.segundoApellido().setValue(null);
-                        this.email().setValue(null);
+                        this.establecerCamposPersona(null);
                         this.esPersonaExistente=false;
                         this.activarCamposPersona();
                     }
@@ -421,6 +410,28 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
                     console.error(error);
                 }
             );  
+        }
+    }
+
+    private establecerCamposPersona(personaOutDTO: PersonaOutDTO):void{
+        if(personaOutDTO){
+            this.personaInDTO.idPersona=personaOutDTO.idPersona;
+            this.usuarioInDTO.idPersona=personaOutDTO.idPersona;
+            this.primerNombre().setValue(personaOutDTO.primerNombre);
+            this.segundoNombre().setValue(personaOutDTO.segundoNombre);
+            this.primerApellido().setValue(personaOutDTO.primerApellido);
+            this.segundoApellido().setValue(personaOutDTO.segundoApellido);
+            this.email().setValue(personaOutDTO.email);
+        }else{
+            this.personaInDTO.idPersona=null;
+            this.usuarioInDTO.idPersona=null;
+            this.primerNombre().setValue(null);
+            this.segundoNombre().setValue(null);
+            this.primerApellido().setValue(null);
+            this.segundoApellido().setValue(null);
+            this.email().setValue(null);
+            
+            this.nombreUsuario().setValue(null);
         }
     }
 
@@ -502,11 +513,11 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
                 if(usuarioOutDTO.idUsuario){
                     mensajeDetalle = this.translateService.instant('gestionar.usuario.mensaje.exito.usuario.modificado.con.exito');
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: mensajeDetalle });
+                    this.salir();
                 }else{
                     mensajeDetalle = this.translateService.instant('gestionar.usuario.mensaje.exito.usuario.creado.con.exito');
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: mensajeDetalle });
                 }
-
             },
             (error) => {
               console.error(error);
@@ -515,8 +526,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     }
 
     public salir() {
-        this.listaProgramas=[];
-        this.mostrarModalCRUD=false;
-        this.modalClosedEmitter.emit();   
+        this.ref.close()
     }
 }

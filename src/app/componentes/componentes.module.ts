@@ -40,7 +40,8 @@ import { CrearEditardocenteComponent } from './datos/gestionar-docente/crear-edi
 import { AsignaturaService } from './servicios/asignatura.service';
 import { EspacioFisicoService } from './servicios/espacio.fisico.service';
 import { FacultadService } from './servicios/facultad.service';
-
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+ 
 
 @NgModule({
 	declarations: [
@@ -77,8 +78,7 @@ import { FacultadService } from './servicios/facultad.service';
 		PrimeNgModule,
 		SharedModule,
 		MessageModule,
-		ToastModule,
-		
+		ToastModule		
 	],
 	providers: [EspacioFisicoService, 
 		ProgramaService, 
@@ -88,7 +88,9 @@ import { FacultadService } from './servicios/facultad.service';
 		CursoService,
 		AsignaturaService,
 		DocenteService,
-		UsuarioService
+		UsuarioService,
+		DynamicDialogRef,
+		DynamicDialogConfig
 	]
 })
 export class ComponentesModule { }
