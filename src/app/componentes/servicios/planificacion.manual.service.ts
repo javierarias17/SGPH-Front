@@ -48,7 +48,7 @@ export class PlanificacionManualService{
 	 public consultarInfoGeneralCursosPorPrograma(idPrograma:number): Observable<InfoGeneralCursosPorProgramaDTO>{
 		let params = new HttpParams().set('idPrograma', idPrograma);
         const url = `${environment.url}${this.urlPlanificacionManual}/consultarInfoGeneralCursosPorPrograma`;
-        return this.http.get<InfoGeneralCursosPorProgramaDTO>(url);
+        return this.http.get<InfoGeneralCursosPorProgramaDTO>(url,{params});
     } 
 
 	public crearActualizarHorarioCursoDTO(crearActualizarHorarioCursoInDTO:CrearActualizarHorarioCursoInDTO): Observable<CrearActualizarHorarioCursoOutDTO>{

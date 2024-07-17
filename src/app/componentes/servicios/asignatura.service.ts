@@ -24,7 +24,7 @@ export class AsignaturaService{
     public consultarAsignaturasPorIdPrograma(idPrograma:number): Observable<any>{
         let params = new HttpParams().set('idPrograma', idPrograma);
         const url = `${environment.url}${this.urlAsignatura}/consultarAsignaturasPorIdPrograma`;
-        return this.http.get<any>(url);
+        return this.http.get<any>(url, {params: params});
     }
 
     public consultarAsignaturaPorId(idAsignatura:number): Observable<AsignaturaOutDTO>{

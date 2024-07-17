@@ -1,13 +1,12 @@
 import { Component, OnInit} from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { FormBuilder, FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { PeriodoAcademicoInDTO } from '../../model/periodo-academico-in-dto';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { EstadoPeriodoAcademicoEnum } from 'src/app/componentes/enum/estado.periodo.academico.enum';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import {  map } from 'rxjs/operators';
 
 
 @Component({
@@ -22,7 +21,6 @@ export class CrearEditarPeriodoAcademicoComponent implements OnInit  {
     constructor(private ref: DynamicDialogRef, 
          private config: DynamicDialogConfig,
          private formBuilder: FormBuilder,
-         private confirmationService: ConfirmationService, 
          private messageService: ShowMessageService,
          private periodoAcademicoService:PeriodoAcademicoService) { }
 

@@ -127,7 +127,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
       this.listarAsignaturasBase()
     })
   }
-  eliminarAsignatura(asignatura: AsignaturaOutDTO) {
+  inactivarAsignatura(asignatura: AsignaturaOutDTO) {
 
 		this.confirmationService.confirm({
       message: `¿Está seguro que desea ${asignatura.estado == 'ACTIVO'? 'inactiva' : 'activar'} la asignatura?`,

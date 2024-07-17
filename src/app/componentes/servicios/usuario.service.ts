@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FiltroUsuarioDTO } from '../dto/usuario/in/filtro.usuario.dto';
-import { TipoIdentificacionOutDTO } from '../dto/usuario/out/tipo.identificacion.out.dto';
 import { UsuarioInDTO } from '../dto/usuario/in/usuario.in.dto';
 import { UsuarioOutDTO } from '../dto/usuario/out/usuario.out.dto';
 import { RolOutDTO } from '../dto/usuario/out/rol.out.dto';
@@ -41,19 +40,6 @@ export class UsuarioService{
 		const url = `${environment.url}${this.urlUsuario}/guardarUsuario`;
         return this.http.post<UsuarioOutDTO>(url, usuarioInDTO);   
 	}
-
-	/**
-	 * Método encargado de consultar todos los tipos de identificación de
-	 * persona.
-	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
-	 * 
-	 * @return
-	 */
-	public consultarTiposIdentificacion() {
-		const url = `${environment.url}${this.urlUsuario}/consultarTiposIdentificacion`;
-        return this.http.get<TipoIdentificacionOutDTO[]>(url);
-    }  
 
 	/**
 	 * Método encargado de consultar todos los roles de usuario

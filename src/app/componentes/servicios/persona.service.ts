@@ -4,6 +4,7 @@ import { PersonaOutDTO } from "../dto/persona/persona.out.dto";
 import { PersonaInDTO } from "../dto/persona/persona.in.dto";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
+import { TipoIdentificacionOutDTO } from "../dto/usuario/out/tipo.identificacion.out.dto";
 
 @Injectable({providedIn: 'root'})
 export class PersonaService{
@@ -20,5 +21,18 @@ export class PersonaService{
 	public consultarPersonaPorIdentificacion(idTipoIdentificacion:number, numeroIdentificacion:string) {
         const url = `${environment.url}${this.urlPersona}/consultarPersonaPorIdentificacion?idTipoIdentificacion=${idTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         return this.http.get<PersonaOutDTO>(url);
+    }  
+
+    /**
+	 * Método encargado de consultar todos los tipos de identificación de
+	 * persona.
+	 * 
+	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * 
+	 * @return
+	 */
+	public consultarTiposIdentificacion() {
+		const url = `${environment.url}${this.urlPersona}/consultarTiposIdentificacion`;
+        return this.http.get<TipoIdentificacionOutDTO[]>(url);
     }  
 }

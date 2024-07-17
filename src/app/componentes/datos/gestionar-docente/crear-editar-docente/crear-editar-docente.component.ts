@@ -8,6 +8,7 @@ import { TipoIdentificacionOutDTO } from 'src/app/componentes/dto/usuario/out/ti
 import { EstadoDocenteEnum } from 'src/app/componentes/enum/estado.docente.enum';
 import { UsuarioService } from 'src/app/componentes/servicios/usuario.service';
 import { DocenteService } from 'src/app/componentes/servicios/docente.service';
+import { PersonaService } from 'src/app/componentes/servicios/persona.service';
 
 @Component({
   selector: 'app-crear-editar-docente',
@@ -28,7 +29,8 @@ export class CrearEditardocenteComponent implements OnInit {
     private docenteService: DocenteService,
     private fb: FormBuilder,
     private messageSerivce: ShowMessageService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private personaService: PersonaService
   ) {}
   ngOnInit(): void {
     this.obtenerIdentificaciones()
@@ -45,7 +47,7 @@ export class CrearEditardocenteComponent implements OnInit {
     }
   }
   obtenerIdentificaciones() {
-    this.usuarioService.consultarTiposIdentificacion().subscribe(
+    this.personaService.consultarTiposIdentificacion().subscribe(
       (lstTipoIdentificacionOutDTO: TipoIdentificacionOutDTO[]) => {               
           this.tiposIdentificacion = lstTipoIdentificacionOutDTO;
       },

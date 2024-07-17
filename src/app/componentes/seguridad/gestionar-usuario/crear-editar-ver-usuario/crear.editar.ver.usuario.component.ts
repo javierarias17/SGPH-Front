@@ -19,6 +19,7 @@ import { PersonaOutDTO } from 'src/app/componentes/dto/persona/persona.out.dto';
 import { ProgramaService } from 'src/app/componentes/servicios/programa.service';
 import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 
 
 @Component({
@@ -62,12 +63,12 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     constructor(private programaService: ProgramaService,
          private facultadService: FacultadService, 
          private usuarioService:UsuarioService,
-         private messageService: MessageService,
          private translateService: TranslateService,
          private formBuilder: FormBuilder,
          private personaService:PersonaService,
          private config: DynamicDialogConfig,
-         private ref: DynamicDialogRef){
+         private ref: DynamicDialogRef,
+         private messageService: ShowMessageService){
     }
     public ngOnInit(): void {
         this.lectura=this.config.data.lectura;
@@ -76,7 +77,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             this.facultadService.consultarFacultades(),
             this.programaService.consultarProgramas(),
             this.usuarioService.consultarRoles(),
-            this.usuarioService.consultarTiposIdentificacion()
+            this.personaService.consultarTiposIdentificacion()
           ]).subscribe(
             ([lstFacultadOutDTO, lstProgramaOutDTO, lstRolOutDTO, lstTipoIdentificacionOutDTO]) => {
                 this.listaFacultades = lstFacultadOutDTO;
@@ -464,10 +465,10 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     }
 
     public obtenerNombreCompletoUsuario():string{
-        return (this.usuarioOutDTOSeleccionado.primerNombre? this.usuarioOutDTOSeleccionado.primerNombre+" ": "")
-                +(this.usuarioOutDTOSeleccionado.segundoNombre? this.usuarioOutDTOSeleccionado.segundoNombre+" ": "")
-                +(this.usuarioOutDTOSeleccionado.primerApellido? this.usuarioOutDTOSeleccionado.primerApellido+" ": "")
-                +(this.usuarioOutDTOSeleccionado.segundoApellido? this.usuarioOutDTOSeleccionado.segundoApellido: "");
+        return (this.usuarioOutDTOSeleccionado?.primerNombre? this.usuarioOutDTOSeleccionado?.primerNombre+" ": "")
+                +(this.usuarioOutDTOSeleccionado?.segundoNombre? this.usuarioOutDTOSeleccionado?.segundoNombre+" ": "")
+                +(this.usuarioOutDTOSeleccionado?.primerApellido? this.usuarioOutDTOSeleccionado?.primerApellido+" ": "")
+                +(this.usuarioOutDTOSeleccionado?.segundoApellido? this.usuarioOutDTOSeleccionado?.segundoApellido: "");
     }
 
     public obtenerNombrePrograma(idPrograma: number):string{
@@ -507,22 +508,17 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     }
 
     private guardarUsuario() {
-        this.usuarioService.guardarUsuario(this.usuarioInDTO).subscribe(
-            (usuarioOutDTO: UsuarioOutDTO) => {
-                let mensajeDetalle = "";
-                if(usuarioOutDTO.idUsuario){
-                    mensajeDetalle = this.translateService.instant('gestionar.usuario.mensaje.exito.usuario.modificado.con.exito');
-                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: mensajeDetalle });
-                    this.salir();
-                }else{
-                    mensajeDetalle = this.translateService.instant('gestionar.usuario.mensaje.exito.usuario.creado.con.exito');
-                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: mensajeDetalle });
-                }
-            },
-            (error) => {
-              console.error(error);
-            }
-        ); 
+        this.usuarioService.guardarUsuario(this.usuarioInDTO).subscribe({
+            next: (r) => {
+                this.messageService.showMessage("success", "Usuario guardado")
+                this.ref.close()
+                console.log(r)
+              },
+              error: (r) => {
+                this.messageService.showMessage("error", "Error al guardar")
+                console.log(r)
+              }
+        }); 
     }
 
     public salir() {
