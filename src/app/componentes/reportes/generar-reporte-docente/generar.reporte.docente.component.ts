@@ -12,6 +12,7 @@ import { PeriodoAcademicoOutDTO } from '../../dto/periodo-academico/periodo-acad
 import { FacultadService } from '../../servicios/facultad.service';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { TipoIdentificacionOutDTO } from '../../dto/usuario/out/tipo.identificacion.out.dto';
+import { PersonaService } from '../../servicios/persona.service';
 @Component({
   selector: 'app-generar-reporte-docente',
   templateUrl: './generar.reporte.docente.component.html',
@@ -25,7 +26,7 @@ export class GenerarReporteDocenteComponent implements OnInit {
   listaTipoIdentificacion: TipoIdentificacionOutDTO[] = [];
   isLoading: boolean = false
   constructor(private fb: FormBuilder,
-     private usuarioService: UsuarioService,
+     private personaService: PersonaService,
      private sharedService: SharedService,
      private dialogService: DialogService,
 
@@ -39,7 +40,7 @@ export class GenerarReporteDocenteComponent implements OnInit {
 
   }
   obtenerTipoDoc() {
-    this.usuarioService.consultarTiposIdentificacion().subscribe(r => {
+    this.personaService.consultarTiposIdentificacion().subscribe(r => {
       this.listaTipoIdentificacion = r
     })
   }
