@@ -28,5 +28,9 @@ export class SharedService {
   public obtenerReporteSimca(filtro: any): Observable<any> {
     const url = `${environment.url}${this.urlReporte}/simca`;
     return this.http.post<any>(url, filtro);
-  }  
+  } 
+  public obtenerReporteDocente(filtro: any): Observable<any> {
+    const url = `${environment.url}${this.urlReporte}/laborDocente`;
+    return this.http.post<any>(url, filtro);
+  }   
 }
