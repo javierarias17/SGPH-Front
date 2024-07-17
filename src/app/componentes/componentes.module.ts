@@ -41,6 +41,7 @@ import { AsignaturaService } from './servicios/asignatura.service';
 import { EspacioFisicoService } from './servicios/espacio.fisico.service';
 import { FacultadService } from './servicios/facultad.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/generar.reporte.docente.component';
  
 
 @NgModule({
@@ -70,7 +71,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
   		CrearEditarEspacioFisicoComponent,
         EliminarHorarioProgramaComponent,
         ResultadoGeneracionHorarioComponent,
-		CrearEditardocenteComponent
+		CrearEditardocenteComponent,
+		GenerarReporteDocenteComponent
 	],
 	imports: [
 		ReactiveFormsModule,

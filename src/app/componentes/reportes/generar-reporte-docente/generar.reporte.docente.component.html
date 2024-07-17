@@ -1,0 +1,76 @@
+<div class="grid">
+    <div class="col-12">
+        <h3>Generar reporte docente</h3>
+        <p>Esta pantalla permite visualizar y generar el reporte para docente.</p>
+        <hr>
+        <br>
+        <br>
+        <form class="grid" [formGroup]="formulario">
+            <div class="p-fluid col sm:col-12 md:col-3">
+                <label class="required">Tipo identificación</label>
+                <p-dropdown [placeholder]="' '" [ngClass]="{
+                                'ng-invalid ng-dirty':
+                                    this.tipoIdentificacion().invalid &&
+                                    this.tipoIdentificacion().touched
+                            }" [options]="listaTipoIdentificacion"
+                    formControlName="tipoIdentificacion" [showClear]="true" optionValue="idTipoIdentificacion" optionLabel="tipoIdentificacion" appendTo="body">
+                </p-dropdown>
+                <small class="p-error block fade-in" *ngIf="this.tipoIdentificacion().invalid &&
+                                    this.tipoIdentificacion().touched">
+                    Tipo identificación es obligatorio
+                </small>
+            </div>
+            <div class="p-fluid col sm:col-12 md:col-3">
+                <label class="w-6rem align-self-center" style="text-align: right;">Número identificación</label>
+                <input type="text" class="p-inputtext" 
+                       formControlName="numeroIdentificacion"
+                       >
+            </div>
+            <div class="p-fluid col sm:col-12 md:col-3">
+                <label class="w-6rem align-self-center" style="text-align: right;">Primer nombre</label>
+                <input type="text" class="p-inputtext" 
+                       formControlName="primerNombre"
+                       
+                       >
+            </div>
+            <div class="p-fluid col sm:col-12 md:col-3">
+                <label class="w-6rem align-self-center" style="text-align: right;">Segundo nombre</label>
+                <input type="text" class="p-inputtext" 
+                       formControlName="segundoNombre"
+                       
+                       >
+            </div>
+            <div class="p-fluid col sm:col-12 md:col-3">
+                <label class="w-6rem align-self-center" style="text-align: right;">Primer apellido</label>
+                <input type="text" class="p-inputtext" 
+                       formControlName="primerApellido"
+                       
+                       >
+            </div>
+            <div class="p-fluid col sm:col-12 md:col-3">
+                <label class="w-6rem align-self-center" style="text-align: right;">Segundo apellido</label>
+                <input type="text" class="p-inputtext" 
+                       formControlName="segundoApellido"
+                       
+                       >
+            </div>
+        </form>
+
+        <div class="flex justify-content-start" style="width: 100%;">
+            <div class="m-1">
+                <button pButton pRipple icon="pi pi-search" class="p-button mr-2" label="Visualizar reporte"
+                    [disabled]="isLoading" (click)="visualizar()">
+                    <ng-container *ngIf="isLoading">
+                        <i class="pi pi-spin pi-spinner"></i>
+                    </ng-container>
+                </button>
+                <button pButton pRipple icon="pi pi-download" class="p-button" label="Descargar reporte"
+                    [disabled]="isLoading" (click)="descargar()">
+                    <ng-container *ngIf="isLoading">
+                        <i class="pi pi-spin pi-spinner"></i>
+                    </ng-container>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
