@@ -160,6 +160,20 @@
                 Pensum es obligatorio
             </small>
         </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">¿Aplica E.F secundario?</label>
+            <p-dropdown [options]="opcionesHabilitado"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Seleccione"
+                formControlName="aplicaEspacioSecundario">
+            </p-dropdown>
+            <small class="p-error block fade-in" *ngIf="this.aplicaEspacioSecundario().invalid &&
+            (this.aplicaEspacioSecundario().touched)">
+                 Aplica espacio físico secundario es obligatorio
+            </small>
+        </div>
+      
         <div class="p-fluid sm:col-12 md:col-6">
                 <label class="required">Agrupadores</label>
                 <p-multiSelect 

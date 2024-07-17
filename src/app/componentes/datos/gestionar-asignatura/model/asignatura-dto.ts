@@ -15,4 +15,5 @@ export interface AsignaturaOutDTO {
     agrupadores: AgrupadorDTO[]
     idFacultad: string
     estado: string
+    aplicaEspacioSecundario:boolean
 }

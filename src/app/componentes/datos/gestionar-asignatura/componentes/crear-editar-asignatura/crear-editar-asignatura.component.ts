@@ -19,6 +19,11 @@ import { FacultadService } from 'src/app/componentes/servicios/facultad.service'
 export class CrearEditarAsignaturaComponent implements OnInit {
 
 
+  opcionesHabilitado: any[] = [
+    { label: 'Sí', value: true },
+    { label: 'No', value: false }
+  ];
+
   asignatura: AsignaturaOutDTO
   registrandoAsignatura: boolean
   formulario: FormGroup
@@ -63,6 +68,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
     this.horasSemana().setValue(this.asignatura.horasSemana)
     this.idPrograma().setValue(this.asignatura.idPrograma)
     this.idFacultad().setValue(this.asignatura.idFacultad)
+    this.aplicaEspacioSecundario().setValue(this.asignatura.aplicaEspacioSecundario)
     this.agrupador().setValue(this.asignatura.agrupadores.map(a=> a.idAgrupadorEspacioFisico))
   }
 
@@ -106,6 +112,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
       idPrograma: [{value: null}, Validators.required],
       lstIdAgrupadorEspacioFisico: [{value: null}, Validators.required],
       idFacultad: [{value : ""}, Validators.required],
+      aplicaEspacioSecundario:[{value: null}, Validators.required],
       agrupadoresSeleccionados: [{value : ""}, Validators.required]
     })
   }
@@ -182,5 +189,8 @@ export class CrearEditarAsignaturaComponent implements OnInit {
    }
    agrupador(): FormControl {
     return this.formulario.get('agrupadoresSeleccionados') as FormControl
+   }
+   aplicaEspacioSecundario(): FormControl {
+    return this.formulario.get('aplicaEspacioSecundario') as FormControl
    }
 }
