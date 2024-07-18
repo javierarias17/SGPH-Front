@@ -4,7 +4,7 @@ import { GestionarCursoComponent } from './datos/gestionar-curso/gestionar.curso
 import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar.docente.component';
 import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/gestionar.espacio.fisico.component';
 import { InicioComponent } from './home/inicio/inicio.component';
-import { GestionarGrupoComponent } from './datos/gestionar-grupo/gestionar.grupo.component';
+import { GestionarPersonaComponent } from './datos/gestionar-persona/gestionar.persona.component';
 import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/planificacion.manual.component';
 import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/planificacion.semestre.anterior.component';
 import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/gestionar.usuario.component';
@@ -23,7 +23,7 @@ const routes: Routes=[
     { path: 'gestionar-espacio-fisico', component: GestionarEspacioFisicoComponent},
     { path: 'gestionar-curso', component: GestionarCursoComponent},
     { path: 'gestionar-docente', component: GestionarDocenteComponent},
-    { path: 'gestionar-grupo', component: GestionarGrupoComponent},
+    { path: 'gestionar-persona', component: GestionarPersonaComponent},
     { path: 'planificacion-manual', component: PlanificacionManualComponent},
     { path: 'planificacion-semestre-anterior', component: PlanificacionSemestreAnteriorComponent},
     { path: 'horario-espacio-fisico', component: BandejaReporteEspacioFisicoComponent},

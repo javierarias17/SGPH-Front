@@ -5,7 +5,6 @@ import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar.d
 import { CrearEditarVerCursoComponent } from './datos/gestionar-curso/crear-editar-consultar-curso/crear.editar.ver.curso.component';
 import { InicioComponent } from './home/inicio/inicio.component';
 
-import { GestionarGrupoComponent } from './datos/gestionar-grupo/gestionar.grupo.component';
 import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/planificacion.manual.component';
 import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/planificacion.semestre.anterior.component';
 import { GenerarReporteSimcaComponent } from './reportes/generar-reporte-simca/generar.reporte.simca.component';
@@ -42,6 +41,7 @@ import { EspacioFisicoService } from './servicios/espacio.fisico.service';
 import { FacultadService } from './servicios/facultad.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/generar.reporte.docente.component';
+import { GestionarPersonaComponent } from './datos/gestionar-persona/gestionar.persona.component';
  
 
 @NgModule({
@@ -53,7 +53,7 @@ import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docen
 		AsociarDocenteComponent,
 		CrearEditarVerCursoComponent,
 		InicioComponent,
-		GestionarGrupoComponent,
+		GestionarPersonaComponent,
 		CargarLaborDocenciaComponent,
 		PlanificacionManualComponent,
 		PlanificacionSemestreAnteriorComponent,

@@ -8,6 +8,12 @@ import { AsignarEspacioFisicoComponent } from '../../components/asignar-espacio-
 import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
 import { AgrupadorService } from '../../services/agrupador.service';
 
+interface FiltroGrupoDTO{
+    listaIdFacultades: number[],
+    nombre:string,
+    pageNumber:number,
+    pageSize:number
+}
 @Component({
     selector: 'app-bandeja-grupos',
     templateUrl: './bandeja-grupos.component.html',
@@ -15,24 +21,28 @@ import { AgrupadorService } from '../../services/agrupador.service';
 })
 export class BandejaGruposComponent implements OnInit {
     public facultadesSeleccionadas: number[] = [];
+    public nombre: string;
     public lstFacultadOutDTO: FacultadOutDTO[] = [];
 
     grupos: AgrupadorEspacioFiscioDTO[];
 
+    readonly PAGE_SIZE: number = 10;
+
     totalRecords: number;
     cargando: boolean;
-    filtro: any;
+    filtro: FiltroGrupoDTO;
     constructor(
         private agrupadorService: AgrupadorService,
         private facultadService: FacultadService,
         private dialog: DialogService
     ) {}
     
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.consultarFacultades();
+        this.listarGruposBase();
     }
 
-    consultarFacultades() {
+    private consultarFacultades() {
         this.facultadService.consultarFacultades().subscribe(
             (lstFacultadOutDTO: FacultadOutDTO[]) => {
                 this.lstFacultadOutDTO = lstFacultadOutDTO.map(
@@ -49,47 +59,58 @@ export class BandejaGruposComponent implements OnInit {
         );
     }
 
-    onChangeFacultad() {
-        if (this.facultadesSeleccionadas !== null && this.facultadesSeleccionadas.length !== 0) {
-            this.listarGruposBase();
-        } else {
-            this.grupos = [];
-        }
+    public inputsChange():void{
+        this.onChangeFacultad();
+	}
+
+    public onChangeFacultad() {
+        this.filtro = {
+            listaIdFacultades: this.facultadesSeleccionadas,
+            nombre: (this.nombre==='' || this.nombre===null)? null: this.nombre,
+            pageNumber: 0,
+            pageSize: this.PAGE_SIZE
+        };
+        this.agrupadorService
+        .filtrarGrupos(this.filtro)
+        .subscribe((r) => {
+            this.grupos = r.content;
+            this.totalRecords = r.totalElements;
+            this.cargando = false;
+        });
     }
 
-    listarGruposBase() {
-        if (this.facultadesSeleccionadas.length > 0) {
-            this.cargando = true;
-            this.filtro = {
-                pageNumber: 0,
-                pageSize: 10,
-                listaIdFacultades: this.facultadesSeleccionadas,
-            };
-            this.agrupadorService
-                .obtenerAgrupadorEspacioFisico(this.filtro)
-                .subscribe((r) => {
-                    this.grupos = r.content;
-                    this.totalRecords = r.totalElements;
-                    this.cargando = false;
-                });
-        }
+    private listarGruposBase(){
+        this.filtro = {
+            listaIdFacultades: [],
+            nombre: null,
+            pageNumber: 0,
+            pageSize: this.PAGE_SIZE
+        };
+        this.agrupadorService
+        .filtrarGrupos(this.filtro)
+        .subscribe((r) => {
+            this.grupos = r.content;
+            this.totalRecords = r.totalElements;
+            this.cargando = false;
+        });
     }
 
-    listarGrupos($event: LazyLoadEvent) {
-        if (this.facultadesSeleccionadas.length > 0) {
-            this.filtro = {
-                pageNumber: Math.floor($event.first / $event.rows),
-                pageSize: $event.rows,
-                idFacultades: this.facultadesSeleccionadas,
-            };
-            this.agrupadorService
-                .obtenerAgrupadorEspacioFisico(this.filtro)
-                .subscribe((r) => {
-                    this.grupos = r.content;
-                    this.totalRecords = r.totalElements;
-                    this.cargando = false;
-                });
-        }
+
+    public listarGrupos($event: LazyLoadEvent) {
+        this.filtro = {
+            listaIdFacultades: this.facultadesSeleccionadas,
+            nombre: (this.nombre==='' || this.nombre===null)? null: this.nombre,
+            pageNumber: Math.floor($event.first / $event.rows),
+            pageSize: $event.rows
+        };
+
+        this.agrupadorService
+            .filtrarGrupos(this.filtro)
+            .subscribe((r) => {
+                this.grupos = r.content;
+                this.totalRecords = r.totalElements;
+                this.cargando = false;
+        });        
     }
 
     verGrupo(id: number) {

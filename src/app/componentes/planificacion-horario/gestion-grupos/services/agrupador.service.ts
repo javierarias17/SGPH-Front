@@ -14,7 +14,7 @@ export class AgrupadorService {
   constructor(private httpClient: HttpClient) { }
 
 
-  public obtenerAgrupadorEspacioFisico(filtro: any): Observable<any> {
+  public filtrarGrupos(filtro: any): Observable<any> {
     const url = `${environment.url}${this.urlAgrupador}/filtrarGrupos`;
     return this.httpClient.post<AgrupadorEspacioFiscioDTO[]>(url, filtro);
   }
