@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {
+    AbstractControl,
+    AsyncValidatorFn,
     FormBuilder,
     FormControl,
     FormGroup,
+    ValidationErrors,
     Validators,
 } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -11,6 +14,7 @@ import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacio
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
 import { AgrupadorService } from '../../services/agrupador.service';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
     selector: 'app-crear-editar-grupo',
@@ -39,6 +43,39 @@ export class CrearEditarGrupoComponent implements OnInit {
             this.setDatosFormulario();
         }
     }
+
+    private existeNombreAgrupadorValidator(): AsyncValidatorFn {
+        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            
+            if (!this.formulario) {
+                return of(null); 
+            }
+            
+            let grupo: AgrupadorEspacioFiscioDTO = this.formulario.value;
+            grupo.nombre = this.nombre().value;
+            grupo.observacion = this.observacion().value;
+            grupo.idFacultad = this.idFacultad().value;
+            grupo.idAgrupadorEspacioFisico =
+                this.grupo?.idAgrupadorEspacioFisico;
+            grupo.esValidar = true;            
+            
+            return this.agrupadorService.guardarGrupo(grupo).pipe(
+                map((error) => {
+                    for (let key in error) {                    
+                        if (key === 'ExisteNombreAgrupador') {
+                            return { "ExisteNombreAgrupador": error[key]};
+                        }
+                    }
+                    return null;
+                })
+            );
+        };
+    }  
+
+    public  validarCamposBackendUsuarioYPersona():void{
+        this.formulario.controls['lstIdPrograma'].updateValueAndValidity();
+    }
+
     onFacultadChange() {
         if (this.idFacultad().value !== null) {
         } else {
@@ -53,7 +90,7 @@ export class CrearEditarGrupoComponent implements OnInit {
     inicializarFormulario() {
         this.formulario = this.fb.group({
             idFacultad: [{ value: '' }, Validators.required],
-            nombre: [{ value: '' }, Validators.required],
+            nombre: [{ value: '' }, Validators.required, this.existeNombreAgrupadorValidator()],
             observacion: [{ value: '' }, Validators.required],
         });
     }
@@ -81,6 +118,7 @@ export class CrearEditarGrupoComponent implements OnInit {
             let grupo: AgrupadorEspacioFiscioDTO = this.formulario.value;
             grupo.idAgrupadorEspacioFisico =
                 this.grupo?.idAgrupadorEspacioFisico;
+            grupo.esValidar = false;
             this.agrupadorService.guardarGrupo(grupo).subscribe({
                 next: (r) => {
                     if (r) {

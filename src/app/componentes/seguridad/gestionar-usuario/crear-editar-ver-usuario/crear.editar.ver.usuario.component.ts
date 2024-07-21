@@ -226,21 +226,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         return this.formulario.get("idFacultad") as FormControl;
     }
 
-    /*private existeUsuarioConPersonaValidator(): AsyncValidatorFn {
-        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-            return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
-                map((error) => {
-                    for (let key in error) {                    
-                        if (key === 'ExisteIdPersonaUsuario') {
-                            return { "ExisteIdPersonaUsuario": error[key]};
-                        }
-                    }
-                    return null;
-                })
-            );
-        };
-    }  */
-
     public existeUsuarioConPersonaValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Observable<ValidationErrors | null> => {
                       

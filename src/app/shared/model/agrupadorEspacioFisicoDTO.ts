@@ -4,5 +4,6 @@ export interface AgrupadorEspacioFiscioDTO {
     nombre: string;
     observacion: string;
     idFacultad: number;
+    esValidar?: boolean;
 }
   
