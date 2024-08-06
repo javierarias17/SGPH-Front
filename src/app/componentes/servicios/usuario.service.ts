@@ -31,7 +31,7 @@ export class UsuarioService{
 	/**
 	 * Método encargado de guardar o actualizar un usuario
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @param usuarioInDTO
 	 * @return
@@ -44,7 +44,7 @@ export class UsuarioService{
 	/**
 	 * Método encargado de consultar todos los roles de usuario
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return
 	 */
@@ -56,7 +56,7 @@ export class UsuarioService{
 	/**
 	 * Método encargado de consultar todos los estados de usuario
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return
 	 */
@@ -68,7 +68,7 @@ export class UsuarioService{
 	/**
 	 * Método encargado de consultar todos los estados de usuario
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return
 	 */

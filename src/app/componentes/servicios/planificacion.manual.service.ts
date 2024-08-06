@@ -71,7 +71,7 @@ export class PlanificacionManualService{
 	 * conjunto de criterios de busqueda; este método considera los horarios de los
 	 * docentes y espacios físicos.
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @param filtroFranjaHorariaDisponibleCursoDTO
 	 * @return
@@ -93,7 +93,7 @@ export class PlanificacionManualService{
 	 * está obteniendo el identificador único del espacio físico y el salon (Incluye
 	 * el formato que se necesario, ya no es necesrio armarlo)
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return
 	 */	
@@ -151,7 +151,7 @@ export class PlanificacionManualService{
 	/**
 	 * Método encargado de eliminar todo el horario de un programa
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @param eliminarHorarioInDTO Información necesaria para eliminar el horario de
 	 *                           un programa
@@ -166,7 +166,7 @@ export class PlanificacionManualService{
 	 * Método encargado de generar un horario base para un programa partiendo del
 	 * horario del semestre anterior del mismo</br>
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @param generarHorarioBaseInDTO Información requerida para generar el horario
 	 *                                base

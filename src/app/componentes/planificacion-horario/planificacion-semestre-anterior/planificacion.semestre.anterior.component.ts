@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { PlanificacionManualService } from '../../servicios/planificacion.manual.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ProgramaService } from '../../servicios/programa.service';
@@ -34,8 +34,9 @@ export class PlanificacionSemestreAnteriorComponent {
 	public lstPeriodoAcademicosTodos: PeriodoAcademicoOutDTO[] = [];
     public lstPeriodoAcademicosSinVigente: PeriodoAcademicoOutDTO[] = [];
 	public listaAsignaturas: any[] = [];
+    public messages: Message[] = null;
 
-    private periodoAcademicoVigente: PeriodoAcademicoOutDTO;
+    public periodoAcademicoVigente: PeriodoAcademicoOutDTO;
 
     constructor(
         private fb: FormBuilder,
@@ -236,14 +237,15 @@ export class PlanificacionSemestreAnteriorComponent {
     }
 
     private consultarPeriodoAcademicoVigente(): void {
-        this.periodoAcademicoService
-            .consultarPeriodoAcademicoVigente()
-            .subscribe(
+        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
                 (periodoAcademicoVigente: PeriodoAcademicoOutDTO) => {
                     if (periodoAcademicoVigente) {
 						this.periodoAcademicoVigente = periodoAcademicoVigente;            
 						this.periodo().setValue(this.periodoAcademicoVigente.idPeriodoAcademico);
                         this.lstPeriodoAcademicosSinVigente = this.lstPeriodoAcademicosSinVigente.filter(periodo => periodo.idPeriodoAcademico!==this.periodoAcademicoVigente.idPeriodoAcademico);
+                    }else{
+                        this.periodoAcademicoVigente = undefined;
+                        this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar esta funcionalidad si no existe un periodo académico abierto." }];
                     }
                 },
                 (error) => {

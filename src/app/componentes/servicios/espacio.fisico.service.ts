@@ -75,7 +75,7 @@ export class EspacioFisicoService {
 	 * Método encargado de consultar todos los edificios de los espacios físicos
 	 * <br>
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return Nombres de los edificios
 	 */
@@ -87,7 +87,7 @@ export class EspacioFisicoService {
 	/**
 	 * Método encargado de consultar todas las ubicaciones<br>
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return Lista de instancias UbicacionOutDTO
 	 */
@@ -100,7 +100,7 @@ export class EspacioFisicoService {
 	 * Método encargado de consultar los edificios de los espacios físicos por
 	 * ubicación <br>
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return Nombres de los edificios
 	 */
@@ -114,7 +114,7 @@ export class EspacioFisicoService {
      * Método encargado de consultar los agrupadores de espacios físicos asociados a
 	 * un curso<br>
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @param idCurso
 	 * @return Lista de instancias de AgrupadorEspacioFisico

@@ -5,16 +5,17 @@
         <hr>
         <br>
         <br>
-        <p-fieldset legend="Generación semestre anterior">     
+        <!--Mensaje-->
+        <div *ngIf="this.periodoAcademicoVigente === undefined">
+            <p-messages [(value)]="messages" [enableService]="true" [closable]="false" />
+        </div>
+        <!--Formulario principal-->
+        <p-fieldset legend="Generación semestre anterior" *ngIf="this.periodoAcademicoVigente !== undefined">     
             <br>       
             <form class="grid" [formGroup]="formulario">
                 <div class="p-fluid col sm:col-12 md:col-3">
                     <label>Periodo académico vigente</label>
-                    <p-dropdown [placeholder]="' '" [ngClass]="{
-                                    'ng-invalid ng-dirty':
-                                        this.periodo().invalid &&
-                                        this.periodo().touched
-                                }" [options]="lstPeriodoAcademicosTodos"
+                    <p-dropdown [placeholder]="' '" [ngClass]="{ 'ng-invalid ng-dirty': this.periodo().invalid && this.periodo().touched }" [options]="lstPeriodoAcademicosTodos"
                         formControlName="periodo" [showClear]="true" optionValue="idPeriodoAcademico" optionLabel="anioPeriodo" appendTo="body">
                         <ng-template let-periodo pTemplate="item">
                             <div class="flex align-items-center gap-2">
@@ -22,18 +23,11 @@
                             </div>
                         </ng-template>
                     </p-dropdown>
-                    <small class="p-error block fade-in" *ngIf="this.periodo().invalid &&
-                                        this.periodo().touched">
-                        Periodo es obligatorio
-                    </small>
+                    <small class="p-error block fade-in" *ngIf="this.periodo().invalid && this.periodo().touched">Periodo es obligatorio</small>
                 </div>
                 <div class="p-fluid col sm:col-12 md:col-3">
                     <label class="required">Periodo académico anterior</label>
-                    <p-dropdown [placeholder]="' '" [ngClass]="{
-                                    'ng-invalid ng-dirty':
-                                        this.periodoAnterior().invalid &&
-                                        this.periodoAnterior().touched
-                                }" [options]="lstPeriodoAcademicosSinVigente"
+                    <p-dropdown [placeholder]="' '" [ngClass]="{'ng-invalid ng-dirty':this.periodoAnterior().invalid && this.periodoAnterior().touched }" [options]="lstPeriodoAcademicosSinVigente"
                         formControlName="periodoAnterior" [showClear]="true" optionValue="idPeriodoAcademico" optionLabel="anioPeriodo" appendTo="body">
                         <ng-template let-periodo pTemplate="item">
                             <div class="flex align-items-center gap-2">
@@ -41,20 +35,13 @@
                             </div>
                         </ng-template>
                     </p-dropdown>
-                    <small class="p-error block fade-in" *ngIf="this.periodoAnterior().invalid &&
-                                        this.periodoAnterior().touched">
-                        Periodo académico anterior es obligatorio
-                    </small>
+                    <small class="p-error block fade-in" *ngIf="this.periodoAnterior().invalid && this.periodoAnterior().touched">Periodo académico anterior es obligatorio</small>
                 </div>
                 <div class="p-fluid col sm:col-12 md:col-6">
                 </div>
                 <div class="p-fluid col sm:col-12 md:col-3">
                     <label class="required">Facultad</label>
-                    <p-dropdown [placeholder]="' '" [ngClass]="{
-                                    'ng-invalid ng-dirty':
-                                        this.idFacultad().invalid &&
-                                        this.idFacultad().touched
-                                }" [options]="lstFacultadOutDTO" optionValue="idFacultad" optionLabel="abreviatura"
+                    <p-dropdown [placeholder]="' '" [ngClass]="{ 'ng-invalid ng-dirty': this.idFacultad().invalid && this.idFacultad().touched }" [options]="lstFacultadOutDTO" optionValue="idFacultad" optionLabel="abreviatura"
                         formControlName="idFacultad" [showClear]="true" appendTo="body" 
                         (ngModelChange)="onFacultadChange()">
                         <ng-template let-facultad pTemplate="item">
@@ -63,20 +50,13 @@
                             </div>
                         </ng-template>
                     </p-dropdown>
-                    <small class="p-error block fade-in" *ngIf="this.idFacultad().invalid &&
-                                        (this.idFacultad().touched)">
-                        Facultad es obligatorio
-                    </small>
+                    <small class="p-error block fade-in" *ngIf="this.idFacultad().invalid && (this.idFacultad().touched)">Facultad es obligatorio</small>
                 </div>
                 <div class="p-fluid col sm:col-12 md:col-3">
                     <label class="required">Programa</label>
                     <p-dropdown [placeholder]="' '" [options]="listaProgramas" optionValue="idPrograma"
                         optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
-                        [ngClass]="{
-                                'ng-invalid ng-dirty':
-                                    this.idPrograma().invalid &&
-                                    this.idPrograma().touched
-                            }"
+                        [ngClass]="{'ng-invalid ng-dirty': this.idPrograma().invalid && this.idPrograma().touched }"
                         (ngModelChange)="onProgramasChange()">
                         <ng-template let-programa pTemplate="item">
                             <div class="flex align-items-center gap-2">
@@ -84,10 +64,7 @@
                             </div>
                         </ng-template>
                     </p-dropdown>
-                    <small class="p-error block fade-in" *ngIf="this.idPrograma().invalid &&
-                                        (this.idPrograma().touched)">
-                        Programa es obligatorio
-                    </small>
+                    <small class="p-error block fade-in" *ngIf="this.idPrograma().invalid && (this.idPrograma().touched)">Programa es obligatorio</small>
                 </div>
                 <div class="p-fluid col sm:col-12 md:col-3">
                     <label>Cursos a excluir (Opcional)</label>
@@ -122,6 +99,8 @@
                 </div>
             </div>
         </p-fieldset>
+
+
     </div>
 </div>
 

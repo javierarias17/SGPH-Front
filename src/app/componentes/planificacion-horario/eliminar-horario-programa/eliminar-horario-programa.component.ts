@@ -10,7 +10,7 @@ import { PlanificacionManualService } from '../../servicios/planificacion.manual
 import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
 import { FacultadOutDTO } from '../../dto/facultad/out/facultad.out.dto';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { PeriodoAcademicoOutDTO } from '../../dto/periodo-academico/periodo-academico-out-dto';
 import { FacultadService } from '../../servicios/facultad.service';
@@ -28,7 +28,9 @@ export class EliminarHorarioProgramaComponent {
     public listaProgramas: ProgramaOutDTO[] = [];
     public lstFacultadOutDTO: FacultadOutDTO[] = [];
 
-    private periodoAcademicoVigente:PeriodoAcademicoOutDTO;
+    public periodoAcademicoVigente:PeriodoAcademicoOutDTO;
+
+    public messages: Message[] = null;
 
     constructor(
         private fb: FormBuilder,
@@ -166,6 +168,9 @@ export class EliminarHorarioProgramaComponent {
             (periodoAcademicoVigente: PeriodoAcademicoOutDTO) => {
                 if(periodoAcademicoVigente){
                     this.periodoAcademicoVigente = periodoAcademicoVigente;
+                }else{
+                    this.periodoAcademicoVigente = undefined;
+                    this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar esta funcionalidad si no existe un periodo académico abierto." }];
                 }
             },
             (error) => {

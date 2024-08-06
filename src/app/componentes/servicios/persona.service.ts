@@ -27,7 +27,7 @@ export class PersonaService{
 	 * Método encargado de consultar todos los tipos de identificación de
 	 * persona.
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return
 	 */
