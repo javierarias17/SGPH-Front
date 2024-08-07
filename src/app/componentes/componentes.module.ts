@@ -42,6 +42,7 @@ import { FacultadService } from './servicios/facultad.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/generar.reporte.docente.component';
 import { GestionarPersonaComponent } from './datos/gestionar-persona/gestionar.persona.component';
+import { CardModule } from 'primeng/card';
  
 
 @NgModule({
@@ -75,6 +76,7 @@ import { GestionarPersonaComponent } from './datos/gestionar-persona/gestionar.p
 		GenerarReporteDocenteComponent
 	],
 	imports: [
+		CardModule,
 		ReactiveFormsModule,
 		CommonModule,
 		PrimeNgModule,
