@@ -42,7 +42,8 @@ import { FacultadService } from './servicios/facultad.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/generar.reporte.docente.component';
 import { GestionarPersonaComponent } from './datos/gestionar-persona/gestionar.persona.component';
- 
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
 
 @NgModule({
 	declarations: [
@@ -80,7 +81,7 @@ import { GestionarPersonaComponent } from './datos/gestionar-persona/gestionar.p
 		PrimeNgModule,
 		SharedModule,
 		MessageModule,
-		ToastModule		
+		ToastModule,		
 	],
 	providers: [EspacioFisicoService, 
 		ProgramaService, 

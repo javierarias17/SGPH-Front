@@ -19,6 +19,8 @@ import { ConfirmationService } from 'primeng/api';
 import { PeriodoAcademicoService } from './shared/service/periodo.academico.service';
 import { HttpInterceptores } from './shared/http.interceptor';
 import { LenguajeService } from './componentes/servicios/lenguaje.service';
+import { SpinnerService } from './shared/service/spinner.service';
+import { SharedModule } from './shared/shared.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -38,9 +40,11 @@ export function HttpLoaderFactory(http: HttpClient) {
               useFactory: HttpLoaderFactory,
               deps: [HttpClient]
             }
-          })
+          }),
+        SharedModule
     ],
     providers: [
+        SpinnerService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptores, multi: true },
         CountryService, CustomerService, EventService, IconService, NodeService,

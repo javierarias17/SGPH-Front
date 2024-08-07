@@ -9,6 +9,7 @@ import { EstadoDocenteEnum } from 'src/app/componentes/enum/estado.docente.enum'
 import { CursoPlanificacionOutDTO } from 'src/app/componentes/dto/curso/out/curso.planificacion.out.dto';
 import { PlanificacionManualService } from 'src/app/componentes/servicios/planificacion.manual.service';
 import { DocenteService } from 'src/app/componentes/servicios/docente.service';
+import { SpinnerService } from 'src/app/shared/service/spinner.service';
 
 
 interface DocenteItem {
@@ -48,7 +49,8 @@ export class AsociarDocenteComponent {
    
     constructor(private messageService: MessageService, 
         private docenteService:DocenteService, 
-        private planificacionManualService: PlanificacionManualService) {
+        private planificacionManualService: PlanificacionManualService,
+        private spinnerService: SpinnerService) {
     }
 
     public ngOnInit() { 
@@ -144,6 +146,7 @@ export class AsociarDocenteComponent {
             crearActualizarDocentesCursoInDTO.listaIdPersona = [];
         }
 
+        this.spinnerService.show();
         this.planificacionManualService.crearActualizarDocentesCursoDTO(crearActualizarDocentesCursoInDTO).subscribe(
             (crearActualizarDocentesCursoOutDTO: CrearActualizarDocentesCursoOutDTO) => {   
                 if(crearActualizarDocentesCursoOutDTO.esExitoso === true){
@@ -152,6 +155,7 @@ export class AsociarDocenteComponent {
                 }else{
                     this.messageService.add({ severity: 'error', summary: 'Existe solapamiento', detail: crearActualizarDocentesCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
                 }
+                this.spinnerService.hide();
                 this.filtroDocenteDTO.nombre="";
                 this.filtroDocenteDTO.codigo=null;
                 this.filtroDocenteDTO.numeroIdentificacion=null;
@@ -159,6 +163,7 @@ export class AsociarDocenteComponent {
                 this.modalClosedEmitter.emit();
             },
             (httpErrorResponse: HttpErrorResponse) => {
+                this.spinnerService.hide();
                 console.error(httpErrorResponse);
                 this.mostrarErrorModal = true;
                 this.mensajeModal = httpErrorResponse.error.message;
