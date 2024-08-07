@@ -1,9 +1,8 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PeriodoAcademicoOutDTO } from '../model/periodo.academico.out.';
-import { FiltroBase } from 'src/app/componentes/dto/filtro-base';
 import { PeriodoAcademicoInDTO } from 'src/app/componentes/periodo-academico/gestionar-periodo-academico/model/periodo-academico-in-dto';
 
 
@@ -19,7 +18,7 @@ export class PeriodoAcademicoService {
     /**
 	 * Método encargado de guardar o actualizar un periodo académico <br>
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @param periodoAcademicoInDTO
 	 * @return
@@ -32,7 +31,7 @@ export class PeriodoAcademicoService {
     /**
 	 * Método encargado de consultar los periodos académicos por filtro<br>
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return Lista de instancias PeriodoAcademicoOutDTO
 	 */
@@ -44,7 +43,7 @@ export class PeriodoAcademicoService {
     /**
 	 * Método encargado de consultar el periodo académico vigente<br>
 	 * 
-	 * @author Pedro Javier Arias Lasso <apedro@unicauca.edu.co>
+	 * @author apedro
 	 * 
 	 * @return
 	 */
