@@ -319,9 +319,16 @@ export class AsociarEspacioFisicoComponent {
     }
 
     public cantidadHorasChange(){
-        if(this.cantidadHorasSeleccionada==null){
+        // Se limpia la lista de franjas disponibles
+        this.listaFranjaHorariaDisponibles=[];
+        this.mensajeResultadoBusqueda= "No hay franjas horarias disponibles.";
+        if(this.cantidadHorasSeleccionada===null){
             this.messageService.add({ severity: 'error', summary: 'Consulta fallida', detail: 'Cantidad horas es un campo obligatorio.' });
-            this.cantidadHorasSeleccionada=2;
+            return ;
+        }else if(this.cantidadHorasSeleccionada < 1){
+            this.messageService.add({ severity: 'error', summary: 'Consulta fallida', detail: 'Cantidad horas debe ser mayor a 0' });
+            return ;
+
         }
         this.filtroFranjaHorariaDisponibleCursoDTO.duracion = this.cantidadHorasSeleccionada;
         this.inputsChange();

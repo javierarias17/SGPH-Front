@@ -6,11 +6,12 @@ import { ShowMessageService } from 'src/app/shared/service/show-message.service'
 import { UbicacionOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/ubicacion.out.dto';
 import { EspacioFisicoService } from 'src/app/componentes/servicios/espacio.fisico.service';
 import { AgrupadorService } from '../../services/agrupador.service';
+import { SpinnerService } from 'src/app/shared/service/spinner.service';
 
 @Component({
 selector: 'app-asignar-espacio-fisico',
 templateUrl: './asignar-espacio-fisico.component.html',
-styleUrls: ['./asignar-espacio-fisico.component.scss']
+styleUrls: ['./asignar-espacio-fisico.component.css']
 })
 export class AsignarEspacioFisicoComponent implements OnInit {
 
@@ -25,6 +26,8 @@ export class AsignarEspacioFisicoComponent implements OnInit {
     listaDeGruposQuitados: any = []
     lstUbicacion: UbicacionOutDTO[] = [];
 
+    public mensajeResultadoBusqueda: string = "";
+
     filtro: any = {
         ubicacion: "",
         tipo: "",
@@ -36,7 +39,8 @@ export class AsignarEspacioFisicoComponent implements OnInit {
         private agrupadorService: AgrupadorService,
         private ref: DynamicDialogRef,
         private mensajeService: ShowMessageService,
-        private espacioFisicoService: EspacioFisicoService
+        private espacioFisicoService: EspacioFisicoService,
+        private spinnerService: SpinnerService
     ) {}
     ngOnInit(): void {
         this.obtenerUbicaciones()
@@ -71,13 +75,19 @@ export class AsignarEspacioFisicoComponent implements OnInit {
     }
 
     filtrarEspacios() {
+        this.mensajeResultadoBusqueda= "Buscando...";
         this.filtro.idAgrupador = this.grupoSeleccionado.idAgrupadorEspacioFisico
         this.agrupadorService.obtenerEspacioFiscioDispinibleFiltro(this.filtro).subscribe({
         next: (r) => {
+            if(r.length === 0){
+                this.mensajeResultadoBusqueda= "No se encontraron espacios físicos.";
+            }else{
+                this.mensajeResultadoBusqueda= "Espacios físicos encontrados: "+r.length;
+            }
             this.espaciosFisicosDisponibles = r
             this.espaciosFisicosDisponibles = this.espaciosFisicosDisponibles.concat(this.listaDeGruposQuitados)
-            this.espaciosFisicosDisponibles = this.quitarRepetidos(this.espaciosFisicosDisponibles)
-        }
+            this.espaciosFisicosDisponibles = this.quitarRepetidos(this.espaciosFisicosDisponibles)            
+            }
         })
     }
 
@@ -97,10 +107,13 @@ export class AsignarEspacioFisicoComponent implements OnInit {
         agregados: this.listaDeGruposNuevos,
         idGrupo: this.grupoSeleccionado.idAgrupadorEspacioFisico
         }
+        this.spinnerService.show("Aplicando cambios...");
         this.agrupadorService.guardarAsignacion(asignacionDTO).subscribe(r => {
         if (r && r.error) {
+            this.spinnerService.hide(); 
             this.mensajeService.showMessage("error", r.descripcion)
         } else {
+            this.spinnerService.hide(); 
             this.mensajeService.showMessage("success", r.descripcion)
         }
         this.ref.close()
@@ -116,6 +129,14 @@ export class AsignarEspacioFisicoComponent implements OnInit {
     handleMoveToSource($event: any) {
         this.listaDeGruposQuitados = this.listaDeGruposQuitados.concat($event.items)
         this.listaDeGruposQuitados = this.quitarRepetidos(this.listaDeGruposQuitados);
+    }
+
+    moverTodosADestino($event: any) {
+        this.handleMoveToTarget($event);
+    }
+
+    moverTodosAOrigen($event: any) {
+        this.handleMoveToSource($event);
     }
 
     quitarRepetidos(lista: any[]): any[] {

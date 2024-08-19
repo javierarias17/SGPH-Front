@@ -34,6 +34,8 @@ export class PlanificacionManualComponent {
 
     public facultadesSeleccionadas: number[] = [];
 
+    public idFacultadSeleccionada: number;
+
     public listaProgramas: any[] = [];
 
     public programasSeleccionados: number[] = [];

@@ -49,37 +49,19 @@
     [loading]="cargando">
     <ng-template pTemplate="header">
         <tr>
-            <th>
-                Facultad
-            </th>
-            <th>
-                Nombre
-            </th>
-            <th>
-                Descripción
-            </th>
-            <th>
-                Cantidad E.F asignados
-            </th>
-            <th style="width: 10%;">
-                Opciones
-            </th>
+            <th>Facultad</th>
+            <th>Nombre</th>
+            <th>Descripción</th> 
+            <th>Cantidad E.F asignados</th>
+            <th style="width: 10%;">Opciones</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-obj>
         <tr>
-            <td style="width: 20%;">
-                {{obj.nombreFacultad}}
-            </td>
-            <td style="width: 20%;">
-                {{obj.nombre}}
-            </td>
-            <td style="width: 20%;">
-                {{obj.observacion}}
-            </td>
-            <td style="width: 20%;">
-                {{obj.cantidadEspaciosFisicosAsignados}}
-            </td>
+            <td style="width: 20%;">{{obj.nombreFacultad}}</td>
+            <td style="width: 20%;">{{obj.nombre}}</td>
+            <td style="width: 20%;">{{obj.observacion}}</td>
+            <td style="width: 20%;">{{obj.cantidadEspaciosFisicosAsignados}}</td>
             <td>
                 <div class="flex">
                     <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar grupo" class="p-button-rounded p-button-secondary"  tooltipPosition="top" (click)="editarGrupo(obj)"></button>
@@ -91,9 +73,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
         <tr>
-            <td colspan="7">
-                Aun no existen Grupos
-            </td>
+            <td colspan="7">Sin resultados</td>
         </tr>
     </ng-template>
 </p-table>

@@ -124,7 +124,8 @@ export class PlanificacionSemestreAnteriorComponent {
         }
     }
 
-	public onProgramasChange(){        
+	public onProgramasChange(){      
+        this.lstIdAsignatura().reset();  
 		if(this.idPrograma().value){
 			this.asignaturaService.consultarAsignaturasPorIdPrograma(this.idPrograma().value).subscribe(
 				(response: any) => {

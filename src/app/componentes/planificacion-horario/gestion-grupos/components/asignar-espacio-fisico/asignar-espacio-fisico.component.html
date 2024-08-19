@@ -51,6 +51,7 @@
    </p-fieldset>
 
     <div class="mt-4">
+        <div class="empty-message">{{this.mensajeResultadoBusqueda}}</div>
         <p-pickList 
         [source]="espaciosFisicosDisponibles" 
         [target]="espasciosFisicosAsignados" 
@@ -64,7 +65,8 @@
         [showTargetControls]="false"
         (onMoveToTarget)="handleMoveToTarget($event)"
         (onMoveToSource)="handleMoveToSource($event)"
-        >
+        (onMoveAllToTarget)="moverTodosADestino($event)"
+        (onMoveAllToSource)="moverTodosAOrigen($event)">
             <ng-template let-espacio pTemplate="item">
                 <div class="flex flex-wrap p-2 align-items-center gap-3">
                     <div class="flex-1 flex flex-column gap-2">

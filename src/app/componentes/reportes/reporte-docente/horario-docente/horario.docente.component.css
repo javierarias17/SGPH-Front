@@ -18,6 +18,14 @@
     font-size: 0.9rem;
     color: black;
   }
+
+  .franja {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+    font-size: 0.8rem !important;
+    color: black !important;
+  }
   
   html,
   body {
