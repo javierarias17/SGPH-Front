@@ -203,6 +203,7 @@ export class PlanificacionManualComponent {
                     }
                     );
             }else{
+                this.asignaturasSeleccionadas=[];
                 this.listaAsignaturas=[];
                 this.infoGeneralCursosPorProgramaDTO=null;
                 this.consultarCursosPorFiltro();
