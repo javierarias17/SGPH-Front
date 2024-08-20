@@ -45,9 +45,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         SharedModule
     ],
     providers: [
-        //{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptores, multi: true },
         SpinnerService,
-        { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptores, multi: true },
+        //{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptores, multi: true },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService, LenguajeService, ConfirmationService, PeriodoAcademicoService 
     ],
