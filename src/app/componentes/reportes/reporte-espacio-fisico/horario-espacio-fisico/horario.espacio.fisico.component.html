@@ -46,7 +46,7 @@
             <ng-container *ngFor="let horaInicio of horas; let fila=index">
                 <div class="columna-horas">{{formatearHoraString(horaInicio)}}</div>
                 <ng-container *ngFor="let dia of dias; let columna=index">
-                    <div class="grid-item"
+                    <div class="grid-item franja"
                         *ngIf="!esPosicionOcupada(fila,columna)"   
                         [ngStyle]="{'background-color': obtenerColorPorMateria(obtenerNombreCurso(dia, horaInicio)),
                                     'border': configurarBorderSegunIndicador(dia, horaInicio)  }"                    

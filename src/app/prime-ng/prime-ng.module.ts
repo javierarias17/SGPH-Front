@@ -21,6 +21,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
     declarations: [],
@@ -47,7 +48,8 @@ import { MessagesModule } from 'primeng/messages';
         FieldsetModule,
         ConfirmDialogModule,
         PickListModule,
-        MessagesModule 
+        MessagesModule,
+        ProgressSpinnerModule
     ],
     providers: [ConfirmationService, DialogService]
 })

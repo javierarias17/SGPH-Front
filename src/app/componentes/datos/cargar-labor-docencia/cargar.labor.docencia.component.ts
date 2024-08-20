@@ -20,6 +20,8 @@ export class CargarLaborDocenciaComponent implements OnInit {
   listaProgramas: ProgramaOutDTO[]
   programa: ProgramaOutDTO
   base64: number
+
+  mensajesError:string = "";
   constructor(private programaService: ProgramaService,
               private sharedService: SharedService,
               private dialogService: DialogService,
@@ -51,6 +53,7 @@ export class CargarLaborDocenciaComponent implements OnInit {
       archivoBase64: archivoBase64
     }).subscribe(r => {
       if (r && r.error) {
+        this.mensajesError = r.descripcion;
         this.messageService.showMessage("error", r.descripcion)
       } else {
         this.messageService.showMessage("success", r.descripcion)

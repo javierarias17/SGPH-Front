@@ -19,6 +19,8 @@ import { PeriodoAcademicoService } from './shared/service/periodo.academico.serv
 import { HttpInterceptores } from './shared/http.interceptor';
 import { LenguajeService } from './componentes/servicios/lenguaje.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { SpinnerService } from './shared/service/spinner.service';
+import { SharedModule } from './shared/shared.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -39,10 +41,13 @@ export function HttpLoaderFactory(http: HttpClient) {
               useFactory: HttpLoaderFactory,
               deps: [HttpClient]
             }
-          })
+          }),
+        SharedModule
     ],
     providers: [
         //{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptores, multi: true },
+        SpinnerService,
+        { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptores, multi: true },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService, LenguajeService, ConfirmationService, PeriodoAcademicoService 
     ],

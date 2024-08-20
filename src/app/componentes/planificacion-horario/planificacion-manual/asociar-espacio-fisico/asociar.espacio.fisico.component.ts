@@ -14,6 +14,7 @@ import { TipoEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/
 import { AgrupadorEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.out.dto';
 import { UbicacionOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/ubicacion.out.dto';
 import { EspacioFisicoService } from 'src/app/componentes/servicios/espacio.fisico.service';
+import { SpinnerService } from 'src/app/shared/service/spinner.service';
 
 interface FranjaHorariaItem {
     check: boolean;
@@ -79,7 +80,8 @@ export class AsociarEspacioFisicoComponent {
 
     constructor(private messageService: MessageService,
         private espacioFisicoService: EspacioFisicoService,
-        private planificacionManualService: PlanificacionManualService) {
+        private planificacionManualService: PlanificacionManualService,
+        private spinnerService: SpinnerService) {
     }
 
     /*TODO. Avance para espacios fisicos secundarios*/
@@ -317,9 +319,16 @@ export class AsociarEspacioFisicoComponent {
     }
 
     public cantidadHorasChange(){
-        if(this.cantidadHorasSeleccionada==null){
+        // Se limpia la lista de franjas disponibles
+        this.listaFranjaHorariaDisponibles=[];
+        this.mensajeResultadoBusqueda= "No hay franjas horarias disponibles.";
+        if(this.cantidadHorasSeleccionada===null){
             this.messageService.add({ severity: 'error', summary: 'Consulta fallida', detail: 'Cantidad horas es un campo obligatorio.' });
-            this.cantidadHorasSeleccionada=2;
+            return ;
+        }else if(this.cantidadHorasSeleccionada < 1){
+            this.messageService.add({ severity: 'error', summary: 'Consulta fallida', detail: 'Cantidad horas debe ser mayor a 0' });
+            return ;
+
         }
         this.filtroFranjaHorariaDisponibleCursoDTO.duracion = this.cantidadHorasSeleccionada;
         this.inputsChange();
@@ -367,7 +376,7 @@ export class AsociarEspacioFisicoComponent {
 
         crearActualizarHorarioCursoInDTO.listaFranjaHorariaCursoAsociarInDTO = listaFranjaHorariaCursoAsociarInDTO;
 
-
+        this.spinnerService.show();
         if(this.esPrincipal===true){
             this.planificacionManualService.crearActualizarHorarioCursoDTO(crearActualizarHorarioCursoInDTO).subscribe(
             (crearActualizarHorarioCursoOutDTO: CrearActualizarHorarioCursoOutDTO) => {   
@@ -376,9 +385,11 @@ export class AsociarEspacioFisicoComponent {
                     this.consultarFranjasAsignadasCurso();
                 }else{
                     this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
-                }            
+                }
+                this.spinnerService.hide();            
             },
             (httpErrorResponse: HttpErrorResponse) => {
+                this.spinnerService.hide();
                 console.error(httpErrorResponse);
                 this.mostrarErrorModal = true;
                 this.mensajeModal = httpErrorResponse.error.message;
@@ -392,9 +403,11 @@ export class AsociarEspacioFisicoComponent {
                         this.consultarFranjasAsignadasCurso();
                     }else{
                         this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
-                    }            
+                    }   
+                    this.spinnerService.hide();         
                 },
                 (httpErrorResponse: HttpErrorResponse) => {
+                    this.spinnerService.hide();
                     console.error(httpErrorResponse);
                     this.mostrarErrorModal = true;
                     this.mensajeModal = httpErrorResponse.error.message;

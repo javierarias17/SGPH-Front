@@ -28,8 +28,9 @@ export class EliminarHorarioProgramaComponent {
     public listaProgramas: ProgramaOutDTO[] = [];
     public lstFacultadOutDTO: FacultadOutDTO[] = [];
 
-    public periodoAcademicoVigente:PeriodoAcademicoOutDTO;
+    private periodoAcademicoVigente:PeriodoAcademicoOutDTO;
 
+    public mostrarAlerta: boolean = false;
     public messages: Message[] = null;
 
     constructor(
@@ -168,8 +169,9 @@ export class EliminarHorarioProgramaComponent {
             (periodoAcademicoVigente: PeriodoAcademicoOutDTO) => {
                 if(periodoAcademicoVigente){
                     this.periodoAcademicoVigente = periodoAcademicoVigente;
+                    this.mostrarAlerta = false;
                 }else{
-                    this.periodoAcademicoVigente = undefined;
+                    this.mostrarAlerta = true;
                     this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar esta funcionalidad si no existe un periodo académico abierto." }];
                 }
             },

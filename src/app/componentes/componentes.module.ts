@@ -82,7 +82,7 @@ import { CardModule } from 'primeng/card';
 		PrimeNgModule,
 		SharedModule,
 		MessageModule,
-		ToastModule		
+		ToastModule,		
 	],
 	providers: [EspacioFisicoService, 
 		ProgramaService, 

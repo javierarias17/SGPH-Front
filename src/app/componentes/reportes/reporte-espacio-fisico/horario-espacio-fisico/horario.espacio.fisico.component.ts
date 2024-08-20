@@ -125,7 +125,7 @@ export class HorarioEspacioFisicoComponent {
 	public configurarBorderSegunIndicador(dia: DiaSemanaEnum, horaInicio: Date): string {
 		const franjaCurso = this.listaFranjaHorariaAulaDTO.find(f => f.dia === dia && f.horaInicio === horaInicio);
 		if(franjaCurso && franjaCurso.esPrincipal===false){
-			return '5px dashed #000';
+			return '3px dashed #000';
 		}
 		return null;
 	}

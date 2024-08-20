@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { PeriodoAcademicoOutDTO } from '../../dto/periodo-academico/periodo-academico-out-dto';
 import { FacultadService } from '../../servicios/facultad.service';
+import { SpinnerService } from 'src/app/shared/service/spinner.service';
 @Component({
   selector: 'app-generar-reporte-simca',
   templateUrl: './generar.reporte.simca.component.html',
@@ -89,50 +90,51 @@ export class GenerarReporteSimcaComponent implements OnInit {
   }
   visualizar() {
     if (this.formulario.valid) {
-      this.isLoading = true
-      this.idPrograma().value
-      this.periodo().value
-      let filtro = {
-        idPrograma: this.idPrograma().value,
-        idPeriodo: this.periodo().value,
-        idFacultad: this.idFacultad().value
-      }
-      this.sharedService.obtenerReporteSimca(filtro).subscribe(r => {
-        this.isLoading = false
-        if (r) {
-          this.base64 = r.archivoBase64
-          this.dialogService.open(VisualizadorExcelComponent, {
-            height: '90vh',
-            width: '95%',
-            header: 'Reporte SIMCA',
-            contentStyle: { 'overflow': 'hidden' },
-            data: {
-              base64: this.base64
-            }
-          });
+        this.isLoading = true
+        this.idPrograma().value
+        this.periodo().value
+        let filtro = {
+            idPrograma: this.idPrograma().value,
+            idPeriodo: this.periodo().value,
+            idFacultad: this.idFacultad().value
         }
-      })
+        this.sharedService.obtenerReporteSimca(filtro).subscribe(r => {
+            this.isLoading = false
+            if (r) {
+                this.base64 = r.archivoBase64
+                this.dialogService.open(VisualizadorExcelComponent, {
+                    height: '90vh',
+                    width: '95%',
+                    header: 'Reporte SIMCA',
+                    contentStyle: { 'overflow': 'hidden' },
+                    data: {
+                    base64: this.base64
+                    }
+                });
+            }
+        })
     } else {
-      this.formulario.markAllAsTouched()
+        this.formulario.markAllAsTouched()
     }
   }
+  
   descargar() {
     if (this.formulario.valid) {
-      this.idPrograma().value
-      this.periodo().value
-      let filtro = {
-        idPrograma: this.idPrograma().value,
-        idPeriodo: this.periodo().value,
-        idFacultad: this.idFacultad().value
-      }
-      this.isLoading = true
-      this.sharedService.obtenerReporteSimca(filtro).subscribe(r => {
-        this.isLoading = false
-        if (r) {
-          this.base64 = r.archivoBase64
-          this.downloadExcelFile()
+        this.idPrograma().value
+        this.periodo().value
+        let filtro = {
+            idPrograma: this.idPrograma().value,
+            idPeriodo: this.periodo().value,
+            idFacultad: this.idFacultad().value
         }
-      })
+        this.isLoading = true
+        this.sharedService.obtenerReporteSimca(filtro).subscribe(r => {
+                this.isLoading = false
+                if (r) {
+                    this.base64 = r.archivoBase64
+                    this.downloadExcelFile()
+                }
+            })
     } else {
       this.formulario.markAllAsTouched()
     }

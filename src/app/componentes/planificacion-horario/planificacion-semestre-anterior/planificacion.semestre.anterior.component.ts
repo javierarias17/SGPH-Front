@@ -17,6 +17,7 @@ import { ProgramaService } from '../../servicios/programa.service';
 import { AsignaturaService } from '../../servicios/asignatura.service';
 import { ResultadoGeneracionHorarioComponent } from './resultado-generacion-horario/resultado-generacion-horario.component';
 import { FacultadService } from '../../servicios/facultad.service';
+import { SpinnerService } from 'src/app/shared/service/spinner.service';
 
 @Component({
     selector: 'app-planificacion-semestre-anterior',
@@ -34,9 +35,11 @@ export class PlanificacionSemestreAnteriorComponent {
 	public lstPeriodoAcademicosTodos: PeriodoAcademicoOutDTO[] = [];
     public lstPeriodoAcademicosSinVigente: PeriodoAcademicoOutDTO[] = [];
 	public listaAsignaturas: any[] = [];
+
+    public mostrarAlerta: boolean = false;
     public messages: Message[] = null;
 
-    public periodoAcademicoVigente: PeriodoAcademicoOutDTO;
+    private periodoAcademicoVigente: PeriodoAcademicoOutDTO;
 
     constructor(
         private fb: FormBuilder,
@@ -47,13 +50,14 @@ export class PlanificacionSemestreAnteriorComponent {
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         public periodoAcademicoService: PeriodoAcademicoService,
-		private asignaturaService:AsignaturaService
+		private asignaturaService:AsignaturaService,
+        private spinnerService: SpinnerService
     ) {}
 
     public ngOnInit(): void {
-		this.inicializarFormulario();
+        this.inicializarFormulario();
         this.obtenerFacultades();
-		this.obtenerPeriodoAcademico();
+        this.obtenerPeriodoAcademico();
     }
 
     private inicializarFormulario() {
@@ -78,8 +82,9 @@ export class PlanificacionSemestreAnteriorComponent {
             this.lstPeriodoAcademicosSinVigente = this.lstPeriodoAcademicosTodos.map(periodo => ({
                 ...periodo,
                 anioPeriodo: `${periodo.anio} - ${periodo.periodo}`
-            }));
-			this.consultarPeriodoAcademicoVigente();
+            }));		
+            
+            this.consultarPeriodoAcademicoVigente();
 		})
 	}
 
@@ -119,7 +124,8 @@ export class PlanificacionSemestreAnteriorComponent {
         }
     }
 
-	public onProgramasChange(){        
+	public onProgramasChange(){      
+        this.lstIdAsignatura().reset();  
 		if(this.idPrograma().value){
 			this.asignaturaService.consultarAsignaturasPorIdPrograma(this.idPrograma().value).subscribe(
 				(response: any) => {
@@ -142,6 +148,7 @@ export class PlanificacionSemestreAnteriorComponent {
         this.idFacultad().reset();
         this.idPrograma().reset();
         this.lstIdAsignatura().reset();
+        this.periodoAnterior().reset();
     }
 	public periodo(): FormControl {
 		return this.formulario.get("periodo") as FormControl
@@ -189,9 +196,11 @@ export class PlanificacionSemestreAnteriorComponent {
                 icon: 'pi pi-exclamation-triangle',
                 accept: () => {
                     this.isLoading = true;
+                    this.spinnerService.show("Generando horario, esto puede tardar unos minutos...");
                     this.planificacionManualService.generarHorarioBasadoEnSemestreAnteriorPorPrograma(generarHorarioBaseInDTO)
                     .subscribe(
                         (generarHorarioBaseOutDTO: any) => {
+                                this.spinnerService.hide();
                                 this.ocultarResultadoGeneracion=false;    
                                 this.isLoading = false;
                                 this.cantidadCursosHorarioCompleto=generarHorarioBaseOutDTO.cantidadCursosHorarioCompleto;
@@ -209,6 +218,7 @@ export class PlanificacionSemestreAnteriorComponent {
                                 
                             },
                             (httpErrorResponse: HttpErrorResponse) => {
+                                this.spinnerService.hide();
                                 this.isLoading = false;
                                 this.messageService.add({
                                     severity: 'error',
@@ -243,8 +253,9 @@ export class PlanificacionSemestreAnteriorComponent {
 						this.periodoAcademicoVigente = periodoAcademicoVigente;            
 						this.periodo().setValue(this.periodoAcademicoVigente.idPeriodoAcademico);
                         this.lstPeriodoAcademicosSinVigente = this.lstPeriodoAcademicosSinVigente.filter(periodo => periodo.idPeriodoAcademico!==this.periodoAcademicoVigente.idPeriodoAcademico);
+                        this.mostrarAlerta = false;
                     }else{
-                        this.periodoAcademicoVigente = undefined;
+                        this.mostrarAlerta = true;
                         this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar esta funcionalidad si no existe un periodo académico abierto." }];
                     }
                 },
