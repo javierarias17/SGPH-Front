@@ -162,7 +162,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             segundoApellido: [null],
             email: [null, [Validators.required],[this.existeEmailValidator(),this.existeNombreUsuarioValidator()]],
             nombreUsuario: [ { value: null, disabled: true }, [Validators.required]],
-            password: [null, [Validators.required]],
             estado: [ null, [Validators.required]],
             lstIdRol: [ null, [Validators.required]],
             lstIdPrograma: [ null,[Validators.required]],
@@ -180,7 +179,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
         this.email().setValue(this.personaInDTO.email);
 
         this.nombreUsuario().setValue(this.usuarioInDTO.nombreUsuario);
-        this.password().setValue(this.usuarioInDTO.password);
         this.estado().setValue(this.usuarioInDTO.estado);
         this.lstIdRol().setValue(this.usuarioInDTO.lstIdRol);
         this.lstIdPrograma().setValue(this.usuarioInDTO.lstIdPrograma);
@@ -209,9 +207,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     }
     public nombreUsuario():FormControl{
         return this.formulario.get("nombreUsuario") as FormControl;
-    }
-    public password():FormControl{
-        return this.formulario.get("password") as FormControl;
     }
     public estado():FormControl{
         return this.formulario.get("estado") as FormControl;
@@ -324,7 +319,6 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
     private establecerValoresUsuarioInDTO():void{
         this.usuarioInDTO.nombreUsuario=this.nombreUsuario().value;
-        this.usuarioInDTO.password=this.password().value;
         this.usuarioInDTO.estado=this.estado().value;    
         this.usuarioInDTO.lstIdRol=this.lstIdRol().value;    
         this.usuarioInDTO.lstIdPrograma=this.lstIdPrograma().value;

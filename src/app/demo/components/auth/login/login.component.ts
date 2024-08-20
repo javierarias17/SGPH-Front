@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { GoogleLoginService } from 'src/app/componentes/servicios/google-login.service';
 import { LoginService } from 'src/app/componentes/servicios/login.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
@@ -23,10 +24,8 @@ export class LoginComponent implements OnInit {
     formulario: FormGroup
 
     constructor(public layoutService: LayoutService,
-        private loginService: LoginService,
         private fb: FormBuilder,
-        private router: Router,
-        private messageService: MessageService
+        private loginGoogleService: GoogleLoginService
     ) { }
 
     ngOnInit(): void {
@@ -38,27 +37,14 @@ export class LoginComponent implements OnInit {
             password: [null, Validators.required]
         })
     }
-    async iniciarSesion() {
-        if (this.formulario.valid) {
-            this.loginService.getLogin(this.correo().value, this.password().value).toPromise().then((response) => {
-                this.router.navigate(["/"])
-            }).catch(() => { 
-                this.messageService.add({
-                    severity: "error",
-                    detail: "Credenciales incorrectas"
-                })
-             })
-        } else {
-            this.formulario.markAllAsTouched()
-            this.formulario.markAsDirty()
-        }
-
-    }
-
     correo(): FormControl {
         return this.formulario.get("correo") as FormControl
     }
     password(): FormControl {
         return this.formulario.get("password") as FormControl
     }
+    login() {
+        this.loginGoogleService.login();
+    }
+    
 }

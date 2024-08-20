@@ -77,4 +77,9 @@ export class UsuarioService{
 		const url = `${environment.url}${this.urlUsuario}/cambiarEstadoUsuarioPorIdUsuario`;
 		return this.http.get<UsuarioOutDTO>(url, { params });
     }  
+	public consultarUsuarioActivoPorIdPersona(idPersona:number) {
+		const params = new HttpParams().set('idPersona', idPersona.toString());
+		const url = `${environment.url}${this.urlUsuario}/consultarUsuarioPorIdPersona`;
+		return this.http.get<UsuarioOutDTO>(url, { params });
+    }  
 }

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -19,6 +18,7 @@ import { ConfirmationService } from 'primeng/api';
 import { PeriodoAcademicoService } from './shared/service/periodo.academico.service';
 import { HttpInterceptores } from './shared/http.interceptor';
 import { LenguajeService } from './componentes/servicios/lenguaje.service';
+import { OAuthModule } from 'angular-oauth2-oidc';
 import { SpinnerService } from './shared/service/spinner.service';
 import { SharedModule } from './shared/shared.module';
 
@@ -31,6 +31,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         AppComponent, NotfoundComponent
     ],
     imports: [
+        OAuthModule.forRoot(),
         AppRoutingModule,
         AppLayoutModule,
         ComponentesModule,
@@ -45,8 +46,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ],
     providers: [
         SpinnerService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptores, multi: true },
+        //{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptores, multi: true },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService, LenguajeService, ConfirmationService, PeriodoAcademicoService 
     ],
