@@ -8,7 +8,7 @@ import { AuthGuardGuard } from './auth-guard.guard';
     imports: [
         RouterModule.forRoot([
             {
-                path: '', component: AppLayoutComponent,
+                path: '', component: AppLayoutComponent, canActivate: [AuthGuardGuard],
                 children: [
                     { path: '', redirectTo: '/home/inicio', pathMatch: 'full' },
                     //{ path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
@@ -30,7 +30,7 @@ import { AuthGuardGuard } from './auth-guard.guard';
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: 'auth' },
-        ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
+        ], { useHash: false })
     ],
     exports: [RouterModule]
 })

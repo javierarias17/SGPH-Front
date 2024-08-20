@@ -9,8 +9,12 @@
                     <div class="text-900 text-3xl font-medium mb-3">SGPH</div>
                     <span class="text-600 font-medium">Iniciar sesión para continuar</span>
                 </div>
-
-                <form [formGroup]="formulario">
+                <div class="row">
+                    <button pButton pRipple type="button" class="btn-google" (click)="login()">
+                        <img src="https://img.icons8.com/color/22/000000/google-logo.png" alt="Google Logo" class="btn-icon"> Iniciar sesión
+                    </button>
+                </div>
+                <!-- <form [formGroup]="formulario">
                     <div class="p-fluid col sm:col-12">
                         <label for="email1" class="block text-900 text-xl font-medium mb-2">Nombre de usuario</label>
                         <input id="email1" 
@@ -52,7 +56,8 @@
                         </small>
                     </div>
                     <button pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl" (click) = "iniciarSesion()"></button>
-                </form>
+                </form> -->
+
             </div>
         </div>
     </div>

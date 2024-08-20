@@ -3,6 +3,8 @@ import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
 import { LoginService } from '../componentes/servicios/login.service';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { GoogleLoginService } from '../componentes/servicios/google-login.service';
 
 @Component({
     selector: 'app-topbar',
@@ -17,6 +19,7 @@ background: radial-gradient(circle, rgba(12,128,178,1) 45%, rgba(7,57,116,1) 84%
 export class AppTopBarComponent implements OnInit {
 
     username: string
+    imgProfile: string
     public periodoAcademico :string = "";
 
     items!: MenuItem[];
@@ -29,12 +32,14 @@ export class AppTopBarComponent implements OnInit {
 
     constructor(public layoutService: LayoutService, 
         public periodoAcademicoService:PeriodoAcademicoService,
-        private loginService: LoginService
+        private loginService: LoginService,
+        public oauthService: GoogleLoginService
         ) { }
 
 
-    ngOnInit(){
-        this.username = localStorage.getItem("correo")
+    ngOnInit() {
+        this.username = this.oauthService.getProfile().name
+        this.imgProfile = this.oauthService.getProfile().picture
         this.periodoAcademicoService.subcribirDataPeriodoAcademico().subscribe(r =>{
             if(r){
                 this.periodoAcademico = r.anio+"-"+r.periodo;

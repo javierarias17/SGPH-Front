@@ -7,7 +7,7 @@ import { environment } from "src/environments/environment";
 import { TipoIdentificacionOutDTO } from "../dto/usuario/out/tipo.identificacion.out.dto";
 
 @Injectable({providedIn: 'root'})
-export class PersonaService{
+export class PersonaService {
 
     urlPersona: string = "AdministrarPersona"
     constructor(private http: HttpClient) {
@@ -34,5 +34,9 @@ export class PersonaService{
 	public consultarTiposIdentificacion() {
 		const url = `${environment.url}${this.urlPersona}/consultarTiposIdentificacion`;
         return this.http.get<TipoIdentificacionOutDTO[]>(url);
+    }
+    public consultarPersonaPorEmail(email: string) {
+        const url = `${environment.url}${this.urlPersona}/consultarPersonaPorEmail?email=${email}`;
+        return this.http.get<PersonaOutDTO>(url);
     }  
 }

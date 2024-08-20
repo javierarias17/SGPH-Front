@@ -1,3 +1,4 @@
+import { RolUsuarioEnum } from "src/app/componentes/enum/rol.usuario.enum";
 import { EstadoUsuarioEnum } from "../../../enum/estado.usuario.enum";
 export class UsuarioOutDTO{
     public idUsuario: number;
@@ -13,6 +14,7 @@ export class UsuarioOutDTO{
     public nombreUsuario: string;
     public password: string;
     public estado: EstadoUsuarioEnum;
-    public lstIdRol: number[];
+    public lstIdRol: any[];
     public lstIdPrograma: number[];
+    lstRol: RolUsuarioEnum[]
 }

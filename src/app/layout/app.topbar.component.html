@@ -24,12 +24,20 @@
             <span>Calendar</span>
         </button>
         <p-overlayPanel #op>
-            <div class="flex flex-row justify-content-between" style="width: 150px;">
-                <div>Usuario: <b>{{username}}</b></div>
-                <button (click)="cerrarSesion()" class="p-link" pTooltip="cerrar sesión">
-                    <i class="pi pi-sign-out"></i>
-                    <span></span>
-                </button>
+            <div class="flex flex-column">
+                <div class="flex flex-row justify-content-between" style="width: 200px;">
+                    <div class="flex flex-row">
+                        <img [src]="this.imgProfile" alt="" width="30px" height="30px" class="p-link">
+                        <div style="text-align: start; margin-left: 5px; justify-content: center; margin-top: 3px;"><b>{{username}}</b></div>
+                    </div>
+                    <button (click)="cerrarSesion()" class="p-link" pTooltip="Cerrar sesión">
+                        <i class="pi pi-sign-out"></i>
+                        <span></span>
+                    </button>
+                </div>
+                <div *ngFor="let rol of this.oauthService.usuarioLogueado?.lstRol">
+                    <div style="text-align: center; justify-content: center; margin-top: 5px;"><b>{{rol}}</b></div>
+                </div>
             </div>
         </p-overlayPanel>
         

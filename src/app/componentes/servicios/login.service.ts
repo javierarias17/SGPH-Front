@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { GoogleLoginService } from './google-login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class LoginService {
   ADMINISTRADOR: number = 1
   usuarioLogueado$ = new Subject<any>();
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private googleService: GoogleLoginService) { }
 
   getLogin(correo: string, password: string) {
     let credenciales = {
@@ -33,14 +34,15 @@ export class LoginService {
   }
 
   getToken() {
-    return localStorage.getItem("token");
+    return this.googleService.token()
   }
   getCorreo() {
     return localStorage.getItem("correo");
   }
   cerrarSesion() {
     localStorage.clear();
-    this.router.navigate(['/auth'])
+    this.googleService.logout()
+    this.router.navigate(['/auth/login'])
   }
   getDetalleUsuarioLogueadoAsObserver() : Observable<any> {
     return this.usuarioLogueado$.asObservable()

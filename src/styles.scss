@@ -87,3 +87,26 @@ $gutter: 1rem; //for primeflex grid system
   .p-dropdown {
     width: 100%;
   }
+  .btn-google {
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease;
+}
+
+.btn-google:hover {
+    background-color: #357ae8;
+}
+
+.btn-icon {
+    margin-right: 8px;
+}
