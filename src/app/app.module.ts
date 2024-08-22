@@ -21,6 +21,7 @@ import { LenguajeService } from './componentes/servicios/lenguaje.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { SpinnerService } from './shared/service/spinner.service';
 import { SharedModule } from './shared/shared.module';
+import { AuthInterceptor } from './auth.interceptor';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -46,9 +47,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     ],
     providers: [
         SpinnerService,
-        //{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptores, multi: true },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, LenguajeService, ConfirmationService, PeriodoAcademicoService 
+        PhotoService, ProductService, LenguajeService, ConfirmationService, PeriodoAcademicoService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        }
     ],
     bootstrap: [AppComponent]
 })

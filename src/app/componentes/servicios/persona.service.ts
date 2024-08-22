@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { PersonaOutDTO } from "../dto/persona/persona.out.dto";
 import { PersonaInDTO } from "../dto/persona/persona.in.dto";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 import { TipoIdentificacionOutDTO } from "../dto/usuario/out/tipo.identificacion.out.dto";
 
