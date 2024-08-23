@@ -63,6 +63,7 @@ export class GoogleLoginService {
     return this.oauthService.getIdentityClaims();
   }
   async validarCorreoRegistro() {
+    localStorage.setItem('token', this.oauthService.getAccessToken())
     const idToken = this.oauthService.getIdToken();
     const payload = JSON.parse(atob(idToken.split('.')[1]));
     const email = payload.email;
