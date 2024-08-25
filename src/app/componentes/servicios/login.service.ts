@@ -22,7 +22,6 @@ export class LoginService {
         return this.http.post<any>(url, loginUsuario);  
 	}
 
-
 	public loginGoogle(tokenGoogle: string) {
 		const url = `${environment.url}${this.urlAutenticacion}/loginGoogle`;
 		let tokenDto = {value: tokenGoogle}

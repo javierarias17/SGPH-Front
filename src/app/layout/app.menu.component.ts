@@ -114,10 +114,10 @@ export class AppMenuComponent implements OnInit {
         ];
 
         // Descomente para deshabilitar las restricciones de visibilidad en menus
-        //this.model.forEach(menu => menu.visible = true);
+        this.model.forEach(menu => menu.visible = true);
 
         // Descomente para deshabilitar las restricciones de visibilidad en items de menu
-        //this.model.forEach(menu => menu.item.visible = true);
+        this.model.forEach(menu => menu.item.visible = true);
     }
 
     public actualizarPeriodoAcademicoVigente(){

@@ -3,26 +3,40 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { TokenService } from './componentes/servicios/token.service';
+import { Router } from '@angular/router';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private tokenService: TokenService) { 
+    constructor(private tokenService: TokenService, private router: Router) { 
     }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if(this.tokenService.getToken()) { 
-        const token = 'tu-token-bearer-aqui'; 
-        const authReq = req.clone({
-            setHeaders: {
-            Authorization: `Bearer ${this.tokenService.getToken()}`
-            }
-        });
-        return next.handle(authReq);
-    }
-    return next.handle(req);
-  }
+  	public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		// Clona la solicitud y añade el encabezado de autorización si el token está presente
+		let authReq = req;
+		const token = this.tokenService.getToken();
+			if (token) {
+				authReq = req.clone({
+					setHeaders: {
+					Authorization: `Bearer ${token}`
+					}
+				});
+			}
+
+		// Maneja la solicitud y captura cualquier error
+		return next.handle(authReq).pipe(
+			catchError((error: HttpErrorResponse) => {
+				// Si el error es un 401, redirige al usuario a la página de login
+				if (error.status === 401) {
+					this.tokenService.logOut();  // Limpia toda la información del local storage
+					this.router.navigate(['/auth/login']);  
+				}
+			return throwError(() => error);
+			})
+		);
+  	}
 }
