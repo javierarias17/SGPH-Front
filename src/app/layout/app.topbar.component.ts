@@ -41,8 +41,8 @@ export class AppTopBarComponent implements OnInit {
 
 
     ngOnInit() {
+        this.imgProfile = null;
         this.username = this.tokenService.getUserName();
-        this.username="Cerrar sesión";
         let valor:any = this.oauthService.getIdentityClaims();        
         this.imgProfile = valor.picture;
 

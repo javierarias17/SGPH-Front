@@ -18,27 +18,31 @@
             <h5 style="color: white; display: inline-block; padding-right: 5rem; margin:auto;" *ngIf="periodoAcademico">Periodo académico: {{periodoAcademico}}</h5>
             <h5 style="color: red; display: inline-block; padding-right: 5rem; margin:auto;" *ngIf="!periodoAcademico">No existe periodo académico</h5>
         </div>
+        <div class="flex flex-row justify-content-center align-items-center">
+            <p style="color: white;">{{username}}</p>
+        </div>
         <p-overlayPanel #op>
             <div class="flex flex-column">
                 <div class="flex flex-row justify-content-between" style="width: 200px;">
                     <div class="flex flex-row">
-                        <img [src]="this.imgProfile" alt="" width="30px" height="30px" class="p-link" *ngIf="imgProfile">
-                        <div style="text-align: start; margin-left: 5px; justify-content: center; margin-top: 3px;"><b>{{username}}</b></div>
+                        <div style="text-align: start; margin-left: 5px; justify-content: center; margin-top: 3px;"><b>Cerrar sesión</b></div>
                     </div>
                     <button (click)="cerrarSesion()" class="p-link" pTooltip="Cerrar sesión">
                         <i class="pi pi-sign-out"></i>
                         <span></span>
                     </button>
                 </div>
-                <!--<div *ngFor="let rol of this.oauthService.usuarioLogueado?.lstRol">
-                    <div style="text-align: center; justify-content: center; margin-top: 5px;"><b>{{rol}}</b></div>
-                </div>-->
             </div>
         </p-overlayPanel>
         
-        <button class="p-link layout-topbar-button" (click)="op.toggle($event)">
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
+        <button class="p-link layout-topbar-button" (click)="op.toggle($event)">           
+            <ng-container *ngIf="!imgProfile">
+                <i class="pi pi-user"></i>
+            </ng-container>
+            <ng-container *ngIf="imgProfile">
+                <img [src]="imgProfile" alt="" width="40px" height="40px" class="p-link" style="border-radius: 50%;">
+            </ng-container>
         </button>
+
     </div>
 </div>

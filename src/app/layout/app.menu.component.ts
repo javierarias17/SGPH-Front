@@ -4,6 +4,7 @@ import { LayoutService } from './service/app.layout.service';
 import { MenuItem } from 'primeng/api';
 import { SharedService } from '../shared/service/shared.service';
 import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
+import { TokenService } from '../componentes/servicios/token.service';
 
 @Component({
     selector: 'app-menu',
@@ -43,32 +44,37 @@ export class AppMenuComponent implements OnInit {
 
     panelMenuItems: MenuItem[] = [];
 
-    constructor(public layoutService: LayoutService, public periodoAcademicoService:PeriodoAcademicoService) { }
+    constructor(public layoutService: LayoutService, public periodoAcademicoService:PeriodoAcademicoService, private tokenService: TokenService) { }
 
     ngOnInit() {
+        //Se consultan los roles del usuario
+        let authorities: string[] = this.tokenService.getAuthorities();
+
         this.actualizarPeriodoAcademicoVigente();
         this.model = [
             {
                 label: 'Home',
                 icon: 'pi pi-fw pi-home',
-                routerLink: ['home/inicio']                 
+                routerLink: ['home/inicio']           
             },
             {
                 label: 'Periodo Académico',
                 items: [
                     { label: 'Gestionar periodo académico', icon: 'pi pi-fw pi-chart-pie', routerLink: ['periodo-academico/gestionar-periodo-academico'] },
-                ]            
+                ],
+                visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA')                
             },
             {
                 label: 'Datos',
                 items: [                    
-                    { label: 'Cargar labor docencia', icon: 'pi pi-fw pi-upload', routerLink: ['datos/cargar-labor-docencia'] },
-                    { label: 'Gestionar espacios físicos', icon: 'pi pi-fw pi-building', routerLink: ['datos/gestionar-espacio-fisico'] },
-                    { label: 'Gestionar asignaturas', icon: 'pi pi-fw pi-book', routerLink: ['datos/gestionar-asignatura'] },
-                    { label: 'Gestionar cursos', icon: 'pi pi-fw pi-star', routerLink: ['datos/gestionar-curso'] },
-                    { label: 'Gestionar docentes', icon: 'pi pi-fw pi-users', routerLink: ['datos/gestionar-docente'] },
-                    { label: 'Gestionar personas', icon: 'pi pi-fw pi-user-edit', routerLink: ['datos/gestionar-persona'] }
-                ]
+                    { label: 'Cargar labor docencia', icon: 'pi pi-fw pi-upload', routerLink: ['datos/cargar-labor-docencia'], visible: authorities.includes('ROLE_PLANIFICADOR') },
+                    { label: 'Gestionar espacios físicos', icon: 'pi pi-fw pi-building', routerLink: ['datos/gestionar-espacio-fisico'], visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA') },
+                    { label: 'Gestionar asignaturas', icon: 'pi pi-fw pi-book', routerLink: ['datos/gestionar-asignatura'], visible: authorities.includes('ROLE_PLANIFICADOR')  },
+                    { label: 'Gestionar cursos', icon: 'pi pi-fw pi-star', routerLink: ['datos/gestionar-curso'], visible: authorities.includes('ROLE_PLANIFICADOR') },
+                    { label: 'Gestionar docentes', icon: 'pi pi-fw pi-users', routerLink: ['datos/gestionar-docente'], visible: authorities.includes('ROLE_PLANIFICADOR') },
+                    { label: 'Gestionar personas', icon: 'pi pi-fw pi-user-edit', routerLink: ['datos/gestionar-persona'], visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_ADMINISTRADOR')  }
+                ],
+                visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_ADMINISTRADOR')
             },   
             {
                 label: 'Planificación Horario',
@@ -77,246 +83,41 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Generar horario base a partir del semestre anterior', icon: 'pi pi-fw pi-calendar-plus', routerLink: ['planificacion-horario/planificacion-semestre-anterior'] },
                     { label: 'Eliminar horario por programa', icon: 'pi pi-fw pi-calendar-minus', routerLink: ['planificacion-horario/eliminar-horario-programa'] },
                     { label: 'Gestionar agrupadores E.F', icon: 'pi pi-fw pi-th-large', routerLink: ['planificacion-horario/gestionar-grupos'] }
-                ]
+                ],
+                visible: authorities.includes('ROLE_PLANIFICADOR') 
             },   
             {
                 label: 'Reportes',
                 items: [
-                    { label: 'Ver horario espacio físico', icon: 'pi pi-fw pi-file', routerLink: ['reportes/horario-espacio-fisico'] },
-                    { label: 'Ver horario docente', icon: 'pi pi-fw pi-file', routerLink: ['reportes/horario-docente'] },
-                    { label: 'Generar reporte SIMCA', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-simca'] },
-                    { label: 'Generar reporte docente', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-docente'] },
-                    { label: 'Generar reporte espacio físico', icon: 'pi pi-fw pi-file' }
-                ]
+                    { label: 'Ver horario espacio físico', icon: 'pi pi-fw pi-file', routerLink: ['reportes/horario-espacio-fisico'], visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA')  },
+                    { label: 'Ver horario docente', icon: 'pi pi-fw pi-file', routerLink: ['reportes/horario-docente'], visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA')  },
+                    { label: 'Generar reporte SIMCA', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-simca'], visible: authorities.includes('ROLE_PLANIFICADOR') },
+                    { label: 'Generar reporte docente', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-docente'], visible: authorities.includes('ROLE_PLANIFICADOR')  },
+                    { label: 'Generar reporte espacio físico', icon: 'pi pi-fw pi-file', visible: authorities.includes('ROLE_PLANIFICADOR') }
+                ],
+                visible:  authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA')    
             }, 
             {
                 label: 'Reservas',
                 items: [
                     { label: 'Gestionar reserva temporal', icon: 'pi pi-fw pi-id-card', routerLink: ['reservas/gestionar-reserva-temporal'] },
-                    /*{ label: 'Gestionar reserva facultad', icon: 'pi pi-fw pi-window-minimize', routerLink: ['reservas/gestionar-reserva-facultad'] }*/
-                ]
+                ],
+                visible: authorities.includes('ROLE_PRESTAMISTA') 
             },        
             {
                 label: 'Seguridad',
                 items: [
                     { label: 'Gestionar usuarios administradores', icon: 'pi pi-fw pi-users', routerLink: ['seguridad/gestionar-usuario'] }
-                ]
-            }/*,
-            {
-                label: 'UI Components',
-                items: [
-                    { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
-                    { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },
-                    { label: 'Button', icon: 'pi pi-fw pi-box', routerLink: ['/uikit/button'] },
-                    { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
-                    { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
-                    { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree'] },
-                    { label: 'Panel', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/panel'] },
-                    { label: 'Overlay', icon: 'pi pi-fw pi-clone', routerLink: ['/uikit/overlay'] },
-                    { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-                    { label: 'Menu', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/menu'], routerLinkActiveOptions: { paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' } },
-                    { label: 'Message', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/message'] },
-                    { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
-                    { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                    { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
-                ]
-            },
-            {
-                label: 'Prime Blocks',
-                items: [
-                    { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW' },
-                    { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank' },
-                ]
-            },
-            {
-                label: 'Utilities',
-                items: [
-                    { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', routerLink: ['/utilities/icons'] },
-                    { label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: ['https://www.primefaces.org/primeflex/'], target: '_blank' },
-                ]
-            },
-            {
-                label: 'Pages',
-                icon: 'pi pi-fw pi-briefcase',
-                items: [
-                    {
-                        label: 'Landing',
-                        icon: 'pi pi-fw pi-globe',
-                        routerLink: ['/landing']
-                    },
-                    {
-                        label: 'Auth',
-                        icon: 'pi pi-fw pi-user',
-                        items: [
-                            {
-                                label: 'Login',
-                                icon: 'pi pi-fw pi-sign-in',
-                                routerLink: ['/auth/login']
-                            },
-                            {
-                                label: 'Error',
-                                icon: 'pi pi-fw pi-times-circle',
-                                routerLink: ['/auth/error']
-                            },
-                            {
-                                label: 'Access Denied',
-                                icon: 'pi pi-fw pi-lock',
-                                routerLink: ['/auth/access']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Crud',
-                        icon: 'pi pi-fw pi-pencil',
-                        routerLink: ['/pages/crud']
-                    },
-                    {
-                        label: 'Timeline',
-                        icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/pages/timeline']
-                    },
-                    {
-                        label: 'Not Found',
-                        icon: 'pi pi-fw pi-exclamation-circle',
-                        routerLink: ['/notfound']
-                    },
-                    {
-                        label: 'Empty',
-                        icon: 'pi pi-fw pi-circle-off',
-                        routerLink: ['/pages/empty']
-                    },
-                ]
-            },
-            {
-                label: 'Hierarchy',
-                items: [
-                    {
-                        label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            {
-                                label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
-                                ]
-                            },
-                        ]
-                    },
-                    {
-                        label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            {
-                                label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                        ]
-                    }
-                ]
-            },
-            {
-                label: 'Get Started',
-                items: [
-                    {
-                        label: 'Documentation', icon: 'pi pi-fw pi-question', routerLink: ['/documentation']
-                    },
-                    {
-                        label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/primefaces/sakai-ng'], target: '_blank'
-                    }
-                ]
+                ],
+                visible: authorities.includes('ROLE_ADMINISTRADOR')      
             }
         ];
 
+        // Descomente para deshabilitar las restricciones de visibilidad en menus
+        //this.model.forEach(menu => menu.visible = true);
 
-        this.panelMenuItems = [
-            {
-                label: 'Customers',
-                items: [
-                    {
-                        label: 'New',
-                        icon: 'pi pi-fw pi-plus',
-                        items: [
-                            {
-                                label: 'Customer',
-                                icon: 'pi pi-fw pi-plus'
-                            },
-                            {
-                                label: 'Duplicate',
-                                icon: 'pi pi-fw pi-copy'
-                            },
-
-                        ]
-                    },
-                    {
-                        label: 'Edit',
-                        icon: 'pi pi-fw pi-user-edit'
-                    }
-                ]
-            },
-            {
-                label: 'Orders',
-                items: [
-                    {
-                        label: 'View',
-                        icon: 'pi pi-fw pi-list'
-                    },
-                    {
-                        label: 'Search',
-                        icon: 'pi pi-fw pi-search'
-                    }
-
-                ]
-            },
-            {
-                label: 'Shipments',
-                items: [
-                    {
-                        label: 'Tracker',
-                        icon: 'pi pi-fw pi-compass',
-
-                    },
-                    {
-                        label: 'Map',
-                        icon: 'pi pi-fw pi-map-marker',
-
-                    },
-                    {
-                        label: 'Manage',
-                        icon: 'pi pi-fw pi-pencil'
-                    }
-                ]
-            },
-            {
-                label: 'Profile',
-                items: [
-                    {
-                        label: 'Settings',
-                        icon: 'pi pi-fw pi-cog'
-                    },
-                    {
-                        label: 'Billing',
-                        icon: 'pi pi-fw pi-file'
-                    }
-                ]
-            }*/
-        ];
+        // Descomente para deshabilitar las restricciones de visibilidad en items de menu
+        //this.model.forEach(menu => menu.item.visible = true);
     }
 
     public actualizarPeriodoAcademicoVigente(){

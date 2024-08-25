@@ -41,7 +41,7 @@
             <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
                 <label class="large-label">Usuarios consultados {{totalRecords}}</label>
             </div>
-            <div class="col-6">
+            <div [class]="totalRecords !== undefined ? 'col-6' : 'col-12' ">
                 <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
                     <ng-template pTemplate="left">
                     </ng-template>
@@ -53,7 +53,7 @@
                     </ng-template>
                 </p-toolbar>  
             </div>
-        </div>                        
+        </div>                              
                 
         <p-table #dt [value]="listaUsuarioOutDTO" [columns]="cols" responsiveLayout="scroll" [rows]="10"
             selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines">
