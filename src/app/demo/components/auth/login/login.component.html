@@ -8,13 +8,8 @@
                     <!-- <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3"> -->
                     <div class="text-900 text-3xl font-medium mb-3">SGPH</div>
                     <span class="text-600 font-medium">Iniciar sesión para continuar</span>
-                </div>
-                <div class="row">
-                    <button pButton pRipple type="button" class="btn-google" (click)="login()">
-                        <img src="https://img.icons8.com/color/22/000000/google-logo.png" alt="Google Logo" class="btn-icon"> Iniciar sesión
-                    </button>
-                </div>
-                <!-- <form [formGroup]="formulario">
+                </div>                
+                <form [formGroup]="formulario">
                     <div class="p-fluid col sm:col-12">
                         <label for="email1" class="block text-900 text-xl font-medium mb-2">Nombre de usuario</label>
                         <input id="email1" 
@@ -22,16 +17,16 @@
                             placeholder="Nombre de usuario" 
                             pInputText class="w-full mb-2" 
                             style="padding:1rem"
-                            formControlName="correo"
+                            formControlName="nombreUsuario"
                             [ngClass]="{
                                 'ng-invalid ng-dirty':
-                                    this.correo().invalid &&
-                                    this.correo().touched
+                                    this.nombreUsuario().invalid &&
+                                    this.nombreUsuario().touched
                             }"
                             >
-                        <small class="p-error block fade-in" *ngIf="this.correo().invalid &&
-                                    (this.correo().touched)">
-                             Correo es obligatorio
+                        <small class="p-error block fade-in" *ngIf="this.nombreUsuario().invalid &&
+                                    (this.nombreUsuario().touched)">
+                             usuario es obligatorio
                         </small>
                     </div>
 
@@ -55,9 +50,14 @@
                             Password es obligatorio
                         </small>
                     </div>
-                    <button pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl" (click) = "iniciarSesion()"></button>
-                </form> -->
-
+                    <button pButton pRipple label="Continuar" class="w-full p-3 text-xl" (click) = "iniciarSesionNormal()"></button>
+                </form>
+                <hr>
+                <div class="row">
+                    <button pButton pRipple label="Continuar con Google" class="w-full p-3 text-xl" (click)="iniciarSesionGoogle()" style="background-color: white; color: black;">
+                        <img src="https://img.icons8.com/color/22/000000/google-logo.png" alt="Google Logo" class="btn-icon">
+                    </button>
+                </div>
             </div>
         </div>
     </div>

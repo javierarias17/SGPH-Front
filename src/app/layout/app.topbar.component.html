@@ -18,16 +18,11 @@
             <h5 style="color: white; display: inline-block; padding-right: 5rem; margin:auto;" *ngIf="periodoAcademico">Periodo académico: {{periodoAcademico}}</h5>
             <h5 style="color: red; display: inline-block; padding-right: 5rem; margin:auto;" *ngIf="!periodoAcademico">No existe periodo académico</h5>
         </div>
-
-        <button class="p-link layout-topbar-button">
-            <i class="pi pi-calendar"></i>
-            <span>Calendar</span>
-        </button>
         <p-overlayPanel #op>
             <div class="flex flex-column">
                 <div class="flex flex-row justify-content-between" style="width: 200px;">
                     <div class="flex flex-row">
-                        <img [src]="this.imgProfile" alt="" width="30px" height="30px" class="p-link">
+                        <img [src]="this.imgProfile" alt="" width="30px" height="30px" class="p-link" *ngIf="imgProfile">
                         <div style="text-align: start; margin-left: 5px; justify-content: center; margin-top: 3px;"><b>{{username}}</b></div>
                     </div>
                     <button (click)="cerrarSesion()" class="p-link" pTooltip="Cerrar sesión">
@@ -35,19 +30,15 @@
                         <span></span>
                     </button>
                 </div>
-                <div *ngFor="let rol of this.oauthService.usuarioLogueado?.lstRol">
+                <!--<div *ngFor="let rol of this.oauthService.usuarioLogueado?.lstRol">
                     <div style="text-align: center; justify-content: center; margin-top: 5px;"><b>{{rol}}</b></div>
-                </div>
+                </div>-->
             </div>
         </p-overlayPanel>
         
         <button class="p-link layout-topbar-button" (click)="op.toggle($event)">
             <i class="pi pi-user"></i>
             <span>Profile</span>
-        </button>
-        <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
-            <i class="pi pi-cog"></i>
-            <span>Settings</span>
         </button>
     </div>
 </div>

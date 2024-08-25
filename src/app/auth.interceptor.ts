@@ -6,23 +6,22 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-
+import { TokenService } from './componentes/servicios/token.service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor() { 
-  }
+    constructor(private tokenService: TokenService) { 
+    }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.url != 'https://accounts.google.com/.well-known/openid-configuration') {
-      const token = 'tu-token-bearer-aqui'; 
-      const authReq = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      return next.handle(authReq);
+    if(this.tokenService.getToken()) { 
+        const token = 'tu-token-bearer-aqui'; 
+        const authReq = req.clone({
+            setHeaders: {
+            Authorization: `Bearer ${this.tokenService.getToken()}`
+            }
+        });
+        return next.handle(authReq);
     }
     return next.handle(req);
   }

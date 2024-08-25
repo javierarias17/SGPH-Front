@@ -4,7 +4,8 @@ import { LayoutService } from "./service/app.layout.service";
 import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
 import { LoginService } from '../componentes/servicios/login.service';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { GoogleLoginService } from '../componentes/servicios/google-login.service';
+import { TokenService } from '../componentes/servicios/token.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-topbar',
@@ -32,14 +33,19 @@ export class AppTopBarComponent implements OnInit {
 
     constructor(public layoutService: LayoutService, 
         public periodoAcademicoService:PeriodoAcademicoService,
-        private loginService: LoginService,
-        public oauthService: GoogleLoginService
-        ) { }
+        private tokenService: TokenService,
+        private router: Router,
+        public loginService: LoginService,
+        public oauthService: OAuthService
+    ) { }
 
 
     ngOnInit() {
-        this.username = this.oauthService.getProfile().name
-        this.imgProfile = this.oauthService.getProfile().picture
+        this.username = this.tokenService.getUserName();
+        this.username="Cerrar sesión";
+        let valor:any = this.oauthService.getIdentityClaims();        
+        this.imgProfile = valor.picture;
+
         this.periodoAcademicoService.subcribirDataPeriodoAcademico().subscribe(r =>{
             if(r){
                 this.periodoAcademico = r.anio+"-"+r.periodo;
@@ -50,6 +56,7 @@ export class AppTopBarComponent implements OnInit {
         });
     }
     cerrarSesion() {
-        this.loginService.cerrarSesion()
+        this.tokenService.logOut();
+        this.router.navigate(['/auth/login']);
     }
 }

@@ -11,7 +11,6 @@ import { AuthGuardGuard } from './auth-guard.guard';
                 path: '', component: AppLayoutComponent, canActivate: [AuthGuardGuard],
                 children: [
                     { path: '', redirectTo: '/home/inicio', pathMatch: 'full' },
-                    //{ path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'home', loadChildren: () => import('./componentes/componentes.module').then(m => m.ComponentesModule) },
                     { path: 'periodo-academico', loadChildren: () => import('./componentes/componentes.module').then(m => m.ComponentesModule) },
                     { path: 'datos', loadChildren: () => import('./componentes/componentes.module').then(m => m.ComponentesModule) },
