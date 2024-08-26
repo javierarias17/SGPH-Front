@@ -43,8 +43,11 @@ export class AppTopBarComponent implements OnInit {
     ngOnInit() {
         this.imgProfile = null;
         this.username = this.tokenService.getUserName();
-        let valor:any = this.oauthService.getIdentityClaims();        
-        this.imgProfile = valor.picture;
+
+        let valor:any = this.oauthService.getIdentityClaims();
+        if(valor){
+            this.imgProfile = valor.picture;
+        }        
 
         this.periodoAcademicoService.subcribirDataPeriodoAcademico().subscribe(r =>{
             if(r){
@@ -56,6 +59,7 @@ export class AppTopBarComponent implements OnInit {
         });
     }
     cerrarSesion() {
+        this.oauthService.logOut();
         this.tokenService.logOut();
         this.router.navigate(['/auth/login']);
     }

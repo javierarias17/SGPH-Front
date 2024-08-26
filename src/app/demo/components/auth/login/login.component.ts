@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit {
 
     async loginGoogle() {
        try{
-            this.tokenService.setToken(this.oauthService.getAccessToken())
             const idToken = this.oauthService.getIdToken();
             const payload = JSON.parse(atob(idToken.split('.')[1]));
             const email = payload.email;
@@ -70,16 +69,16 @@ export class LoginComponent implements OnInit {
             
             if(tokenDto == null){
                 console.error('Error durante el flujo de login', tokenDto);
-                this.showMessageService.showMessage("error", "Usuario aun no registrado")
+                this.showMessageService.showMessage("error", "Usuario no registrado")
             }else{
                 this.establercerInfoLocalStorage(tokenDto);
                 this.router.navigate(['/'])
             }
         } catch (error) {
+            this.oauthService.logOut();
             console.error('Error al intentar iniciar sesión con Google:', error);
-            this.showMessageService.showMessage("error", "Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.");
+            this.showMessageService.showMessage("error", "Usuario no registrado")
         }
-
     }
 
     async iniciarSesionGoogle() {
@@ -120,7 +119,7 @@ export class LoginComponent implements OnInit {
             },
             err => {
                 this.isLogged = false;
-                this.showMessageService.showMessage("error", "Usuario aun no registrado")
+                this.showMessageService.showMessage("error", "Nombre de usuario o contraseña erróneos")
             }
         );
     }
