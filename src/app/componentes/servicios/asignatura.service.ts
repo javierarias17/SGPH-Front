@@ -16,7 +16,7 @@ export class AsignaturaService{
     /**
 	 * Método encargado de obtener las materias de un programa
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@unicauca.com.co>
+	 * @author apedro
 	 * 
 	 * @param idPrograma
 	 * @return

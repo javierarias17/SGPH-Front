@@ -1,6 +1,16 @@
 <img class="marca-agua" src="https://upload.wikimedia.org/wikipedia/commons/5/57/Logo_de_la_Universidad_del_Cauca.svg" alt="Marca de Agua">
 
 <h1>Bienvenido a SGPH</h1>
+<!--Se muestran los roles del usuario-->
+<div style="text-align: center;">
+    <p style="margin: 0; display: inline;">
+        <strong>Roles:</strong>
+        <span *ngFor="let authority of autorities; let i = index">
+            {{ 'gestionar.usuario.filtro.rol.usuario.'+authority | translate  }}<span *ngIf="i < autorities.length - 1">, </span>
+        </span>
+    </p>
+</div>
+
 <h5>Preguntas frecuentes en la gestión de horarios</h5>
 <ul>
     <li>

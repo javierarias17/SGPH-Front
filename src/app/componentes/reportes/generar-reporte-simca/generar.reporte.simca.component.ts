@@ -36,30 +36,31 @@ export class GenerarReporteSimcaComponent implements OnInit {
 
   ngOnInit(): void {
     this.inicializarFormulario()
-    this.obtenerFacultades()
     this.obtenerPeriodoAcademico()
+
+    this.programaService.consultarProgramasPermitidosPorUsuario().subscribe(
+      (lstProgramaOutDTO: ProgramaOutDTO[]) => {
+          if(lstProgramaOutDTO.length === 0){
+              this.listaProgramas=[];
+          }else{
+              this.listaProgramas=lstProgramaOutDTO;
+          }
+      },
+      (error) => {
+          console.error(error);
+      }
+    );
+
+    this.limpiar();
   }
 
   inicializarFormulario() {
     this.formulario = this.fb.group({
       periodo: [{value: null}, Validators.required],
-      idFacultad: [{value: null}, Validators.required],
       idPrograma: [{value: null}, Validators.required],
     })
   }
-  obtenerPeriodosAbiertos() {
 
-  }
-  obtenerFacultades() {
-    this.facultadService.consultarFacultades().subscribe(
-      (lstFacultadOutDTO: FacultadOutDTO[]) => {
-          this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
-      },
-      (error) => {
-        console.error(error);
-      }
-  ); 
-  }
   obtenerPeriodoAcademico() {
     this.periodoAcademicoService.consultarPeriodosAcademicos({} as any).subscribe(r => {
       this.periodosAcademicos = r.content
@@ -69,22 +70,7 @@ export class GenerarReporteSimcaComponent implements OnInit {
     }));
     })
   }
-  onFacultadChange() {
-    if (this.idFacultad().value!==null) {
-      this.programaService.consultarProgramasPorIdFacultad([this.idFacultad().value]).subscribe(
-          (r: ProgramaOutDTO[]) => {
-              this.listaProgramas = r
-          },
-          (error) => {
-              console.error(error);
-          }
-        );
-        let idFacultades: number[] = []
-        idFacultades.push(this.idFacultad().value)
-   } else {
-    this.limpiar()
-   }
-  }
+
   limpiar() {
     this.formulario.reset()
   }
@@ -95,8 +81,7 @@ export class GenerarReporteSimcaComponent implements OnInit {
         this.periodo().value
         let filtro = {
             idPrograma: this.idPrograma().value,
-            idPeriodo: this.periodo().value,
-            idFacultad: this.idFacultad().value
+            idPeriodo: this.periodo().value
         }
         this.sharedService.obtenerReporteSimca(filtro).subscribe(r => {
             this.isLoading = false
@@ -124,8 +109,7 @@ export class GenerarReporteSimcaComponent implements OnInit {
         this.periodo().value
         let filtro = {
             idPrograma: this.idPrograma().value,
-            idPeriodo: this.periodo().value,
-            idFacultad: this.idFacultad().value
+            idPeriodo: this.periodo().value
         }
         this.isLoading = true
         this.sharedService.obtenerReporteSimca(filtro).subscribe(r => {
@@ -173,9 +157,6 @@ export class GenerarReporteSimcaComponent implements OnInit {
 
   periodo(): FormControl {
     return this.formulario.get("periodo") as FormControl
-  }
-  idFacultad(): FormControl {
-    return this.formulario.get("idFacultad") as FormControl
   }
   idPrograma(): FormControl {
     return this.formulario.get("idPrograma") as FormControl

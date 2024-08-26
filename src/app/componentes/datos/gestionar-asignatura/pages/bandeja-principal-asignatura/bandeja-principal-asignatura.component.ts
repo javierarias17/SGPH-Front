@@ -22,8 +22,6 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   mostrarDialogoBandera: boolean = false
   base64String: any;
   @ViewChild('fileUpload') fileUpload: FileUpload;
-  public facultadesSeleccionadas: number[] = [];
-  public lstFacultadOutDTO: FacultadOutDTO[] = [];
   public listaProgramas: any[] = [];
   public programasSeleccionados: number[] = [];
   public numeroSemestre:number
@@ -46,9 +44,37 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
 
   ngOnInit(): void {
     this.listaEstadosCrear()
-    this.consultarFacultades()
     this.listarAsignaturasBase()
+
+    this.programaService.consultarProgramasPermitidosPorUsuario().subscribe(
+      (lstProgramaOutDTO: ProgramaOutDTO[]) => {
+          if(lstProgramaOutDTO.length === 0){
+              this.listaProgramas=[];
+          }else{
+              this.listaProgramas=lstProgramaOutDTO
+
+              this.cargando = true;
+                this.filtro = {
+                  pageNumber: 0,
+                  pageSize: 10,
+                  idProgramas: this.listaProgramas.map(p => p.idPrograma),
+                  semestre: this.numeroSemestre,
+                  estado: this.estado
+                }
+              this.asignaturaService.filtrarAsignaturas(this.filtro).subscribe(asignaturas => {
+                this.asignaturas = asignaturas.content
+                this.totalRecords = asignaturas.totalElements
+                this.cargando = false;
+              })
+
+          }
+      },
+      (error) => {
+          console.error(error);
+      }
+    );
   }
+  
   listaEstadosCrear() {
     Object.keys(EstadoDocenteEnum).forEach(key => {
       const translatedLabel = this.translateService.instant('estado.' + key);
@@ -56,23 +82,11 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   });
   }
 
-  consultarFacultades() {
-    this.facultadService.consultarFacultades().subscribe(
-      (lstFacultadOutDTO: FacultadOutDTO[]) => {
-          this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
-      },
-      (error) => {
-          console.error(error);
-      }
-    );  
-  }
-
   listarAsignaturasBase() {
     this.cargando = true;
     this.filtro = {
         pageNumber: 0,
         pageSize: 10,
-        idFacultades: this.facultadesSeleccionadas,
         idProgramas: this.programasSeleccionados,
         semestre: this.numeroSemestre,
         estado: this.estado
@@ -88,7 +102,6 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
     this.filtro = {
       pageNumber: Math.floor($event.first / $event.rows),
       pageSize: $event.rows,
-      idFacultades: this.facultadesSeleccionadas,
       idProgramas: this.programasSeleccionados,
       semestre: this.numeroSemestre,
       estado: this.estado
@@ -165,27 +178,7 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
       this.listarAsignaturasBase()
     })
   }
-  onChangeFacultad() {
-    if (this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0) {
-      this.programaService.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas.map(facultad => facultad)).subscribe(
-          (lstProgramaOutDTO: ProgramaOutDTO[]) => {
-              if(lstProgramaOutDTO.length === 0){
-                  this.listaProgramas=[];
-              } else {
-                  this.programasSeleccionados=null;
-                  this.listaProgramas = lstProgramaOutDTO.map((programa: any) => ({ abreviatura: programa.abreviatura, nombre: programa.nombre, idPrograma:programa.idPrograma }));
-              }
-              this.listarAsignaturasBase()
-          },
-          (error) => {
-              console.error(error);
-          }
-        );   
-   } else {
-    this.limpiar()
-    this.asignaturas = []
-   }
- }
+
  cargarArchivo() {
   this.mostrarDialogoBandera = true
  }
@@ -194,7 +187,6 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
  }
  limpiar() {
   this.programasSeleccionados = null
-  this.facultadesSeleccionadas = null
   this.numeroSemestre = null
  }
  onProgramasChange() {

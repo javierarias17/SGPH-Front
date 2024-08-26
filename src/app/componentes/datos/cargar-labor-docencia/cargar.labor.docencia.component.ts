@@ -36,7 +36,7 @@ export class CargarLaborDocenciaComponent implements OnInit {
     this.cargar = !this.cargar
   }
   cargarProgramas() {
-    this.programaService.consultarProgramas().subscribe(
+    this.programaService.consultarProgramasPermitidosPorUsuario().subscribe(
       (r: ProgramaOutDTO[]) => {
           this.listaProgramas = r
       },

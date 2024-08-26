@@ -11,30 +11,6 @@
 <!--<div class="card p-fluid">-->
     <div class="grid" style="width: 100%;">
         <div class="p-fluid col sm:col-12 md:col-3">
-            <label>Facultad</label>
-            <p-multiSelect 
-                [ngClass]="{'w-30rem':true }"
-                maxSelectedLabels="4" 
-                selectedItemsLabel="{0} Facultades seleccionadas" 
-                optionLabel="abreviatura" 
-                [defaultLabel]="'Seleccione facultad'"
-                [options]="lstFacultadOutDTO" 
-                [(ngModel)]="facultadesSeleccionadas"  
-                [filter]="false"
-                [showClear]="true"
-                optionLabel="abreviatura" 
-                optionValue="idFacultad"
-                (ngModelChange)="this.onChangeFacultad()"
-                appendTo = "body"
-                >
-                <ng-template let-facultad pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                        <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
-                    </div>
-                </ng-template>
-            </p-multiSelect>
-        </div>
-        <div class="p-fluid col sm:col-12 md:col-3">
             <label style="text-align: right;">Programa</label>
             <p-multiSelect 
                 maxSelectedLabels="4" 
@@ -48,7 +24,7 @@
                 [ngClass]="{'w-30rem':true }"
                 [filter]="false"
                 [showClear]="true"
-                [disabled]="facultadesSeleccionadas == null || listaProgramas.length === 0"
+                [disabled]="false"
                 (ngModelChange)="onProgramasChange()" >
             <ng-template let-programa pTemplate="item">
                 <div class="flex align-items-center gap-2">
@@ -60,13 +36,13 @@
         <div class="p-fluid col sm:col-12 md:col-3">
             <label style="text-align: right;">Semestre</label>
             <p-inputNumber 
-                [placeholder]="facultadesSeleccionadas?.length === 0 ? '':'Ingrese semestre'"
+                [placeholder]="'Ingrese semestre'"
                 [step]="1"
                 [showButtons]="true" 
                 [min]="1" 
                 [max]="10"
                 [showClear]="true"
-                [disabled]="facultadesSeleccionadas == null || facultadesSeleccionadas?.length === 0"
+                [disabled]="false"
                 [(ngModel)]="numeroSemestre"
                 (ngModelChange)="onSemestreChange()">
             </p-inputNumber>
@@ -80,7 +56,7 @@
                 [options]="listaEstados" 
                 [(ngModel)]="estado"
                 [showClear]="true"
-                [disabled]="facultadesSeleccionadas == null || facultadesSeleccionadas?.length === 0"
+                [disabled]="false"
                 (ngModelChange)="this.listarAsignaturasBase()">
             </p-dropdown>
         </div>                                    

@@ -29,17 +29,9 @@ export class GestionarCursoComponent {
 
     public listaCursoPlanificacionOutDTO: CursoPlanificacionOutDTO[] = [];
 
-    public lstFacultadOutDTO: FacultadOutDTO[] = [];
-
-    public facultadesSeleccionadas: any[] = [];
-
     public listaProgramas: any[] = [];
 
-    public programasSeleccionados: any[] = [];
-        
-    public listaHorarios= [];
-    
-    public horarioSeleccionado: { label: string, codigo: EstadoCursoHorarioEnum }= null;
+    public programasSeleccionados: any[] = [];   
     
     public listaAsignaturas: any[] = [];
     
@@ -81,22 +73,25 @@ export class GestionarCursoComponent {
 
     public ngOnInit() {   
         this.consultarPeriodoAcademicoVigente();
-        this.filtroCursoPlanificacionDTO.registrosPorPagina = this.registrosPorPagina;    
-
-        this.facultadService.consultarFacultades().subscribe(
-            (lstFacultadOutDTO: FacultadOutDTO[]) => {
-                this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
+        this.filtroCursoPlanificacionDTO.registrosPorPagina = this.registrosPorPagina;        
+        this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
+        
+        this.programaService.consultarProgramasPermitidosPorUsuario().subscribe(
+            (lstProgramaOutDTO: ProgramaOutDTO[]) => {
+                if(lstProgramaOutDTO.length === 0){
+                    this.listaProgramas=[];
+                    this.filtroCursoPlanificacionDTO.listaIdPrograma =null;
+                }else{
+                    this.programasSeleccionados=[];
+                    this.listaProgramas = lstProgramaOutDTO.map((programa: any) => ({ abreviatura: programa.abreviatura, nombre: programa.nombre, idPrograma:programa.idPrograma }));
+                    this.filtroCursoPlanificacionDTO.listaIdPrograma = lstProgramaOutDTO.map(programa => programa.idPrograma);
+                }
+                this.consultarCursosPorFiltro();
             },
             (error) => {
-              console.error(error);
+                console.error(error);
             }
-        );  
-
-        this.listaHorarios = [
-            { label: 'Parcial', codigo: EstadoCursoHorarioEnum.PARCIALMENTE },
-            { label: 'Sin horario', codigo: EstadoCursoHorarioEnum.SIN_ASIGNAR },
-            { label: 'Completo', codigo: EstadoCursoHorarioEnum.ASIGNADO }
-        ];
+        );   
     }
 
     private consultarCursosPorFiltro(){
@@ -112,56 +107,13 @@ export class GestionarCursoComponent {
         );
     }
   
-    public onFacultadesChange(){
-        this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
-        if(this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0){
-            this.programaService.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas.map(facultad => facultad.idFacultad)).subscribe(
-                (lstProgramaOutDTO: ProgramaOutDTO[]) => {
-                    if(lstProgramaOutDTO.length === 0){
-                        this.listaProgramas=[];
-                        this.filtroCursoPlanificacionDTO.listaIdPrograma =null;
-                    }else{
-                        this.programasSeleccionados=null;
-                        this.listaProgramas = lstProgramaOutDTO.map((programa: any) => ({ abreviatura: programa.abreviatura, nombre: programa.nombre, idPrograma:programa.idPrograma }));
-                        this.filtroCursoPlanificacionDTO.listaIdPrograma = lstProgramaOutDTO.map(programa => programa.idPrograma);
-                    }
-                    this.filtroCursoPlanificacionDTO.listaIdFacultad = this.facultadesSeleccionadas.map(facultad => facultad.idFacultad);
-                    this.consultarCursosPorFiltro();
-                },
-                (error) => {
-                    console.error(error);
-                }
-                );   
-        }else{
-            this.listaCursoPlanificacionOutDTO = [];
-            this.totalRecords=undefined;
-            //Se limpian variables de las listas desplegables
-            this.listaProgramas=[];
-            this.listaAsignaturas=[];
-            //Se limpian valores del filtro
-            this.filtroCursoPlanificacionDTO.listaIdFacultad=null;
-            this.filtroCursoPlanificacionDTO.listaIdPrograma=null;
-            this.filtroCursoPlanificacionDTO.listaIdAsignatura=null;
-            this.filtroCursoPlanificacionDTO.cantidadDocentes=null;
-            this.filtroCursoPlanificacionDTO.estadoCursoHorario=null;
-            this.filtroCursoPlanificacionDTO.semestre=null;
-            //Se limpian variables de los inputs
-            this.facultadesSeleccionadas =[];
-            this.programasSeleccionados=null;
-            this.asignaturasSeleccionadas=null;
-            this.numeroSemestre=null;
-            this.horarioSeleccionado=null;
-            this.numeroDocente=null;
-        }
-    }   
-
     public onProgramasChange(){        
         this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
         if(this.programasSeleccionados){
-            this.filtroCursoPlanificacionDTO.listaIdPrograma = this.programasSeleccionados.map(programa => programa.idPrograma);
+            this.filtroCursoPlanificacionDTO.listaIdPrograma = this.programasSeleccionados;
 
             if(this.programasSeleccionados.length === 1){
-                this.asignaturaService.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0].idPrograma).subscribe(
+                this.asignaturaService.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0]).subscribe(
                     (response: any) => {
                         if(response.length === 0){
                             this.listaAsignaturas=[];
@@ -175,10 +127,13 @@ export class GestionarCursoComponent {
                     }
                     );
             }else{
+                this.asignaturasSeleccionadas=[];
                 this.listaAsignaturas=[];
+                this.filtroCursoPlanificacionDTO.listaIdAsignatura = null;
                 this.consultarCursosPorFiltro();
             }
         }else{
+            this.programasSeleccionados=[];
             this.listaAsignaturas=[];
             this.asignaturasSeleccionadas=null;
             this.filtroCursoPlanificacionDTO.listaIdPrograma=null;
@@ -209,16 +164,6 @@ export class GestionarCursoComponent {
         this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
         this.consultarCursosPorFiltro();
     }   
-
-    public onHorarioChange(){   
-        if(this.horarioSeleccionado){
-            this.filtroCursoPlanificacionDTO.estadoCursoHorario = this.horarioSeleccionado.codigo;
-        }else{
-            this.filtroCursoPlanificacionDTO.estadoCursoHorario =null;
-        }     
-        this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
-        this.consultarCursosPorFiltro();
-    } 
 
     public onDocenteChange(){
         if( this.numeroDocente === null){

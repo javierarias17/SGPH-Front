@@ -15,7 +15,7 @@ export class DocenteService{
 	 * Método encargado de obtener los docentes dado un conjunto de criterios de
 	 * busqueda.
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@unicauca.com.co>
+	 * @author apedro
 	 * 
 	 * @param filtroDocenteDTO
 	 * @return
@@ -28,7 +28,7 @@ export class DocenteService{
      /**
 	 * Método encargado de obtener los docentes asociados a un curso
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@unicauca.com.co>
+	 * @author apedro
 	 * 
 	 * @param idCurso
 	 * @return

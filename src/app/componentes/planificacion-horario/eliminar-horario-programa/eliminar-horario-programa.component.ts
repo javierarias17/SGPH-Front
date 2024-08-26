@@ -36,7 +36,6 @@ export class EliminarHorarioProgramaComponent {
     constructor(
         private fb: FormBuilder,
         private programaService: ProgramaService,
-        private facultadService: FacultadService,
         private planificacionManualService: PlanificacionManualService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
@@ -46,59 +45,33 @@ export class EliminarHorarioProgramaComponent {
     public ngOnInit(): void {
         this.consultarPeriodoAcademicoVigente();
         this.inicializarFormulario();
-        this.obtenerFacultades();
-    }
 
-    private inicializarFormulario() {
-        this.formulario = this.fb.group({
-            idFacultad: [{ value: null }, Validators.required],
-            idPrograma: [{ value: null }, Validators.required],
-        });
-    }
-
-    private obtenerFacultades() {
-        this.facultadService.consultarFacultades().subscribe(
-            (lstFacultadOutDTO: FacultadOutDTO[]) => {
-                this.lstFacultadOutDTO = lstFacultadOutDTO.map(
-                    (facultadOutDTO: FacultadOutDTO) => ({
-                        abreviatura: facultadOutDTO.abreviatura,
-                        nombre: facultadOutDTO.nombre,
-                        idFacultad: facultadOutDTO.idFacultad,
-                    })
-                );
+        this.programaService.consultarProgramasPermitidosPorUsuario().subscribe(
+            (lstProgramaOutDTO: ProgramaOutDTO[]) => {
+                if(lstProgramaOutDTO.length === 0){
+                    this.listaProgramas=[];
+                }else{
+                    this.listaProgramas=lstProgramaOutDTO;
+                }
             },
             (error) => {
                 console.error(error);
             }
         );
+
+        this.limpiar();
     }
 
-    public onFacultadChange() {
-        if (this.idFacultad().value !== null) {
-            this.programaService
-                .consultarProgramasPorIdFacultad([this.idFacultad().value])
-                .subscribe(
-                    (r: ProgramaOutDTO[]) => {
-                        this.listaProgramas = r;
-                    },
-                    (error) => {
-                        console.error(error);
-                    }
-                );
-            let idFacultades: number[] = [];
-            idFacultades.push(this.idFacultad().value);
-        } else {
-            this.limpiar();
-        }
+    private inicializarFormulario() {
+        this.formulario = this.fb.group({
+            idPrograma: [{ value: null }, Validators.required],
+        });
     }
 
     private limpiar() {
         this.formulario.reset();
     }
 
-    public idFacultad(): FormControl {
-        return this.formulario.get('idFacultad') as FormControl;
-    }
     public idPrograma(): FormControl {
         return this.formulario.get('idPrograma') as FormControl;
     }

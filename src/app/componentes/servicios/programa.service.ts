@@ -16,7 +16,7 @@ export class ProgramaService{
 	 * Método encargado de consultar los programas asociados a una lista de
 	 * facultades
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
+	 * @author apedro
 	 * 
 	 * @param lstIdFacultad
 	 * @return
@@ -30,7 +30,7 @@ export class ProgramaService{
 	/**
 	 * Método encargado de consultar todos los programas
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
+	 * @author apedro
 	 * 
 	 * @return
 	 */
@@ -38,4 +38,18 @@ export class ProgramaService{
 		const url = `${environment.url}${this.urlAdministrarPrograma}/consultarProgramas`;
 		return this.http.get<ProgramaOutDTO[]>(url);
 	}
+
+	/**
+	 * Método encargado de consultar los programas permitidos para el usuario que se
+	 * encuentra logueado
+	 * 
+	 * @author apedro
+	 * 
+	 * @return
+	 */
+	public consultarProgramasPermitidosPorUsuario(): Observable<ProgramaOutDTO[]> {
+		const url = `${environment.url}${this.urlAdministrarPrograma}/consultarProgramasPermitidosPorUsuario`;
+		return this.http.get<ProgramaOutDTO[]>(url);
+	}
+
 }

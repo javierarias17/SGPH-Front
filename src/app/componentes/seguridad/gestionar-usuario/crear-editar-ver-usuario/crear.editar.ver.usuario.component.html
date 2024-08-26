@@ -98,6 +98,16 @@
             </div>
         </div>
         <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Contraseña</label>
+            <input type="text" class="p-inputtext" 
+            formControlName="password"  
+            name="password"
+            placeholder="Ingrese contraseña">
+            <div class="p-error block" *ngIf="this.formulario.get('password').invalid && this.formulario.get('password').touched">
+                <div *ngIf="this.formulario.get('password').errors.required">El password es requerido</div>            
+            </div>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Estado</label>
             <p-dropdown 
                 [options]="listaEstados" 

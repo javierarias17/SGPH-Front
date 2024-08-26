@@ -4,22 +4,22 @@ import { Observable } from 'rxjs';
 import { LoginService } from './componentes/servicios/login.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class RolesGuard implements CanActivate {
 
-  constructor(private loginService: LoginService) {
+    constructor(private loginService: LoginService) {
 
-  }
+    }
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return false;
-  }
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        return false;
+    }
 
-  async obtenerRolDelUsuarioLogueado(correo: string) {
-    return null
-  }
+    async obtenerRolDelUsuarioLogueado(correo: string) {
+        return null
+    }
   
 }

@@ -44,7 +44,6 @@ export class PlanificacionSemestreAnteriorComponent {
     constructor(
         private fb: FormBuilder,
         private programaService: ProgramaService,
-        private facultadService: FacultadService,
         private dialogService: DialogService,
         private planificacionManualService: PlanificacionManualService,
         private messageService: MessageService,
@@ -56,15 +55,27 @@ export class PlanificacionSemestreAnteriorComponent {
 
     public ngOnInit(): void {
         this.inicializarFormulario();
-        this.obtenerFacultades();
         this.obtenerPeriodoAcademico();
+
+        this.programaService.consultarProgramasPermitidosPorUsuario().subscribe(
+            (lstProgramaOutDTO: ProgramaOutDTO[]) => {
+                if(lstProgramaOutDTO.length === 0){
+                    this.listaProgramas=[];
+                }else{
+                    this.listaProgramas=lstProgramaOutDTO;
+                }
+            },
+            (error) => {
+                console.error(error);
+            }
+        );
+        this.limpiar();
     }
 
     private inicializarFormulario() {
         this.formulario = this.fb.group({
 			periodo: [{value: null, disabled: true}],
 			periodoAnterior: [{value: null}, Validators.required],
-            idFacultad: [{ value: null }, Validators.required],
             idPrograma: [{ value: null }, Validators.required],
             lstIdAsignatura: [{ value: null }]
         });
@@ -88,42 +99,6 @@ export class PlanificacionSemestreAnteriorComponent {
 		})
 	}
 
-    private obtenerFacultades() {
-        this.facultadService.consultarFacultades().subscribe(
-            (lstFacultadOutDTO: FacultadOutDTO[]) => {
-                this.lstFacultadOutDTO = lstFacultadOutDTO.map(
-                    (facultadOutDTO: FacultadOutDTO) => ({
-                        abreviatura: facultadOutDTO.abreviatura,
-                        nombre: facultadOutDTO.nombre,
-                        idFacultad: facultadOutDTO.idFacultad,
-                    })
-                );
-            },
-            (error) => {
-                console.error(error);
-            }
-        );
-    }
-
-    public onFacultadChange() {
-        if (this.idFacultad().value !== null) {
-            this.programaService
-                .consultarProgramasPorIdFacultad([this.idFacultad().value])
-                .subscribe(
-                    (r: ProgramaOutDTO[]) => {
-                        this.listaProgramas = r;
-                    },
-                    (error) => {
-                        console.error(error);
-                    }
-                );
-            let idFacultades: number[] = [];
-            idFacultades.push(this.idFacultad().value);
-        } else {
-            this.limpiar();
-        }
-    }
-
 	public onProgramasChange(){      
         this.lstIdAsignatura().reset();  
 		if(this.idPrograma().value){
@@ -145,7 +120,6 @@ export class PlanificacionSemestreAnteriorComponent {
     }
 
     private limpiar() {
-        this.idFacultad().reset();
         this.idPrograma().reset();
         this.lstIdAsignatura().reset();
         this.periodoAnterior().reset();
@@ -156,9 +130,6 @@ export class PlanificacionSemestreAnteriorComponent {
 	public periodoAnterior(): FormControl {
 		return this.formulario.get("periodoAnterior") as FormControl
 	}
-    public idFacultad(): FormControl {
-        return this.formulario.get('idFacultad') as FormControl;
-    }
     public idPrograma(): FormControl {
         return this.formulario.get('idPrograma') as FormControl;
     }
@@ -263,19 +234,5 @@ export class PlanificacionSemestreAnteriorComponent {
                     console.error(error);
                 }
             );
-    }
-
-    private mostrarResultadoGeneracion(listaErrores: string[],cantidadCursosActualizados: number,cantidadCursosNoCorrelacionados: number):void  {
-        const ref = this.dialogService.open(ResultadoGeneracionHorarioComponent, {
-          height: 'auto',
-          width: '800px',
-          header: 'Resultado generación horario',
-          closable: true,
-          data: {
-            listaErrores: listaErrores,
-            cantidadCursosActualizados: cantidadCursosActualizados,
-            cantidadCursosNoCorrelacionados: cantidadCursosNoCorrelacionados
-          }
-        },)
     }
 }

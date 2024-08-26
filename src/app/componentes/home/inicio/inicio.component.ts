@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TokenService } from '../../servicios/token.service';
 
 @Component({
   selector: 'app-inicio',
@@ -6,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent {
+
+  public autorities: string[] = [];
+
+  constructor(private tokenService:TokenService) { }
+
+  ngOnInit(): void {
+    this.autorities = this.tokenService.getAuthorities();
+  }
 
 }

@@ -31,7 +31,7 @@ export class EspacioFisicoService {
     /**
 	 * Método encargado de consultar los tipos de espacios físicos por ubicaciones
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
+	 * @author apedro
 	 * 
 	 * @param lstIdUbicacion
 	 * @return
@@ -46,7 +46,7 @@ export class EspacioFisicoService {
 	 *  Método encargado de consultar los espacios físicos por diferentes criterios
 	 * de busqueda y retornarlos de manera paginada
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@unicauca.com.co>
+	 * @author apedro
 	 * 
 	 * @param filtroEspacioFisicoDTO
 	 * @return
@@ -60,7 +60,7 @@ export class EspacioFisicoService {
 	 * Método encargado de consultar los tipo de espacios físicos
 	 * asociados a una lista de edificios
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@unicauca.com.co>
+	 * @author apedro
 	 * 
 	 * @param lstIdEdificio
 	 * @return

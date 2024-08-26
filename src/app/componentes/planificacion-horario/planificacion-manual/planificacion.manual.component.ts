@@ -30,12 +30,6 @@ export class PlanificacionManualComponent {
 
     public listaCursoPlanificacionOutDTO: CursoPlanificacionOutDTO[] = [];
 
-    public lstFacultadOutDTO: FacultadOutDTO[] = [];
-
-    public facultadesSeleccionadas: number[] = [];
-
-    public idFacultadSeleccionada: number;
-
     public listaProgramas: any[] = [];
 
     public programasSeleccionados: number[] = [];
@@ -75,7 +69,7 @@ export class PlanificacionManualComponent {
     @ViewChild('asociarEspacioFisico') asociarEspacioFisico: AsociarEspacioFisicoComponent;
     @ViewChild('asociarDocente') asociarDocente: AsociarDocenteComponent;
 
-    constructor(private facultadService:FacultadService,
+    constructor(
         private programaService: ProgramaService, 
         private asignaturaService:AsignaturaService,
         private planificacionManualService: PlanificacionManualService,
@@ -88,15 +82,25 @@ export class PlanificacionManualComponent {
 
         this.infoGeneralCursosPorProgramaDTO=null;
         this.filtroCursoPlanificacionDTO.registrosPorPagina = this.registrosPorPagina;        
+        this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
         
-        this.facultadService.consultarFacultades().subscribe(
-            (lstFacultadOutDTO: FacultadOutDTO[]) => {
-                this.lstFacultadOutDTO = lstFacultadOutDTO.map((facultadOutDTO: FacultadOutDTO) => ({ abreviatura: facultadOutDTO.abreviatura, nombre:facultadOutDTO.nombre, idFacultad:facultadOutDTO.idFacultad }));
+        this.programaService.consultarProgramasPermitidosPorUsuario().subscribe(
+            (lstProgramaOutDTO: ProgramaOutDTO[]) => {
+                if(lstProgramaOutDTO.length === 0){
+                    this.listaProgramas=[];
+                    this.filtroCursoPlanificacionDTO.listaIdPrograma =null;
+                    this.infoGeneralCursosPorProgramaDTO=null;
+                }else{
+                    this.programasSeleccionados=[];
+                    this.listaProgramas = lstProgramaOutDTO.map((programa: any) => ({ abreviatura: programa.abreviatura, nombre: programa.nombre, idPrograma:programa.idPrograma }));
+                    this.filtroCursoPlanificacionDTO.listaIdPrograma = lstProgramaOutDTO.map(programa => programa.idPrograma);
+                }
+                this.consultarCursosPorFiltro();
             },
             (error) => {
                 console.error(error);
             }
-        );  
+        ); 
 
         Object.keys(EstadoCursoHorarioEnum).forEach(key => {
             const translatedLabel = this.translateService.instant('planificacion.manual.filtro.estado.horario.' + key);
@@ -137,51 +141,6 @@ export class PlanificacionManualComponent {
         );
     }
 
-    public onFacultadesChange(){
-        this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
-        if(this.facultadesSeleccionadas!==null && this.facultadesSeleccionadas.length !== 0){
-            this.programaService.consultarProgramasPorIdFacultad(this.facultadesSeleccionadas).subscribe(
-                (lstProgramaOutDTO: ProgramaOutDTO[]) => {
-                    if(lstProgramaOutDTO.length === 0){
-                        this.listaProgramas=[];
-                        this.filtroCursoPlanificacionDTO.listaIdPrograma =null;
-                        this.infoGeneralCursosPorProgramaDTO=null;
-                    }else{
-                        this.programasSeleccionados=null;
-                        this.listaProgramas = lstProgramaOutDTO.map((programa: any) => ({ abreviatura: programa.abreviatura, nombre: programa.nombre, idPrograma:programa.idPrograma }));
-                        this.filtroCursoPlanificacionDTO.listaIdPrograma = lstProgramaOutDTO.map(programa => programa.idPrograma);
-                    }
-                    this.filtroCursoPlanificacionDTO.listaIdFacultad = this.facultadesSeleccionadas;
-                    this.consultarCursosPorFiltro();
-                },
-                (error) => {
-                    console.error(error);
-                }
-                );   
-        }else{
-            this.infoGeneralCursosPorProgramaDTO=null;
-            this.listaCursoPlanificacionOutDTO = [];
-            this.totalRecords=undefined;
-            //Se limpian variables de las listas desplegables
-            this.listaProgramas=[];
-            this.listaAsignaturas=[];
-            //Se limpian valores del filtro
-            this.filtroCursoPlanificacionDTO.listaIdFacultad=null;
-            this.filtroCursoPlanificacionDTO.listaIdPrograma=null;
-            this.filtroCursoPlanificacionDTO.listaIdAsignatura=null;
-            this.filtroCursoPlanificacionDTO.cantidadDocentes=null;
-            this.filtroCursoPlanificacionDTO.estadoCursoHorario=null;
-            this.filtroCursoPlanificacionDTO.semestre=null;
-            //Se limpian variables de los inputs
-            this.facultadesSeleccionadas =[];
-            this.programasSeleccionados=null;
-            this.asignaturasSeleccionadas=null;
-            this.numeroSemestre=null;
-            this.horarioSeleccionado=null;
-            this.numeroDocente=null;
-        }
-    }   
-
     public onProgramasChange(){        
         this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
         if(this.programasSeleccionados){
@@ -206,9 +165,11 @@ export class PlanificacionManualComponent {
                 this.asignaturasSeleccionadas=[];
                 this.listaAsignaturas=[];
                 this.infoGeneralCursosPorProgramaDTO=null;
+                this.filtroCursoPlanificacionDTO.listaIdAsignatura = null;
                 this.consultarCursosPorFiltro();
             }
         }else{
+            this.programasSeleccionados=[];
             this.infoGeneralCursosPorProgramaDTO=null;
             this.listaAsignaturas=[];
             this.asignaturasSeleccionadas=null;

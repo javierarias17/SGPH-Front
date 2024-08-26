@@ -18,7 +18,7 @@ export class UsuarioService{
 	 * Método encargado de obtener los usuarios dado un conjunto de criterios de
 	 * busqueda.
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@unicauca.com.co>
+	 * @author apedro
 	 * 
 	 * @param filtroDocenteDTO
 	 * @return

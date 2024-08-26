@@ -26,7 +26,7 @@ export class PlanificacionManualService{
 	 * Método encargado de obtener los cursos dado un conjunto de criterios de
 	 * busqueda.
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@unicauca.com.co>
+	 * @author apedro
 	 * 
 	 * @param filtroCursoPlanificacionDTO
 	 * @return
@@ -40,7 +40,7 @@ export class PlanificacionManualService{
  	 * Método encargado de consultar la información gneral de los cursos de un
 	 * programa dado el identificador del programa
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@unicauca.com.co>
+	 * @author apedro
 	 * 
 	 * @param idPrograma Identificador del programa
 	 * @return
@@ -105,7 +105,7 @@ export class PlanificacionManualService{
 	/**
 	 * Método encargado de obtener los espacios físicos asociadas a un curso.
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
+	 * @author apedro
 	 * 
 	 * @param idCurso
 	 * @return
@@ -123,7 +123,7 @@ export class PlanificacionManualService{
 	 /**
 	 * Método encargado de obtener todas las franjas horarias de un docente
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
+	 * @author apedro
 	 * 
 	 * @param idPersona
 	 * @return
@@ -137,7 +137,7 @@ export class PlanificacionManualService{
 	/**
 	 * Método encargado de obtener todas las franjas horarias de un espacio físico
 	 *
-	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
+	 * @author apedro
 	 * 
 	 * @param idEspacioFisico
 	 * @return

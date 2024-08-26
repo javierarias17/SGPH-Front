@@ -15,7 +15,7 @@ export class FacultadService{
     /**
 	 * Método encargado de consultar todas las facultades </br>
 	 * 
-	 * @author Pedro Javier Arias Lasso <parias@heinsohn.com.co>
+	 * @author apedro
 	 * 
 	 * @return
 	 */
