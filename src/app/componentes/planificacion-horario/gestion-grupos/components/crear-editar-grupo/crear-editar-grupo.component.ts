@@ -18,8 +18,7 @@ import { map, Observable, of } from 'rxjs';
 
 @Component({
     selector: 'app-crear-editar-grupo',
-    templateUrl: './crear-editar-grupo.component.html',
-    styleUrls: ['./crear-editar-grupo.component.scss'],
+    templateUrl: './crear-editar-grupo.component.html'
 })
 export class CrearEditarGrupoComponent implements OnInit {
     lectura: boolean;

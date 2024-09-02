@@ -16,7 +16,7 @@ import { DialogService } from 'primeng/dynamicdialog';
     selector: 'app-gestionar-usuario',
     templateUrl: './gestionar.usuario.component.html',
     styleUrls: ['./gestionar.usuario.component.css'],
-	providers:[MessageService, UsuarioService, ProgramaService, LenguajeService]
+	providers:[UsuarioService, ProgramaService, LenguajeService]
 })
 export class GestionarUsuarioComponent {
     private readonly PAGINA_CERO: number = 0;
@@ -196,16 +196,6 @@ export class GestionarUsuarioComponent {
             return this.translateService.instant('gestionar.usuario.filtro.rol.usuario.' + rolOutDTO.rolUsuario);
         }
         return "";
-    }
-
-    /**
-     * Método invocado por los botones Crear, Actualizar y Ver 
-     * para desplegar el modal crearEditarVerUsuario
-     *
-     * @author parias 
-     */
-    public abrirModalCrearEditarVerUsuario(usuarioOutDTOSeleccionado: UsuarioOutDTO, tituloModal: string ) {
-
     }
 
     /**

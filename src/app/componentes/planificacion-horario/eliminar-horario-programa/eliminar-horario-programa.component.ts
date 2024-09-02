@@ -13,12 +13,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { PeriodoAcademicoOutDTO } from '../../dto/periodo-academico/periodo-academico-out-dto';
-import { FacultadService } from '../../servicios/facultad.service';
 
 @Component({
     selector: 'app-eliminar-horario-programa',
     templateUrl: './eliminar-horario-programa.component.html',
-    styleUrls: ['./eliminar-horario-programa.component.scss'],
     providers: [PlanificacionManualService],
 })
 export class EliminarHorarioProgramaComponent {

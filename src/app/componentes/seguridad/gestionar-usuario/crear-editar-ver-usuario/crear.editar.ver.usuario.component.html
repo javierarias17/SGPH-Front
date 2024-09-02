@@ -81,6 +81,7 @@
             [style.opacity]="this.esPersonaExistente ? '0.6' : '1'">  
             <div class="p-error block" *ngIf="this.formulario.get('email').invalid && this.formulario.get('email').touched">
                 <div *ngIf="this.formulario.get('email').errors.required">El email es requerido</div>
+                <div *ngIf="this.formulario.get('email').errors.email">Formato incorrecto</div>
                 <div *ngIf="this.formulario.get('email').errors?.ExisteEmail">{{ this.formulario.get('email').errors?.ExisteEmail }}</div>            
             </div>
         </div>
@@ -203,6 +204,7 @@
     <!--Operación Ver-->
     <div class="grid" *ngIf="lectura" style="margin-left: 3%;">
         <div class="col-12">
+            <br>
             <!--Información personal-->
             <h5>Información personal</h5>
             <div class="flex justify-content-start flex-wrap">

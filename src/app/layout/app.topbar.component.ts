@@ -46,7 +46,8 @@ export class AppTopBarComponent implements OnInit {
 
         let valor:any = this.oauthService.getIdentityClaims();
         if(valor){
-            this.imgProfile = valor.picture;
+            this.imgProfile = valor.picture.trim();
+            this.loadImageWithRetry(this.imgProfile);
         }        
 
         this.periodoAcademicoService.subcribirDataPeriodoAcademico().subscribe(r =>{
@@ -62,5 +63,20 @@ export class AppTopBarComponent implements OnInit {
         this.oauthService.logOut();
         this.tokenService.logOut();
         this.router.navigate(['/auth/login']);
+    }
+
+
+    loadImageWithRetry(url: string) {
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+            console.log('Imagen cargada correctamente');
+        };
+        img.onerror = () => {
+            console.log('Falló la carga de la imagen, reintentando en 2 segundos...');
+            setTimeout(() => {
+                this.imgProfile = url; // Reasigna la URL para forzar la recarga
+            }, 2000); // Reintenta cargar la imagen después de 2 segundos
+        };
     }
 }

@@ -111,6 +111,12 @@ export class LoginComponent implements OnInit {
     }
  
     public iniciarSesionNormal(){
+
+        if (this.formulario.invalid) {
+            this.formulario.markAllAsTouched();
+            return;
+        }
+
         this.loginService.login(this.nombreUsuario().value, this.password().value).subscribe(
             data => {
                 this.isLogged = true;   

@@ -13,7 +13,7 @@
                     </div>                
                     <form [formGroup]="formulario">
                         <div class="p-fluid col sm:col-12">
-                            <label for="email1" class="block text-900 text-xl font-medium mb-2">Nombre de usuario</label>
+                            <label for="email1" class="block text-900 text-xl font-medium mb-2">Usuario</label>
                             <input id="email1" 
                                 type="text" 
                                 placeholder="Nombre de usuario" 
@@ -28,7 +28,7 @@
                                 >
                             <small class="p-error block fade-in" *ngIf="this.nombreUsuario().invalid &&
                                         (this.nombreUsuario().touched)">
-                                 usuario es obligatorio
+                                 Usuario es obligatorio
                             </small>
                         </div>
     

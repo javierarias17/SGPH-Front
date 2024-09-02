@@ -25,7 +25,6 @@ import { ShowMessageService } from 'src/app/shared/service/show-message.service'
 @Component({
   selector: 'app-crear-editar-ver-usuario',
   templateUrl: './crear.editar.ver.usuario.component.html',
-  styleUrls: ['./crear.editar.ver.usuario.component.css'],
   providers: [ LenguajeService]
 })
 export class CrearEditarVerUsuarioComponent implements OnInit {   
@@ -68,7 +67,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
          private personaService:PersonaService,
          private config: DynamicDialogConfig,
          private ref: DynamicDialogRef,
-         private messageService: ShowMessageService){
+         private messageService: MessageService){
     }
     public ngOnInit(): void {
         this.lectura=this.config.data.lectura;
@@ -160,7 +159,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             primerApellido: [null, [Validators.required]],
             segundoNombre: [null],
             segundoApellido: [null],
-            email: [null, [Validators.required],[this.existeEmailValidator(),this.existeNombreUsuarioValidator()]],
+            email: [null, [Validators.required, Validators.email],[this.existeEmailValidator(),this.existeNombreUsuarioValidator()]],
             nombreUsuario: [ { value: null, disabled: true }, [Validators.required]],
             password: [null, [Validators.required]],
             estado: [ null, [Validators.required]],
@@ -494,12 +493,12 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
     private guardarUsuario() {
         this.usuarioService.guardarUsuario(this.usuarioInDTO).subscribe({
             next: (r) => {
-                this.messageService.showMessage("success", "Usuario guardado")
+                this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario guardado' });
                 this.ref.close()
                 console.log(r)
               },
               error: (r) => {
-                this.messageService.showMessage("error", "Error al guardar")
+                this.messageService.add({ severity: 'error', detail: 'Error al guardar' });
                 console.log(r)
               }
         }); 

@@ -16,8 +16,7 @@ interface FiltroGrupoDTO{
 }
 @Component({
     selector: 'app-bandeja-grupos',
-    templateUrl: './bandeja-grupos.component.html',
-    styleUrls: ['./bandeja-grupos.component.scss'],
+    templateUrl: './bandeja-grupos.component.html'
 })
 export class BandejaGruposComponent implements OnInit {
     public facultadesSeleccionadas: number[] = [];

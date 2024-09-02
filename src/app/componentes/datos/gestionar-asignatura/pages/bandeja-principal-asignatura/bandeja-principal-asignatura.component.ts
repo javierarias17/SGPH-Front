@@ -29,7 +29,6 @@ export class BandejaPrincipalAsignaturaComponent implements OnInit {
   public estado: string
   constructor(public dialog: DialogService, 
     private asignaturaService: AsignaturaService,
-    private facultadService: FacultadService,
     private programaService: ProgramaService,
     private confirmationService: ConfirmationService,
     private mensageService: ShowMessageService,
