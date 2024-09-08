@@ -28,7 +28,7 @@
                     </div>
                     <div class="p-fluid col sm:col-12 md:col-3">
                         <label class="required">Periodo académico anterior</label>
-                        <p-dropdown [placeholder]="' '" [ngClass]="{'ng-invalid ng-dirty':this.periodoAnterior().invalid && this.periodoAnterior().touched }" [options]="lstPeriodoAcademicosSinVigente"
+                        <p-dropdown [placeholder]="'Seleccione periodo'" [ngClass]="{'ng-invalid ng-dirty':this.periodoAnterior().invalid && this.periodoAnterior().touched }" [options]="lstPeriodoAcademicosSinVigente"
                             formControlName="periodoAnterior" [showClear]="true" optionValue="idPeriodoAcademico" optionLabel="anioPeriodo" appendTo="body">
                             <ng-template let-periodo pTemplate="item">
                                 <div class="flex align-items-center gap-2">
@@ -42,7 +42,7 @@
                     </div>
                     <div class="p-fluid col sm:col-12 md:col-3">
                         <label class="required">Programa</label>
-                        <p-dropdown [placeholder]="' '" [options]="listaProgramas" optionValue="idPrograma"
+                        <p-dropdown [placeholder]="'Seleccione programa'" [options]="listaProgramas" optionValue="idPrograma"
                             optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
                             [ngClass]="{'ng-invalid ng-dirty': this.idPrograma().invalid && this.idPrograma().touched }"
                             (ngModelChange)="onProgramasChange()">

@@ -26,10 +26,10 @@ export class GenerarReporteSimcaComponent implements OnInit {
   isLoading: boolean = false
   constructor(private fb: FormBuilder,
      private programaService: ProgramaService,
-     private facultadService: FacultadService,
      private sharedService: SharedService,
      private dialogService: DialogService,
-     private periodoAcademicoService: PeriodoAcademicoService
+     private periodoAcademicoService: PeriodoAcademicoService,
+     private spinnerService: SpinnerService
     ) {
 
   }
@@ -76,15 +76,17 @@ export class GenerarReporteSimcaComponent implements OnInit {
   }
   visualizar() {
     if (this.formulario.valid) {
-        this.isLoading = true
-        this.idPrograma().value
-        this.periodo().value
-        let filtro = {
-            idPrograma: this.idPrograma().value,
-            idPeriodo: this.periodo().value
-        }
+      this.idPrograma().value
+      this.periodo().value
+      let filtro = {
+        idPrograma: this.idPrograma().value,
+        idPeriodo: this.periodo().value
+      }
+      this.isLoading = true
+      this.spinnerService.show("Generando reporte, esto puede tardar unos minutos...");
         this.sharedService.obtenerReporteSimca(filtro).subscribe(r => {
             this.isLoading = false
+            this.spinnerService.hide();
             if (r) {
                 this.base64 = r.archivoBase64
                 this.dialogService.open(VisualizadorExcelComponent, {
@@ -97,7 +99,13 @@ export class GenerarReporteSimcaComponent implements OnInit {
                     }
                 });
             }
-        })
+        },
+            (error: any) => {
+              console.error(error); 
+              this.isLoading = false;
+              this.spinnerService.hide();
+        }
+      )
     } else {
         this.formulario.markAllAsTouched()
     }
@@ -112,13 +120,20 @@ export class GenerarReporteSimcaComponent implements OnInit {
             idPeriodo: this.periodo().value
         }
         this.isLoading = true
+        this.spinnerService.show("Generando reporte, esto puede tardar unos minutos...");
         this.sharedService.obtenerReporteSimca(filtro).subscribe(r => {
                 this.isLoading = false
+                this.spinnerService.hide();
                 if (r) {
                     this.base64 = r.archivoBase64
                     this.downloadExcelFile()
                 }
-            })
+            },
+            (error: any) => {
+              console.error(error); 
+              this.isLoading = false;
+              this.spinnerService.hide();
+          })
     } else {
       this.formulario.markAllAsTouched()
     }

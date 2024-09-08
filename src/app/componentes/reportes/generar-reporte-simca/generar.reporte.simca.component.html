@@ -8,7 +8,7 @@
         <form class="grid" [formGroup]="formulario">
             <div class="p-fluid col sm:col-12 md:col-3">
                 <label class="required">Periodo académico</label>
-                <p-dropdown [placeholder]="' '" [ngClass]="{
+                <p-dropdown [placeholder]="'Seleccione periodo'" [ngClass]="{
                                 'ng-invalid ng-dirty':
                                     this.periodo().invalid &&
                                     this.periodo().touched
@@ -27,7 +27,7 @@
             </div>
             <div class="p-fluid col sm:col-12 md:col-3">
                 <label>Programa</label>
-                <p-dropdown [placeholder]="' '" [options]="listaProgramas" optionValue="idPrograma"
+                <p-dropdown [placeholder]="'Seleccione programa'" [options]="listaProgramas" optionValue="idPrograma"
                     optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
                     [ngClass]="{
                             'ng-invalid ng-dirty':

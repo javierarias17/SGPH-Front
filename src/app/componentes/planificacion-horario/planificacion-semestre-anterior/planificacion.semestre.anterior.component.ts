@@ -15,8 +15,6 @@ import { PlanificacionManualService } from '../../servicios/planificacion.manual
 import { DialogService } from 'primeng/dynamicdialog';
 import { ProgramaService } from '../../servicios/programa.service';
 import { AsignaturaService } from '../../servicios/asignatura.service';
-import { ResultadoGeneracionHorarioComponent } from './resultado-generacion-horario/resultado-generacion-horario.component';
-import { FacultadService } from '../../servicios/facultad.service';
 import { SpinnerService } from 'src/app/shared/service/spinner.service';
 
 @Component({
@@ -77,7 +75,7 @@ export class PlanificacionSemestreAnteriorComponent {
 			periodo: [{value: null, disabled: true}],
 			periodoAnterior: [{value: null}, Validators.required],
             idPrograma: [{ value: null }, Validators.required],
-            lstIdAsignatura: [{ value: null }]
+            lstIdAsignatura: [{ value: null, disabled: this.listaAsignaturas.length === 0 }]
         });
     }
 
@@ -106,9 +104,11 @@ export class PlanificacionSemestreAnteriorComponent {
 				(response: any) => {
 					if(response.length === 0){
 						this.listaAsignaturas=[];
+                        this.formulario.get('lstIdAsignatura').disable();
 					}else{
 						this.listaAsignaturas = response.map((asignatura: any) => ({ nombre: asignatura.nombre, semestre: asignatura.semestre, idAsignatura:asignatura.idAsignatura }));
-					}
+                        this.formulario.get('lstIdAsignatura').enable();
+                    }
 				},
 				(error) => {
 					console.error(error);
@@ -116,6 +116,7 @@ export class PlanificacionSemestreAnteriorComponent {
 				);
 		}else{
 			this.listaAsignaturas=[];
+            this.formulario.get('lstIdAsignatura').disable();
 		}  
     }
 

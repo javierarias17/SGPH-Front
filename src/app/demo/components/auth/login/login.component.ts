@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         const config: AuthConfig = {
             issuer: 'https://accounts.google.com',
             strictDiscoveryDocumentValidation: false,
-            clientId: '367828352403-9q6b2b1662fripg3q68q4bd7ugarlrpo.apps.googleusercontent.com',
+            clientId: '209217537458-cmls25384a06iif0mca643mpqrebig26.apps.googleusercontent.com',
             redirectUri: window.location.origin + '/auth/login',
             scope: 'openid profile email',
         }
