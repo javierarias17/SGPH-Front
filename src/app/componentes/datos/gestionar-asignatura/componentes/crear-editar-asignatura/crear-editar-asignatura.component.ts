@@ -5,12 +5,13 @@ import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.ou
 import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.out.dto';
 import { AgrupacionPorFacultad } from '../../model/agrupacion-por-facultad';
 import { SharedService } from 'src/app/shared/service/shared.service';
-import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { AsignaturaOutDTO } from '../../model/asignatura-dto';
 import { AsignaturaService } from 'src/app/componentes/servicios/asignatura.service';
 import { ProgramaService } from 'src/app/componentes/servicios/programa.service';
 import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
+
 @Component({
   selector: 'app-crear-editar-asignatura',
   templateUrl: './crear-editar-asignatura.component.html',
@@ -31,7 +32,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
   listaProgramas: ProgramaOutDTO[]
   idGrupoSeleccionado: number[]
   lectura: boolean
-  listaAgrupadores: AgrupadorEspacioFiscioDTO[]
+  listaAgrupadores: AgrupadorEspacioFisicoDTO[]
   agrupadores: any[]
   constructor(
     private ref: DynamicDialogRef,     
@@ -85,7 +86,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
     this.agrupadores = agrupacionPorFacultad
   }
 
-  obtenerGrupoSeleccionado(grupoSeleccionado: AgrupadorEspacioFiscioDTO[]) {
+  obtenerGrupoSeleccionado(grupoSeleccionado: AgrupadorEspacioFisicoDTO[]) {
     	if (grupoSeleccionado) {
         this.idGrupoSeleccionado = grupoSeleccionado.map(g => g.idAgrupadorEspacioFisico);
       }

@@ -1,4 +1,4 @@
-export interface AgrupadorEspacioFisicoDTO {
+export class AgrupadorEspacioFisicoDTO {
     idAgrupadorEspacioFisico: number;
     nombreFacultad: string;
     nombre: string;

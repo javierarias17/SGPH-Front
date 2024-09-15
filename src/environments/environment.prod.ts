@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  url: "http://ec2-18-116-33-185.us-east-2.compute.amazonaws.com:8081/"
+  //url: "http://159.89.37.197:8080/"
+  url: "http://localhost:8080/"
+
 };

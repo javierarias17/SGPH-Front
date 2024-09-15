@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
-import { AgrupadorEspacioFiscioDTO } from '../model/AgrupadorEspacioFisicoDTO';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +16,11 @@ export class SharedService {
   urlDocente: string = "AdministrarDocente";
   constructor(private http: HttpClient) { }
 
-  public obtenerAgrupadorEspacioFisico(ídFacultades: number[]): Observable<AgrupadorEspacioFiscioDTO[]> {
+  public obtenerAgrupadorEspacioFisico(ídFacultades: number[]): Observable<AgrupadorEspacioFisicoDTO[]> {
     const url = `${environment.url}${this.urlAgrupador}/consultarAgrupadoresEspaciosFisicosPorIdFacultad`;
     let idFacultadesStr = ídFacultades.join(',');
     let params = new HttpParams().set('idFacultad', idFacultadesStr);
-    return this.http.get<AgrupadorEspacioFiscioDTO[]>(url, { params: params });
+    return this.http.get<AgrupadorEspacioFisicoDTO[]>(url, { params: params });
   }
   public consultarFacultades(): Observable<FacultadOutDTO[]>{
     const url = `${environment.url}${this.urlFacultad}/consultarFacultades`;

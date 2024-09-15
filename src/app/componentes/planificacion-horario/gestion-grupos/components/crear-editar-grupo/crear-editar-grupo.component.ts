@@ -10,11 +10,11 @@ import {
 } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
-import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
 import { AgrupadorService } from '../../services/agrupador.service';
 import { map, Observable, of } from 'rxjs';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
 
 @Component({
     selector: 'app-crear-editar-grupo',
@@ -23,7 +23,7 @@ import { map, Observable, of } from 'rxjs';
 export class CrearEditarGrupoComponent implements OnInit {
     lectura: boolean;
     formulario: FormGroup;
-    grupo: AgrupadorEspacioFiscioDTO;
+    grupo: AgrupadorEspacioFisicoDTO;
     public lstFacultadOutDTO: FacultadOutDTO[] = [];
     constructor(
         private facultadService: FacultadService,
@@ -50,7 +50,7 @@ export class CrearEditarGrupoComponent implements OnInit {
                 return of(null); 
             }
             
-            let grupo: AgrupadorEspacioFiscioDTO = this.formulario.value;
+            let grupo: AgrupadorEspacioFisicoDTO = this.formulario.value;
             grupo.nombre = this.nombre().value;
             grupo.observacion = this.observacion().value;
             grupo.idFacultad = this.idFacultad().value;
@@ -114,7 +114,7 @@ export class CrearEditarGrupoComponent implements OnInit {
     }
     guardarGrupo() {
         if (this.formulario.valid) {
-            let grupo: AgrupadorEspacioFiscioDTO = this.formulario.value;
+            let grupo: AgrupadorEspacioFisicoDTO = this.formulario.value;
             grupo.idAgrupadorEspacioFisico =
                 this.grupo?.idAgrupadorEspacioFisico;
             grupo.esValidar = false;

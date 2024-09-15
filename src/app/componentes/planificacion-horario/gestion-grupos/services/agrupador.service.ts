@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -16,11 +16,11 @@ export class AgrupadorService {
 
   public filtrarGrupos(filtro: any): Observable<any> {
     const url = `${environment.url}${this.urlAgrupador}/filtrarGrupos`;
-    return this.httpClient.post<AgrupadorEspacioFiscioDTO[]>(url, filtro);
+    return this.httpClient.post<AgrupadorEspacioFisicoDTO[]>(url, filtro);
   }
-  public guardarGrupo(grupo: AgrupadorEspacioFiscioDTO): Observable<AgrupadorEspacioFiscioDTO> {
+  public guardarGrupo(grupo: AgrupadorEspacioFisicoDTO): Observable<AgrupadorEspacioFisicoDTO> {
     const url = `${environment.url}${this.urlAgrupador}/guardarGrupo`;
-    return this.httpClient.post<AgrupadorEspacioFiscioDTO>(url, grupo);
+    return this.httpClient.post<AgrupadorEspacioFisicoDTO>(url, grupo);
   }
   public obtenerEspacioFiscioAgrupador(idGrupo: number): Observable<any> {
     const url = `${environment.url}${this.urlEspacioFisico}/obtenerEspaciosFisicosAsignadosAAgrupadorId/${idGrupo}`;
@@ -36,6 +36,6 @@ export class AgrupadorService {
   }
   public guardarAsignacion(agrupacion: any): Observable<any> {
     const url = `${environment.url}${this.urlAgrupador}/guardarAsignacion`;
-    return this.httpClient.post<AgrupadorEspacioFiscioDTO>(url, agrupacion);
+    return this.httpClient.post<AgrupadorEspacioFisicoDTO>(url, agrupacion);
   }
 }

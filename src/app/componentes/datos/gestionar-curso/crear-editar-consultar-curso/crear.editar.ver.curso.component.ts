@@ -9,9 +9,9 @@ import { CursoService} from 'src/app/componentes/servicios/curso.service';
 import { AsignaturaOutDTO } from '../../gestionar-asignatura/model/asignatura-dto';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { AsignaturaService } from 'src/app/componentes/servicios/asignatura.service';
-import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { ProgramaService } from 'src/app/componentes/servicios/programa.service';
 import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
 
 @Component({
   selector: 'app-crear-editar-ver-curso',
@@ -75,7 +75,7 @@ export class CrearEditarVerCursoComponent {
 
   }
 
-  obtenerGrupoSeleccionado(grupoSeleccionado: AgrupadorEspacioFiscioDTO[]) {
+  obtenerGrupoSeleccionado(grupoSeleccionado: AgrupadorEspacioFisicoDTO[]) {
     	if (grupoSeleccionado) {
         this.idGrupoSeleccionado = grupoSeleccionado.map(g => g.idAgrupadorEspacioFisico);
       }

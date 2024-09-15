@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TipoEspacioFisicoOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/tipo.espacio.fisico.out.dto';
-import { AgrupadorEspacioFiscioDTO } from 'src/app/shared/model/AgrupadorEspacioFisicoDTO';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { UbicacionOutDTO } from 'src/app/componentes/dto/espacio-fisico/out/ubicacion.out.dto';
 import { EspacioFisicoService } from 'src/app/componentes/servicios/espacio.fisico.service';
 import { AgrupadorService } from '../../services/agrupador.service';
 import { SpinnerService } from 'src/app/shared/service/spinner.service';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
 
 @Component({
 selector: 'app-asignar-espacio-fisico',
@@ -15,7 +15,7 @@ styleUrls: ['./asignar-espacio-fisico.component.css']
 })
 export class AsignarEspacioFisicoComponent implements OnInit {
 
-    grupoSeleccionado: AgrupadorEspacioFiscioDTO
+    grupoSeleccionado: AgrupadorEspacioFisicoDTO
 
     listaTipoEspacioFisico: TipoEspacioFisicoOutDTO[] = []
 
