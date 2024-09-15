@@ -1,4 +1,0 @@
-:host ::ng-deep .p-picklist-buttons > button:nth-child(2),
-:host ::ng-deep .p-picklist-buttons > button:nth-child(4) {
-    display: none;
-}

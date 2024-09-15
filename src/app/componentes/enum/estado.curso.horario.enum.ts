@@ -1,5 +1,0 @@
-export enum EstadoCursoHorarioEnum {
-	ASIGNADO = 'ASIGNADO',
-	PARCIALMENTE = 'PARCIALMENTE',
-  	SIN_ASIGNAR = 'SIN_ASIGNAR'
-}
