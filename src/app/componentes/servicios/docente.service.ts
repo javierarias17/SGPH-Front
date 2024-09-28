@@ -22,7 +22,27 @@ export class DocenteService{
 	 */ 
 	public consultarDocentes(filtroDocenteDTO: FiltroDocenteDTO): Observable<any> {
 		const url = `${environment.url}${this.urlDocente}/consultarDocentes`;
-		return this.http.post<any>(url, filtroDocenteDTO);
+
+		// Crear los parámetros de URL a partir del objeto filtroDocenteDTO
+		let params = new HttpParams();
+
+		if (filtroDocenteDTO.nombre) {
+			params = params.set('nombre', filtroDocenteDTO.nombre);
+		}
+		if (filtroDocenteDTO.numeroIdentificacion) {
+			params = params.set('numeroIdentificacion', filtroDocenteDTO.numeroIdentificacion);
+		}
+		if (filtroDocenteDTO.codigo) {
+			params = params.set('codigo', filtroDocenteDTO.codigo);
+		}
+		if (filtroDocenteDTO.estado) {
+			params = params.set('estado', filtroDocenteDTO.estado.toString());
+		}
+		params = params.set('pagina', filtroDocenteDTO.pagina?.toString() || '0');
+		params = params.set('registrosPorPagina', filtroDocenteDTO.registrosPorPagina?.toString() || '10');
+
+		// Realizar la solicitud GET con los parámetros
+		return this.http.get<any>(url, { params });
 	}   
 
      /**

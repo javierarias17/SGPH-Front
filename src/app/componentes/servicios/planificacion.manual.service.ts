@@ -33,7 +33,31 @@ export class PlanificacionManualService{
 	 */
     public consultarCursosPlanificacionPorFiltro(filtroCursoPlanificacionDTO:FiltroCursoPlanificacionDTO): Observable<any>{
 		const url = `${environment.url}${this.urlPlanificacionManual}/consultarCursosPlanificacionPorFiltro`;
-        return this.http.post<any>(url, filtroCursoPlanificacionDTO);  
+
+		let params = new HttpParams();
+	
+		if (filtroCursoPlanificacionDTO.estadoCursoHorario) {
+			params = params.set('estadoCursoHorario', filtroCursoPlanificacionDTO.estadoCursoHorario.toString());
+		}
+		if (filtroCursoPlanificacionDTO.listaIdFacultad && filtroCursoPlanificacionDTO.listaIdFacultad.length > 0) {
+			params = params.set('listaIdFacultad', filtroCursoPlanificacionDTO.listaIdFacultad.join(','));
+		}
+		if (filtroCursoPlanificacionDTO.listaIdPrograma && filtroCursoPlanificacionDTO.listaIdPrograma.length > 0) {
+			params = params.set('listaIdPrograma', filtroCursoPlanificacionDTO.listaIdPrograma.join(','));
+		}
+		if (filtroCursoPlanificacionDTO.listaIdAsignatura && filtroCursoPlanificacionDTO.listaIdAsignatura.length > 0) {
+			params = params.set('listaIdAsignatura', filtroCursoPlanificacionDTO.listaIdAsignatura.join(','));
+		}
+		if (filtroCursoPlanificacionDTO.semestre) {
+			params = params.set('semestre', filtroCursoPlanificacionDTO.semestre.toString());
+		}
+		params = params.set('pagina', filtroCursoPlanificacionDTO.pagina?.toString() || '0');
+		params = params.set('registrosPorPagina', filtroCursoPlanificacionDTO.registrosPorPagina?.toString() || '10');
+		if (filtroCursoPlanificacionDTO.cantidadDocentes) {
+			params = params.set('cantidadDocentes', filtroCursoPlanificacionDTO.cantidadDocentes.toString());
+		}
+	
+		return this.http.get<any>(url, { params }); 
     }  
 
 	/**
@@ -77,8 +101,47 @@ export class PlanificacionManualService{
 	 * @return
 	 */
 	public consultarFranjasHorariasDisponiblesPorCurso(filtroFranjaHorariaDisponibleCursoDTO: FiltroFranjaHorariaDisponibleCursoDTO): Observable<FranjaHorariaCursoDTO[]> {
-		const url = `${environment.url}${this.urlPlanificacionManual}/consultarFranjasHorariasDisponiblesPorCurso`;
-		return this.http.post<FranjaHorariaCursoDTO[]>(url, filtroFranjaHorariaDisponibleCursoDTO);
+	    const url = `${environment.url}${this.urlPlanificacionManual}/consultarFranjasHorariasDisponiblesPorCurso`;
+
+		// Crear los parámetros de URL a partir del objeto filtroFranjaHorariaDisponibleCursoDTO
+		let params = new HttpParams();
+
+		if (filtroFranjaHorariaDisponibleCursoDTO.idCurso) {
+			params = params.set('idCurso', filtroFranjaHorariaDisponibleCursoDTO.idCurso.toString());
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.idAsignatura) {
+			params = params.set('idAsignatura', filtroFranjaHorariaDisponibleCursoDTO.idAsignatura.toString());
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.horaInicio) {
+			params = params.set('horaInicio', filtroFranjaHorariaDisponibleCursoDTO.horaInicio);
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.horaFin) {
+			params = params.set('horaFin', filtroFranjaHorariaDisponibleCursoDTO.horaFin);
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.duracion) {
+			params = params.set('duracion', filtroFranjaHorariaDisponibleCursoDTO.duracion.toString());
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion && filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion.length > 0) {
+			params = params.set('listaIdUbicacion', filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion.join(','));
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.listaDiaSemanaEnum && filtroFranjaHorariaDisponibleCursoDTO.listaDiaSemanaEnum.length > 0) {
+			params = params.set('listaDiaSemanaEnum', filtroFranjaHorariaDisponibleCursoDTO.listaDiaSemanaEnum.join(','));
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico && filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico.length > 0) {
+			params = params.set('listaIdAgrupadorEspacioFisico', filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico.join(','));
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico && filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico.length > 0) {
+			params = params.set('listaIdTipoEspacioFisico', filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico.join(','));
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.salon) {
+			params = params.set('salon', filtroFranjaHorariaDisponibleCursoDTO.salon);
+		}
+		if (filtroFranjaHorariaDisponibleCursoDTO.esPrincipal !== undefined) {
+			params = params.set('esPrincipal', filtroFranjaHorariaDisponibleCursoDTO.esPrincipal.toString());
+		}
+
+		// Realizar la solicitud GET con los parámetros
+		return this.http.get<FranjaHorariaCursoDTO[]>(url, { params });
 	}
 
 	/**
@@ -158,8 +221,9 @@ export class PlanificacionManualService{
 	 * @return Booleano que indica si se eliminó con exito el horario
 	 */
 	public eliminarHorarioPrograma(eliminarHorarioInDTO: any): Observable<Boolean> {
-		const url = `${environment.url}${this.urlPlanificacionManual}/eliminarHorarioPrograma`;
-		return this.http.post<Boolean>(url, eliminarHorarioInDTO);
+		const url = `${environment.url}${this.urlPlanificacionManual}/eliminarHorarioPrograma`;    
+		const params = new HttpParams().set('idPrograma', eliminarHorarioInDTO.idPrograma.toString());
+		return this.http.delete<Boolean>(url, { params });
 	}
 
 	/**

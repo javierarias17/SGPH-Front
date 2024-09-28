@@ -13,13 +13,13 @@ export class FiltroFranjaHorariaDisponibleCursoDTO{
 
 	public duracion: number;
 
-	public listaIdUbicacion: number[];
+	public listaIdUbicacion: number[]=[];
 
-	public listaDiaSemanaEnum: DiaSemanaEnum[];
+	public listaDiaSemanaEnum: DiaSemanaEnum[]=[];
 
-	public listaIdAgrupadorEspacioFisico: number[];
+	public listaIdAgrupadorEspacioFisico: number[]=[];
 
-	public listaIdTipoEspacioFisico: number[];
+	public listaIdTipoEspacioFisico: number[]=[];
 
 	public salon: string;
 

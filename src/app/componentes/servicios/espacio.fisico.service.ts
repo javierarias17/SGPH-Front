@@ -53,7 +53,36 @@ export class EspacioFisicoService {
 	 */ 
 	public consultarEspaciosFisicos(filtroEspacioFisicoDTO: FiltroEspacioFisicoDTO): Observable<EspacioFisicoDTO> {
 		const url = `${environment.url}${this.urlAdministrarEspacioFisico}/consultarEspaciosFisicos`;
-		return this.http.post<EspacioFisicoDTO>(url, filtroEspacioFisicoDTO);
+
+		// Crear los parámetros de URL a partir del objeto filtroEspacioFisicoDTO
+		let params = new HttpParams();
+	
+		if (filtroEspacioFisicoDTO.listaIdUbicacion && filtroEspacioFisicoDTO.listaIdUbicacion.length > 0) {
+			params = params.set('listaIdUbicacion', filtroEspacioFisicoDTO.listaIdUbicacion.join(','));
+		}
+		if (filtroEspacioFisicoDTO.listaIdEdificio && filtroEspacioFisicoDTO.listaIdEdificio.length > 0) {
+			params = params.set('listaIdEdificio', filtroEspacioFisicoDTO.listaIdEdificio.join(','));
+		}
+		if (filtroEspacioFisicoDTO.listaIdTipoEspacioFisico && filtroEspacioFisicoDTO.listaIdTipoEspacioFisico.length > 0) {
+			params = params.set('listaIdTipoEspacioFisico', filtroEspacioFisicoDTO.listaIdTipoEspacioFisico.join(','));
+		}
+		if (filtroEspacioFisicoDTO.numeroEspacioFisico) {
+			params = params.set('numeroEspacioFisico', filtroEspacioFisicoDTO.numeroEspacioFisico);
+		}
+		if (filtroEspacioFisicoDTO.estado) {
+			params = params.set('estado', filtroEspacioFisicoDTO.estado.toString());
+		}
+		if (filtroEspacioFisicoDTO.capacidad) {
+			params = params.set('capacidad', filtroEspacioFisicoDTO.capacidad.toString());
+		}
+		if (filtroEspacioFisicoDTO.salon) {
+			params = params.set('salon', filtroEspacioFisicoDTO.salon);
+		}
+		params = params.set('pagina', filtroEspacioFisicoDTO.pagina?.toString() || '0');
+		params = params.set('registrosPorPagina', filtroEspacioFisicoDTO.registrosPorPagina?.toString() || '10');
+	
+		// Realizar la solicitud GET con los parámetros
+		return this.http.get<EspacioFisicoDTO>(url, { params });
 	}
 
 	/**

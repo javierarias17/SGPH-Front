@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
@@ -16,7 +16,24 @@ export class AgrupadorService {
 
   public filtrarGrupos(filtro: any): Observable<any> {
     const url = `${environment.url}${this.urlAgrupador}/filtrarGrupos`;
-    return this.httpClient.post<AgrupadorEspacioFisicoDTO[]>(url, filtro);
+
+    // Crear los parámetros de URL a partir del objeto filtro
+    let params = new HttpParams();
+
+    if (filtro.listaIdFacultades && filtro.listaIdFacultades.length > 0) {
+        params = params.set('listaIdFacultades', filtro.listaIdFacultades.join(','));
+    }
+    if (filtro.nombre) {
+        params = params.set('nombre', filtro.nombre);
+    }
+    if (filtro.pageNumber !== undefined) {
+        params = params.set('pageNumber', filtro.pageNumber.toString());
+    }
+    if (filtro.pageSize !== undefined) {
+        params = params.set('pageSize', filtro.pageSize.toString());
+    }
+    // Realizar la solicitud GET con los parámetros
+    return this.httpClient.get<AgrupadorEspacioFiscioDTO[]>(url, { params });
   }
   public guardarGrupo(grupo: AgrupadorEspacioFisicoDTO): Observable<AgrupadorEspacioFisicoDTO> {
     const url = `${environment.url}${this.urlAgrupador}/guardarGrupo`;
@@ -32,7 +49,14 @@ export class AgrupadorService {
   }
   public obtenerEspacioFiscioDispinibleFiltro(filtro: any): Observable<any> {
     const url = `${environment.url}${this.urlEspacioFisico}/consultarEspacioFisicoConFiltro`;
-    return this.httpClient.post<any>(url, filtro);
+    
+    let params = new HttpParams();
+    params = params.set('ubicacion', filtro.ubicacion);
+    params = params.set('nombre', filtro.nombre);
+    params = params.set('tipo', filtro.tipo);
+    params = params.set('idAgrupador', filtro.idAgrupador.toString());
+
+    return this.httpClient.get<any>(url, { params });
   }
   public guardarAsignacion(agrupacion: any): Observable<any> {
     const url = `${environment.url}${this.urlAgrupador}/guardarAsignacion`;
