@@ -33,7 +33,7 @@ export class AgrupadorService {
         params = params.set('pageSize', filtro.pageSize.toString());
     }
     // Realizar la solicitud GET con los parámetros
-    return this.httpClient.get<AgrupadorEspacioFiscioDTO[]>(url, { params });
+    return this.httpClient.get<AgrupadorEspacioFisicoDTO[]>(url, { params });
   }
   public guardarGrupo(grupo: AgrupadorEspacioFisicoDTO): Observable<AgrupadorEspacioFisicoDTO> {
     const url = `${environment.url}${this.urlAgrupador}/guardarGrupo`;
