@@ -25,7 +25,22 @@ export class UsuarioService{
 	 */
     public consultarUsuariosPorFiltro(filtroUsuarioDTO:FiltroUsuarioDTO): Observable<any>{
 		const url = `${environment.url}${this.urlUsuario}/consultarUsuariosPorFiltro`;
-        return this.http.post<any>(url, filtroUsuarioDTO);   
+
+		 let params = new HttpParams();
+
+		 if (filtroUsuarioDTO.nombre) {
+			 params = params.set('nombre', filtroUsuarioDTO.nombre);
+		 }
+		 if (filtroUsuarioDTO.numeroIdentificacion) {
+			 params = params.set('numeroIdentificacion', filtroUsuarioDTO.numeroIdentificacion);
+		 }
+		 if (filtroUsuarioDTO.estado !== null && filtroUsuarioDTO.estado !== undefined) {
+			 params = params.set('estado', filtroUsuarioDTO.estado.toString()); // Convertir el estado booleano a string
+		 }
+		 params = params.set('pagina', filtroUsuarioDTO.pagina?.toString() || '0');
+		 params = params.set('registrosPorPagina', filtroUsuarioDTO.registrosPorPagina?.toString() || '10');
+	 
+		 return this.http.get<any>(url, { params });
     } 
 
 	/**
@@ -66,7 +81,7 @@ export class UsuarioService{
     }  	
 
 	/**
-	 * Método encargado de consultar todos los estados de usuario
+	 * Método encargado de cambiar el estado de usuario
 	 * 
 	 * @author apedro
 	 * 
@@ -75,8 +90,9 @@ export class UsuarioService{
 	public cambiarEstadoUsuarioPorIdUsuario(idUsuario:number) {
 		const params = new HttpParams().set('idUsuario', idUsuario.toString());
 		const url = `${environment.url}${this.urlUsuario}/cambiarEstadoUsuarioPorIdUsuario`;
-		return this.http.get<UsuarioOutDTO>(url, { params });
-    }  
+		return this.http.patch<UsuarioOutDTO>(url, {}, { params });
+    } 
+
 	public consultarUsuarioActivoPorIdPersona(idPersona:number) {
 		const params = new HttpParams().set('idPersona', idPersona.toString());
 		const url = `${environment.url}${this.urlUsuario}/consultarUsuarioPorIdPersona`;

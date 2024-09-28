@@ -1,4 +1,4 @@
-import { HttpClient} from '@angular/common/http';
+import { HttpClient, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -35,9 +35,19 @@ export class PeriodoAcademicoService {
 	 * 
 	 * @return Lista de instancias PeriodoAcademicoOutDTO
 	 */
-    public consultarPeriodosAcademicos(filtro:any): Observable<any>{
+    public consultarPeriodosAcademicos(filtro: any): Observable<any> {
         const url = `${environment.url}${this.urlAdministrarPeriodoAcademico}/consultarPeriodosAcademicos`;
-        return this.http.post<any>(url, filtro);
+    
+        // Crear los parámetros de URL a partir del objeto filtroPeriodoAcademicoDTO
+        let params = new HttpParams();
+        if (filtro.pagina !== undefined && filtro.pagina !== null) {
+            params = params.set('pagina', filtro.pagina.toString());
+        }
+        if (filtro.registrosPorPagina !== undefined && filtro.registrosPorPagina !== null) {
+            params = params.set('registrosPorPagina', filtro.registrosPorPagina.toString());
+        }
+        // Realizar la solicitud GET con los parámetros
+        return this.http.get<any>(url, { params });
     }
 
     /**

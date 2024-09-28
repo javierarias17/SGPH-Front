@@ -383,16 +383,20 @@ export class AsociarEspacioFisicoComponent {
                 if(crearActualizarHorarioCursoOutDTO.esExitoso === true){
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias actualizadas con éxito.' });
                     this.consultarFranjasAsignadasCurso();
-                }else{
-                    this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
                 }
                 this.spinnerService.hide();            
             },
             (httpErrorResponse: HttpErrorResponse) => {
+                //esExitoso igual a false se maneja como 400BadRequest
                 this.spinnerService.hide();
-                console.error(httpErrorResponse);
-                this.mostrarErrorModal = true;
-                this.mensajeModal = httpErrorResponse.error.message;
+                if (httpErrorResponse.status === 400) {
+                    const crearActualizarHorarioCursoOutDTO = httpErrorResponse.error as CrearActualizarHorarioCursoOutDTO;
+                    this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
+                }else{
+                    console.error(httpErrorResponse);
+                    this.mostrarErrorModal = true;
+                    this.mensajeModal = httpErrorResponse.error.message;
+                }
             }
             );
         }else{
@@ -401,16 +405,20 @@ export class AsociarEspacioFisicoComponent {
                     if(crearActualizarHorarioCursoOutDTO.esExitoso === true){
                         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Franjas horarias actualizadas con éxito.' });
                         this.consultarFranjasAsignadasCurso();
-                    }else{
-                        this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
-                    }   
+                    }  
                     this.spinnerService.hide();         
                 },
                 (httpErrorResponse: HttpErrorResponse) => {
+                    //esExitoso igual a false se maneja como 400BadRequest
                     this.spinnerService.hide();
-                    console.error(httpErrorResponse);
-                    this.mostrarErrorModal = true;
-                    this.mensajeModal = httpErrorResponse.error.message;
+                    if (httpErrorResponse.status === 400) {
+                        const crearActualizarHorarioCursoOutDTO = httpErrorResponse.error as CrearActualizarHorarioCursoOutDTO;
+                        this.messageService.add({ severity: 'error', summary: 'Fallido', detail: crearActualizarHorarioCursoOutDTO.lstMensajesSolapamientos[0], life: 7000 });
+                    }else{
+                        console.error(httpErrorResponse);
+                        this.mostrarErrorModal = true;
+                        this.mensajeModal = httpErrorResponse.error.message;
+                    }
                 }
                 );
         }
