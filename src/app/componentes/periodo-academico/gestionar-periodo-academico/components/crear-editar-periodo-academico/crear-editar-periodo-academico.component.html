@@ -5,8 +5,7 @@
             <div class="field col-12 md:col-6">
                 <label>Fecha inicio</label>
                 <p-calendar
-                locale="es-CO"
-                [autofocus] = "false"
+                [showOnFocus]="false"
                 appendTo = "body"
                 [showIcon]="true" 
                 inputId="icon"
@@ -22,7 +21,6 @@
             <div class="field col-12 md:col-6">
                 <label>Fecha fin</label>
                 <p-calendar 
-                locale="es-CO"
                 appendTo = "body"
                 [showIcon]="true" 
                 inputId="icon"
