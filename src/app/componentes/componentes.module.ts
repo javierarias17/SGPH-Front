@@ -9,7 +9,6 @@ import { PlanificacionManualComponent } from './planificacion-horario/planificac
 import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/pages/planificacion.semestre.anterior.component';
 import { GenerarReporteSimcaComponent } from './reportes/generar-reporte-simca/pages/generar.reporte.simca.component';
 import { GestionarReservaTemporalComponent } from './reservas/gestionar-reserva-temporal/gestionar.reserva.temporal.component';
-import { GestionarReservaFacultadComponent } from './reservas/gestionar-reserva-facultad/gestionar.reserva.facultad.component';
 import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/pages/gestionar.usuario.component';
 import { AsociarDocenteComponent } from './planificacion-horario/planificacion-manual/components/asociar-docente/asociar.docente.component';
 
@@ -62,7 +61,6 @@ import { CrearEditarVerCursoComponent } from './datos/gestionar-curso/components
 		PlanificacionSemestreAnteriorComponent,
 		GenerarReporteSimcaComponent,
 		GestionarReservaTemporalComponent,
-		GestionarReservaFacultadComponent,
 		GestionarUsuarioComponent,
 		HorarioDocenteComponent,
 		BandejaReporteDocenteComponent,

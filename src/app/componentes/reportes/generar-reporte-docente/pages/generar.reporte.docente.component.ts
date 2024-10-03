@@ -1,16 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProgramaService } from '../../../common/services/programa.service';
-import { ProgramaOutDTO } from '../../../common/model/programa/out/programa.out.dto';
-import { FacultadOutDTO } from '../../../common/model/facultad/out/facultad.out.dto';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SharedService } from 'src/app/shared/service/shared.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { VisualizadorExcelComponent } from 'src/app/shared/components/visualizador-excel/visualizador-excel.component';
 import * as XLSX from 'xlsx';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
-import { PeriodoAcademicoOutDTO } from '../../../periodo-academico/gestionar-periodo-academico/model/out/periodo-academico-out-dto';
-import { FacultadService } from '../../../common/services/facultad.service';
-import { UsuarioService } from '../../../common/services/usuario.service';
+
 import { TipoIdentificacionOutDTO } from '../../../seguridad/gestionar-usuario/model/out/tipo.identificacion.out.dto';
 import { PersonaService } from '../../../common/services/persona.service';
 @Component({

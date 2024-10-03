@@ -8,7 +8,6 @@ import { GestionarPersonaComponent } from './datos/gestionar-persona/pages/gesti
 import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/pages/planificacion.manual.component';
 import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/pages/planificacion.semestre.anterior.component';
 import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/pages/gestionar.usuario.component';
-import { GestionarReservaFacultadComponent } from './reservas/gestionar-reserva-facultad/gestionar.reserva.facultad.component';
 import { GestionarReservaTemporalComponent } from './reservas/gestionar-reserva-temporal/gestionar.reserva.temporal.component';
 import { GenerarReporteSimcaComponent } from './reportes/generar-reporte-simca/pages/generar.reporte.simca.component';
 import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/pages/cargar.labor.docencia.component';
@@ -32,7 +31,6 @@ const routes: Routes=[
     { path: 'generar-reporte-simca', component: GenerarReporteSimcaComponent},
     { path: 'generar-reporte-docente', component: GenerarReporteDocenteComponent},
     { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
-    { path: 'gestionar-reserva-facultad', component: GestionarReservaFacultadComponent},
     { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
     {
       path: 'gestionar-periodo-academico',
@@ -52,7 +50,7 @@ const routes: Routes=[
       path: 'gestionar-grupos',
       loadChildren: () =>
         import(
-          "./planificacion-horario/gestion-grupos/gestion-grupos.module"
+          "./planificacion-horario/gestionar-agrupadores/gestion-grupos.module"
         ).then((m) => m.GestionGruposModule)
   }
 ]
