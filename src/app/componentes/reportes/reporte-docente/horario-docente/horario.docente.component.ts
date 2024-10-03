@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { DocenteOutDTO } from 'src/app/componentes/dto/docente/out/docente.out.dto';
-import { FranjaHorariaDocenteDTO } from 'src/app/componentes/dto/docente/out/franja.horaria.docente.dto';
-import { DiaSemanaEnum } from 'src/app/componentes/enum/dia.semana.enum';
-import { PlanificacionManualService } from 'src/app/componentes/servicios/planificacion.manual.service';
+import { DiaSemanaEnum } from 'src/app/componentes/common/enum/dia.semana.enum';
+import { DocenteOutDTO } from 'src/app/componentes/datos/gestionar-docente/model/out/docente.out.dto';
+import { FranjaHorariaDocenteDTO } from 'src/app/componentes/datos/gestionar-docente/model/out/franja.horaria.docente.dto';
+import { PlanificacionManualService } from 'src/app/componentes/common/services/planificacion.manual.service';
 
 @Component({
 	selector: 'app-horario-docente',

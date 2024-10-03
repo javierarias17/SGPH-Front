@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GestionarCursoComponent } from './datos/gestionar-curso/gestionar.curso.component';
-import { GestionarDocenteComponent } from './datos/gestionar-docente/gestionar.docente.component';
-import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/gestionar.espacio.fisico.component';
-import { InicioComponent } from './home/inicio/inicio.component';
-import { GestionarPersonaComponent } from './datos/gestionar-persona/gestionar.persona.component';
-import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/planificacion.manual.component';
-import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/planificacion.semestre.anterior.component';
-import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/gestionar.usuario.component';
+import { GestionarCursoComponent } from './datos/gestionar-curso/pages/gestionar.curso.component';
+import { GestionarDocenteComponent } from './datos/gestionar-docente/pages/gestionar.docente.component';
+import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/pages/gestionar.espacio.fisico.component';
+import { InicioComponent } from './home/pages/inicio.component';
+import { GestionarPersonaComponent } from './datos/gestionar-persona/pages/gestionar.persona.component';
+import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/pages/planificacion.manual.component';
+import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/pages/planificacion.semestre.anterior.component';
+import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/pages/gestionar.usuario.component';
 import { GestionarReservaFacultadComponent } from './reservas/gestionar-reserva-facultad/gestionar.reserva.facultad.component';
 import { GestionarReservaTemporalComponent } from './reservas/gestionar-reserva-temporal/gestionar.reserva.temporal.component';
-import { GenerarReporteSimcaComponent } from './reportes/generar-reporte-simca/generar.reporte.simca.component';
-import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/cargar.labor.docencia.component';
-import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/bandeja-reporte-espacio-fisico.component';
-import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/bandeja-reporte-docente.component';
-import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/eliminar-horario-programa.component';
-import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/generar.reporte.docente.component';
+import { GenerarReporteSimcaComponent } from './reportes/generar-reporte-simca/pages/generar.reporte.simca.component';
+import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/pages/cargar.labor.docencia.component';
+import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/pages/bandeja-reporte-espacio-fisico.component';
+import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/pages/bandeja-reporte-docente.component';
+import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/pages/eliminar-horario-programa.component';
+import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/pages/generar.reporte.docente.component';
 
 const routes: Routes=[
     { path: 'inicio', component: InicioComponent},

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PeriodoAcademicoOutDTO } from '../model/periodo.academico.out.';
-import { PeriodoAcademicoInDTO } from 'src/app/componentes/periodo-academico/gestionar-periodo-academico/model/periodo-academico-in-dto';
+import { PeriodoAcademicoInDTO } from 'src/app/componentes/periodo-academico/gestionar-periodo-academico/model/in/periodo-academico-in-dto';
 
 
 @Injectable()

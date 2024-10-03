@@ -7,7 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { GestionGruposRoutingModule } from './gestion-grupos-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AsignarEspacioFisicoComponent } from './components/asignar-espacio-fisico/asignar-espacio-fisico.component';
-import { FacultadService } from '../../servicios/facultad.service';
+import { FacultadService } from '../../common/services/facultad.service';
 import { AgrupadorService } from './services/agrupador.service';
 
 

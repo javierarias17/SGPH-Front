@@ -4,7 +4,7 @@ import { LayoutService } from './service/app.layout.service';
 import { MenuItem } from 'primeng/api';
 import { SharedService } from '../shared/service/shared.service';
 import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
-import { TokenService } from '../componentes/servicios/token.service';
+import { TokenService } from '../componentes/common/services/token.service';
 
 @Component({
     selector: 'app-menu',

@@ -1,18 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AsignaturaOutDTO } from '../../model/asignatura-dto';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CrearEditarAsignaturaComponent } from '../../componentes/crear-editar-asignatura/crear-editar-asignatura.component';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
 import { FiltroAsignaturasDTO } from '../../model/filtro-asignaturas';
-import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.out.dto';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
-import { EstadoDocenteEnum } from 'src/app/componentes/enum/estado.docente.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { FileUpload } from 'primeng/fileupload';
-import { AsignaturaService } from 'src/app/componentes/servicios/asignatura.service';
-import { ProgramaService } from 'src/app/componentes/servicios/programa.service';
-import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
+import { ProgramaService } from 'src/app/componentes/common/services/programa.service';
+import { EstadoDocenteEnum } from 'src/app/componentes/common/enum/estado.docente.enum';
+import { ProgramaOutDTO } from 'src/app/componentes/common/model/programa/out/programa.out.dto';
+import { AsignaturaService } from 'src/app/componentes/common/services/asignatura.service';
 @Component({
   selector: 'app-bandeja-principal-asignatura',
   templateUrl: './bandeja-principal-asignatura.component.html',

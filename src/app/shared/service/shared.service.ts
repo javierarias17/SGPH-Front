@@ -2,8 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
-import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
+import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/facultad.out.dto';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/agrupador.espacio.fisico.dto';
 
 @Injectable({
   providedIn: 'root'

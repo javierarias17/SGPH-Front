@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { EspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/espacio.fisico.dto';
-import { FranjaHorariaEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/franja.horaria.espacio.fisico.dto';
-import { DiaSemanaEnum } from 'src/app/componentes/enum/dia.semana.enum';
-import { PlanificacionManualService } from 'src/app/componentes/servicios/planificacion.manual.service';
+import { DiaSemanaEnum } from 'src/app/componentes/common/enum/dia.semana.enum';
+import { EspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/espacio.fisico.dto';
+import { FranjaHorariaEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/franja.horaria.espacio.fisico.dto';
+import { PlanificacionManualService } from 'src/app/componentes/common/services/planificacion.manual.service';
 
 @Component({
   selector: 'app-horario-espacio-fisico',

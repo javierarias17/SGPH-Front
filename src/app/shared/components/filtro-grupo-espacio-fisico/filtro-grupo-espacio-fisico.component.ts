@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedService } from '../../service/shared.service';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
+import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/facultad.out.dto';
 import { AgrupacionPorFacultad } from 'src/app/componentes/datos/gestionar-asignatura/model/agrupacion-por-facultad';
-import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/agrupador.espacio.fisico.dto';
 
 
 @Component({

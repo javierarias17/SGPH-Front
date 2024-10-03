@@ -12,7 +12,6 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TranslateModule } from '@ngx-translate/core';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { CalendarModule } from 'primeng/calendar';
-import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';

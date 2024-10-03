@@ -9,12 +9,12 @@ import {
     Validators,
 } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
+import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/facultad.out.dto';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
-import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
+import { FacultadService } from 'src/app/componentes/common/services/facultad.service';
 import { AgrupadorService } from '../../services/agrupador.service';
 import { map, Observable, of } from 'rxjs';
-import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/agrupador.espacio.fisico.dto';
 
 @Component({
     selector: 'app-crear-editar-grupo',

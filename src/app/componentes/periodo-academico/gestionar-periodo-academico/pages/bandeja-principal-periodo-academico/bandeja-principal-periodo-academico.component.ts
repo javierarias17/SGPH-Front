@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { LazyLoadEvent, Message } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
-import { PeriodoAcademicoOutDTO } from 'src/app/componentes/dto/periodo-academico/periodo-academico-out-dto';
+import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/facultad.out.dto';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { CrearEditarPeriodoAcademicoComponent } from '../../components/crear-editar-periodo-academico/crear-editar-periodo-academico.component';
+import { PeriodoAcademicoOutDTO } from '../../model/out/periodo-academico-out-dto';
 
 @Component({
   selector: 'app-bandeja-principal-periodo-academico',

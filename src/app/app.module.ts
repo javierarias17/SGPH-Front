@@ -16,7 +16,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ConfirmationService, PrimeNGConfig } from 'primeng/api';
 import { PeriodoAcademicoService } from './shared/service/periodo.academico.service';
-import { LenguajeService } from './componentes/servicios/lenguaje.service';
+import { LenguajeService } from './componentes/common/services/lenguaje.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { SpinnerService } from './shared/service/spinner.service';
 import { SharedModule } from './shared/shared.module';

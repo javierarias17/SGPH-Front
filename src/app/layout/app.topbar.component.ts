@@ -2,9 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
-import { LoginService } from '../componentes/servicios/login.service';
+import { LoginService } from '../componentes/common/services/login.service';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { TokenService } from '../componentes/servicios/token.service';
+import { TokenService } from '../componentes/common/services/token.service';
 import { Router } from '@angular/router';
 
 @Component({

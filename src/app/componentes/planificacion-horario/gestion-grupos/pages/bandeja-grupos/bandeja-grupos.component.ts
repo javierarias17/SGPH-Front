@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
+import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/facultad.out.dto';
 import { LazyLoadEvent } from 'primeng/api';
 import { CrearEditarGrupoComponent } from '../../components/crear-editar-grupo/crear-editar-grupo.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AsignarEspacioFisicoComponent } from '../../components/asignar-espacio-fisico/asignar-espacio-fisico.component';
-import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
+import { FacultadService } from 'src/app/componentes/common/services/facultad.service';
 import { AgrupadorService } from '../../services/agrupador.service';
-import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/agrupador.espacio.fisico.dto';
 
 interface FiltroGrupoDTO{
     listaIdFacultades: number[],
