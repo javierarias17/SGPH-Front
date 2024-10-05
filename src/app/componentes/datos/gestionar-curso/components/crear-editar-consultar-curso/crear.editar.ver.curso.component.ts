@@ -4,7 +4,6 @@ import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/fa
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { CursoService} from 'src/app/componentes/common/services/curso.service';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { ProgramaService } from 'src/app/componentes/common/services/programa.service';
 import { FacultadService } from 'src/app/componentes/common/services/facultad.service';
 import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/agrupador.espacio.fisico.dto';
@@ -12,6 +11,7 @@ import { AsignaturaOutDTO } from '../../../gestionar-asignatura/model/asignatura
 import { CursoDTO } from '../../model/curso-dto';
 import { ProgramaOutDTO } from 'src/app/componentes/common/model/programa/out/programa.out.dto';
 import { AsignaturaService } from 'src/app/componentes/common/services/asignatura.service';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 
 @Component({
   selector: 'app-crear-editar-ver-curso',
@@ -42,7 +42,7 @@ export class CrearEditarVerCursoComponent {
     private programaService: ProgramaService,
     private cursoService: CursoService,
     private asignaturaService: AsignaturaService,
-    private periodoService: PeriodoAcademicoService
+    private periodoAcademicoSharedService: PeriodoAcademicoSharedService
   ) {}
   ngOnInit(): void {
     this.lectura = this.config.data.lectura
@@ -55,12 +55,12 @@ export class CrearEditarVerCursoComponent {
         this.asignarDatosFormulario()
       })
     }
-    this.periodoService.consultarPeriodoAcademicoVigente().subscribe(r =>{
+    this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(r =>{
       if(r){
           this.periodoAcademicoId = r.idPeriodoAcademico
           this.periodoAcademico = r.anio+"-"+r.periodo;
       }else{
-          this.periodoService=null;
+          this.periodoAcademicoSharedService=null;
       }
   });
   }

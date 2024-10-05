@@ -7,10 +7,9 @@ import { SharedService } from 'src/app/shared/service/shared.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { VisualizadorExcelComponent } from 'src/app/shared/components/visualizador-excel/visualizador-excel.component';
 import * as XLSX from 'xlsx';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { PeriodoAcademicoOutDTO } from '../../../periodo-academico/gestionar-periodo-academico/model/out/periodo-academico-out-dto';
-import { FacultadService } from '../../../common/services/facultad.service';
 import { SpinnerService } from 'src/app/shared/service/spinner.service';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 @Component({
   selector: 'app-generar-reporte-simca',
   templateUrl: './generar.reporte.simca.component.html',
@@ -28,7 +27,7 @@ export class GenerarReporteSimcaComponent implements OnInit {
      private programaService: ProgramaService,
      private sharedService: SharedService,
      private dialogService: DialogService,
-     private periodoAcademicoService: PeriodoAcademicoService,
+     private periodoAcademicoSharedService: PeriodoAcademicoSharedService,
      private spinnerService: SpinnerService
     ) {
 
@@ -62,7 +61,7 @@ export class GenerarReporteSimcaComponent implements OnInit {
   }
 
   obtenerPeriodoAcademico() {
-    this.periodoAcademicoService.consultarPeriodosAcademicos({} as any).subscribe(r => {
+    this.periodoAcademicoSharedService.consultarPeriodosAcademicos({} as any).subscribe(r => {
       this.periodosAcademicos = r.content
       this.periodosAcademicos = this.periodosAcademicos.map(periodo => ({
         ...periodo,

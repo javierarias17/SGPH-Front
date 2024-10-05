@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { LazyLoadEvent, Message } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/facultad.out.dto';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { CrearEditarPeriodoAcademicoComponent } from '../../components/crear-editar-periodo-academico/crear-editar-periodo-academico.component';
 import { PeriodoAcademicoOutDTO } from '../../model/out/periodo-academico-out-dto';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 
 @Component({
   selector: 'app-bandeja-principal-periodo-academico',
@@ -24,9 +24,8 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
 
     public messages: Message[] = null;
 
-
     constructor(public dialog: DialogService, 
-        private periodoAcademicoService: PeriodoAcademicoService
+        private periodoAcademicoSharedService: PeriodoAcademicoSharedService
     ) {}
     
     ngOnInit(): void {
@@ -40,7 +39,7 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
             pagina: 0,
             registrosPorPagina: 10,
         }
-        this.periodoAcademicoService.consultarPeriodosAcademicos(this.filtro).subscribe((r) => {
+        this.periodoAcademicoSharedService.consultarPeriodosAcademicos(this.filtro).subscribe((r) => {
             this.periodos = r.content;
             this.totalRecords = r.totalElements;
             this.cargando = false;
@@ -54,7 +53,7 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
             registrosPorPagina: $event.rows,
         };
 
-        this.periodoAcademicoService.consultarPeriodosAcademicos(this.filtro).subscribe((r) => {
+        this.periodoAcademicoSharedService.consultarPeriodosAcademicos(this.filtro).subscribe((r) => {
             this.periodos = r.content;
             this.totalRecords = r.totalElements;
             this.cargando = false;
@@ -91,12 +90,12 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
         ref.onClose.subscribe((r) => {
             this.listarPeriodosAcademicosBase();
             this.consultarPeriodoAcademicoVigente();
-            this.periodoAcademicoService.emitirDataPeriodoVigente();
+            this.periodoAcademicoSharedService.emitirDataPeriodoVigente();
         });
     }
 
     private consultarPeriodoAcademicoVigente():void{
-        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+        this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(
             (r: any) => {
                 if(r){
                     this.messages=null;

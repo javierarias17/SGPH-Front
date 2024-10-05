@@ -7,12 +7,12 @@ import { ProgramaOutDTO } from '../../../common/model/programa/out/programa.out.
 import { CursoPlanificacionOutDTO } from '../model/out/curso.planificacion.out.dto';
 import { FiltroCursoPlanificacionDTO } from '../model/in/filtro.curso.planificacion.dto';
 import { Message } from 'primeng/api';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { PlanificacionManualService } from '../../../common/services/planificacion.manual.service';
 import { FacultadService } from '../../../common/services/facultad.service';
 import { CrearEditarVerCursoComponent } from '../components/crear-editar-consultar-curso/crear.editar.ver.curso.component';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 @Component({
     selector: 'app-gestionar-curso',
     templateUrl: './gestionar.curso.component.html',
@@ -59,10 +59,9 @@ export class GestionarCursoComponent {
     public messages: Message[] = null;
     constructor(
         private cursoService:CursoService, 
-        private facultadService:FacultadService,
         private programaService: ProgramaService, 
         private asignaturaService:AsignaturaService,
-        public periodoAcademicoService:PeriodoAcademicoService,
+        public periodoAcademicoSharedService:PeriodoAcademicoSharedService,
         private dialog: DialogService,
         private messageService: ShowMessageService,
         private PlanificacionManualService:PlanificacionManualService
@@ -237,7 +236,7 @@ export class GestionarCursoComponent {
     }
 
     private consultarPeriodoAcademicoVigente():void{
-        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+        this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(
             (r: any) => {
                 if(r){
                     this.messages=null;

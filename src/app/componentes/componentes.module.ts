@@ -26,7 +26,6 @@ import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/pages
 import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/pages/bandeja-reporte-espacio-fisico.component';
 import { ProgramaService } from './common/services/programa.service';
 import { SharedService } from '../shared/service/shared.service';
-import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
 import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/pages/eliminar-horario-programa.component';
 import { CursoService } from './common/services/curso.service';
 import { MessageModule } from 'primeng/message';
@@ -43,6 +42,8 @@ import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docen
 import { GestionarPersonaComponent } from './datos/gestionar-persona/pages/gestionar.persona.component';
 import { CardModule } from 'primeng/card';
 import { CrearEditarVerCursoComponent } from './datos/gestionar-curso/components/crear-editar-consultar-curso/crear.editar.ver.curso.component';
+import { PeriodoAcademicoService } from './periodo-academico/gestionar-periodo-academico/services/periodo.academico.service';
+import { PeriodoAcademicoSharedService } from '../shared/service/periodo.academico.shared.service';
  
 
 @NgModule({
@@ -83,7 +84,12 @@ import { CrearEditarVerCursoComponent } from './datos/gestionar-curso/components
 		MessageModule,
 		ToastModule,		
 	],
-	providers: [EspacioFisicoService, 
+	providers: [
+		//Shared
+		PeriodoAcademicoSharedService,
+
+		//Especificos de cada componente
+		EspacioFisicoService, 
 		ProgramaService, 
 		FacultadService, 
 		SharedService, 

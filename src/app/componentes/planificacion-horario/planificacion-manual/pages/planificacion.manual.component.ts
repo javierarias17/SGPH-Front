@@ -12,9 +12,9 @@ import { FiltroCursoPlanificacionDTO } from '../../../datos/gestionar-curso/mode
 import { PlanificacionManualService } from '../../../common/services/planificacion.manual.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AsociarEspacioFisicoComponent } from '../components/asociar-espacio-fisico/asociar.espacio.fisico.component';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { FacultadService } from '../../../common/services/facultad.service';
 import { LenguajeService } from '../../../common/services/lenguaje.service';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 
 @Component({
 selector: 'app-planificacion-manual',
@@ -74,7 +74,7 @@ export class PlanificacionManualComponent {
         private asignaturaService:AsignaturaService,
         private planificacionManualService: PlanificacionManualService,
         private translateService: TranslateService,
-        public periodoAcademicoService:PeriodoAcademicoService) {
+        public periodoAcademicoSharedService:PeriodoAcademicoSharedService) {
     }
 
     public ngOnInit() {        
@@ -254,7 +254,7 @@ export class PlanificacionManualComponent {
     }
 
     private consultarPeriodoAcademicoVigente():void{
-        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+        this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(
             (r: any) => {
                 if(r){
                     this.messages=null;

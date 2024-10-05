@@ -6,8 +6,8 @@ import { HorarioDocenteComponent } from '../horario-docente/horario.docente.comp
 import { EstadoDocenteEnum } from '../../../common/enum/estado.docente.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { Message } from 'primeng/api';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { DocenteService } from '../../../common/services/docente.service';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 
 @Component({
   selector: 'bandeja-reporte-docente',
@@ -43,7 +43,7 @@ export class BandejaReporteDocenteComponent {
   
 	constructor(private docenteService:DocenteService,
 		private translateService: TranslateService,  
-		public periodoAcademicoService:PeriodoAcademicoService) {
+		public periodoAcademicoSharedService:PeriodoAcademicoSharedService) {
 	}
 
 	public ngOnInit() { 
@@ -102,7 +102,7 @@ export class BandejaReporteDocenteComponent {
 	}
 
 	private consultarPeriodoAcademicoVigente():void{
-        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+        this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(
             (r: any) => {
                 if(r){
                     this.messages=null;

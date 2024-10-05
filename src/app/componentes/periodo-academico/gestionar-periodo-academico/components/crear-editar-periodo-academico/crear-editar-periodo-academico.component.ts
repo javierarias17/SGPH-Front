@@ -2,11 +2,11 @@ import { Component, OnInit} from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { PeriodoAcademicoInDTO } from '../../model/in/periodo-academico-in-dto';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { EstadoPeriodoAcademicoEnum } from 'src/app/componentes/common/enum/estado.periodo.academico.enum';
 import { Observable, of } from 'rxjs';
 import {  catchError, map } from 'rxjs/operators';
+import { PeriodoAcademicoService } from '../../services/periodo.academico.service';
 
 
 @Component({

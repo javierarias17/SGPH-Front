@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UbicacionOutDTO } from '../../../datos/gestionar-espacio-fisico/model/out/ubicacion.out.dto';
 import { HorarioEspacioFisicoComponent } from '../horario-espacio-fisico/horario.espacio.fisico.component';
 import { Message } from 'primeng/api';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 
 @Component({
   selector: 'bandeja-reporte-espacio-fisico',
@@ -48,7 +48,7 @@ export class BandejaReporteEspacioFisicoComponent {
   
 	constructor(private espacioFisicoService:EspacioFisicoService,
         private translateService: TranslateService,
-		public periodoAcademicoService:PeriodoAcademicoService
+		public periodoAcademicoSharedService:PeriodoAcademicoSharedService
     ) {
 	}
 
@@ -139,7 +139,7 @@ export class BandejaReporteEspacioFisicoComponent {
 	} 
 
     private consultarPeriodoAcademicoVigente():void{
-        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+        this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(
             (r: any) => {
                 if(r){
                     this.messages=null;

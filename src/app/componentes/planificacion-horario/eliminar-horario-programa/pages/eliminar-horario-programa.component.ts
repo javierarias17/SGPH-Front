@@ -11,8 +11,8 @@ import { ProgramaOutDTO } from '../../../common/model/programa/out/programa.out.
 import { FacultadOutDTO } from '../../../common/model/facultad/out/facultad.out.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ConfirmationService, Message, MessageService } from 'primeng/api';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { PeriodoAcademicoOutDTO } from '../../../periodo-academico/gestionar-periodo-academico/model/out/periodo-academico-out-dto';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 
 @Component({
     selector: 'app-eliminar-horario-programa',
@@ -37,7 +37,7 @@ export class EliminarHorarioProgramaComponent {
         private planificacionManualService: PlanificacionManualService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
-        public periodoAcademicoService:PeriodoAcademicoService
+        public periodoAcademicoSharedService:PeriodoAcademicoSharedService
     ) {}
 
     public ngOnInit(): void {
@@ -136,7 +136,7 @@ export class EliminarHorarioProgramaComponent {
     }
 
     private consultarPeriodoAcademicoVigente():void{
-        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+        this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(
             (periodoAcademicoVigente: PeriodoAcademicoOutDTO) => {
                 if(periodoAcademicoVigente){
                     this.periodoAcademicoVigente = periodoAcademicoVigente;

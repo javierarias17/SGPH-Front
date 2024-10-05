@@ -2,9 +2,8 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 import { MenuItem } from 'primeng/api';
-import { SharedService } from '../shared/service/shared.service';
-import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
 import { TokenService } from '../componentes/common/services/token.service';
+import { PeriodoAcademicoSharedService } from '../shared/service/periodo.academico.shared.service';
 
 @Component({
     selector: 'app-menu',
@@ -44,7 +43,7 @@ export class AppMenuComponent implements OnInit {
 
     panelMenuItems: MenuItem[] = [];
 
-    constructor(public layoutService: LayoutService, public periodoAcademicoService:PeriodoAcademicoService, private tokenService: TokenService) { }
+    constructor(public layoutService: LayoutService, public periodoAcademicoSharedService:PeriodoAcademicoSharedService, private tokenService: TokenService) { }
 
     ngOnInit() {
         //Se consultan los roles del usuario
@@ -121,6 +120,6 @@ export class AppMenuComponent implements OnInit {
     }
 
     public actualizarPeriodoAcademicoVigente(){
-        this.periodoAcademicoService.emitirDataPeriodoVigente();
+        this.periodoAcademicoSharedService.emitirDataPeriodoVigente();
     }
 }

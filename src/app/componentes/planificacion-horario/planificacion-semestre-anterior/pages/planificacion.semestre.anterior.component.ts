@@ -9,13 +9,13 @@ import {
     Validators,
 } from '@angular/forms';
 import { FacultadOutDTO } from '../../../common/model/facultad/out/facultad.out.dto';
-import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { PlanificacionManualService } from '../../../common/services/planificacion.manual.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ProgramaService } from '../../../common/services/programa.service';
 import { AsignaturaService } from '../../../common/services/asignatura.service';
 import { SpinnerService } from 'src/app/shared/service/spinner.service';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 
 @Component({
     selector: 'app-planificacion-semestre-anterior',
@@ -46,7 +46,7 @@ export class PlanificacionSemestreAnteriorComponent {
         private planificacionManualService: PlanificacionManualService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
-        public periodoAcademicoService: PeriodoAcademicoService,
+        public periodoAcademicoSharedService: PeriodoAcademicoSharedService,
 		private asignaturaService:AsignaturaService,
         private spinnerService: SpinnerService
     ) {}
@@ -80,7 +80,7 @@ export class PlanificacionSemestreAnteriorComponent {
     }
 
 	private obtenerPeriodoAcademico() {
-		this.periodoAcademicoService.consultarPeriodosAcademicos({} as any).subscribe(r => {
+		this.periodoAcademicoSharedService.consultarPeriodosAcademicos({} as any).subscribe(r => {
 			this.lstPeriodoAcademicosTodos = r.content
             this.lstPeriodoAcademicosTodos = this.lstPeriodoAcademicosTodos.map(periodo => ({
                 ...periodo,
@@ -219,7 +219,7 @@ export class PlanificacionSemestreAnteriorComponent {
     }
 
     private consultarPeriodoAcademicoVigente(): void {
-        this.periodoAcademicoService.consultarPeriodoAcademicoVigente().subscribe(
+        this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(
                 (periodoAcademicoVigente: PeriodoAcademicoOutDTO) => {
                     if (periodoAcademicoVigente) {
 						this.periodoAcademicoVigente = periodoAcademicoVigente;            
