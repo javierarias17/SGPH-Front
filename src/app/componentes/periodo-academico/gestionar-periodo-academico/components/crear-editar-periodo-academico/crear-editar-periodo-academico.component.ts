@@ -5,8 +5,8 @@ import { PeriodoAcademicoInDTO } from '../../model/in/periodo-academico-in-dto';
 import { PeriodoAcademicoService } from 'src/app/shared/service/periodo.academico.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { EstadoPeriodoAcademicoEnum } from 'src/app/componentes/common/enum/estado.periodo.academico.enum';
-import { Observable } from 'rxjs';
-import {  map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import {  catchError, map } from 'rxjs/operators';
 
 
 @Component({
@@ -55,51 +55,60 @@ export class CrearEditarPeriodoAcademicoComponent implements OnInit  {
             periodo: [ null, [Validators.required, Validators.min(0), Validators.max(2)],[this.anioValidator()]]
         })
     }
-
+    
     private fechaInicioValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
             return this.periodoAcademicoService.guardarPeriodoAcademico(this.periodoAcademicoInDTO).pipe(
-                map((error) => {
-                    for (let key in error) {                    
-                        if (key === 'FechaInicioGreaterThanUltimaFechaFin') {
-                            return { "FechaInicioGreaterThanUltimaFechaFin": error[key]};
+                map(() => null),  // Si no hay error, no hay validación que agregar
+                catchError((error) => {
+                    if (error.status === 400) {
+                        for (let key in error.error) {  // Acceder a error.error para obtener el objeto de errores
+                            if (key === 'FechaInicioGreaterThanUltimaFechaFin') {
+                                return of({ "FechaInicioGreaterThanUltimaFechaFin": error.error[key] });
+                            }
                         }
                     }
-                    return null;
+                    return of(null);  // En caso de otros errores, no validamos nada.
                 })
             );
         };
-    }   
+    }
 
     private fechaFinValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
             return this.periodoAcademicoService.guardarPeriodoAcademico(this.periodoAcademicoInDTO).pipe(
-                map((error) => {
-                    for (let key in error) {                    
-                        if (key === 'FechaFinGreaterThanFechaInicio') {
-                            return { "FechaFinGreaterThanFechaInicio": error[key]};
+                map(() => null),
+                catchError((error) => {
+                    if (error.status === 400) {
+                        for (let key in error.error) {
+                            if (key === 'FechaFinGreaterThanFechaInicio') {
+                                return of({ "FechaFinGreaterThanFechaInicio": error.error[key] });
+                            }
                         }
                     }
-                    return null;
-                })
-            );
-        };
-    }   
-
-    private anioValidator(): AsyncValidatorFn {
-        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-            return this.periodoAcademicoService.guardarPeriodoAcademico(this.periodoAcademicoInDTO).pipe(
-                map((error) => {
-                    for (let key in error) {                    
-                        if (key === 'ExistsByAnioAndPeriodo') {
-                            return { "ExistsByAnioAndPeriodo": error[key]};
-                        }
-                    }
-                    return null;
+                    return of(null);
                 })
             );
         };
     } 
+
+    private anioValidator(): AsyncValidatorFn {
+        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            return this.periodoAcademicoService.guardarPeriodoAcademico(this.periodoAcademicoInDTO).pipe(
+                map(() => null),
+                catchError((error) => {
+                    if (error.status === 400) {
+                        for (let key in error.error) {
+                            if (key === 'ExistsByAnioAndPeriodo') {
+                                return of({ "ExistsByAnioAndPeriodo": error.error[key] });
+                            }
+                        }
+                    }
+                    return of(null);
+                })
+            );
+        };
+    }
 
     public fechaInicioPeriodo():FormControl{
         return this.formulario.get("fechaInicioPeriodo") as FormControl;

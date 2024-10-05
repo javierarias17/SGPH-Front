@@ -13,7 +13,7 @@ import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/fa
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { FacultadService } from 'src/app/componentes/common/services/facultad.service';
 import { AgrupadorService } from '../../services/agrupador.service';
-import { map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/agrupador.espacio.fisico.dto';
 
 @Component({
@@ -59,13 +59,16 @@ export class CrearEditarGrupoComponent implements OnInit {
             grupo.esValidar = true;            
             
             return this.agrupadorService.guardarGrupo(grupo).pipe(
-                map((error) => {
-                    for (let key in error) {                    
-                        if (key === 'ExisteNombreAgrupador') {
-                            return { "ExisteNombreAgrupador": error[key]};
+                map(() => null),  // Si no hay error, la validación pasa
+                catchError((error) => {
+                    if (error.status === 400) {  // Si es un BadRequest (400) se procesa el error
+                        for (let key in error.error) {  // Accedemos a error.error para obtener los detalles
+                            if (key === 'ExisteNombreAgrupador') {
+                                return of({ "ExisteNombreAgrupador": error.error[key] });
+                            }
                         }
                     }
-                    return null;
+                    return of(null);  // En caso de otros errores, devolvemos null
                 })
             );
         };

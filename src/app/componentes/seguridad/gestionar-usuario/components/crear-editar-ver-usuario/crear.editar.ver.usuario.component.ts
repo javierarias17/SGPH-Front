@@ -226,7 +226,7 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
 
     public existeUsuarioConPersonaValidator(): AsyncValidatorFn {
         return (control: AbstractControl): Observable<ValidationErrors | null> => {
-                      
+                          
             if (!this.numeroIdentificacion().value || !this.idTipoIdentificacion().value) {
                 return of(null); 
             }
@@ -235,56 +235,67 @@ export class CrearEditarVerUsuarioComponent implements OnInit {
             switchMap((personaOutDTO: PersonaOutDTO) => {
                 if (personaOutDTO) {
                     this.usuarioInDTO.idPersona =  personaOutDTO.idPersona;
-
+    
                     return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
-                        map((error) => {
-                            for (let key in error) {                    
-                                if (key === 'ExisteIdPersonaUsuario') {
-                                    return { "ExisteIdPersonaUsuario": error[key]};
+                        map(() => null),  // Si no hay error, la validación pasa
+                        catchError((error) => {
+                            if (error.status === 400) {  // Si es un BadRequest (400), procesamos el error
+                                for (let key in error.error) {  // Accedemos a error.error para obtener los detalles
+                                    if (key === 'ExisteIdPersonaUsuario') {
+                                        return of({ "ExisteIdPersonaUsuario": error.error[key] });
+                                    }
                                 }
                             }
-                            return null;
-                    }))                
+                            return of(null);  // En caso de otros errores, devolvemos null
+                        })
+                    );                
                 } else {
-                    this.personaInDTO.idPersona=null;
-                    this.usuarioInDTO.idPersona=null;
+                    this.personaInDTO.idPersona = null;
+                    this.usuarioInDTO.idPersona = null;
                     return of(null);
                 }
             }),
             catchError(() => of(null)) 
             );
         };
-    }           
+    }    
+           
 
     private existeNombreUsuarioValidator(): AsyncValidatorFn {
-        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+        return (control: AbstractControl): Observable<ValidationErrors | null> => {
             return this.usuarioService.guardarUsuario(this.usuarioInDTO).pipe(
-                map((error) => {
-                    for (let key in error) {                    
-                        if (key === 'ExisteNombreUsuario') {
-                            return { "ExisteNombreUsuario": error[key]};
+                map(() => null),  // Si no hay error, la validación pasa
+                catchError((error) => {
+                    if (error.status === 400) {  // Si es un BadRequest (400), procesamos el error
+                        for (let key in error.error) {  // Accedemos a error.error para obtener los detalles
+                            if (key === 'ExisteNombreUsuario') {
+                                return of({ "ExisteNombreUsuario": error.error[key] });
+                            }
                         }
                     }
-                    return null;
+                    return of(null);  // En caso de otros errores, devolvemos null
                 })
             );
         };
-    }  
+    }     
 
     private existeEmailValidator(): AsyncValidatorFn {
-        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+        return (control: AbstractControl): Observable<ValidationErrors | null> => {
             return this.personaService.guardarPersona(this.personaInDTO).pipe(
-                map((error) => {
-                    for (let key in error) {                    
-                        if (key === 'ExisteEmail') {
-                            return { "ExisteEmail": error[key]};
+                map(() => null),  // Si no hay error, la validación pasa
+                catchError((error) => {
+                    if (error.status === 400) {  // Si es un BadRequest (400), procesamos el error
+                        for (let key in error.error) {  // Accedemos a error.error para obtener los detalles
+                            if (key === 'ExisteEmail') {
+                                return of({ "ExisteEmail": error.error[key] });
+                            }
                         }
                     }
-                    return null;
+                    return of(null);  // En caso de otros errores, devolvemos null
                 })
             );
         };
-    }  
+    }    
 
     public validarYGuardarUsuario() {
         if (this.formulario.valid) {
