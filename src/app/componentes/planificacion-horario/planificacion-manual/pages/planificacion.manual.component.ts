@@ -190,9 +190,10 @@ export class PlanificacionManualComponent {
     }
 
     public onSemestreChange(){        
-        if( this.numeroSemestre === null){
+        if( this.numeroSemestre === null || this.numeroSemestre===0){
+            this.numeroSemestre = null;
             this.filtroCursoPlanificacionDTO.semestre=null;
-        }else if(this.numeroSemestre < 1 || this.numeroSemestre > 10){
+        }else if(this.numeroSemestre < -1 || this.numeroSemestre > 10){
             this.filtroCursoPlanificacionDTO.semestre=null;
             this.numeroSemestre=null;
             return;
