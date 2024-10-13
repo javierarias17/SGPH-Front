@@ -38,8 +38,12 @@ export class DocenteService{
 		if (filtroDocenteDTO.estado) {
 			params = params.set('estado', filtroDocenteDTO.estado.toString());
 		}
-		params = params.set('pagina', filtroDocenteDTO.pagina?.toString() || '0');
-		params = params.set('registrosPorPagina', filtroDocenteDTO.registrosPorPagina?.toString() || '10');
+		if(filtroDocenteDTO.pagina || filtroDocenteDTO.pagina===0){
+			params = params.set('pagina', filtroDocenteDTO.pagina.toString());
+		}
+		if(filtroDocenteDTO.registrosPorPagina){
+			params = params.set('registrosPorPagina', filtroDocenteDTO.registrosPorPagina.toString());
+		}
 
 		// Realizar la solicitud GET con los parámetros
 		return this.http.get<any>(url, { params });
