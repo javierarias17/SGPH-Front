@@ -12,7 +12,6 @@ import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.ac
 @Component({
   selector: 'bandeja-reporte-docente',
   templateUrl: './bandeja-reporte-docente.component.html',
-  styleUrls: ['./bandeja-reporte-docente.component.css'],
   providers: [DocenteService]
 })
 export class BandejaReporteDocenteComponent {

@@ -13,7 +13,6 @@ import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.ac
 @Component({
   selector: 'bandeja-reporte-espacio-fisico',
   templateUrl: './bandeja-reporte-espacio-fisico.component.html',
-  styleUrls: ['./bandeja-reporte-espacio-fisico.component.css'],
   providers: [EspacioFisicoService]
 })
 export class BandejaReporteEspacioFisicoComponent {
@@ -69,6 +68,8 @@ export class BandejaReporteEspacioFisicoComponent {
             const translatedLabel = this.translateService.instant('gestionar.espaciofisico.filtro.estado.espaciofisico.' + key);
             this.listaEstados.push({ label: translatedLabel, value: key });
         });
+
+        this.inputsChange();
 	}
 
     private consultarEspaciosFisicos():void{
@@ -110,6 +111,7 @@ export class BandejaReporteEspacioFisicoComponent {
             this.filtroEspacioFisicoDTO.salon="";
             this.listaEspacioFisicoDTO=[];
             this.totalRecords=0;
+            this.consultarEspaciosFisicos();
         }
     }  
     

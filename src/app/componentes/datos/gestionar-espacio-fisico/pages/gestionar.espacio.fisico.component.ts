@@ -66,6 +66,8 @@ export class GestionarEspacioFisicoComponent {
             const translatedLabel = this.translateService.instant('gestionar.espaciofisico.filtro.estado.espaciofisico.' + key);
             this.listaEstados.push({ label: translatedLabel, value: key });
         });
+
+        this.inputsChange();
 	}
 
     private consultarEspaciosFisicos():void{
@@ -106,6 +108,7 @@ export class GestionarEspacioFisicoComponent {
             this.filtroEspacioFisicoDTO.salon="";
             this.listaEspacioFisicoDTO=[];
             this.totalRecords=0;
+            this.consultarEspaciosFisicos();
         }
     }  
     
