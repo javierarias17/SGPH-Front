@@ -85,9 +85,6 @@ import { PeriodoAcademicoSharedService } from '../shared/service/periodo.academi
 		ToastModule,		
 	],
 	providers: [
-		//Shared
-		PeriodoAcademicoSharedService,
-
 		//Especificos de cada componente
 		EspacioFisicoService, 
 		ProgramaService, 

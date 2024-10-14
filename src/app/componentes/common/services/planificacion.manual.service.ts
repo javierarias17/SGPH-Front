@@ -53,7 +53,8 @@ export class PlanificacionManualService{
 		}
 		params = params.set('pagina', filtroCursoPlanificacionDTO.pagina?.toString() || '0');
 		params = params.set('registrosPorPagina', filtroCursoPlanificacionDTO.registrosPorPagina?.toString() || '10');
-		if (filtroCursoPlanificacionDTO.cantidadDocentes) {
+
+		if (filtroCursoPlanificacionDTO.cantidadDocentes || filtroCursoPlanificacionDTO.cantidadDocentes===0) {
 			params = params.set('cantidadDocentes', filtroCursoPlanificacionDTO.cantidadDocentes.toString());
 		}
 	

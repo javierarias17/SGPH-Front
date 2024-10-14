@@ -8,8 +8,7 @@ import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.ac
 
 @Component({
   selector: 'app-bandeja-principal-periodo-academico',
-  templateUrl: './bandeja-principal-periodo-academico.component.html',
-  styleUrls: ['./bandeja-principal-periodo-academico.component.scss']
+  templateUrl: './bandeja-principal-periodo-academico.component.html'
 })
 export class BandejaPrincipalPeriodoAcademicoComponent {
 
