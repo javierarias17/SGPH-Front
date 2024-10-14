@@ -53,7 +53,7 @@
                                 Contraseña es obligatorio
                             </small>
                         </div>
-                        <button pButton pRipple label="Continuar" class="w-full p-3 text-xl" (click) = "iniciarSesionNormal()"></button>
+                        <button pButton pRipple label="Continuar" class="w-full p-3 text-xl" [disabled]="formulario.invalid" (click) = "iniciarSesionNormal()"></button>
                     </form>
                     <hr>
                     <div class="row">
