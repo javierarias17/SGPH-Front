@@ -12,7 +12,7 @@ import { GestionarReservaTemporalComponent } from './reservas/gestionar-reserva-
 import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/pages/gestionar.usuario.component';
 import { AsociarDocenteComponent } from './planificacion-horario/planificacion-manual/components/asociar-docente/asociar.docente.component';
 
-import { HorarioEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/horario-espacio-fisico/horario.espacio.fisico.component';
+import { HorarioEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/components/horario-espacio-fisico/horario.espacio.fisico.component';
 import { CrearEditarVerUsuarioComponent } from './seguridad/gestionar-usuario/components/crear-editar-ver-usuario/crear.editar.ver.usuario.component';
 import { AsociarEspacioFisicoComponent } from './planificacion-horario/planificacion-manual/components/asociar-espacio-fisico/asociar.espacio.fisico.component';
 import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/pages/cargar.labor.docencia.component';
@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { CrearEditarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/components/crear-editar-espacio-fisico/crear-editar-espacio-fisico.component';
-import { HorarioDocenteComponent } from './reportes/reporte-docente/horario-docente/horario.docente.component';
+import { HorarioDocenteComponent } from './reportes/reporte-docente/components/horario-docente/horario.docente.component';
 import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/pages/bandeja-reporte-docente.component';
 import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/pages/bandeja-reporte-espacio-fisico.component';
 import { ProgramaService } from './common/services/programa.service';

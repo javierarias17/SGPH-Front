@@ -97,7 +97,7 @@
                     <td>{{espacioFisicoDTO.estado | titlecase}}</td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-calendar" class="p-button-rounded p-button-info p-button-outlined" pTooltip="Ver horario" tooltipPosition="top" (click)="abrirModalHorarioAula(espacioFisicoDTO)"></button>  
+                            <button pButton pRipple type="button" icon="pi pi-calendar" class="p-button-rounded p-button-info p-button-outlined" pTooltip="Ver horario" tooltipPosition="top" (click)="abrirModalHorarioAula(espacioFisicoDTO)" [disabled]="this.messages !== null"></button>  
                         </div>
                     </td>
                 </tr>

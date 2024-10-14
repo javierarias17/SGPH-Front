@@ -1,8 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DiaSemanaEnum } from 'src/app/componentes/common/enum/dia.semana.enum';
 import { DocenteOutDTO } from 'src/app/componentes/datos/gestionar-docente/model/out/docente.out.dto';
 import { FranjaHorariaDocenteDTO } from 'src/app/componentes/datos/gestionar-docente/model/out/franja.horaria.docente.dto';
 import { PlanificacionManualService } from 'src/app/componentes/common/services/planificacion.manual.service';
+import { SpinnerService } from 'src/app/shared/service/spinner.service';
 
 @Component({
 	selector: 'app-horario-docente',
@@ -10,7 +11,11 @@ import { PlanificacionManualService } from 'src/app/componentes/common/services/
 	styleUrls: ['./horario.docente.component.css'],
 	providers: [PlanificacionManualService]
 })
-export class HorarioDocenteComponent {	
+export class HorarioDocenteComponent{	
+	
+	public mostrarModalError: boolean = false;
+	public mensajeError: string = '';
+
 	/*Configuración modal*/
 	@ViewChild('horarioDocente') horarioDocente: HorarioDocenteComponent;
 
@@ -36,7 +41,7 @@ export class HorarioDocenteComponent {
 		DiaSemanaEnum.DOMINGO
 	];	
 	
-	constructor(private planificacionManualService: PlanificacionManualService){
+	constructor(private planificacionManualService: PlanificacionManualService, private spinnerService: SpinnerService){
 		for (let i = 7; i <= 22; i++) {
 			const hora = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
 			this.horas.push(hora);
@@ -45,7 +50,6 @@ export class HorarioDocenteComponent {
 
 	public abrirModal(docenteOutDTOSeleccionado:DocenteOutDTO) {
 		this.docenteOutDTOSeleccionado = docenteOutDTOSeleccionado;
-		this.visible=true;
 		this.consultarHorarioDocente();
 	}
 
@@ -95,16 +99,26 @@ export class HorarioDocenteComponent {
 	private consultarHorarioDocente() {
 		this.posicionesOcupadas=[];
 		this.listaFranjaHorariaDocenteDTO = [];
-		if (this.docenteOutDTOSeleccionado.idPersona) {        
+		if (this.docenteOutDTOSeleccionado.idPersona) {      
+			this.spinnerService.show("Consultando horario de docente...");  
 			this.planificacionManualService.consultarFranjasDocentePorIdPersona(this.docenteOutDTOSeleccionado.idPersona).subscribe(
 				(listaFranjaHorariaDocenteDTO: FranjaHorariaDocenteDTO[]) => {
 					this.listaFranjaHorariaDocenteDTO = listaFranjaHorariaDocenteDTO;
+					this.spinnerService.hide();
+					this.visible=true;
 				},
 				(error) => {
+					this.spinnerService.hide();
 					console.error(error);
+					this.mensajeError = 'Ocurrió un error al consultar el horario del docente. Por favor, inténtelo de nuevo más tarde.';
+					this.mostrarModalError = true;
 				}
 			);
 		}
+	}
+
+	public cerrarModalError() {
+		this.mostrarModalError = false;
 	}
 
 	public obtenerNombreCurso(dia: DiaSemanaEnum, horaInicio: Date): string {

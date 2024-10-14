@@ -2,7 +2,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FiltroDocenteDTO } from '../../../datos/gestionar-docente/model/in/filtro.docente.dto';
 import { DocenteOutDTO } from '../../../datos/gestionar-docente/model/out/docente.out.dto';
-import { HorarioDocenteComponent } from '../horario-docente/horario.docente.component';
+import { HorarioDocenteComponent } from '../components/horario-docente/horario.docente.component';
 import { EstadoDocenteEnum } from '../../../common/enum/estado.docente.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { Message } from 'primeng/api';
@@ -58,9 +58,9 @@ export class BandejaReporteDocenteComponent {
 	}
 
   	private consultarDocentes() {
+		this.consultarPeriodoAcademicoVigente();  
 		this.docenteService.consultarDocentes(this.filtroDocenteDTO).subscribe(
 			(response: any) => {
-				this.consultarPeriodoAcademicoVigente();  
 				this.listaDocenteOutDTO = response.content;
 				this.totalRecords= response.totalElements;
 				},

@@ -3,6 +3,7 @@ import { DiaSemanaEnum } from 'src/app/componentes/common/enum/dia.semana.enum';
 import { EspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/espacio.fisico.dto';
 import { FranjaHorariaEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/franja.horaria.espacio.fisico.dto';
 import { PlanificacionManualService } from 'src/app/componentes/common/services/planificacion.manual.service';
+import { SpinnerService } from 'src/app/shared/service/spinner.service';
 
 @Component({
   selector: 'app-horario-espacio-fisico',
@@ -12,6 +13,9 @@ import { PlanificacionManualService } from 'src/app/componentes/common/services/
 })
 export class HorarioEspacioFisicoComponent {
 	
+	public mostrarModalError: boolean = false;
+	public mensajeError: string = '';
+
 	/*Configuración modal*/
 	@ViewChild('horarioAula') horarioAula: HorarioEspacioFisicoComponent;
 
@@ -38,7 +42,7 @@ export class HorarioEspacioFisicoComponent {
 		DiaSemanaEnum.DOMINGO
 	];
 	
-	constructor(private planificacionManualService: PlanificacionManualService){
+	constructor(private planificacionManualService: PlanificacionManualService, private spinnerService: SpinnerService){
 		for (let i = 7; i <= 22; i++) {
 			const hora = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
 			this.horas.push(hora);
@@ -47,7 +51,6 @@ export class HorarioEspacioFisicoComponent {
 
 	public abrirModal(espacioFisicoDTOSeleccionado:EspacioFisicoDTO):void {
 		this.espacioFisicoDTOSeleccionado = espacioFisicoDTOSeleccionado;
-		this.visible=true;
 		this.consultarAula();
 	}
 
@@ -58,17 +61,27 @@ export class HorarioEspacioFisicoComponent {
 	private consultarAula():void {
 		this.posicionesOcupadas=[];
 		this.listaFranjaHorariaAulaDTO = [];
-		// Verificar si idAula es válido y realizar la consulta
-		if (this.espacioFisicoDTOSeleccionado.idEspacioFisico) {  					
-		this.planificacionManualService.consultarFranjasEspacioFisicoPorIdEspacioFisico(this.espacioFisicoDTOSeleccionado.idEspacioFisico).subscribe(
-			(listaFranjaHorariaAulaDTO: FranjaHorariaEspacioFisicoDTO[]) => {
-				this.listaFranjaHorariaAulaDTO = listaFranjaHorariaAulaDTO;
-			},
-			(error) => {
-				console.error(error);
-			}
-		);
+		// Verificar si idEspacioFisico es válido y realizar la consulta
+		if (this.espacioFisicoDTOSeleccionado.idEspacioFisico) {  		
+			this.spinnerService.show("Consultando horario de espacio físico...");  
+			this.planificacionManualService.consultarFranjasEspacioFisicoPorIdEspacioFisico(this.espacioFisicoDTOSeleccionado.idEspacioFisico).subscribe(
+				(listaFranjaHorariaAulaDTO: FranjaHorariaEspacioFisicoDTO[]) => {
+					this.listaFranjaHorariaAulaDTO = listaFranjaHorariaAulaDTO;
+					this.spinnerService.hide();
+					this.visible=true;
+				},
+				(error) => {
+					this.spinnerService.hide();
+					console.error(error);
+					this.mensajeError = 'Ocurrió un error al consultar el horario del espacio físico. Por favor, inténtelo de nuevo más tarde.';
+					this.mostrarModalError = true;
+				}
+			);
 		}
+	}
+
+	public cerrarModalError() {
+		this.mostrarModalError = false;
 	}
 
 	// Función para verificar si una posición está ocupada

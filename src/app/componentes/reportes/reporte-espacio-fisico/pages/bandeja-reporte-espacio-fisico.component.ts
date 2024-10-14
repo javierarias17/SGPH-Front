@@ -6,7 +6,7 @@ import { TipoEspacioFisicoOutDTO } from '../../../datos/gestionar-espacio-fisico
 import { EspacioFisicoDTO } from '../../../datos/gestionar-espacio-fisico/model/out/espacio.fisico.dto';
 import { TranslateService } from '@ngx-translate/core';
 import { UbicacionOutDTO } from '../../../datos/gestionar-espacio-fisico/model/out/ubicacion.out.dto';
-import { HorarioEspacioFisicoComponent } from '../horario-espacio-fisico/horario.espacio.fisico.component';
+import { HorarioEspacioFisicoComponent } from '../components/horario-espacio-fisico/horario.espacio.fisico.component';
 import { Message } from 'primeng/api';
 import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 
