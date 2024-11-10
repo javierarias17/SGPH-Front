@@ -86,7 +86,7 @@
                 <div class="flex justify-content-start" style="width: 100%;">
                     <div class="m-1">
                         <button pButton pRipple icon="pi pi-clone" class="p-button" label="Generar horario"
-                            [disabled]="isLoading" (click)="generarHorario()">
+                            [disabled]="isLoading" (click)="generarHorario()" [disabled]="formulario.invalid">
                             <ng-container *ngIf="isLoading">
                                 <i class="pi pi-spin pi-spinner"></i>
                             </ng-container>

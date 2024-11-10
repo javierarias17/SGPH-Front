@@ -33,7 +33,7 @@
         <div class="flex justify-content-start" style="width: 100%;">
             <div class="m-1">
                 <button pButton pRipple icon="pi pi-trash" class="p-button p-button-danger" label="Eliminar horario"
-                    [disabled]="isLoading" (click)="eliminar()">
+                    [disabled]="isLoading" (click)="eliminar()" [disabled]="formulario.invalid">
                     <ng-container *ngIf="isLoading">
                         <i class="pi pi-spin pi-spinner"></i>
                     </ng-container>

@@ -40,34 +40,41 @@
                 </p-card>
             </div>
         </div>
-        <!-- CARGAR LABOR DOCENTE -->
-         <div class="flex flex-row justify-content-center">
-            <div class="flex flex-column" *ngIf="cargar" style="width: 500px;">
-                <div class="p-fluid col-12">
-                    <label class="required">Programa</label>
-                    <p-dropdown [placeholder]="' '" [options]="listaProgramas"
-                        optionLabel="nombre" [(ngModel)]="programa" [showClear]="true" appendTo="body">
-                        <ng-template let-programa pTemplate="item">
-                            <div class="flex align-items-center gap-2">
-                                <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
-                            </div>
-                        </ng-template>
-                    </p-dropdown>
-                </div>
-                <div class="flex justify-content-center" style="width: 100%;">
-                    <div class="m-1">
-                        <button pButton pRipple label="Visualizar" icon="pi pi-eye" class="p-button mr-2"
-                        (click)="visualizar()"></button>
-                        <button pButton pRipple label="Almacenar" icon="pi pi-save" class="p-button mr-2"
-                            (click)="guardar()"></button>
-                    </div>
-                </div>
-            </div>
-         </div>
-
-        <!-- ELIMINAR LABOR DOCENTE -->
     </div>
+
+    <!-- Cargar labor docente -->
+    <div class="col-12" *ngIf="cargar">
+        <form class="grid" [formGroup]="formulario">
+            <div class="p-fluid col sm:col-12 md:col-3">
+                <label class="required">Programa</label>
+                <p-dropdown [placeholder]="'Seleccione programa'" [options]="listaProgramas" optionValue="idPrograma"
+                    optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
+                    [ngClass]="{'ng-invalid ng-dirty':this.idPrograma().invalid && this.idPrograma().touched}">
+                    <ng-template let-programa pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small class="p-error block fade-in" *ngIf="this.idPrograma().invalid && (this.idPrograma().touched)">Programa es obligatorio</small>
+            </div>
+        </form>         
+        <div class="flex justify-content-start" style="width: 100%;">
+            <div class="m-1">
+                <button pButton pRipple icon="pi pi-eye" class="p-button mr-2" label="Visualizar"
+                    (click)="visualizar()" [disabled]="formulario.invalid">
+                </button>
+                <button pButton pRipple icon="pi pi-download" class="p-button" label="Almacenar"
+                    (click)="guardar()" [disabled]="formulario.invalid">
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Eliminar cargue -->
+
+
 </div>
 
 <pre>{{mensajesError}}</pre>
 <p-toast></p-toast>
+

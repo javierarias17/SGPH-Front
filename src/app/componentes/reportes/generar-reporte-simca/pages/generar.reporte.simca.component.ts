@@ -175,5 +175,4 @@ export class GenerarReporteSimcaComponent implements OnInit {
   idPrograma(): FormControl {
     return this.formulario.get("idPrograma") as FormControl
   }
-
 }

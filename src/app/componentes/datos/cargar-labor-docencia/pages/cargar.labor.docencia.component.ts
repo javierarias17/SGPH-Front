@@ -9,6 +9,7 @@ import { ShowMessageService } from 'src/app/shared/service/show-message.service'
 import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 import { PeriodoAcademicoOutDTO } from 'src/app/componentes/periodo-academico/gestionar-periodo-academico/model/out/periodo-academico-out-dto';
 import { Message } from 'primeng/api';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cargar-labor-docencia',
@@ -17,27 +18,43 @@ import { Message } from 'primeng/api';
 })
 export class CargarLaborDocenciaComponent implements OnInit {
 
+	formulario: FormGroup;
+
 	cargar: boolean = false
 	eliminar: boolean = false
 	listaProgramas: ProgramaOutDTO[]
 	programa: ProgramaOutDTO
 	base64: number
 
-	mensajesError:string = "";
+	public mensajesError:string = "";
 	public messages: Message[] = null;
 
-	constructor(private programaService: ProgramaService,
-				private sharedService: SharedService,
-				private dialogService: DialogService,
-				private messageService: ShowMessageService,
-				public periodoAcademicoSharedService:PeriodoAcademicoSharedService
+	constructor(private fb: FormBuilder,
+		private programaService: ProgramaService,
+		private sharedService: SharedService,
+		private dialogService: DialogService,
+		private messageService: ShowMessageService,
+		public periodoAcademicoSharedService:PeriodoAcademicoSharedService
 	) {
 
 	}
 	ngOnInit(): void {
+		this.inicializarFormulario(); 
 		this.consultarPeriodoAcademicoVigente();
-		this.cargarProgramas()
+		this.cargarProgramas();
+		this.limpiar();
 	}
+
+	public inicializarFormulario() {
+		this.formulario = this.fb.group({
+		  idPrograma: [{value: null}, Validators.required]
+		})
+	}
+
+	public idPrograma(): FormControl {
+		return this.formulario.get("idPrograma") as FormControl
+	}
+
 	cargarLabor() {
 		this.cargar = !this.cargar
 	}
@@ -51,11 +68,19 @@ export class CargarLaborDocenciaComponent implements OnInit {
 		}
 		);
 	}
-	guardar() {
+
+	private limpiar() {
+        this.formulario.reset();
+    }
+	
+	public guardar() {
+		if (!this.formulario.valid) {
+			this.formulario.markAllAsTouched();
+			return;
+		}
 		// MOCK BASE 64
 		this.sharedService.cargarLaborDocente({
-		idPrograma: this.programa.idPrograma,
-		nombrePrograma: this.programa.nombre,
+		idPrograma: this.idPrograma().value,
 		archivoBase64: archivoBase64
 		}).subscribe(r => {
 		if (r && r.error) {
@@ -64,28 +89,32 @@ export class CargarLaborDocenciaComponent implements OnInit {
 		} else {
 			this.messageService.showMessage("success", r.descripcion)
 		}
-		})
+		})	
 	}
-	visualizar() {
+
+	public visualizar() {
+		if (!this.formulario.valid) {
+			this.formulario.markAllAsTouched();
+			return ;
+		}
 		// MOCK BASE64
 		this.sharedService.obtenerVisualizarLaborDocente({
-		idPrograma: this.programa.idPrograma,
-		nombrePrograma: this.programa.nombre,
+		idPrograma: this.idPrograma().value,
 		archivoBase64: archivoBase64
 		}).subscribe(r => {
-		if (r) {
-			this.base64 = r.archivoBase64
-			this.dialogService.open(VisualizadorExcelComponent, {
-			height: '90vh',
-			width: '95%',
-			header: 'Visualizar labor docente',
-			contentStyle: { 'overflow': 'hidden' },
-			data: {
-				base64: this.base64
+			if (r) {
+				this.base64 = r.archivoBase64
+				this.dialogService.open(VisualizadorExcelComponent, {
+				height: '90vh',
+				width: '95%',
+				header: 'Visualizar labor docente',
+				contentStyle: { 'overflow': 'hidden' },
+				data: {
+					base64: this.base64
+				}
+				});
 			}
-			});
-		}
-		})
+		})		
 	}
 
   	private consultarPeriodoAcademicoVigente():void{

@@ -51,13 +51,13 @@
         <div class="flex justify-content-start" style="width: 100%;">
             <div class="m-1">
                 <button pButton pRipple icon="pi pi-search" class="p-button mr-2" label="Visualizar reporte"
-                    [disabled]="isLoading" (click)="visualizar()">
+                    [disabled]="isLoading" (click)="visualizar()" [disabled]="formulario.invalid">
                     <ng-container *ngIf="isLoading">
                         <i class="pi pi-spin pi-spinner"></i>
                     </ng-container>
                 </button>
                 <button pButton pRipple icon="pi pi-download" class="p-button" label="Descargar reporte"
-                    [disabled]="isLoading" (click)="descargar()">
+                    [disabled]="isLoading" (click)="descargar()" [disabled]="formulario.invalid">
                     <ng-container *ngIf="isLoading">
                         <i class="pi pi-spin pi-spinner"></i>
                     </ng-container>

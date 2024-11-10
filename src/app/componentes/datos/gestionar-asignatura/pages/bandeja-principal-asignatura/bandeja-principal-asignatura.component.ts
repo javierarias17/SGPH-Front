@@ -13,8 +13,7 @@ import { ProgramaOutDTO } from 'src/app/componentes/common/model/programa/out/pr
 import { AsignaturaService } from 'src/app/componentes/common/services/asignatura.service';
 @Component({
   selector: 'app-bandeja-principal-asignatura',
-  templateUrl: './bandeja-principal-asignatura.component.html',
-  styleUrls: ['./bandeja-principal-asignatura.component.scss']
+  templateUrl: './bandeja-principal-asignatura.component.html'
 })
 export class BandejaPrincipalAsignaturaComponent implements OnInit {
   mostrarDialogoBandera: boolean = false

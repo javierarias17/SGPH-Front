@@ -41,7 +41,6 @@ export class PlanificacionSemestreAnteriorComponent {
     constructor(
         private fb: FormBuilder,
         private programaService: ProgramaService,
-        private dialogService: DialogService,
         private planificacionManualService: PlanificacionManualService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
