@@ -34,7 +34,6 @@ export class PlanificacionSemestreAnteriorComponent {
     public lstPeriodoAcademicosSinVigente: PeriodoAcademicoOutDTO[] = [];
 	public listaAsignaturas: any[] = [];
 
-    public mostrarAlerta: boolean = false;
     public messages: Message[] = null;
 
     private periodoAcademicoVigente: PeriodoAcademicoOutDTO;
@@ -222,12 +221,11 @@ export class PlanificacionSemestreAnteriorComponent {
         this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(
                 (periodoAcademicoVigente: PeriodoAcademicoOutDTO) => {
                     if (periodoAcademicoVigente) {
+                        this.messages=null;
 						this.periodoAcademicoVigente = periodoAcademicoVigente;            
 						this.periodo().setValue(this.periodoAcademicoVigente.idPeriodoAcademico);
                         this.lstPeriodoAcademicosSinVigente = this.lstPeriodoAcademicosSinVigente.filter(periodo => periodo.idPeriodoAcademico!==this.periodoAcademicoVigente.idPeriodoAcademico);
-                        this.mostrarAlerta = false;
                     }else{
-                        this.mostrarAlerta = true;
                         this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar esta funcionalidad si no existe un periodo académico abierto." }];
                     }
                 },

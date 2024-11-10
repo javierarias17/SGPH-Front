@@ -59,15 +59,15 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Periodo Académico',
                 items: [
-                    { label: 'Gestionar periodo académico', icon: 'pi pi-fw pi-chart-pie', routerLink: ['periodo-academico/gestionar-periodo-academico'] },
+                    { label: 'Gestionar periodo académico', icon: 'pi pi-fw pi-chart-pie', routerLink: ['periodo-academico/gestionar-periodo-academico'], visible: authorities.includes('ROLE_PLANIFICADOR') },
                 ],
-                visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA')                
+                visible: authorities.includes('ROLE_PLANIFICADOR')               
             },
             {
                 label: 'Datos',
                 items: [                    
                     { label: 'Cargar labor docencia', icon: 'pi pi-fw pi-upload', routerLink: ['datos/cargar-labor-docencia'], visible: authorities.includes('ROLE_PLANIFICADOR') },
-                    { label: 'Gestionar espacios físicos', icon: 'pi pi-fw pi-building', routerLink: ['datos/gestionar-espacio-fisico'], visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA') },
+                    { label: 'Gestionar espacios físicos (E.F)', icon: 'pi pi-fw pi-building', routerLink: ['datos/gestionar-espacio-fisico'], visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA') },
                     { label: 'Gestionar asignaturas', icon: 'pi pi-fw pi-book', routerLink: ['datos/gestionar-asignatura'], visible: authorities.includes('ROLE_PLANIFICADOR')  },
                     { label: 'Gestionar cursos', icon: 'pi pi-fw pi-star', routerLink: ['datos/gestionar-curso'], visible: authorities.includes('ROLE_PLANIFICADOR') },
                     { label: 'Gestionar docentes', icon: 'pi pi-fw pi-users', routerLink: ['datos/gestionar-docente'], visible: authorities.includes('ROLE_PLANIFICADOR') },
@@ -78,10 +78,10 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Planificación Horario',
                 items: [
-                    { label: 'Planificación manual', icon: 'pi pi-fw pi-calendar', routerLink: ['planificacion-horario/planificacion-manual'] },
-                    { label: 'Generar horario base a partir del semestre anterior', icon: 'pi pi-fw pi-calendar-plus', routerLink: ['planificacion-horario/planificacion-semestre-anterior'] },
-                    { label: 'Eliminar horario por programa', icon: 'pi pi-fw pi-calendar-minus', routerLink: ['planificacion-horario/eliminar-horario-programa'] },
-                    { label: 'Gestionar agrupadores E.F', icon: 'pi pi-fw pi-th-large', routerLink: ['planificacion-horario/gestionar-grupos'] }
+                    { label: 'Planificación manual', icon: 'pi pi-fw pi-calendar', routerLink: ['planificacion-horario/planificacion-manual'], visible: authorities.includes('ROLE_PLANIFICADOR') },
+                    { label: 'Generar horario base a partir del semestre anterior', icon: 'pi pi-fw pi-calendar-plus', routerLink: ['planificacion-horario/planificacion-semestre-anterior'], visible: authorities.includes('ROLE_PLANIFICADOR') },
+                    { label: 'Eliminar horario por programa', icon: 'pi pi-fw pi-calendar-minus', routerLink: ['planificacion-horario/eliminar-horario-programa'], visible: authorities.includes('ROLE_PLANIFICADOR') },
+                    { label: 'Gestionar agrupadores E.F', icon: 'pi pi-fw pi-th-large', routerLink: ['planificacion-horario/gestionar-grupos'], visible: authorities.includes('ROLE_PLANIFICADOR') }
                 ],
                 visible: authorities.includes('ROLE_PLANIFICADOR') 
             },   
@@ -99,14 +99,14 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Reservas',
                 items: [
-                    { label: 'Gestionar reserva temporal', icon: 'pi pi-fw pi-id-card', routerLink: ['reservas/gestionar-reserva-temporal'] },
+                    { label: 'Gestionar reserva temporal', icon: 'pi pi-fw pi-id-card', routerLink: ['reservas/gestionar-reserva-temporal'], visible: authorities.includes('ROLE_PRESTAMISTA') },
                 ],
                 visible: authorities.includes('ROLE_PRESTAMISTA') 
             },        
             {
                 label: 'Seguridad',
                 items: [
-                    { label: 'Gestionar usuarios administradores', icon: 'pi pi-fw pi-users', routerLink: ['seguridad/gestionar-usuario'] }
+                    { label: 'Gestionar usuarios administradores', icon: 'pi pi-fw pi-users', routerLink: ['seguridad/gestionar-usuario'], visible: authorities.includes('ROLE_ADMINISTRADOR')  }
                 ],
                 visible: authorities.includes('ROLE_ADMINISTRADOR')      
             }

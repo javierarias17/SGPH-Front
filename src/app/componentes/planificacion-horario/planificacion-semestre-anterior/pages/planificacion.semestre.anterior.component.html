@@ -1,16 +1,23 @@
 <div class="grid">
-    <div class="col-12">
-        <h3>Generar horario base a partir del semestre anterior</h3>
+	<div class="col-12">
+		<h3>Generar horario base a partir del semestre anterior</h3>
         <p>Esta pantalla permite generar un horario base para un programa a partir de su horario del semestre anterior.</p>
         <hr>
+	</div>
+</div>
+<!--Mensaje-->
+<div *ngIf="messages !== null">
+    <p-messages [(value)]="messages" [enableService]="true" [closable]="false" />
+</div>
+
+
+
+<div class="grid" *ngIf="messages === null">
+    <div class="col-12">
         <br>
         <br>
-        <!--Mensaje-->
-        <div *ngIf="mostrarAlerta">
-            <p-messages [(value)]="messages" [enableService]="true" [closable]="false" />
-        </div>
         <!--Formulario principal-->
-        <div *ngIf="!mostrarAlerta">
+        <div> 
             <p-fieldset legend="Generación semestre anterior">     
                 <br>       
                 <form class="grid" [formGroup]="formulario">

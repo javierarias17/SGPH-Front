@@ -72,6 +72,8 @@ export class BandejaPrincipalPeriodoAcademicoComponent {
         });
         ref.onClose.subscribe((r) => {
             this.listarPeriodosAcademicosBase();
+            this.consultarPeriodoAcademicoVigente();
+            this.periodoAcademicoSharedService.emitirDataPeriodoVigente();
         });
         
     }

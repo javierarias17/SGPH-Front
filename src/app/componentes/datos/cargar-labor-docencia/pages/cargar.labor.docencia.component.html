@@ -1,8 +1,19 @@
+
 <div class="grid">
-    <div class="col-12">
-        <h3>Cargar labor docencia</h3>
+	<div class="col-12">
+		<h3>Cargar labor docencia</h3>
         <p>Esta pantalla permite realizar el cargue de la labor docencia de un programa.</p>
-        <hr>
+		<hr>
+	</div>
+</div>
+
+<!--Mensaje-->
+<div *ngIf="messages !== null">
+    <p-messages [(value)]="messages" [enableService]="true" [closable]="false" />
+</div>
+<!--Formulario-->
+<div class="grid" *ngIf="messages === null">
+    <div class="col-12">
         <br>
         <br>
         <div class="flex flex-row justify-content-center" *ngIf="!cargar && !eliminar">
@@ -60,5 +71,6 @@
         <!-- ELIMINAR LABOR DOCENTE -->
     </div>
 </div>
+
 <pre>{{mensajesError}}</pre>
 <p-toast></p-toast>

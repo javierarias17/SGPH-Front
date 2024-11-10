@@ -57,6 +57,7 @@ export class GestionarCursoComponent {
     rowsPerPageOptions = [5, 10, 20];
 
     public messages: Message[] = null;
+
     constructor(
         private cursoService:CursoService, 
         private programaService: ProgramaService, 
