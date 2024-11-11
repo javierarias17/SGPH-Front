@@ -14,7 +14,7 @@ export class AsignaturaService{
     }
 
     /**
-	 * Método encargado de obtener las materias de un programa
+	 * Método encargado de consultar las asignaturas activas por programa
 	 * 
 	 * @author apedro
 	 * 
