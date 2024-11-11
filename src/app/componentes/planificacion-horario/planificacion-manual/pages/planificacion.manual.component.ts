@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { FacultadOutDTO } from '../../../common/model/facultad/out/facultad.out.dto';
 import { EstadoCursoHorarioEnum } from '../../../common/enum/estado.curso.horario.enum';
 import { Message, MessageService } from 'primeng/api';
 import { ProgramaService } from '../../../common/services/programa.service';

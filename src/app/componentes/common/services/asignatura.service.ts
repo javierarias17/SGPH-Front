@@ -27,6 +27,21 @@ export class AsignaturaService{
         return this.http.get<any>(url, {params: params});
     }
 
+    /**
+	 * Método encargado de consultar las asignaturas de los cursos del periodo
+	 * vigente para un programa
+	 * 
+	 * @author apedro
+	 * 
+	 * @param idPrograma
+	 * @return
+	 */
+    public consultarAsignaturasDeLosCursosPorIdPrograma(idPrograma:number): Observable<any>{
+        let params = new HttpParams().set('idPrograma', idPrograma);
+        const url = `${environment.url}${this.urlAsignatura}/consultarAsignaturasDeLosCursosPorIdPrograma`;
+        return this.http.get<any>(url, {params: params});
+    }
+
     public consultarAsignaturaPorId(idAsignatura:number): Observable<AsignaturaOutDTO>{
         let params = new HttpParams().set('idAsignatura', idAsignatura);
         const url = `${environment.url}${this.urlAsignatura}/consultarAsignaturaPorId`;

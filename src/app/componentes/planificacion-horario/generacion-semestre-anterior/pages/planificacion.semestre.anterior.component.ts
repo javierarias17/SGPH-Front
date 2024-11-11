@@ -24,6 +24,11 @@ import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.ac
 	providers: [PlanificacionManualService, AsignaturaService]
 })
 export class PlanificacionSemestreAnteriorComponent {
+    
+    public mostrarModalError: boolean = false;
+    public tieneCursosAsociados: boolean = false;
+	public mensajeError: string = '';
+
     public formulario: FormGroup;
     public isLoading: boolean = false;
     public ocultarResultadoGeneracion:boolean =true;
@@ -98,18 +103,35 @@ export class PlanificacionSemestreAnteriorComponent {
 	public onProgramasChange(){      
         this.lstIdAsignatura().reset();  
 		if(this.idPrograma().value){
-			this.asignaturaService.consultarAsignaturasActivasPorIdPrograma(this.idPrograma().value).subscribe(
+			this.asignaturaService.consultarAsignaturasDeLosCursosPorIdPrograma(this.idPrograma().value).subscribe(
 				(response: any) => {
 					if(response.length === 0){
 						this.listaAsignaturas=[];
                         this.formulario.get('lstIdAsignatura').disable();
+                        
+                        // Modal de error
+                        this.mensajeError = 'No hay cursos asociados al programa seleccionado. Para continuar, realice primero la carga de labor docente para el programa.';
+					    this.mostrarModalError = true;
+                        this.tieneCursosAsociados = false;
 					}else{
 						this.listaAsignaturas = response.map((asignatura: any) => ({ nombre: asignatura.nombre, semestre: asignatura.semestre, idAsignatura:asignatura.idAsignatura }));
                         this.formulario.get('lstIdAsignatura').enable();
+
+                        // Modal de error
+                        this.mensajeError = '';                     
+                        this.mostrarModalError = false;
+                        this.tieneCursosAsociados = true;
                     }
 				},
 				(error) => {
 					console.error(error);
+                    this.tieneCursosAsociados = false;
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Ocurrió un error al consultar los cursos del programa.',
+                        detail: error.error.message,
+                        life: 4000,
+                    });
 				}
 				);
 		}else{
@@ -233,4 +255,8 @@ export class PlanificacionSemestreAnteriorComponent {
                 }
             );
     }
+
+    public cerrarModalError() {
+		this.mostrarModalError = false;
+	}
 }

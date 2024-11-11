@@ -1,35 +1,36 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DiaSemanaEnum } from 'src/app/componentes/common/enum/dia.semana.enum';
-import { DocenteOutDTO } from 'src/app/componentes/datos/gestionar-docente/model/out/docente.out.dto';
-import { FranjaHorariaDocenteDTO } from 'src/app/componentes/datos/gestionar-docente/model/out/franja.horaria.docente.dto';
+import { EspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/espacio.fisico.dto';
+import { FranjaHorariaEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/franja.horaria.espacio.fisico.dto';
 import { PlanificacionManualService } from 'src/app/componentes/common/services/planificacion.manual.service';
 import { SpinnerService } from 'src/app/shared/service/spinner.service';
 
 @Component({
-	selector: 'app-horario-docente',
-	templateUrl: './horario.docente.component.html',
-	styleUrls: ['./horario.docente.component.css'],
-	providers: [PlanificacionManualService]
+  selector: 'app-horario-espacio-fisico',
+  templateUrl: './horario.espacio.fisico.component.html',
+  styleUrls: ['./horario.espacio.fisico.component.css'],
+  providers: [PlanificacionManualService]
 })
-export class HorarioDocenteComponent{	
+export class HorarioEspacioFisicoComponent {
 	
 	public mostrarModalError: boolean = false;
 	public mensajeError: string = '';
 
 	/*Configuración modal*/
-	@ViewChild('horarioDocente') horarioDocente: HorarioDocenteComponent;
+	@ViewChild('horarioAula') horarioAula: HorarioEspacioFisicoComponent;
 
 	public visible: boolean = false;
 
-	public tituloModal: string = "Horario docente";
+	public tituloModal: string = "Horario aula";
 	
-	public docenteOutDTOSeleccionado:DocenteOutDTO;
+	public espacioFisicoDTOSeleccionado:EspacioFisicoDTO;
+	
+	public listaFranjaHorariaAulaDTO: FranjaHorariaEspacioFisicoDTO[] = [];
+	
+	// Arreglo para almacenar las posiciones ocupadas
+	public posicionesOcupadas: { x: number, y: number }[] = [];
 
-	private posicionesOcupadas: { x: number, y: number }[] = [];
-
-	public listaFranjaHorariaDocenteDTO: FranjaHorariaDocenteDTO[] = [];
-
-	public horas: string[] = []; 
+	public horas: string[] = [];  
 
 	public dias: DiaSemanaEnum[] = [
 		DiaSemanaEnum.LUNES,
@@ -39,7 +40,7 @@ export class HorarioDocenteComponent{
 		DiaSemanaEnum.VIERNES,
 		DiaSemanaEnum.SABADO,
 		DiaSemanaEnum.DOMINGO
-	];	
+	];
 	
 	constructor(private planificacionManualService: PlanificacionManualService, private spinnerService: SpinnerService){
 		for (let i = 7; i <= 22; i++) {
@@ -48,21 +49,40 @@ export class HorarioDocenteComponent{
 		}
 	}
 
-	public abrirModal(docenteOutDTOSeleccionado:DocenteOutDTO) {
-		this.docenteOutDTOSeleccionado = docenteOutDTOSeleccionado;
-		this.consultarHorarioDocente();
+	public abrirModal(espacioFisicoDTOSeleccionado:EspacioFisicoDTO):void {
+		this.espacioFisicoDTOSeleccionado = espacioFisicoDTOSeleccionado;
+		this.consultarAula();
 	}
 
 	public salir():void{
 		this.visible=false;
+	}  
+
+	private consultarAula():void {
+		this.posicionesOcupadas=[];
+		this.listaFranjaHorariaAulaDTO = [];
+		// Verificar si idEspacioFisico es válido y realizar la consulta
+		if (this.espacioFisicoDTOSeleccionado.idEspacioFisico) {  		
+			this.spinnerService.show("Consultando horario de espacio físico...");  
+			this.planificacionManualService.consultarFranjasEspacioFisicoPorIdEspacioFisico(this.espacioFisicoDTOSeleccionado.idEspacioFisico).subscribe(
+				(listaFranjaHorariaAulaDTO: FranjaHorariaEspacioFisicoDTO[]) => {
+					this.listaFranjaHorariaAulaDTO = listaFranjaHorariaAulaDTO;
+					this.spinnerService.hide();
+					this.visible=true;
+				},
+				(error) => {
+					this.spinnerService.hide();
+					console.error(error);
+					this.mensajeError = 'Ocurrió un error al consultar el horario del espacio físico.';
+					this.mostrarModalError = true;
+				}
+			);
+		}
 	}
 
-	public obtenerNombreCompletoDocente():string{
-        return (this.docenteOutDTOSeleccionado.primerNombre? this.docenteOutDTOSeleccionado.primerNombre+" ": "")
-                +(this.docenteOutDTOSeleccionado.segundoNombre? this.docenteOutDTOSeleccionado.segundoNombre+" ": "")
-                +(this.docenteOutDTOSeleccionado.primerApellido? this.docenteOutDTOSeleccionado.primerApellido+" ": "")
-                +(this.docenteOutDTOSeleccionado.segundoApellido? this.docenteOutDTOSeleccionado.segundoApellido: "");
-    }
+	public cerrarModalError() {
+		this.mostrarModalError = false;
+	}
 
 	// Función para verificar si una posición está ocupada
 	public esPosicionOcupada(x: number, y: number): boolean {
@@ -74,7 +94,7 @@ export class HorarioDocenteComponent{
 		this.posicionesOcupadas.push({ x, y });
 	}
 	
-	private calcularFilasParaFranja(franja: FranjaHorariaDocenteDTO, hora: Date): number {
+	private calcularFilasParaFranja(franja: FranjaHorariaEspacioFisicoDTO, hora: Date): number {
 		const horaInicioDate = new Date(`2000-01-01T${franja.horaInicio}`);
 		const horaFinDate = new Date(`2000-01-01T${franja.horaFin}`);
 		const horaDate = new Date(`2000-01-01T${hora}`);
@@ -87,71 +107,42 @@ export class HorarioDocenteComponent{
 	}
 
 	public generarFilasParaFranja(dia: DiaSemanaEnum, hora: Date): string {
-		const franja = this.listaFranjaHorariaDocenteDTO.find(f => f.dia === dia && f.horaInicio === hora);
+		const franja = this.listaFranjaHorariaAulaDTO.find(f => f.dia === dia && f.horaInicio === hora);
 
 		if (franja) {
 			const filas = this.calcularFilasParaFranja(franja, hora);
 			return `span ${filas}`;
 		}
 		return 'span 1'; 
-	}
-
-	private consultarHorarioDocente() {
-		this.posicionesOcupadas=[];
-		this.listaFranjaHorariaDocenteDTO = [];
-		if (this.docenteOutDTOSeleccionado.idPersona) {      
-			this.spinnerService.show("Consultando horario de docente...");  
-			this.planificacionManualService.consultarFranjasDocentePorIdPersona(this.docenteOutDTOSeleccionado.idPersona).subscribe(
-				(listaFranjaHorariaDocenteDTO: FranjaHorariaDocenteDTO[]) => {
-					this.listaFranjaHorariaDocenteDTO = listaFranjaHorariaDocenteDTO;
-					this.spinnerService.hide();
-					this.visible=true;
-				},
-				(error) => {
-					this.spinnerService.hide();
-					console.error(error);
-					this.mensajeError = 'Ocurrió un error al consultar el horario del docente. Por favor, inténtelo de nuevo más tarde.';
-					this.mostrarModalError = true;
-				}
-			);
-		}
-	}
-
-	public cerrarModalError() {
-		this.mostrarModalError = false;
-	}
+	}	
 
 	public obtenerNombreCurso(dia: DiaSemanaEnum, horaInicio: Date): string {
-		const franja = this.listaFranjaHorariaDocenteDTO.find(
+		const franja = this.listaFranjaHorariaAulaDTO.find(
 		(f) => f.horaInicio === horaInicio && f.dia === dia
 		);
 		return franja ? franja.nombreCurso : '';
 	}
 
 	public configurarFranjaCurso(dia: DiaSemanaEnum, horaInicio: Date, fila:number, columna:number): string {
-		const franjaCurso = this.listaFranjaHorariaDocenteDTO.find(f => f.dia === dia && f.horaInicio === horaInicio);
+		const franjaCurso = this.listaFranjaHorariaAulaDTO.find(f => f.dia === dia && f.horaInicio === horaInicio);
 		
 		if(franjaCurso){
 			const posiciones = this.calcularFilasParaFranja(franjaCurso, horaInicio);
-		for (let i = 1; i <= posiciones-1; i++) {
-			this.agregarPosicion(fila+i,columna);
+			for (let i = 1; i <= posiciones-1; i++) {
+				this.agregarPosicion(fila+i,columna);
+			}
 		}
-		}
-		return franjaCurso ? franjaCurso.nombreCurso: '';
+		return franjaCurso ? franjaCurso.nombreCurso : '';
 	}
 
-	public obtenerNombreEspacioFisico(dia: DiaSemanaEnum, horaInicio: Date, esPrincipal:boolean): string {
-		const franjaCurso = this.listaFranjaHorariaDocenteDTO.find(f => f.dia === dia && f.horaInicio === horaInicio);
-
-		if(esPrincipal===true){
-			return franjaCurso ? franjaCurso.salon : '';
-		}else{
-			return franjaCurso ? franjaCurso.salonSecundario : '';
+	public configurarBorderSegunIndicador(dia: DiaSemanaEnum, horaInicio: Date): string {
+		const franjaCurso = this.listaFranjaHorariaAulaDTO.find(f => f.dia === dia && f.horaInicio === horaInicio);
+		if(franjaCurso && franjaCurso.esPrincipal===false){
+			return '3px dashed #000';
 		}
+		return null;
 	}
 
-
-	
 	public obtenerColorPorMateria(materia: string): string {
 		const colorBase = this.stringToHslColor(materia);
 		return colorBase;
@@ -176,7 +167,7 @@ export class HorarioDocenteComponent{
 		return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 	}
 
-	public formatearHoraString(horaString) {
+	public formatearHoraString(horaString):string {
 		// Dividir la cadena en horas, minutos y segundos
 		const [horas, minutos, segundos] = horaString.split(':');
 
@@ -186,6 +177,7 @@ export class HorarioDocenteComponent{
 
 		// Crear la cadena formateada
 		const horaFormateada = `${horasFormateadas}:${minutosFormateados}`;
+
 		return horaFormateada;
 	}
 }

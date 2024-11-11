@@ -6,13 +6,13 @@ import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisic
 import { InicioComponent } from './home/pages/inicio.component';
 import { GestionarPersonaComponent } from './datos/gestionar-persona/pages/gestionar.persona.component';
 import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/pages/planificacion.manual.component';
-import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/planificacion-semestre-anterior/pages/planificacion.semestre.anterior.component';
+import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/generacion-semestre-anterior/pages/planificacion.semestre.anterior.component';
 import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/pages/gestionar.usuario.component';
 import { GestionarReservaTemporalComponent } from './reservas/gestionar-reserva-temporal/gestionar.reserva.temporal.component';
 import { GenerarReporteSimcaComponent } from './reportes/generar-reporte-simca/pages/generar.reporte.simca.component';
 import { CargarLaborDocenciaComponent } from './datos/cargar-labor-docencia/pages/cargar.labor.docencia.component';
-import { BandejaReporteEspacioFisicoComponent } from './reportes/reporte-espacio-fisico/pages/bandeja-reporte-espacio-fisico.component';
-import { BandejaReporteDocenteComponent } from './reportes/reporte-docente/pages/bandeja-reporte-docente.component';
+import { BandejaReporteEspacioFisicoComponent } from './reportes/ver-horario-espacio-fisico/pages/bandeja-reporte-espacio-fisico.component';
+import { BandejaReporteDocenteComponent } from './reportes/ver-horario-docente/pages/bandeja-reporte-docente.component';
 import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/pages/eliminar-horario-programa.component';
 import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/pages/generar.reporte.docente.component';
 
