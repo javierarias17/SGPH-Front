@@ -89,13 +89,18 @@
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Asignatura</label>
             <p-dropdown [placeholder]="' '" [options]="listaAsignaturas" optionValue="idAsignatura"
-                optionLabel="nombre" formControlName="idAsignatura" [showClear]="true" appendTo="body"
+                optionLabel="nombre" formControlName="idAsignatura" [showClear]="true" appendTo="body" [filter]="true"
                 (ngModelChange)="onAsignaturaChange()"
                 [ngClass]="{
                         'ng-invalid ng-dirty':
                             this.idAsignatura().invalid &&
                             this.idAsignatura().touched
                     }">
+                <ng-template let-asignatura pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ asignatura.nombre }}-<strong>Sem {{asignatura.semestre}}</strong></div>
+                    </div>
+                </ng-template>
             </p-dropdown>
             <small class="p-error block fade-in" *ngIf="this.idAsignatura().invalid &&
                                 (this.idAsignatura().touched)">
