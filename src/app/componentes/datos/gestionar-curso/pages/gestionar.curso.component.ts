@@ -111,7 +111,7 @@ export class GestionarCursoComponent {
             this.filtroCursoPlanificacionDTO.listaIdPrograma = this.programasSeleccionados;
 
             if(this.programasSeleccionados.length === 1){
-                this.asignaturaService.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0]).subscribe(
+                this.asignaturaService.consultarAsignaturasActivasPorIdPrograma(this.programasSeleccionados[0]).subscribe(
                     (response: any) => {
                         if(response.length === 0){
                             this.listaAsignaturas=[];
@@ -151,9 +151,10 @@ export class GestionarCursoComponent {
     }
 
     public onSemestreChange() {        
-        if( this.numeroSemestre === null){
+        if( this.numeroSemestre === null || this.numeroSemestre===0){
+            this.numeroSemestre = null;
             this.filtroCursoPlanificacionDTO.semestre=null;
-        }else if(this.numeroSemestre < 1 || this.numeroSemestre > 10){
+        }else if(this.numeroSemestre < -1 || this.numeroSemestre > 10){
             this.filtroCursoPlanificacionDTO.semestre=null;
             this.numeroSemestre=null;
             return;

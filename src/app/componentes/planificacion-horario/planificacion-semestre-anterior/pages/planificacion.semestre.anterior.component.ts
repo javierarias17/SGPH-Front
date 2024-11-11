@@ -98,7 +98,7 @@ export class PlanificacionSemestreAnteriorComponent {
 	public onProgramasChange(){      
         this.lstIdAsignatura().reset();  
 		if(this.idPrograma().value){
-			this.asignaturaService.consultarAsignaturasPorIdPrograma(this.idPrograma().value).subscribe(
+			this.asignaturaService.consultarAsignaturasActivasPorIdPrograma(this.idPrograma().value).subscribe(
 				(response: any) => {
 					if(response.length === 0){
 						this.listaAsignaturas=[];

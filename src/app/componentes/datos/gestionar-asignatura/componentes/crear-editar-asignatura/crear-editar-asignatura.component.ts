@@ -14,8 +14,7 @@ import { AsignaturaService } from 'src/app/componentes/common/services/asignatur
 
 @Component({
   selector: 'app-crear-editar-asignatura',
-  templateUrl: './crear-editar-asignatura.component.html',
-  styleUrls: ['./crear-editar-asignatura.component.scss']
+  templateUrl: './crear-editar-asignatura.component.html'
 })
 export class CrearEditarAsignaturaComponent implements OnInit {
 

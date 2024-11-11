@@ -123,7 +123,7 @@ export class CrearEditarVerCursoComponent {
   }
   onProgramaChange() {
     if (this.idPrograma().value!==null) {
-      this.asignaturaService.consultarAsignaturasPorIdPrograma(this.idPrograma().value).subscribe(r => {
+      this.asignaturaService.consultarAsignaturasActivasPorIdPrograma(this.idPrograma().value).subscribe(r => {
         this.listaAsignaturas = r
         this.asignaturaSeleccionada = null
       })

@@ -21,6 +21,7 @@ import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @NgModule({
     declarations: [],

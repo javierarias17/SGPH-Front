@@ -147,7 +147,7 @@ export class PlanificacionManualComponent {
             this.filtroCursoPlanificacionDTO.listaIdPrograma = this.programasSeleccionados;
 
             if(this.programasSeleccionados.length === 1){
-                this.asignaturaService.consultarAsignaturasPorIdPrograma(this.programasSeleccionados[0]).subscribe(
+                this.asignaturaService.consultarAsignaturasActivasPorIdPrograma(this.programasSeleccionados[0]).subscribe(
                     (response: any) => {
                         if(response.length === 0){
                             this.listaAsignaturas=[];
