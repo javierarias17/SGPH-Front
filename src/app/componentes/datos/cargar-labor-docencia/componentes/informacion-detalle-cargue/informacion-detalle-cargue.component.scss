@@ -1,0 +1,68 @@
+/* Contenedor principal del modal */
+.modal-container {
+    padding: 20px;
+    max-width: 500px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: #333;
+  }
+  
+  /* Título del modal */
+  .modal-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  /* Información principal */
+  .info-section {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #e6f7ff;
+    border-left: 4px solid #1890ff;
+  }
+  
+  /* Labels para "Facultad" y "Estado" */
+  .info-label {
+    font-weight: bold;
+    color: #595959;
+  }
+  
+  /* Estilo del texto de Facultad y Estado */
+  .info-value {
+    color: #333;
+  }
+  
+  /* Detalle del cargue */
+  .detail-section {
+    margin-top: 15px;
+  }
+  
+  .detail-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #1890ff;
+    padding-bottom: 5px;
+  }
+  
+  .detail-item {
+    font-size: 0.95em;
+    color: #595959;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .detail-icon {
+    font-size: 1.2em;
+    color: #1890ff;
+    margin-right: 8px;
+  }
+  

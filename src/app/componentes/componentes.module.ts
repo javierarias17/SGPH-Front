@@ -43,6 +43,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/generar.reporte.docente.component';
 import { GestionarPersonaComponent } from './datos/gestionar-persona/gestionar.persona.component';
 import { CardModule } from 'primeng/card';
+import { InformacionDetalleCargueComponent } from './datos/cargar-labor-docencia/componentes/informacion-detalle-cargue/informacion-detalle-cargue.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
  
 
 @NgModule({
@@ -73,7 +75,8 @@ import { CardModule } from 'primeng/card';
         EliminarHorarioProgramaComponent,
         ResultadoGeneracionHorarioComponent,
 		CrearEditardocenteComponent,
-		GenerarReporteDocenteComponent
+		GenerarReporteDocenteComponent,
+  		InformacionDetalleCargueComponent
 	],
 	imports: [
 		CardModule,
@@ -82,7 +85,8 @@ import { CardModule } from 'primeng/card';
 		PrimeNgModule,
 		SharedModule,
 		MessageModule,
-		ToastModule,		
+		ToastModule,	
+		ProgressSpinnerModule,	
 	],
 	providers: [EspacioFisicoService, 
 		ProgramaService, 

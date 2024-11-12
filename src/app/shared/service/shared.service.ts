@@ -42,4 +42,8 @@ export class SharedService {
     const url = `${environment.url}${this.urlDocente}/cargarLaborDocente`;
     return this.http.post<any>(url, filtro);
   }
+  public importarLaborDocente(docenteLaborList: any[], idFacultad: number, idPrograma: number): Observable<any> {
+    const url = `${environment.url}${this.urlDocente}/importar/${idFacultad}/${idPrograma}`;
+    return this.http.post<any>(url, docenteLaborList);
+  }
 }
