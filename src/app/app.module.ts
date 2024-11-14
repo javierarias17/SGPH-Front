@@ -15,8 +15,7 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ConfirmationService, PrimeNGConfig } from 'primeng/api';
-import { PeriodoAcademicoService } from './shared/service/periodo.academico.service';
-import { LenguajeService } from './componentes/servicios/lenguaje.service';
+import { LenguajeService } from './componentes/common/services/lenguaje.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { SpinnerService } from './shared/service/spinner.service';
 import { SharedModule } from './shared/shared.module';
@@ -25,6 +24,8 @@ import { AuthInterceptor } from './auth.interceptor';
 // Se importa registerLocaleData y los datos de localización en español
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { PeriodoAcademicoService } from './componentes/periodo-academico/gestionar-periodo-academico/services/periodo.academico.service';
+import { PeriodoAcademicoSharedService } from './shared/service/periodo.academico.shared.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -57,6 +58,7 @@ registerLocaleData(localeEs);
         SpinnerService,
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService, LenguajeService, ConfirmationService, PeriodoAcademicoService,
+        PeriodoAcademicoSharedService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

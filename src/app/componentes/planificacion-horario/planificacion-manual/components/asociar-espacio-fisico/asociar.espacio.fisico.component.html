@@ -1,0 +1,255 @@
+<p-dialog #modalDialog [(visible)]="mostrarAsociarAulaModal" [style]="{width: '1024px'}" [header]="this.nombreHeader" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+
+        <!--Información Curso-->
+        <div class="grid">
+            <div class="col-6">
+                <div class="flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Programa</label>
+                    <label class="w-25rem"
+                        style="margin-left: 10%; width: 90%"><b>{{cursoPlanificacionOutDTOSeleccionado.nombrePrograma}}</b></label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Curso</label>
+                    <label class="w-25rem"
+                        style="margin-left: 10%; width: 90%"><b>{{cursoPlanificacionOutDTOSeleccionado.nombreAsignatura}}
+                        {{cursoPlanificacionOutDTOSeleccionado.grupo}}</b></label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Cupo</label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{cursoPlanificacionOutDTOSeleccionado.cupo ?
+                        cursoPlanificacionOutDTOSeleccionado.cupo:'Sin asignar'}}{{cursoPlanificacionOutDTOSeleccionado.cupo ? '
+                        Estudiantes':''}}</b></label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Horas Asig.</label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b> {{cursoPlanificacionOutDTOSeleccionado.horasAsignadas}} de {{cursoPlanificacionOutDTOSeleccionado.horasSemana}}</b></label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-5rem align-self-center" style="text-align: right;">Docentes</label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b> {{ (cursoPlanificacionOutDTOSeleccionado.docentes ?
+                        cursoPlanificacionOutDTOSeleccionado.docentes.join(', ') : 'Sin asignar') | titlecase }}</b></label>
+                </div>
+            </div>
+        </div>
+
+        <!--Caracteristicas Espacio físico-->
+        <p-fieldset legend="Filtros de busqueda" class="m-1 fade-in w-100">
+            <div class="grid">
+                <!--Primera columna-->
+                <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length === 0">
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center required" style="text-align: right;">Ubicación</label>
+                        <p-multiSelect maxSelectedLabels="1" 
+                            selectedItemsLabel="{0} Ubicaciones seleccionadas"
+                            [defaultLabel]="'Seleccione ubicación'" 
+                            [options]="lstUbicacionOutDTO"
+                            [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion"
+                            [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
+                            [ngClass]="{'w-27rem':true }" 
+                            [filter]="false"
+                            [showClear]="true"
+                            optionLabel="nombre" 
+                            optionValue="idUbicacion"
+                            (ngModelChange)="onUbicacionesChange()" >
+                        </p-multiSelect>
+                    </div>
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center" style="text-align: right;">Tipo</label>
+                        <p-multiSelect 
+                            [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
+                            [ngClass]="{'w-27rem':true }"
+                            maxSelectedLabels="4" 
+                            selectedItemsLabel="{0} Tipos seleccionados"
+                            [placeholder]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion?.length === 0 ? ' ':'Seleccione tipo espacio físico'" 
+                            [options]="lstTipoEspaciosFisicos"
+                            [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico"
+                            [disabled]="filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion.length === 0"
+                            [filter]="false"
+                            [showClear]="true" 
+                            optionLabel="tipo" 
+                            optionValue="idTipoEspacioFisico"
+                            emptyMessage="No hay tipos para las ubicaciones seleccionadas"
+                            (ngModelChange)="onTiposEspacioFisicoChange()">
+                        </p-multiSelect>
+                    </div>
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center" style="text-align: right;">Nombre</label>
+                        <input [style]="{ 'height': '2.0rem', 'margin-left': '8%', 'line-height': '1.2px'}"
+                               [ngClass]="{'w-24rem':true }"
+                               type="text" class="p-inputtext" 
+                               [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.salon" 
+                               [disabled]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion.length === 0"
+                               [placeholder]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion.length === 0 ? ' ':'Ingrese nombre de espacio físico'"
+                               [style.opacity]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0 ? '0.6' : ''"
+                               (ngModelChange)="onInputsChange()"
+                               >
+                    </div>
+                </div><!--Cierre primera columna-->
+                <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length > 0">
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center required" style="text-align: right;">Agrupador</label>
+                        <p-multiSelect 
+                            [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
+                            [ngClass]="{'w-27rem':true }" 
+                            maxSelectedLabels="4" 
+                            selectedItemsLabel="{0} Grupos seleccionadas"
+                            [defaultLabel]="'Seleccione grupos'" 
+                            [options]="lstAgrupadorEspacioFisicoOutDTO"
+                            [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico"                       
+                            [filter]="false"
+                            [showClear]="true"
+                            optionLabel="nombre" 
+                            optionValue="idAgrupadorEspacioFisico"
+                            (ngModelChange)="onGruposChange()">
+                        </p-multiSelect>
+                    </div>
+                    <div class="mt-1 flex justify-content-start flex-wrap">
+                        <label class="w-5rem align-self-center" style="text-align: right;">Nombre</label>
+                        <input type="text" class="p-inputtext" 
+                               [(ngModel)]="filtroFranjaHorariaDisponibleCursoDTO.salon" 
+                               [style]="{ 'height': '2.0rem', 'margin-left': '8%', 'line-height': '1.2px'}"
+                               [ngClass]="{'w-24rem':true }"
+                               placeholder="Ingrese nombre"
+                               (ngModelChange)="onInputsChange()">
+                    </div>
+                </div>
+                <!--Segunda columna-->
+                <div class="col-6">
+                    <div class="mt-1 flex justify-content-start flex-wrap" *ngIf="esPrincipal">
+                        <label for="address">Disponibilidad</label>
+                        <div class="grid formgrid">
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="LUNES" [(ngModel)]="diasSeleccionados" id="lunes" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="lunes">Lunes</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="MARTES" [(ngModel)]="diasSeleccionados" id="martes" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="martes">Martes</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="MIERCOLES" [(ngModel)]="diasSeleccionados" id="miercoles" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="miercoles">Miercoles</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="JUEVES" [(ngModel)]="diasSeleccionados" id="jueves" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="jueves">Jueves</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="VIERNES" [(ngModel)]="diasSeleccionados" id="viernes" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="viernes">Viernes</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="field-checkbox">
+                                    <p-checkbox name="group1" value="SABADO" [(ngModel)]="diasSeleccionados" id="sabado" (ngModelChange)="onDiasChange()"></p-checkbox>
+                                    <label for="sabado">Sabado</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="grid mt-1" *ngIf="esPrincipal">
+                        <!--Primera columna-->
+                        <div class="col-4">
+                            <label for="address">Desde</label>
+                            <p-dropdown
+                                [style]="{ 'height': '2.0rem', 'margin-left': '0%',  'line-height': '1.2px', 'width': '100%' }"
+                                [ngClass]="{'w-30rem':true}" [options]="listaHorasInicio"
+                                [(ngModel)]="horaInicioSeleccionado" 
+                                placeholder="Hora inicio" 
+                                [showClear]="listaHorasInicio.includes(horaInicioSeleccionado)"
+                                (ngModelChange)="onHoraInicioChange()"
+                                appendTo="body">
+                            </p-dropdown>
+                        </div>
+                        <div class="col-4">
+                            <label class="w-5rem align-self-center required" style="text-align: right;">Cantidad horas</label>
+                            <p-inputNumber [style]="{'height': '2.0rem', 'margin-left': '0%', 'width': '100%' }"
+                                placeholder="Ingrese horas" [step]="1" [showButtons]="true" [min]="1" [max]="10"
+                                [(ngModel)]="cantidadHorasSeleccionada" (ngModelChange)="cantidadHorasChange()"
+                                >
+                            </p-inputNumber>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="mt-3" > 
+                                <button pButton pRipple icon="pi pi-search" class="p-button" label="Buscar" (click)="buscar()" [disabled]="isLoading || deshabilitarBotonBuscar">
+                                    <ng-container *ngIf="isLoading">
+                                        <i class="pi pi-spin pi-spinner"></i>
+                                    </ng-container>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+    
+                </div><!--Cierre segunda columna-->
+            </div>
+        </p-fieldset>
+        <!--Asociar Aulas-->
+        <div class="col-12 xl:col-12">
+            <div class="empty-message">{{this.mensajeResultadoBusqueda}}</div>
+
+            <p-pickList [source]="listaFranjaHorariaDisponibles" [target]="listaFranjaHorariaAsignadas" sourceHeader="Franjas disponibles"
+                targetHeader="Franjas asignadas" [dragdrop]="false" [responsive]="true" [sourceStyle]="{'height':'250px'}"
+                [targetStyle]="{'height':'250px'}" [showSourceControls]="false" [showTargetControls]="false"
+                (onMoveToSource)="onMoveToSource($event)" [disabled]="isLoading">
+                <ng-template let-franjaHoraria pTemplate="item">
+                    <div> 
+                        <span *ngIf="franjaHoraria.check">
+                            <i class="pi pi-check" style="color: green; font-size: 1.2rem;font-weight: bold;"></i>
+                        </span>
+                        {{obtenerFormatoFranjaPresentacion(franjaHoraria.franjaHorariaCursoDTO)}}
+                    </div>                    
+                </ng-template>
+            </p-pickList>
+        </div>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text"
+            (click)="salir()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+            (click)="guardar()"></button>
+    </ng-template>
+</p-dialog>
+
+ <!-- p-toast para mensajes -->
+ <p-toast></p-toast>
+
+ <p-dialog [(visible)]="mostrarErrorModal" header="Error" [modal]="true" [style]="{ width: '450px' }">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>{{mensajeModal}}</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Aceptar"
+            (click)=" mostrarErrorModal = false"></button>
+    </ng-template>
+</p-dialog>
+
+<!-- TODO: Dialogo para la opción de espacio físico secundario -->
+<p-dialog [(visible)]="mostrarDialogo" header="Establecer como secundario" [modal]="true" [style]="{ width: '450px' }">
+    <!-- Contenido del diálogo -->
+    <div *ngIf="itemSeleccionado">
+        <p>¿Quiere asignar como espacio físico secundario?</p>
+        <p>{{itemSeleccionado | json}}</p>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Aceptar"
+            (click)="mostrarDialogo = false"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Cancelar"
+            (click)="mostrarDialogo = false"></button>
+    </ng-template>
+</p-dialog>

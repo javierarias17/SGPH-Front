@@ -1,0 +1,29 @@
+.borde-card {
+    border: 2px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #fff;
+    margin: 20px;
+    transition: box-shadow 0.3s ease;
+}
+
+.header {
+    text-align: center;
+    margin-top: 10px;
+}
+.borde:hover {
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.body p {
+    margin: 15px;
+    font-size: 8px;
+    color: #333; 
+    margin-bottom: 1em;
+    text-align: justify;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    word-wrap: break-word;
+  }

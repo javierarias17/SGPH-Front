@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FacultadOutDTO } from 'src/app/componentes/dto/facultad/out/facultad.out.dto';
-import { ProgramaOutDTO } from 'src/app/componentes/dto/programa/out/programa.out.dto';
+import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/facultad.out.dto';
 import { AgrupacionPorFacultad } from '../../model/agrupacion-por-facultad';
 import { SharedService } from 'src/app/shared/service/shared.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { AsignaturaOutDTO } from '../../model/asignatura-dto';
-import { AsignaturaService } from 'src/app/componentes/servicios/asignatura.service';
-import { ProgramaService } from 'src/app/componentes/servicios/programa.service';
-import { FacultadService } from 'src/app/componentes/servicios/facultad.service';
-import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/dto/espacio-fisico/out/agrupador.espacio.fisico.dto';
+import { ProgramaService } from 'src/app/componentes/common/services/programa.service';
+import { FacultadService } from 'src/app/componentes/common/services/facultad.service';
+import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/agrupador.espacio.fisico.dto';
+import { ProgramaOutDTO } from 'src/app/componentes/common/model/programa/out/programa.out.dto';
+import { AsignaturaService } from 'src/app/componentes/common/services/asignatura.service';
 
 @Component({
   selector: 'app-crear-editar-asignatura',
-  templateUrl: './crear-editar-asignatura.component.html',
-  styleUrls: ['./crear-editar-asignatura.component.scss']
+  templateUrl: './crear-editar-asignatura.component.html'
 })
 export class CrearEditarAsignaturaComponent implements OnInit {
 

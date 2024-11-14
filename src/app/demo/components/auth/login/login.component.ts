@@ -3,8 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { MessageService } from 'primeng/api';
-import { LoginService } from 'src/app/componentes/servicios/login.service';
-import { TokenService } from 'src/app/componentes/servicios/token.service';
+import { LoginService } from 'src/app/componentes/common/services/login.service';
+import { TokenService } from 'src/app/componentes/common/services/token.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 

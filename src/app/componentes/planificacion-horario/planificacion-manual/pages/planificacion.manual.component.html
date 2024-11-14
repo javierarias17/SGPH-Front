@@ -1,0 +1,196 @@
+<div class="grid">
+    <div class="col-12">
+        <h3>Planificación manual</h3>
+        <p>Esta pantalla permite asignar y desasignar docentes y franjas horarias a los cursos de forma manual.</p>
+        <hr>
+    </div>
+</div>
+
+<!--Mensaje-->
+<div *ngIf="messages !== null">
+    <p-messages [(value)]="messages" [enableService]="true" [closable]="false" />
+</div>
+
+<div *ngIf="messages === null">
+    <!--Filtros-->
+    <div class="p-fluid p-formgrid grid">
+        <div class="field col-6 md:col-2">
+            <label>Programa</label>
+            <p-multiSelect 
+                maxSelectedLabels="4" 
+                selectedItemsLabel="{0} Programas seleccionados" 
+                optionLabel="abreviatura" 
+                [defaultLabel]="listaProgramas.length === 0 ? '':'Seleccione programas'"
+                [options]="listaProgramas" 
+                [(ngModel)]="programasSeleccionados"  
+                [filter]="false"
+                [showClear]="true"
+                [disabled]="false"
+                optionLabel="abreviatura" 
+                optionValue="idPrograma"
+                (ngModelChange)="onProgramasChange()" >
+                <ng-template let-programa pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
+        </div>
+        <div class="field col-6 md:col-2">
+            <label>Asignatura</label>
+            <p-multiSelect 
+                maxSelectedLabels="1" 
+                selectedItemsLabel="{0} Asignaturas seleccionadas" 
+                optionLabel="nombre" 
+                [defaultLabel]="listaAsignaturas.length === 0 ? '':'Seleccione Asignatura'"
+                [options]="listaAsignaturas" 
+                [(ngModel)]="asignaturasSeleccionadas"  
+                [filter]="true"
+                [showClear]="true"
+                [disabled]="listaAsignaturas.length === 0"
+                optionLabel="nombre" 
+                optionValue="idAsignatura"
+                (ngModelChange)="onAsignaturasChange()" >
+                <ng-template let-asignatura pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ asignatura.nombre }}-<strong>Sem {{asignatura.semestre}}</strong></div>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
+        </div>
+        <div class="field col-6 md:col-2">
+            <label>Semestre</label>
+            <p-inputNumber 
+                [placeholder]="'Ingrese semestre'"
+                [step]="1" 
+                [showButtons]="true" 
+                [min]="-1" 
+                [max]="10"
+                [showClear]="true"
+                [disabled]="false"
+                [(ngModel)]="numeroSemestre"
+                (ngModelChange)="onSemestreChange()">
+            </p-inputNumber>
+        </div>  
+        <div class="field col-6 md:col-2">
+            <label>Horario</label>
+            <p-dropdown 
+                [placeholder]="'Seleccione estado horario'"
+                [options]="listaHorarios" 
+                [(ngModel)]="horarioSeleccionado"
+                [showClear]="true"
+                [disabled]="false"
+                (ngModelChange)="onHorarioChange()">
+            </p-dropdown>
+        </div>
+        <div class="field col-6 md:col-2">
+            <label>Docentes</label>
+            <p-inputNumber 
+                [placeholder]="'Ingrese cantidad docentes'"
+                mode="decimal" 
+                [showButtons]="true" 
+                [min]="0" 
+                [max]="4"
+                [showClear]="true"
+                [disabled]="false"
+                [(ngModel)]="numeroDocente"
+                (ngModelChange)="onDocenteChange()">
+            </p-inputNumber>
+        </div>                                             
+    </div>
+    <!--Info general-->
+    <br>
+    <div class="grid" *ngIf="infoGeneralCursosPorProgramaDTO === null && totalRecords!==undefined">
+        <div class="col-2">
+            <label class="large-label">Cursos consultados: {{totalRecords}}</label>
+        </div>
+    </div>
+    <div class="grid" *ngIf="infoGeneralCursosPorProgramaDTO !== null">
+        <div class="col-2">
+            <label class="large-label">Información cursos {{this.programasSeleccionados[0]?.abreviatura}}:</label>
+        </div>
+        <div class="col-2">
+            <label class="large-label">Total cursos <b>{{infoGeneralCursosPorProgramaDTO?.totalCursos}}</b></label>
+        </div>
+        <div class="col-2">
+            <label class="large-label">Horario completo <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosConHorario}}</b></label>
+        </div>
+        <div class="col-2">
+            <label class="large-label">Sin horario <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosSinHorario}}</b></label>
+        </div>
+        <div class="col-2">
+            <label class="large-label">Horario parcial <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosHorarioParcial}}</b></label>
+        </div>
+        <div class="col-2">
+            <label class="large-label">Cursos sin docentes <b>{{infoGeneralCursosPorProgramaDTO?.cantidadCursosSinDocente}}</b></label>
+        </div>
+    </div>
+    <!--Tabla-->
+    <div class="grid">
+        <div class="col-12">
+            <p-table #dt [value]="listaCursoPlanificacionOutDTO" responsiveLayout="scroll" [rows]="10"
+            selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines">
+                <ng-template pTemplate="header">
+                    <tr>
+                    <th>Prog.</th>
+                    <th>Sem.</th>
+                    <th>Asignatura</th>
+                    <th>Grupo</th>
+                    <th>Horario</th>
+                    <th>Horas. asig.</th>
+                    <th>Docente</th>
+                    <th>Principal</th>
+                    <th>Secundario</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-CursoPlanificacionOutDTO>
+                    <tr>
+                        <td>{{CursoPlanificacionOutDTO.nombrePrograma}}</td>
+                        <td>{{CursoPlanificacionOutDTO.semestre}}</td>
+                        <td>{{CursoPlanificacionOutDTO.nombreAsignatura}}</td>
+                        <td>{{CursoPlanificacionOutDTO.grupo}}</td>
+                        <td>
+                            <div *ngIf="CursoPlanificacionOutDTO.horarios.length > 0; else sinHorarios">
+                                <div *ngFor="let horario of CursoPlanificacionOutDTO.horarios " style="display: flex; flex-direction: column; ">
+                                    {{horario}}
+                                </div>
+                            </div>
+                            <ng-template #sinHorarios>
+                                <p style = "color:red">No asignado</p>
+                            </ng-template>
+                        </td>
+                        <td [ngClass]="{'red-text': CursoPlanificacionOutDTO.horasAsignadas < CursoPlanificacionOutDTO.horasSemana}">{{CursoPlanificacionOutDTO.horasAsignadas}} de {{CursoPlanificacionOutDTO.horasSemana}}</td>
+                        <td>
+                            <div *ngIf="CursoPlanificacionOutDTO.docentes.length > 0; else sinDocentes">
+                                <div *ngFor="let docente of CursoPlanificacionOutDTO.docentes " style="display: flex; flex-direction: column; ">
+                                    {{docente | titlecase }}
+                                </div>                    
+                            </div>
+                            <ng-template #sinDocentes>
+                                <p style = "color:red">No asignado</p>
+                            </ng-template>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple type="button" icon="pi pi-users" class="p-button-rounded p-button-secondary" (click)="asociarDocentes(CursoPlanificacionOutDTO)" pTooltip="Docentes" tooltipPosition="top"></button>
+                                <span style="margin-right: 10px;"></span>
+                                <button pButton pRipple type="button" icon="pi pi-calendar" class="p-button-rounded p-button-info " (click)="asociarAulas(CursoPlanificacionOutDTO, true)" pTooltip="Horarios ppal." tooltipPosition="top" [disabled]="!CursoPlanificacionOutDTO.horasSemana"></button>  
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex" *ngIf="CursoPlanificacionOutDTO.aplicaEspacioSecundario">
+                                <button pButton pRipple type="button" icon="pi pi-calendar-plus" class="p-button-rounded p-button-primary " (click)="asociarAulas(CursoPlanificacionOutDTO, false)" pTooltip="Horarios sec." tooltipPosition="top" [disabled]="!CursoPlanificacionOutDTO.horasSemana"></button>  
+                            </div>
+                            <div class="flex" *ngIf="!CursoPlanificacionOutDTO.aplicaEspacioSecundario">
+                                N/A
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords" *ngIf="this.listaProgramas!==null && this.listaProgramas.length !== 0"></p-paginator>   
+        </div>   
+    </div>
+</div>  
+<app-asociar-espacio-fisico #asociarEspacioFisico (modalClosedEmitter)="actualizarInformacionCursos()"></app-asociar-espacio-fisico>
+<app-asociar-docente #asociarDocente (modalClosedEmitter)="actualizarInformacionCursos()"></app-asociar-docente>

@@ -1,0 +1,270 @@
+<div class="flex flex-column">
+    <div class="grid" *ngIf="this.lectura">
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Facultad</label>
+            <p class="label col-12 md:col-6">{{this.curso?.nombreFacultad}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Programa</label>
+            <p class="label col-12 md:col-6">{{this.curso?.nombrePrograma}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Curso</label>
+            <p class="label col-12 md:col-6">{{this.curso?.nombreCurso}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Grupo</label>
+            <p class="label col-12 md:col-6">{{this.curso?.grupo}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">OID asignatura</label>
+            <p class="label col-12 md:col-6">{{this.curso?.OIDAsignatura}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Semestre</label>
+            <p class="label col-12 md:col-6">{{this.curso?.semestre}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Horas por semana</label>
+            <p class="label col-12 md:col-6">{{this.curso?.horas}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Cupo</label>
+            <p class="label col-12 md:col-6">{{this.curso?.cupo}}</p>
+        </div>
+        <!-- <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Periodo académico</label>
+            <p class="label col-12 md:col-6">{{this.curso?.periodoAcademico}}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
+            <label class=" col-12 md:col-2">Aulas</label>
+            <div *ngFor="let item of this.curso?.aulas">
+                <p class="label col-12 md:col-6">{{item.nombre}}</p>
+            </div>
+            
+        </div> -->
+    </div>
+
+    <form class="grid" *ngIf="!this.lectura" [formGroup]="formulario">
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Facultad</label>
+            <p-dropdown [placeholder]="' '" [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                this.idFacultad().invalid &&
+                                this.idFacultad().touched
+                        }" [options]="lstFacultadOutDTO" optionValue="idFacultad" optionLabel="abreviatura"
+                formControlName="idFacultad" [showClear]="true" appendTo="body" (ngModelChange)="onFacultadChange()">
+                <ng-template let-facultad pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <small class="p-error block fade-in" *ngIf="this.idFacultad().invalid &&
+                                (this.idFacultad().touched)">
+                Facultad es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Programa</label>
+            <p-dropdown [placeholder]="' '" [options]="listaProgramas" optionValue="idPrograma"
+                optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
+                (ngModelChange)="onProgramaChange()"
+                [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.idPrograma().invalid &&
+                            this.idPrograma().touched
+                    }">
+                <ng-template let-programa pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <small class="p-error block fade-in" *ngIf="this.idPrograma().invalid &&
+                                (this.idPrograma().touched)">
+                Programa es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Asignatura</label>
+            <p-dropdown [placeholder]="' '" [options]="listaAsignaturas" optionValue="idAsignatura"
+                optionLabel="nombre" formControlName="idAsignatura" [showClear]="true" appendTo="body" [filter]="true"
+                (ngModelChange)="onAsignaturaChange()"
+                [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.idAsignatura().invalid &&
+                            this.idAsignatura().touched
+                    }">
+                <ng-template let-asignatura pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ asignatura.nombre }}-<strong>Sem {{asignatura.semestre}}</strong></div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <small class="p-error block fade-in" *ngIf="this.idAsignatura().invalid &&
+                                (this.idAsignatura().touched)">
+                Asignatura es obligatorio
+            </small>
+        </div>
+
+        <div class="p-fluid col sm:col-12 md:col-6" *ngIf="this.asignaturaSeleccionada">
+            <label class=" col-12 md:col-2">OID asignatura</label>
+            <p class="label col-12 md:col-6">{{this.asignaturaSeleccionada?.oid}}</p>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6" *ngIf="this.asignaturaSeleccionada">
+            <label class=" col-12 md:col-2">Semestre</label>
+            <p class="label col-12 md:col-6">{{this.asignaturaSeleccionada?.semestre}}</p>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6" *ngIf="this.asignaturaSeleccionada">
+            <label class=" col-12 md:col-2" >Pensum</label>
+            <p class="label col-12 md:col-6">{{this.asignaturaSeleccionada?.horasSemana}}</p>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6" *ngIf="this.asignaturaSeleccionada">
+            <label class=" col-12 md:col-2" >Horas por semana</label>
+            <p class="label col-12 md:col-6">{{this.asignaturaSeleccionada?.horasSemana}}</p>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Grupo</label>
+            <p-dropdown [placeholder]="' '" [options]="listaGrupos"
+                formControlName="grupo" [showClear]="true" appendTo="body"
+                [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.grupo().invalid &&
+                            this.grupo().touched
+                    }">
+            </p-dropdown>
+            <small class="p-error block fade-in" *ngIf="this.grupo().invalid &&
+                                (this.grupo().touched)">
+                Grupo es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Cupo</label>
+            <p-inputNumber [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                this.cupo().invalid &&
+                                this.cupo().touched
+                        }" [step]="1" [showButtons]="true" [min]="1" [max]="50" formControlName="cupo">
+            </p-inputNumber>
+            <small class="p-error block fade-in" *ngIf="this.cupo().invalid &&
+                    (this.cupo().touched)">
+                Cupo es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6" *ngIf="this.periodoAcademico">
+            <label class=" col-12 md:col-2" >Periodo</label>
+            <p class="label col-12 md:col-6">{{this.periodoAcademico}}</p>
+        </div>
+        <!-- <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Código de curso</label>
+            <input type="text" pInputText [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.codigocurso().invalid &&
+                            this.codigocurso().touched
+                    }" formControlName="codigocurso" placeholder=" ">
+            <small class="p-error block fade-in" *ngIf="this.codigocurso().invalid &&
+                    (this.codigocurso().touched)">
+                Código curso es obligatorio
+            </small>
+
+        </div>
+
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">OID curso</label>
+
+            <input type="text" pInputText [ngClass]="{
+                    'ng-invalid ng-dirty':
+                        this.OID().invalid &&
+                        this.OID().touched
+                }" formControlName="oid">
+            <small class="p-error block fade-in" *ngIf="this.OID().invalid &&
+                    (this.OID().touched)">
+                OID curso es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Nombre curso</label>
+            <input type="text" pInputText [ngClass]="{
+                    'ng-invalid ng-dirty':
+                        this.nombre().invalid &&
+                        this.nombre().touched
+                }" formControlName="nombre">
+            <small class="p-error block fade-in" *ngIf="this.nombre().invalid &&
+                    (this.nombre().touched)">
+                Nombre curso es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Semestre</label>
+            <p-inputNumber [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                this.semestre().invalid &&
+                                this.semestre().touched
+                        }" [step]="1" [showButtons]="true" [min]="1" [max]="10" formControlName="semestre">
+            </p-inputNumber>
+            <small class="p-error block fade-in" *ngIf="this.semestre().invalid &&
+                    (this.semestre().touched)">
+                Semestre es obligatorio
+            </small>
+        </div>
+
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Horas por semana</label>
+            <input type="text" pInputText [ngClass]="{
+                    'ng-invalid ng-dirty':
+                        this.horasSemana().invalid &&
+                        this.horasSemana().touched
+                }" formControlName="horasSemana">
+            <small class="p-error block fade-in" *ngIf="this.horasSemana().invalid &&
+                (this.horasSemana().touched)">
+                Horas por semana es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Pensum</label>
+            <input type="text" pInputText [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.pensum().invalid &&
+                            this.pensum().touched
+                    }" formControlName="pensum">
+            <small class="p-error block fade-in" *ngIf="this.pensum().invalid &&
+                    (this.pensum().touched)">
+                Pensum es obligatorio
+            </small>
+        </div>
+        <div class="p-fluid sm:col-12 md:col-6">
+                <label class="required">Grupo</label>
+                <p-multiSelect 
+                    maxSelectedLabels="4" 
+                    optionLabel="abreviatura" 
+                    [defaultLabel]="'Seleccione grupo'"
+                    [options]="listaAgrupadores" 
+                    formControlName="agrupadoresSeleccionados"  
+                    [filter]="false"
+                    [showClear]="true"
+                    optionLabel="nombre"
+                    optionValue="idAgrupadorEspacioFisico"
+                    appendTo = "body"
+                    [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            this.agrupador().invalid &&
+                            this.agrupador().touched}"
+                    >
+                </p-multiSelect>
+                <small class="p-error block fade-in" *ngIf="this.agrupador().invalid &&
+                        (this.agrupador().touched)">
+                    Agrupador es obligatorio
+                </small>
+        </div> -->
+    </form>
+
+    <div class="flex justify-content-end" style="width: 100%;">
+        <div class="m-1">
+            <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text"
+            (click)="salir()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-plus" class="p-button-text ml-2"
+                (click)="guardarcurso()" *ngIf="!this.lectura"></button>
+        </div>
+    </div>
+</div>

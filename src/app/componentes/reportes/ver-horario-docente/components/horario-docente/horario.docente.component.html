@@ -1,0 +1,73 @@
+<p-dialog #modalDialog [(visible)]="visible" [style]="{width: '1024px'}" [header]="tituloModal" [modal]="true"
+    class="p-fluid">
+
+    <ng-template pTemplate="content">
+
+        <!--Información Espacio físico-->
+        <div class="grid">
+            <div class="col-6">
+                <div class="flex justify-content-start flex-wrap">
+                    <label class="w-6rem align-self-center" style="text-align: right;">Nombre</label>
+                    <label class="w-25rem"
+                        style="margin-left: 10%; width: 90%"><b>{{obtenerNombreCompletoDocente()}}</b></label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-6rem align-self-center" style="text-align: right;">Identificación</label>
+                    <label class="w-25rem"
+                        style="margin-left: 10%; width: 90%"><b>{{docenteOutDTOSeleccionado.codigoTipoIdentificacion}}
+                        {{docenteOutDTOSeleccionado.numeroIdentificacion}}</b>
+                        </label>
+                </div>
+                <div class="mt-1 flex justify-content-start flex-wrap">
+                    <label class="w-6rem align-self-center" style="text-align: right;">Código</label>
+                    <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ docenteOutDTOSeleccionado.codigo }}</b></label>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <ng-container>
+                <div class="encabezado">HORAS</div>
+                <div class="encabezado">LUNES</div>
+                <div class="encabezado">MARTES</div>
+                <div class="encabezado">MIERCOLES</div>
+                <div class="encabezado">JUEVES</div>
+                <div class="encabezado">VIERNES</div> 
+                <div class="encabezado">SABADO</div>
+                <div class="encabezado">DOMINGO</div>
+            </ng-container>
+            <ng-container *ngFor="let horaInicio of horas; let fila=index">
+                <div class="columna-horas">{{formatearHoraString(horaInicio)}}</div>
+                <ng-container *ngFor="let dia of dias; let columna=index">
+                    <div class="grid-item franja"
+                        *ngIf="!esPosicionOcupada(fila,columna)"   
+                        [ngStyle]="{'background-color': obtenerColorPorMateria(obtenerNombreCurso(dia, horaInicio))}"
+                        [style.gridRow]="generarFilasParaFranja(dia, horaInicio)">
+                            {{ configurarFranjaCurso( dia, horaInicio,fila,columna) }}
+                            <br>
+                            {{ obtenerNombreEspacioFisico( dia, horaInicio, true) }}
+                            <br>
+                            {{ obtenerNombreEspacioFisico( dia, horaInicio, false) }}
+                    </div>      
+                </ng-container>
+            </ng-container>
+        </div>  
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text"
+            (click)="salir()"></button>
+    </ng-template>
+</p-dialog>
+
+<!--Modal para presentar mensajes de error-->
+<p-dialog header="Error" [(visible)]="mostrarModalError" modal="true" [draggable]="false" [closable]="false" [dismissableMask]="false" [responsive]="true">
+    <p>{{ mensajeError }}</p>
+    <p-footer>
+        <button pButton type="button" label="Cerrar" (click)="cerrarModalError()" style="width: 20%;"></button>
+    </p-footer>
+</p-dialog>
+
+
+
+  

@@ -1,11 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
-import { PeriodoAcademicoService } from '../shared/service/periodo.academico.service';
-import { LoginService } from '../componentes/servicios/login.service';
+import { LoginService } from '../componentes/common/services/login.service';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { TokenService } from '../componentes/servicios/token.service';
+import { TokenService } from '../componentes/common/services/token.service';
 import { Router } from '@angular/router';
+import { PeriodoAcademicoSharedService } from '../shared/service/periodo.academico.shared.service';
 
 @Component({
     selector: 'app-topbar',
@@ -32,7 +32,7 @@ export class AppTopBarComponent implements OnInit {
     @ViewChild('topbarmenu') menu!: ElementRef;
 
     constructor(public layoutService: LayoutService, 
-        public periodoAcademicoService:PeriodoAcademicoService,
+        public periodoAcademicoSharedService:PeriodoAcademicoSharedService,
         private tokenService: TokenService,
         private router: Router,
         public loginService: LoginService,
@@ -50,7 +50,7 @@ export class AppTopBarComponent implements OnInit {
             this.loadImageWithRetry(this.imgProfile);
         }        
 
-        this.periodoAcademicoService.subcribirDataPeriodoAcademico().subscribe(r =>{
+        this.periodoAcademicoSharedService.subcribirDataPeriodoAcademico().subscribe(r =>{
             if(r){
                 this.periodoAcademico = r.anio+"-"+r.periodo;
             }else{

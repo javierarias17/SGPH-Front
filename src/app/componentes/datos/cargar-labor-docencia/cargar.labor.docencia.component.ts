@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ProgramaService } from '../../servicios/programa.service';
-import { ProgramaOutDTO } from '../../dto/programa/out/programa.out.dto';
+
 import { SharedService } from 'src/app/shared/service/shared.service';
 import { MessageService } from 'primeng/api';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { HttpClient } from '@angular/common/http';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InformacionDetalleCargueComponent } from './componentes/informacion-detalle-cargue/informacion-detalle-cargue.component';
+import { ProgramaOutDTO } from '../../common/model/programa/out/programa.out.dto';
+import { ProgramaService } from '../../common/services/programa.service';
 
 @Component({
   selector: 'app-cargar-labor-docencia',
