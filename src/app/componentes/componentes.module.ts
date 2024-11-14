@@ -45,7 +45,7 @@ import { CrearEditarVerCursoComponent } from './datos/gestionar-curso/components
 import { PeriodoAcademicoService } from './periodo-academico/gestionar-periodo-academico/services/periodo.academico.service';
 import { PeriodoAcademicoSharedService } from '../shared/service/periodo.academico.shared.service';
 
-import { InformacionDetalleCargueComponent } from './datos/cargar-labor-docencia/componentes/informacion-detalle-cargue/informacion-detalle-cargue.component';
+import { InformacionDetalleCargueComponent } from './datos/cargar-labor-docencia/components/informacion-detalle-cargue/informacion-detalle-cargue.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
