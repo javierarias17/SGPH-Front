@@ -146,7 +146,7 @@ export class BandejaReporteEspacioFisicoComponent {
                 if(r){
                     this.messages=null;
                 }else{
-                    this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar los horarios de los espacios físicos." }];
+					this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá acceder a esta funcionalidad si no existe un periodo académico abierto." }];
                 }
             },
             (error) => {

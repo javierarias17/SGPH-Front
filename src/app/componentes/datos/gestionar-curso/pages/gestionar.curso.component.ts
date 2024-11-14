@@ -243,7 +243,7 @@ export class GestionarCursoComponent {
                 if(r){
                     this.messages=null;
                 }else{
-                    this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar cursos si no existe un periodo académico abierto." }];
+					this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá acceder a esta funcionalidad si no existe un periodo académico abierto." }];
                 }
             },
             (error) => {

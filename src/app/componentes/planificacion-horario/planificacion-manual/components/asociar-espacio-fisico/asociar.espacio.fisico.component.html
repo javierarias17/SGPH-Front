@@ -40,7 +40,7 @@
                 <!--Primera columna-->
                 <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length === 0">
                     <div class="mt-1 flex justify-content-start flex-wrap">
-                        <label class="w-5rem align-self-center" style="text-align: right;">Ubicación</label>
+                        <label class="w-5rem align-self-center required" style="text-align: right;">Ubicación</label>
                         <p-multiSelect maxSelectedLabels="1" 
                             selectedItemsLabel="{0} Ubicaciones seleccionadas"
                             [defaultLabel]="'Seleccione ubicación'" 
@@ -83,12 +83,13 @@
                                [disabled]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion.length === 0"
                                [placeholder]="filtroFranjaHorariaDisponibleCursoDTO?.listaIdUbicacion.length === 0 ? ' ':'Ingrese nombre de espacio físico'"
                                [style.opacity]="filtroEspacioFisicoDTO?.listaIdUbicacion.length === 0 ? '0.6' : ''"
-                               (ngModelChange)="inputsChange()">
+                               (ngModelChange)="onInputsChange()"
+                               >
                     </div>
                 </div><!--Cierre primera columna-->
                 <div class="col-6" *ngIf="lstAgrupadorEspacioFisicoOutDTO.length > 0">
                     <div class="mt-1 flex justify-content-start flex-wrap">
-                        <label class="w-5rem align-self-center" style="text-align: right;">Agrupador</label>
+                        <label class="w-5rem align-self-center required" style="text-align: right;">Agrupador</label>
                         <p-multiSelect 
                             [style]="{ 'height': '2.0rem', 'margin-left': '10%',  'line-height': '1.2px', 'width': '90%' }"
                             [ngClass]="{'w-27rem':true }" 
@@ -111,7 +112,7 @@
                                [style]="{ 'height': '2.0rem', 'margin-left': '8%', 'line-height': '1.2px'}"
                                [ngClass]="{'w-24rem':true }"
                                placeholder="Ingrese nombre"
-                               (ngModelChange)="inputsChange()">
+                               (ngModelChange)="onInputsChange()">
                     </div>
                 </div>
                 <!--Segunda columna-->
@@ -173,12 +174,22 @@
                             </p-dropdown>
                         </div>
                         <div class="col-4">
-                            <label class="w-5rem align-self-center" style="text-align: right;">Cantidad horas</label>
+                            <label class="w-5rem align-self-center required" style="text-align: right;">Cantidad horas</label>
                             <p-inputNumber [style]="{'height': '2.0rem', 'margin-left': '0%', 'width': '100%' }"
                                 placeholder="Ingrese horas" [step]="1" [showButtons]="true" [min]="1" [max]="10"
                                 [(ngModel)]="cantidadHorasSeleccionada" (ngModelChange)="cantidadHorasChange()"
                                 >
                             </p-inputNumber>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="mt-3" > 
+                                <button pButton pRipple icon="pi pi-search" class="p-button" label="Buscar" (click)="buscar()" [disabled]="isLoading || deshabilitarBotonBuscar">
+                                    <ng-container *ngIf="isLoading">
+                                        <i class="pi pi-spin pi-spinner"></i>
+                                    </ng-container>
+                                </button>
+                            </div>
                         </div>
                     </div>
     
@@ -192,7 +203,7 @@
             <p-pickList [source]="listaFranjaHorariaDisponibles" [target]="listaFranjaHorariaAsignadas" sourceHeader="Franjas disponibles"
                 targetHeader="Franjas asignadas" [dragdrop]="false" [responsive]="true" [sourceStyle]="{'height':'250px'}"
                 [targetStyle]="{'height':'250px'}" [showSourceControls]="false" [showTargetControls]="false"
-                (onMoveToSource)="onMoveToSource($event)">
+                (onMoveToSource)="onMoveToSource($event)" [disabled]="isLoading">
                 <ng-template let-franjaHoraria pTemplate="item">
                     <div> 
                         <span *ngIf="franjaHoraria.check">
@@ -202,21 +213,6 @@
                     </div>                    
                 </ng-template>
             </p-pickList>
-            <!--<p-pickList [source]="listaFranjaHorariaDisponibles" [target]="listaFranjaHorariaAsignadas" sourceHeader="Franjas disponibles"
-                targetHeader="Franjas asignadas" [dragdrop]="false" [responsive]="true" [sourceStyle]="{'height':'250px'}"
-                [targetStyle]="{'height':'250px'}" [showSourceControls]="false" [showTargetControls]="false">
-                <ng-template let-franjaHoraria pTemplate="item">
-                    <div *ngIf="franjaHoraria in listaFranjaHorariaAsignadas" (contextmenu)="abrirDialogo($event, franjaHoraria)"> 
-                        <span *ngIf="franjaHoraria.check">
-                            <i class="pi pi-check" style="color: green; font-size: 1.2rem;font-weight: bold;"></i>
-                        </span>
-                        {{obtenerFormatoFranjaPresentacion(franjaHoraria.franjaHorariaCursoDTO)}}
-                        <span *ngIf="franjaHoraria.checkSecundario">
-                            <i class="pi pi-plus" style="color: rgb(7, 7, 7); font-size: 1.2rem;font-weight: bold;"></i>
-                        </span>
-                    </div>                    
-                </ng-template>
-            </p-pickList>-->
         </div>
 
     </ng-template>

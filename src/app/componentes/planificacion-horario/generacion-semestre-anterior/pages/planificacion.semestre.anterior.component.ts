@@ -247,7 +247,7 @@ export class PlanificacionSemestreAnteriorComponent {
 						this.periodo().setValue(this.periodoAcademicoVigente.idPeriodoAcademico);
                         this.lstPeriodoAcademicosSinVigente = this.lstPeriodoAcademicosSinVigente.filter(periodo => periodo.idPeriodoAcademico!==this.periodoAcademicoVigente.idPeriodoAcademico);
                     }else{
-                        this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá visualizar esta funcionalidad si no existe un periodo académico abierto." }];
+                        this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá acceder a esta funcionalidad si no existe un periodo académico abierto." }];
                     }
                 },
                 (error) => {

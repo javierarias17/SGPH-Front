@@ -78,6 +78,10 @@ export class AsociarEspacioFisicoComponent {
 
     public nombreHeader:string="";
 
+    public isLoading: boolean = false;
+
+    public deshabilitarBotonBuscar:boolean = false;
+
     constructor(private messageService: MessageService,
         private espacioFisicoService: EspacioFisicoService,
         private planificacionManualService: PlanificacionManualService,
@@ -142,6 +146,7 @@ export class AsociarEspacioFisicoComponent {
         this.filtroFranjaHorariaDisponibleCursoDTO.idAsignatura=this.cursoPlanificacionOutDTOSeleccionado.idAsignatura;
         this.mensajeResultadoBusqueda= "Buscando...";
         this.listaFranjaHorariaDisponibles = [];
+        this.isLoading=true;
         this.planificacionManualService.consultarFranjasHorariasDisponiblesPorCurso(this.filtroFranjaHorariaDisponibleCursoDTO).subscribe(
             (lstFranjaHorariaCursoDTO: FranjaHorariaCursoDTO[]) => {   
                 if(lstFranjaHorariaCursoDTO.length === 0){
@@ -151,10 +156,12 @@ export class AsociarEspacioFisicoComponent {
                     this.listaFranjaHorariaDisponibles = lstFranjaHorariaCursoDTO.map((franjaHorariaCursoDTO: FranjaHorariaCursoDTO) => ({check:false, franjaHorariaCursoDTO:franjaHorariaCursoDTO, checkSecundario:false}));
                     this.mensajeResultadoBusqueda= "Franjas encontradas: "+this.listaFranjaHorariaDisponibles.length;
                 } 
+                this.isLoading=false;
             },
             (error) => {
                 this.mensajeResultadoBusqueda= "Se produjo un error consultando las franjas";
                 console.error(error);
+                this.isLoading=false;
             }
           );
     }
@@ -187,7 +194,7 @@ export class AsociarEspacioFisicoComponent {
                   // Se preseleccionan grupos de espacios físicos, todos los que estén asociados a la asignatura
                   if((this.lstAgrupadorEspacioFisicoOutDTO!==null && this.lstAgrupadorEspacioFisicoOutDTO.length>0 )){
                     this.filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico=this.lstAgrupadorEspacioFisicoOutDTO.map(agrupadorEspacioFisicoOutDTO=> agrupadorEspacioFisicoOutDTO.idAgrupadorEspacioFisico);
-                    this.inputsChange();
+                    this.buscar();
                   }
             },
             (error) => {
@@ -258,25 +265,27 @@ export class AsociarEspacioFisicoComponent {
         this.filtroFranjaHorariaDisponibleCursoDTO.idCurso=this.cursoPlanificacionOutDTOSeleccionado.idCurso;
         this.filtroFranjaHorariaDisponibleCursoDTO.duracion=2;
         this.cantidadHorasSeleccionada = 2;
-        this.inputsChange();
+        this.buscar();
     }
 
-    public inputsChange(){
+    public buscar(){
         if((this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion!==null && this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion.length !== 0) 
             || (this.filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico!==null && this.filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico.length !== 0)){
             this.consultarFranjasDisponiblesCurso();
         }else{
             // Se limpia la lista de franjas disponibles
-            this.listaFranjaHorariaDisponibles=[];
-            this.mensajeResultadoBusqueda= "No hay franjas horarias disponibles.";
+            this.limpiarListaFranjasHorariasDisponibles();
         }
     }
 
     public onUbicacionesChange(){
+        this.limpiarListaFranjasHorariasDisponibles();
         if(this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion!==null && this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion.length !== 0){
+            this.deshabilitarBotonBuscar=false;
             this.consultarTiposEspaciosFisicosPorUbicaciones();
-            this.inputsChange();
         }else{
+            this.deshabilitarBotonBuscar=true;
+
             // Se limpian los filtros
             this.filtroFranjaHorariaDisponibleCursoDTO.listaIdUbicacion=[];
             this.filtroFranjaHorariaDisponibleCursoDTO.listaIdTipoEspacioFisico=[];
@@ -285,53 +294,62 @@ export class AsociarEspacioFisicoComponent {
             //Se limpian lso selectores
             this.lstTipoEspaciosFisicos=[];
 
-            // Se limpia la lista de franjas disponibles
-            this.listaFranjaHorariaDisponibles=[];
-            this.mensajeResultadoBusqueda= "No hay franjas horarias disponibles.";
+            this.limpiarListaFranjasHorariasDisponibles();
         }
     }   
 
+    public onInputsChange():void{
+        this.limpiarListaFranjasHorariasDisponibles();
+    }
+
     public onGruposChange(){
+        this.limpiarListaFranjasHorariasDisponibles();
         if(this.filtroFranjaHorariaDisponibleCursoDTO.listaIdAgrupadorEspacioFisico===null){
             // Se limpian los filtros
             this.filtroFranjaHorariaDisponibleCursoDTO.salon="";
+            this.deshabilitarBotonBuscar=true;
+        }else{
+            this.deshabilitarBotonBuscar=false;
         }
-        this.inputsChange();
     }   
 
     public onDiasChange(){
+        this.limpiarListaFranjasHorariasDisponibles();
         this.filtroFranjaHorariaDisponibleCursoDTO.listaDiaSemanaEnum = [...this.diasSeleccionados];
-        this.inputsChange();
     }
 
     public onTiposEspacioFisicoChange(){
-        this.inputsChange();
+        this.limpiarListaFranjasHorariasDisponibles();
     }
     
     public onHoraInicioChange(){
+        this.limpiarListaFranjasHorariasDisponibles();
         if(this.horaInicioSeleccionado===null){
             this.filtroFranjaHorariaDisponibleCursoDTO.horaInicio=null;
             this.horaInicioSeleccionado = {label:"",formato:""};
         }else{
             this.filtroFranjaHorariaDisponibleCursoDTO.horaInicio = this.horaInicioSeleccionado.label;
         }
-        this.inputsChange();
     }
 
     public cantidadHorasChange(){
-        // Se limpia la lista de franjas disponibles
-        this.listaFranjaHorariaDisponibles=[];
-        this.mensajeResultadoBusqueda= "No hay franjas horarias disponibles.";
+        this.limpiarListaFranjasHorariasDisponibles();
+        this.deshabilitarBotonBuscar=true;
         if(this.cantidadHorasSeleccionada===null){
             this.messageService.add({ severity: 'error', summary: 'Consulta fallida', detail: 'Cantidad horas es un campo obligatorio.' });
             return ;
         }else if(this.cantidadHorasSeleccionada < 1){
             this.messageService.add({ severity: 'error', summary: 'Consulta fallida', detail: 'Cantidad horas debe ser mayor a 0' });
             return ;
-
         }
+        this.deshabilitarBotonBuscar=false;
         this.filtroFranjaHorariaDisponibleCursoDTO.duracion = this.cantidadHorasSeleccionada;
-        this.inputsChange();
+    }
+
+    private limpiarListaFranjasHorariasDisponibles():void{
+        // Se limpia la lista de franjas disponibles
+        this.listaFranjaHorariaDisponibles=[];
+        this.mensajeResultadoBusqueda= "Aún no ha realizado la busqueda";
     }
 
     public salir() {
