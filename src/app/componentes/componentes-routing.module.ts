@@ -4,7 +4,6 @@ import { GestionarCursoComponent } from './datos/gestionar-curso/pages/gestionar
 import { GestionarDocenteComponent } from './datos/gestionar-docente/pages/gestionar.docente.component';
 import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/pages/gestionar.espacio.fisico.component';
 import { InicioComponent } from './home/pages/inicio.component';
-import { GestionarPersonaComponent } from './datos/gestionar-persona/pages/gestionar.persona.component';
 import { PlanificacionManualComponent } from './planificacion-horario/planificacion-manual/pages/planificacion.manual.component';
 import { PlanificacionSemestreAnteriorComponent } from './planificacion-horario/generacion-semestre-anterior/pages/planificacion.semestre.anterior.component';
 import { GestionarUsuarioComponent } from './seguridad/gestionar-usuario/pages/gestionar.usuario.component';
@@ -16,13 +15,13 @@ import { BandejaReporteDocenteComponent } from './reportes/ver-horario-docente/p
 import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/pages/eliminar-horario-programa.component';
 import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/pages/generar.reporte.docente.component';
 
+
 const routes: Routes=[
     { path: 'inicio', component: InicioComponent},
     { path: 'cargar-labor-docencia', component: CargarLaborDocenciaComponent},
     { path: 'gestionar-espacio-fisico', component: GestionarEspacioFisicoComponent},
     { path: 'gestionar-curso', component: GestionarCursoComponent},
     { path: 'gestionar-docente', component: GestionarDocenteComponent},
-    { path: 'gestionar-persona', component: GestionarPersonaComponent},
     { path: 'planificacion-manual', component: PlanificacionManualComponent},
     { path: 'planificacion-semestre-anterior', component: PlanificacionSemestreAnteriorComponent},
     { path: 'horario-espacio-fisico', component: BandejaReporteEspacioFisicoComponent},
@@ -52,7 +51,14 @@ const routes: Routes=[
         import(
           "./planificacion-horario/gestionar-agrupadores/gestion-grupos.module"
         ).then((m) => m.GestionGruposModule)
-  }
+    },
+    {
+      path: 'gestionar-persona',
+      loadChildren: () =>
+        import(
+          "./datos/gestionar-persona/gestionar-persona.module"
+        ).then((m) => m.GestionarPersonaModule)
+    }
 ]
 
 @NgModule({

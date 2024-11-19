@@ -1,0 +1,82 @@
+<p-toast position="top-right"></p-toast>
+<div class="grid">
+    <div class="col-12">
+        <h3>Gestionar Personas</h3>
+        <p>Esta pantalla permite la creación, visualización, edición y eliminación manual de personas.</p>
+        <hr>
+    </div>
+</div>
+
+<div class="grid" style="width: 100%;">
+    <div class="p-fluid col sm:col-12 md:col-3">
+      <label>Tipo de Identificación</label>
+      <p-dropdown
+        [options]="listaTiposIdentificacion"
+        optionLabel="tipoIdentificacion"
+        placeholder="Seleccione un tipo"
+        [(ngModel)]="tipoIdentificacionSeleccionado"
+        (ngModelChange)="buscarPorIdentificacion()">
+      </p-dropdown>
+    </div>
+    <div class="p-fluid col sm:col-12 md:col-3">
+      <label>Número de Identificación</label>
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="numeroIdentificacion"
+        (ngModelChange)="numeroIdentificacionSubject.next($event)"
+        placeholder="Ingrese número">
+    </div>
+    <div class="p-fluid col sm:col-12 md:col-3">
+      <label>Email</label>
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="email"
+        (ngModelChange)="emailSubject.next($event)"
+        placeholder="Ingrese email">
+    </div>
+  </div>
+
+  <p-table
+  [value]="personas" 
+  [paginator]="true" 
+  [rows]="10" 
+  [totalRecords]="totalRecords" 
+  [lazy]="true" 
+  [loading]="cargando"
+  (onLazyLoad)="listarPersonas($event)" 
+  responsiveLayout="scroll" 
+  styleClass="p-datatable-gridlines">
+  <ng-template pTemplate="header">
+      <tr>
+          <th>Tipo Identificación</th>
+          <th>Número Identificación</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Opciones</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-persona>
+      <tr>
+          <td>{{ persona.tipoIdentificacion?.codigoTipoIdentificacion || '' }}</td>
+          <td>{{ persona.numeroIdentificacion || '-' }}</td>
+          <td>{{ persona.primerNombre || '' }} {{ persona.segundoNombre || '' }} {{ persona.primerApellido || '' }} {{ persona.segundoApellido || '' }}</td>
+          <td>{{ persona.email || '-' }}</td>
+          <td>
+              <div class="flex">
+                  <button pButton pRipple icon="pi pi-search" class="p-button-rounded p-button-info mr-2" pTooltip="Ver persona" (click)="verPersona(persona.idPersona)"></button>
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-secondary mr-2" pTooltip="Editar persona" (click)="editarPersona(persona.idPersona)"></button>
+                  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" pTooltip="Eliminar persona" (click)="eliminarPersona(persona.idPersona)"></button>
+              </div>
+          </td>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+      <tr>
+          <td colspan="5">No se encontraron registros.</td>
+      </tr>
+  </ng-template>
+</p-table>
+
+<p-confirmDialog></p-confirmDialog>

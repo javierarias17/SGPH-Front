@@ -38,5 +38,25 @@ export class PersonaService {
     public consultarPersonaPorEmail(email: string) {
         const url = `${environment.url}${this.urlPersona}/consultarPersonaPorEmail?email=${email}`;
         return this.http.get<PersonaOutDTO>(url);
-    }  
+    }
+    public consultarPersonasPaginadas(
+        page: number = 0,
+        size: number = 10,
+        sortBy: string = 'numeroIdentificacion',
+        sortOrder: string = 'asc'
+      ): Observable<any> {
+        const url = `${environment.url}${this.urlPersona}/consultarPersonasPaginadas?page=${page}&size=${size}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
+        return this.http.get<any>(url);
+    }
+
+    obtenerPersona(idPersona: number): Observable<PersonaOutDTO> {
+        const url = `${environment.url}${this.urlPersona}/obtenerPersona/${idPersona}`;
+        return this.http.get<PersonaOutDTO>(url);
+    }
+      
+    public eliminarPersona(idPersona: number): Observable<void> {
+        const url = `${environment.url}${this.urlPersona}/eliminarPersona/${idPersona}`;
+        return this.http.delete<void>(url);
+    }
+    
 }

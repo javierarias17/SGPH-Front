@@ -1,80 +1,96 @@
-
 <div class="grid">
 	<div class="col-12">
 		<h3>Cargar labor docencia</h3>
-        <p>Esta pantalla permite realizar el cargue de la labor docencia de un programa.</p>
+		<p>Esta pantalla permite realizar el cargue de la labor docencia de un programa.</p>
 		<hr>
 	</div>
 </div>
 <!--Mensaje-->
 <div *ngIf="messages !== null">
-    <p-messages [(value)]="messages" [enableService]="true" [closable]="false" />
+	<p-messages [(value)]="messages" [enableService]="true" [closable]="false"></p-messages>
 </div>
 <!--Formulario-->
 <div class="grid" *ngIf="messages === null">
-    <div class="col-12">
-        <br>
-        <div class="flex flex-row justify-content-center" *ngIf="!cargar && !eliminar">
-            <div class="borde-card" (click) = "this.cargarLabor()">
-                <p-card header="Cargar labor docente" [style]="{ width: '300px' }">
-                    <ng-template pTemplate="header" class="header">
-                        <div style="text-align: center; padding-top: 1.5rem;">
-                            <i class="pi pi-upload" style="font-size: 6em !important; color: rgb(12, 128, 178) !important;"></i>
-                        </div>
-                    </ng-template>
-                    <p>
-                        Consulta y carga la labor académica por programa para el periodo académico vigente desde SIMCA Labor
-                    </p>
-                </p-card>
-            </div>
-            <div class="borde-card">
-                <p-card header="Eliminar cargue" [style]="{ width: '300px' }">
-                    <ng-template pTemplate="header" class="header">
-                        <div style="text-align: center; padding-top: 1.5rem;" >
-                            <i class="pi pi-trash" style="font-size: 6em !important; color: rgb(12, 128, 178);"></i>
-                        </div>
-                    </ng-template>
-                    <p>
-                        Elimina el cargue de la labor académica por programa para el periodo académico vigente
-                    </p>
-                </p-card>
-            </div>
-        </div>
-    </div>
+	<div class="col-12">
+		<br>
+		<div class="flex flex-row justify-content-center" *ngIf="!cargar && !eliminar">
+			<div class="borde-card" (click)="this.cargarLabor()">
+				<p-card header="Cargar labor docente" [style]="{ width: '300px' }">
+					<ng-template pTemplate="header" class="header">
+						<div style="text-align: center; padding-top: 1.5rem;">
+							<i class="pi pi-upload" style="font-size: 6em !important; color: rgb(12, 128, 178) !important;"></i>
+						</div>
+					</ng-template>
+					<p>
+						Consulta y carga la labor académica por programa para el periodo académico vigente desde SIMCA Labor.
+					</p>
+				</p-card>
+			</div>
+			<div class="borde-card">
+				<p-card header="Eliminar cargue" [style]="{ width: '300px' }">
+					<ng-template pTemplate="header" class="header">
+						<div style="text-align: center; padding-top: 1.5rem;">
+							<i class="pi pi-trash" style="font-size: 6em !important; color: rgb(12, 128, 178);"></i>
+						</div>
+					</ng-template>
+					<p>
+						Elimina el cargue de la labor académica por programa para el periodo académico vigente.
+					</p>
+				</p-card>
+			</div>
+		</div>
+	</div>
 
-    <!-- Cargar labor docente -->
-    <div class="col-12" *ngIf="cargar">
-        <form class="grid" [formGroup]="formulario">
-            <div class="p-fluid col sm:col-12 md:col-3">
-                <label class="required">Programa</label>
-                <p-dropdown [placeholder]="'Seleccione programa'" [options]="listaProgramas" optionValue="idPrograma"
-                    optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
-                    [ngClass]="{'ng-invalid ng-dirty':this.idPrograma().invalid && this.idPrograma().touched}">
-                    <ng-template let-programa pTemplate="item">
-                        <div class="flex align-items-center gap-2">
-                            <div><strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}</div>
-                        </div>
-                    </ng-template>
-                </p-dropdown>
-                <small class="p-error block fade-in" *ngIf="this.idPrograma().invalid && (this.idPrograma().touched)">Programa es obligatorio</small>
-            </div>
-        </form>         
-        <div class="flex justify-content-start" style="width: 100%;">
-            <div class="m-1">
-                <button pButton pRipple icon="pi pi-eye" class="p-button mr-2" label="Visualizar"
-                    (click)="visualizar()" [disabled]="formulario.invalid">
-                </button>
-                <button pButton pRipple icon="pi pi-download" class="p-button" label="Almacenar"
-                    (click)="guardar()" [disabled]="formulario.invalid">
-                </button>
-            </div>
-        </div>
-    </div>
-    <!-- Eliminar cargue -->
-
-
+	<!-- Cargar labor docente -->
+	<div class="col-12" *ngIf="cargar">
+		<form class="grid" [formGroup]="formulario">
+			<div class="p-fluid col sm:col-12 md:col-6">
+				<label class="required">Programa</label>
+				<p-dropdown
+					[placeholder]="'Seleccione programa'"
+					[options]="listaProgramas"
+					optionValue="idPrograma"
+					optionLabel="abreviatura"
+					formControlName="idPrograma"
+					[showClear]="true"
+					appendTo="body"
+					[ngClass]="{ 'ng-invalid ng-dirty': this.idPrograma().invalid && this.idPrograma().touched }"
+				>
+					<ng-template let-programa pTemplate="item">
+						<div class="flex align-items-center gap-2">
+							<div>
+								<strong>{{ programa.abreviatura }}</strong>-{{ programa.nombre }}
+							</div>
+						</div>
+					</ng-template>
+				</p-dropdown>
+				<small class="p-error block fade-in" *ngIf="this.idPrograma().invalid && (this.idPrograma().touched)">
+					Programa es obligatorio
+				</small>
+			</div>
+		</form>
+		<div class="flex justify-content-start" style="width: 100%;">
+			<div class="m-1">
+				<button
+					pButton
+					pRipple
+					icon="pi pi-download"
+					class="p-button"
+					label="Almacenar"
+					(click)="guardar()"
+					[disabled]="formulario.invalid"
+				></button>
+			</div>
+		</div>
+	</div>
+	<!-- Cargando -->
+	<div *ngIf="isLoading" class="loading-overlay">
+		<div class="spinner-container">
+			<div class="spinner"></div>
+			<p>Cargando, por favor espere...</p>
+		</div>
+	</div>
 </div>
 
-<pre>{{mensajesError}}</pre>
+<pre>{{ mensajesError }}</pre>
 <p-toast></p-toast>
-

@@ -1,0 +1,175 @@
+<div class="flex flex-column">
+  <h2>Información Persona</h2>
+  <!-- Modo Visualización -->
+  <div class="grid" *ngIf="lectura && persona">
+    <div class="p-fluid col-12 flex">
+      <label class="col-12 md:col-3">Tipo de Identificación</label>
+      <p class="col-12 md:col-9">{{ persona?.codigoTipoIdentificacion || '-' }}</p>
+    </div>
+    <div class="p-fluid col-12 flex">
+      <label class="col-12 md:col-3">Número de Identificación</label>
+      <p class="col-12 md:col-9">{{ persona.numeroIdentificacion }}</p>
+    </div>
+    <div class="p-fluid col-12 flex">
+      <label class="col-12 md:col-3">Primer Nombre</label>
+      <p class="col-12 md:col-9">{{ persona.primerNombre }}</p>
+    </div>
+    <div class="p-fluid col-12 flex">
+      <label class="col-12 md:col-3">Segundo Nombre</label>
+      <p class="col-12 md:col-9">{{ persona.segundoNombre || '-' }}</p>
+    </div>
+    <div class="p-fluid col-12 flex">
+      <label class="col-12 md:col-3">Primer Apellido</label>
+      <p class="col-12 md:col-9">{{ persona.primerApellido }}</p>
+    </div>
+    <div class="p-fluid col-12 flex">
+      <label class="col-12 md:col-3">Segundo Apellido</label>
+      <p class="col-12 md:col-9">{{ persona.segundoApellido || '-' }}</p>
+    </div>
+    <div class="p-fluid col-12 flex">
+      <label class="col-12 md:col-3">Correo Electrónico</label>
+      <p class="col-12 md:col-9">{{ persona.email }}</p>
+    </div>
+  </div>
+
+ <!-- Modo Creación y Edición -->
+ <form *ngIf="!lectura" class="grid" [formGroup]="formulario">
+  <div class="p-fluid col sm:col-12 md:col-6">
+    <label class="required">Tipo de Identificación</label>
+    <p-dropdown
+      [options]="listaTiposIdentificacion"
+      optionLabel="descripcion"
+      optionValue="idTipoIdentificacion"
+      formControlName="tipoIdentificacion"
+      placeholder="Seleccione"
+      [disabled]="formulario.get('tipoIdentificacion').disabled"
+      [ngClass]="{
+        'ng-invalid ng-dirty': formulario.get('tipoIdentificacion').invalid && formulario.get('tipoIdentificacion').touched
+      }"
+    ></p-dropdown>
+    <small
+      class="p-error block fade-in"
+      *ngIf="formulario.get('tipoIdentificacion').invalid && formulario.get('tipoIdentificacion').touched"
+    >
+      Tipo de Identificación es obligatorio
+    </small>
+  </div>
+  <div class="p-fluid col sm:col-12 md:col-6">
+    <label class="required">Número de Identificación</label>
+    <input
+      type="text"
+      pInputText
+      formControlName="numeroIdentificacion"
+      placeholder="Ingrese número"
+      [disabled]="formulario.get('numeroIdentificacion').disabled"
+      [ngClass]="{
+        'ng-invalid ng-dirty': formulario.get('numeroIdentificacion').invalid && formulario.get('numeroIdentificacion').touched
+      }"
+    />
+    <small
+      class="p-error block fade-in"
+      *ngIf="formulario.get('numeroIdentificacion').invalid && formulario.get('numeroIdentificacion').touched"
+    >
+      Número de Identificación es obligatorio
+    </small>
+  </div>
+  <div class="p-fluid col sm:col-12 md:col-6">
+    <label class="required">Primer Nombre</label>
+    <input
+      type="text"
+      pInputText
+      formControlName="primerNombre"
+      placeholder="Ingrese nombre"
+      [disabled]="formulario.get('primerNombre').disabled"
+      [ngClass]="{
+        'ng-invalid ng-dirty': formulario.get('primerNombre').invalid && formulario.get('primerNombre').touched
+      }"
+    />
+    <small
+      class="p-error block fade-in"
+      *ngIf="formulario.get('primerNombre').invalid && formulario.get('primerNombre').touched"
+    >
+      Primer Nombre es obligatorio
+    </small>
+  </div>
+  <div class="p-fluid col sm:col-12 md:col-6">
+    <label>Segundo Nombre</label>
+    <input
+      type="text"
+      pInputText
+      formControlName="segundoNombre"
+      placeholder="Ingrese nombre"
+    />
+  </div>
+  <div class="p-fluid col sm:col-12 md:col-6">
+    <label class="required">Primer Apellido</label>
+    <input
+      type="text"
+      pInputText
+      formControlName="primerApellido"
+      placeholder="Ingrese apellido"
+      [disabled]="formulario.get('primerApellido').disabled"
+      [ngClass]="{
+        'ng-invalid ng-dirty': formulario.get('primerApellido').invalid && formulario.get('primerApellido').touched
+      }"
+    />
+    <small
+      class="p-error block fade-in"
+      *ngIf="formulario.get('primerApellido').invalid && formulario.get('primerApellido').touched"
+    >
+      Primer Apellido es obligatorio
+    </small>
+  </div>
+  <div class="p-fluid col sm:col-12 md:col-6">
+    <label>Segundo Apellido</label>
+    <input
+      type="text"
+      pInputText
+      formControlName="segundoApellido"
+      placeholder="Ingrese apellido"
+    />
+  </div>
+  <div class="p-fluid col sm:col-12 md:col-6">
+    <label class="required">Correo Electrónico</label>
+    <input
+      type="email"
+      pInputText
+      formControlName="email"
+      placeholder="Ingrese correo"
+      [disabled]="formulario.get('email').disabled"
+      [ngClass]="{
+        'ng-invalid ng-dirty': formulario.get('email').invalid && formulario.get('email').touched
+      }"
+    />
+    <small
+      class="p-error block fade-in"
+      *ngIf="formulario.get('email').invalid && formulario.get('email').touched"
+    >
+      Correo Electrónico es obligatorio
+    </small>
+  </div>
+</form>
+
+
+  <div class="flex justify-content-end" style="width: 100%;">
+    <div class="m-1">
+      <button
+        pButton
+        pRipple
+        label="Salir"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="salir()"
+      ></button>
+      <button
+        *ngIf="!lectura"
+        pButton
+        pRipple
+        label="Guardar"
+        icon="pi pi-plus"
+        class="p-button-text ml-2"
+        (click)="guardarPersona()"
+      ></button>
+    </div>
+  </div>
+</div>

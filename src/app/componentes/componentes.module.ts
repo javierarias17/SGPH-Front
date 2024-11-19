@@ -39,14 +39,13 @@ import { EspacioFisicoService } from './common/services/espacio.fisico.service';
 import { FacultadService } from './common/services/facultad.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/pages/generar.reporte.docente.component';
-import { GestionarPersonaComponent } from './datos/gestionar-persona/pages/gestionar.persona.component';
 import { CardModule } from 'primeng/card';
 import { CrearEditarVerCursoComponent } from './datos/gestionar-curso/components/crear-editar-consultar-curso/crear.editar.ver.curso.component';
 import { PeriodoAcademicoService } from './periodo-academico/gestionar-periodo-academico/services/periodo.academico.service';
-import { PeriodoAcademicoSharedService } from '../shared/service/periodo.academico.shared.service';
 
 import { InformacionDetalleCargueComponent } from './datos/cargar-labor-docencia/components/informacion-detalle-cargue/informacion-detalle-cargue.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PersonaService } from './common/services/persona.service';
 
 @NgModule({
 	declarations: [
@@ -57,7 +56,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		AsociarDocenteComponent,
 		CrearEditarVerCursoComponent,
 		InicioComponent,
-		GestionarPersonaComponent,
 		CargarLaborDocenciaComponent,
 		PlanificacionManualComponent,
 		PlanificacionSemestreAnteriorComponent,
@@ -100,7 +98,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		DocenteService,
 		UsuarioService,
 		DynamicDialogRef,
-		DynamicDialogConfig
+		DynamicDialogConfig,
+		PersonaService
 	]
 })
 export class ComponentesModule { }
