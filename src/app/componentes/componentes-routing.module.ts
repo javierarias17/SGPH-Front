@@ -14,6 +14,7 @@ import { BandejaReporteEspacioFisicoComponent } from './reportes/ver-horario-esp
 import { BandejaReporteDocenteComponent } from './reportes/ver-horario-docente/pages/bandeja-reporte-docente.component';
 import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/pages/eliminar-horario-programa.component';
 import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/pages/generar.reporte.docente.component';
+import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte-espacio-fisico/generar.reporte.espacio.fisico.component';
 
 
 const routes: Routes=[
@@ -29,6 +30,7 @@ const routes: Routes=[
     { path: 'horario-docente', component: BandejaReporteDocenteComponent},
     { path: 'generar-reporte-simca', component: GenerarReporteSimcaComponent},
     { path: 'generar-reporte-docente', component: GenerarReporteDocenteComponent},
+    { path: 'generar-reporte-espacio-fisico', component: GenerarReporteEspacioFisicoComponent},
     { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
     { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
     {

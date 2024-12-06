@@ -92,7 +92,7 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Ver horario docente', icon: 'pi pi-fw pi-file', routerLink: ['reportes/horario-docente'], visible: authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA')  },
                     { label: 'Generar reporte SIMCA', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-simca'], visible: authorities.includes('ROLE_PLANIFICADOR') },
                     { label: 'Generar reporte docente', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-docente'], visible: authorities.includes('ROLE_PLANIFICADOR')  },
-                    { label: 'Generar reporte espacio físico', icon: 'pi pi-fw pi-file', visible: authorities.includes('ROLE_PLANIFICADOR') }
+                    { label: 'Generar reporte espacio físico', icon: 'pi pi-fw pi-file', routerLink: ['reportes/generar-reporte-espacio-fisico'], visible: authorities.includes('ROLE_PLANIFICADOR') }
                 ],
                 visible:  authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA')    
             }, 

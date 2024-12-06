@@ -35,12 +35,22 @@ export class CrearEditarPersonaComponent implements OnInit {
 
   inicializarFormulario() {
     this.formulario = this.fb.group({
+      idPersona: [null],
       tipoIdentificacion: [null, Validators.required],
-      numeroIdentificacion: ['', Validators.required],
-      primerNombre: ['', Validators.required],
-      segundoNombre: [''],
-      primerApellido: ['', Validators.required],
-      segundoApellido: [''],
+      numeroIdentificacion: [
+        '',
+        [Validators.required, Validators.minLength(5), Validators.maxLength(15)],
+      ],
+      primerNombre: [
+        '',
+        [Validators.required, Validators.minLength(2), Validators.maxLength(50)],
+      ],
+      segundoNombre: ['', [Validators.maxLength(50)]],
+      primerApellido: [
+        '',
+        [Validators.required, Validators.minLength(2), Validators.maxLength(50)],
+      ],
+      segundoApellido: ['', [Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
     });
   }
@@ -62,29 +72,35 @@ export class CrearEditarPersonaComponent implements OnInit {
   guardarPersona() {
     if (this.formulario.valid) {
       const persona = this.formulario.getRawValue();
-      persona.esValidar = false;
-      persona.idTipoIdentificacion = persona.tipoIdentificacion;
-      if(this.config.data?.id){
-        persona.idPersona = this.config.data?.id  
-      }
-       
+      console.log("PERSONA", persona);
+      const esEdicion = !!persona.idPersona;
   
-      this.personaService.guardarPersona(persona).subscribe({
-        next: (r) => {
+      const personaPayload = {
+        ...this.formulario.value,
+        idTipoIdentificacion: persona.tipoIdentificacion,
+      };
+      console.log("Payload enviado:", personaPayload);
+      if (esEdicion) { 
+        personaPayload.idPersona = this.persona.idPersona; 
+      }
+      this.personaService.guardarPersona(personaPayload).subscribe({
+        next: () => {
+          const mensaje = esEdicion
+            ? 'Persona actualizada exitosamente'
+            : 'Persona creada exitosamente';
           this.messageService.add({
             severity: 'success',
             summary: 'Éxito',
-            detail: 'Persona guardada exitosamente',
+            detail: mensaje,
           });
           this.ref.close();
-          console.log(r);
         },
         error: (err) => {
           const errorMessage = Object.values(err.error).join(', ');
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: errorMessage || 'Error desconocido al guardar la persona',
+            detail: errorMessage || 'Error al guardar la persona',
           });
           console.error(err);
         },
@@ -93,6 +109,8 @@ export class CrearEditarPersonaComponent implements OnInit {
       this.formulario.markAllAsTouched();
     }
   }
+  
+  
 
   cargarPersona(idPersona: number) {
     console.log('Obteniendo persona con id:', idPersona);
@@ -117,6 +135,7 @@ export class CrearEditarPersonaComponent implements OnInit {
   
         if (!this.lectura) {
           this.formulario.patchValue({
+            idPersona: persona.idPersona,
             tipoIdentificacion: personaOutDTO.idTipoIdentificacion,
             numeroIdentificacion: personaOutDTO.numeroIdentificacion,
             primerNombre: personaOutDTO.primerNombre,
@@ -125,11 +144,6 @@ export class CrearEditarPersonaComponent implements OnInit {
             segundoApellido: personaOutDTO.segundoApellido,
             email: personaOutDTO.email,
           });
-          this.formulario.get('tipoIdentificacion')?.disable();
-          this.formulario.get('numeroIdentificacion')?.disable();
-          this.formulario.get('primerNombre')?.disable();
-          this.formulario.get('primerApellido')?.disable();
-          this.formulario.get('email')?.disable();
         }
       },
       error: (err) => {

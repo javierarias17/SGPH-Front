@@ -26,18 +26,6 @@
 					</p>
 				</p-card>
 			</div>
-			<div class="borde-card">
-				<p-card header="Eliminar cargue" [style]="{ width: '300px' }">
-					<ng-template pTemplate="header" class="header">
-						<div style="text-align: center; padding-top: 1.5rem;">
-							<i class="pi pi-trash" style="font-size: 6em !important; color: rgb(12, 128, 178);"></i>
-						</div>
-					</ng-template>
-					<p>
-						Elimina el cargue de la labor académica por programa para el periodo académico vigente.
-					</p>
-				</p-card>
-			</div>
 		</div>
 	</div>
 
@@ -77,7 +65,7 @@
 					icon="pi pi-download"
 					class="p-button"
 					label="Almacenar"
-					(click)="guardar()"
+					(click)="confirmarGuardado()"
 					[disabled]="formulario.invalid"
 				></button>
 			</div>
@@ -94,3 +82,4 @@
 
 <pre>{{ mensajesError }}</pre>
 <p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>

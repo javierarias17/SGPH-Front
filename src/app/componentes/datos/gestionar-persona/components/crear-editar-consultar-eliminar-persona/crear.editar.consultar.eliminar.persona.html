@@ -42,7 +42,6 @@
       optionValue="idTipoIdentificacion"
       formControlName="tipoIdentificacion"
       placeholder="Seleccione"
-      [disabled]="formulario.get('tipoIdentificacion').disabled"
       [ngClass]="{
         'ng-invalid ng-dirty': formulario.get('tipoIdentificacion').invalid && formulario.get('tipoIdentificacion').touched
       }"
@@ -61,16 +60,27 @@
       pInputText
       formControlName="numeroIdentificacion"
       placeholder="Ingrese número"
-      [disabled]="formulario.get('numeroIdentificacion').disabled"
       [ngClass]="{
         'ng-invalid ng-dirty': formulario.get('numeroIdentificacion').invalid && formulario.get('numeroIdentificacion').touched
       }"
     />
     <small
       class="p-error block fade-in"
-      *ngIf="formulario.get('numeroIdentificacion').invalid && formulario.get('numeroIdentificacion').touched"
+      *ngIf="formulario.get('numeroIdentificacion').hasError('required') && formulario.get('numeroIdentificacion').touched"
     >
-      Número de Identificación es obligatorio
+      El número de identificación es obligatorio
+    </small>
+    <small
+      class="p-error block fade-in"
+      *ngIf="formulario.get('numeroIdentificacion').hasError('minlength') && formulario.get('numeroIdentificacion').touched"
+    >
+      El número de identificación debe tener al menos 5 caracteres
+    </small>
+    <small
+      class="p-error block fade-in"
+      *ngIf="formulario.get('numeroIdentificacion').hasError('maxlength') && formulario.get('numeroIdentificacion').touched"
+    >
+      El número de identificación no puede exceder los 15 caracteres
     </small>
   </div>
   <div class="p-fluid col sm:col-12 md:col-6">
@@ -79,8 +89,7 @@
       type="text"
       pInputText
       formControlName="primerNombre"
-      placeholder="Ingrese nombre"
-      [disabled]="formulario.get('primerNombre').disabled"
+      placeholder="Ingrese el primer nombre"
       [ngClass]="{
         'ng-invalid ng-dirty': formulario.get('primerNombre').invalid && formulario.get('primerNombre').touched
       }"
@@ -89,26 +98,27 @@
       class="p-error block fade-in"
       *ngIf="formulario.get('primerNombre').invalid && formulario.get('primerNombre').touched"
     >
-      Primer Nombre es obligatorio
+      El primer nombre es obligatorio
     </small>
   </div>
+  
   <div class="p-fluid col sm:col-12 md:col-6">
     <label>Segundo Nombre</label>
     <input
       type="text"
       pInputText
       formControlName="segundoNombre"
-      placeholder="Ingrese nombre"
+      placeholder="Ingrese el segundo nombre"
     />
   </div>
+  
   <div class="p-fluid col sm:col-12 md:col-6">
     <label class="required">Primer Apellido</label>
     <input
       type="text"
       pInputText
       formControlName="primerApellido"
-      placeholder="Ingrese apellido"
-      [disabled]="formulario.get('primerApellido').disabled"
+      placeholder="Ingrese el primer apellido"
       [ngClass]="{
         'ng-invalid ng-dirty': formulario.get('primerApellido').invalid && formulario.get('primerApellido').touched
       }"
@@ -117,18 +127,20 @@
       class="p-error block fade-in"
       *ngIf="formulario.get('primerApellido').invalid && formulario.get('primerApellido').touched"
     >
-      Primer Apellido es obligatorio
+      El primer apellido es obligatorio
     </small>
   </div>
+  
   <div class="p-fluid col sm:col-12 md:col-6">
     <label>Segundo Apellido</label>
     <input
       type="text"
       pInputText
       formControlName="segundoApellido"
-      placeholder="Ingrese apellido"
+      placeholder="Ingrese el segundo apellido"
     />
   </div>
+  
   <div class="p-fluid col sm:col-12 md:col-6">
     <label class="required">Correo Electrónico</label>
     <input
@@ -136,21 +148,24 @@
       pInputText
       formControlName="email"
       placeholder="Ingrese correo"
-      [disabled]="formulario.get('email').disabled"
       [ngClass]="{
         'ng-invalid ng-dirty': formulario.get('email').invalid && formulario.get('email').touched
       }"
     />
     <small
       class="p-error block fade-in"
-      *ngIf="formulario.get('email').invalid && formulario.get('email').touched"
+      *ngIf="formulario.get('email').hasError('required') && formulario.get('email').touched"
     >
-      Correo Electrónico es obligatorio
+      El correo electrónico es obligatorio
     </small>
-  </div>
+    <small
+      class="p-error block fade-in"
+      *ngIf="formulario.get('email').hasError('email') && formulario.get('email').touched"
+    >
+      El correo electrónico no es válido
+    </small>
+  </div>  
 </form>
-
-
   <div class="flex justify-content-end" style="width: 100%;">
     <div class="m-1">
       <button

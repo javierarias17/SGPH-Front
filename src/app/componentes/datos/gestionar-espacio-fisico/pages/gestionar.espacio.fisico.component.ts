@@ -168,11 +168,11 @@ export class GestionarEspacioFisicoComponent {
                 lectura: false,
                 idEspacioFisico: idEspacioFisico
             }
-        })
+        });
         ref.onClose.subscribe(r => {
             this.consultarEspaciosFisicos();
-        })
-    }
+        });
+    }    
 	
 	/*Inactivar espacio físico*/
 	public inactivarEspacioFisico(espacioFisicoDTO: EspacioFisicoDTO):void {

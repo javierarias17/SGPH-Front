@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+<p-toast position="top-right"></p-toast>
 <div class="grid">
     <div class="col-12">
         <h3>Gestionar espacios físicos</h3>
@@ -99,7 +99,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-espacioFisicoDTO>
                 <tr>
-                    <td>{{espacioFisicoDTO.nombreUbicacion}}</td>
+                    <td>{{espacioFisicoDTO?.nombreUbicacion || 'Sin ubicación'}}</td>
                     <td>{{espacioFisicoDTO?.nombreEdificio}}</td>
                     <td>{{espacioFisicoDTO.tipoEspacioFisico}}</td>
                     <td>{{espacioFisicoDTO.salon}}</td>

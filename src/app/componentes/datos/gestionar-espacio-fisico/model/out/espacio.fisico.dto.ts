@@ -10,4 +10,5 @@ export class EspacioFisicoDTO{
 	public idUbicacion:number;
 	public nombreUbicacion:string;
 	public tipoEspacioFisico: string;
+	public OID: string;
 }

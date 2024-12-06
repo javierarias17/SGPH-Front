@@ -45,70 +45,99 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
     }
   }
   obtenerUbicaciones() {
-    this.espacioFisicoService.consultarUbicaciones().subscribe(r => this.ubicaciones = r)
-  }
+    this.espacioFisicoService.consultarUbicaciones().subscribe((r) => {
+        this.ubicaciones = r;
+        if (this.espacio.idUbicacion) {
+            // Asigna el valor de idUbicacion al formulario
+            this.idUbicacion().setValue(this.espacio.idUbicacion);
+        }
+    });
+ }
+
   obtenerEdificios() {
-    let ubicacion = []
-    ubicacion.push(this.idUbicacion().value)
-    this.espacioFisicoService.consultarEdificiosPorUbicacion(ubicacion).subscribe(r => this.edificios)
+    const ubicacionSeleccionada = this.idUbicacion().value;
+    if (ubicacionSeleccionada) {
+        this.espacioFisicoService
+            .consultarEdificiosPorUbicacion([ubicacionSeleccionada])
+            .subscribe((edificios) => {
+                this.edificios = edificios;
+                // Verifica si hay un edificio seleccionado y lo asignas al formulario
+                if (this.espacio.idEdificio) {
+                    this.idEdificio().setValue(this.espacio.idEdificio);
+                }
+            });
+    }
   }
+  
   obtenerRecursos() {
     this.espacioFisicoService.obtenerListaRecursos().subscribe(r => this.recursosLista = r)
   }
+
   onChangeUbicacion() {
     if (this.idUbicacion().value) {
       this.obtenerEdificios()
 
     }
   }
+
   obtenerTipos() {
-      let ubicaciones: any[] = []
-      ubicaciones.push(this.idUbicacion().value)
-      this.espacioFisicoService.consultarTiposEspaciosFisicos().subscribe(
-        (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
-            if(lstTipoEspacioFisicoOutDTO.length === 0) {
-                this.lstTipoEspacioFisicoOutDTO=[];
-            }else{
-                this.lstTipoEspacioFisicoOutDTO = lstTipoEspacioFisicoOutDTO;
+    this.espacioFisicoService.consultarTiposEspaciosFisicos().subscribe(
+        (tiposEspacioFisico: TipoEspacioFisicoOutDTO[]) => {
+            this.lstTipoEspacioFisicoOutDTO = tiposEspacioFisico || [];
+            if (this.espacio.idTipoEspacioFisico) {
+                this.tipo().setValue(this.espacio.idTipoEspacioFisico);
             }
         },
         (error) => {
-            console.error(error);
+            console.error('Error al cargar tipos de espacio físico:', error);
         }
-        ); 
+    );
   }
+
   inicializarFormulario() {
     this.formulario = this.fb.group({
       idUbicacion: ['', Validators.required],
-      idEdificio: ['', ],
+      idEdificio: [''], // Remueve Validators.required si no es obligatorio
       salon: ['', Validators.required],
       estado: ['', Validators.required],
-      capacidad: ['', Validators.required],
+      capacidad: ['', [Validators.required, Validators.min(1)]],
+      tipo: ['', Validators.required],
+      OID: ['', Validators.required],
       recursos: ['', Validators.required],
-      tipo: ['', Validators.required]
-    })
+    });
   }
+  
+  
   infoEspacioFisico() {
-    this.espacioFisicoService.consultarEspacioFisicoPorIdEspacioFisico(this.config.data.idEspacioFisico).subscribe(r => {
-      this.espacio = r
-      if (r) {
-        this.recursosActuales = r.recursos
-        this.agrupadores()
-        if (!this.lectura) {
-          this.setFormulario()
-        }
-      }
-    })
+    this.espacioFisicoService
+        .consultarEspacioFisicoPorIdEspacioFisico(this.config.data.idEspacioFisico)
+        .subscribe((r) => {
+            this.espacio = r;
+            if (r) {
+                this.recursosActuales = r.recursos;
+                this.setFormulario();
+                this.obtenerEdificios(); // Cargar los edificios relacionados con la ubicación
+            }
+        });
   }
+
   setFormulario() {
-    this.idEdificio().setValue(this.espacio.idEdificio)
-    this.idUbicacion().setValue(this.espacio.idUbicacion)
-    this.salon().setValue(this.espacio.salon)
-    this.estado().setValue(this.espacio.estado)
-    this.capacidad().setValue(this.espacio.capacidad)
-    this.tipo().setValue(this.espacio.idTipoEspacioFisico)
-    this.recursos().setValue(this.espacio.recursos.map(r => r.idRecurso))
+    this.formulario.patchValue({
+        idUbicacion: this.espacio.idUbicacion || null,
+        idEdificio: this.espacio.idEdificio || null,
+        salon: this.espacio.salon || '',
+        estado: this.espacio.estado || '',
+        capacidad: this.espacio.capacidad || '',
+        tipo: this.espacio.idTipoEspacioFisico || null,
+        OID: this.espacio.OID || '',
+        recursos: this.espacio.recursos?.map(r => r.idRecurso) || [],
+    });
+
+    // Deshabilitar los campos no editables
+    this.idUbicacion().disable();
+    this.salon().disable();
   }
+
 
   agrupadores() {
     const agrupacionPorFacultad: AgrupacionPorFacultad[] = this.espacio.lstIdAgrupadorEspacioFisico.reduce((acc: AgrupacionPorFacultad[], agrupador) => {
@@ -127,23 +156,37 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   salir() {
     this.ref.close()
   }
+
   guardar() {
+    console.log("Método guardar invocado");
+    console.log("Formulario válido:", this.formulario.valid);
     if (this.formulario.valid) {
-      let espacioSave: EspacioFisicoOutDTO = this.formulario.value
-      espacioSave.idEspacioFisico = this.espacio.idEspacioFisico
-      espacioSave.idTipoEspacioFisico = this.tipo().value
-      this.espacioFisicoService.guardarEspacioFisico(
-        espacioSave
-      ).subscribe(r => {
-        if (r) {
-          this.messageService.showMessage("success","Espacio fisico guardado correctamente")
-          this.ref.close()
-        }
-      })
+        const espacioSave: EspacioFisicoOutDTO = {
+            ...this.formulario.value,
+            idEspacioFisico: this.espacio?.idEspacioFisico,
+            idEdificio: this.idEdificio().value || null, 
+            idTipoEspacioFisico: this.tipo().value || null,
+            OID: this.OID().value,
+            esValidar: false,
+        };
+
+        console.log("Datos a guardar:", espacioSave);
+        this.espacioFisicoService.guardarEspacioFisico(espacioSave).subscribe({
+            next: (response) => {
+                this.messageService.showMessage("success", "Espacio físico guardado correctamente");
+                this.ref.close();
+            },
+            error: (err) => {
+                console.error("Error al guardar el espacio físico:", err);
+                this.messageService.showMessage("error", "Error al guardar el espacio físico.");
+            },
+        });
     } else {
-      this.formulario.markAllAsTouched()
+        console.log("Errores en el formulario:", this.formulario.errors);
+        this.formulario.markAllAsTouched();
     }
   }
+  
   getAgrupadoresSeleccionados(r: number[]) {
     console.log(r)
     this.gruposSeleccionados = r
@@ -168,5 +211,8 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
    }
    tipo(): FormControl {
     return this.formulario.get('tipo') as FormControl
+   }
+   OID(): FormControl {
+    return this.formulario.get('OID') as FormControl
    }
 }

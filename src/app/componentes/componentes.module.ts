@@ -46,6 +46,7 @@ import { PeriodoAcademicoService } from './periodo-academico/gestionar-periodo-a
 import { InformacionDetalleCargueComponent } from './datos/cargar-labor-docencia/components/informacion-detalle-cargue/informacion-detalle-cargue.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PersonaService } from './common/services/persona.service';
+import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte-espacio-fisico/generar.reporte.espacio.fisico.component';
 
 @NgModule({
 	declarations: [
@@ -74,7 +75,8 @@ import { PersonaService } from './common/services/persona.service';
         ResultadoGeneracionHorarioComponent,
 		CrearEditardocenteComponent,
 		GenerarReporteDocenteComponent,
-  		InformacionDetalleCargueComponent
+  		InformacionDetalleCargueComponent,
+		GenerarReporteEspacioFisicoComponent
 	],
 	imports: [
 		CardModule,

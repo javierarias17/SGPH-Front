@@ -173,4 +173,5 @@ export class EspacioFisicoService {
 		const url = `${environment.url}${this.urlAdministrarEspacioFisico}/consultarTiposEspaciosFisicos`;
 		return this.http.get<TipoEspacioFisicoOutDTO[]>(url);
 	} 
+	  
 }

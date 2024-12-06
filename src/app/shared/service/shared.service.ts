@@ -46,4 +46,8 @@ export class SharedService {
     const url = `${environment.url}${this.urlDocente}/importar/${idFacultad}/${idPrograma}`;
     return this.http.post<any>(url, docenteLaborList);
   }
+  public obtenerReporteEspacioFisico(filtro: any): Observable<any> {
+    const url = `${environment.url}${this.urlReporte}/espacioFisico`;
+    return this.http.post<any>(url, filtro);
+  }  
 }

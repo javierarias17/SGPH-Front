@@ -41,35 +41,33 @@
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Ubicacion</label>
             <p-dropdown 
-                [placeholder]="' '" 
-                [ngClass]="{
-                            'ng-invalid ng-dirty':
-                                this.idUbicacion().invalid &&
-                                this.idUbicacion().touched}" 
-                [options]="ubicaciones" 
-                optionValue="idUbicacion" 
+                [placeholder]="' '"
+                [options]="ubicaciones"
+                optionValue="idUbicacion"
                 optionLabel="nombre"
-                formControlName="idUbicacion" 
-                [showClear]="true" appendTo="body"
-                (ngModelChange)="onChangeUbicacion()"
-            >
-            </p-dropdown>
-            <small class="p-error block fade-in" *ngIf="this.idUbicacion().invalid &&
-                                (this.idUbicacion().touched)">
+                formControlName="idUbicacion"
+                [disabled]="this.lectura"
+                [showClear]="true"
+                appendTo="body"
+            ></p-dropdown>
+            <small class="p-error block fade-in" *ngIf="this.idUbicacion().invalid && this.idUbicacion().touched">
                 Ubicación es obligatorio
             </small>
         </div>
         <div class="p-fluid col sm:col-12 md:col-6" *ngIf="false">
             <label class="required">Edificio</label>
-            <p-dropdown [placeholder]="' '" [ngClass]="{
-                            'ng-invalid ng-dirty':
-                                this.idEdificio().invalid &&
-                                this.idEdificio().touched
-                        }" [options]="edificios" optionValue="idEdificio" optionLabel="nombre"
-                formControlName="idEdificio" [showClear]="true" appendTo="body">
-            </p-dropdown>
-            <small class="p-error block fade-in" *ngIf="this.idEdificio().invalid &&
-                                (this.idEdificio().touched)">
+            <p-dropdown 
+                [placeholder]="' '"
+                [options]="edificios"
+                optionValue="idEdificio"
+                optionLabel="nombre"
+                formControlName="idEdificio"
+                [disabled]="this.lectura"
+                [showClear]="true"
+                appendTo="body"
+            ></p-dropdown>
+          
+            <small class="p-error block fade-in" *ngIf="idEdificio().invalid && (idEdificio().touched)">
                 Edificio es obligatorio
             </small>
         </div>
@@ -128,6 +126,19 @@
                                 (this.tipo().touched)">
                 Tipo es obligatorio
             </small>
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">OID</label>
+            <input type="text" 
+                pInputText 
+                [ngClass]="{'ng-invalid ng-dirty': OID().invalid && OID().touched}" 
+                formControlName="OID" 
+                placeholder=" ">
+            <small class="p-error block fade-in" *ngIf="this.OID().invalid &&
+                    (this.OID().touched)">
+                OID es obligatorio
+            </small>
+
         </div>
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Capacidad</label>

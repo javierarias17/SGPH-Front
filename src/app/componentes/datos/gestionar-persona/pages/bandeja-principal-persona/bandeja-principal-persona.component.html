@@ -38,16 +38,23 @@
     </div>
   </div>
 
+  <div class="grid">
+    <div class="col-12">
+        <div class="grid" *ngIf="totalRecords!==undefined">
+            <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
+                <label class="large-label">Personas consultadas: {{totalRecords}}</label>
+            </div>
+        </div>        
   <p-table
-  [value]="personas" 
-  [paginator]="true" 
-  [rows]="10" 
-  [totalRecords]="totalRecords" 
-  [lazy]="true" 
-  [loading]="cargando"
-  (onLazyLoad)="listarPersonas($event)" 
-  responsiveLayout="scroll" 
-  styleClass="p-datatable-gridlines">
+        [value]="personas" 
+        [paginator]="true" 
+        [rows]="10" 
+        [totalRecords]="totalRecords" 
+        [lazy]="true" 
+        [loading]="cargando"
+        (onLazyLoad)="listarPersonas($event)" 
+        responsiveLayout="scroll" 
+        styleClass="p-datatable-gridlines">
   <ng-template pTemplate="header">
       <tr>
           <th>Tipo Identificación</th>
@@ -57,6 +64,7 @@
           <th>Opciones</th>
       </tr>
   </ng-template>
+
   <ng-template pTemplate="body" let-persona>
       <tr>
           <td>{{ persona.tipoIdentificacion?.codigoTipoIdentificacion || '' }}</td>
@@ -67,7 +75,6 @@
               <div class="flex">
                   <button pButton pRipple icon="pi pi-search" class="p-button-rounded p-button-info mr-2" pTooltip="Ver persona" (click)="verPersona(persona.idPersona)"></button>
                   <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-secondary mr-2" pTooltip="Editar persona" (click)="editarPersona(persona.idPersona)"></button>
-                  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" pTooltip="Eliminar persona" (click)="eliminarPersona(persona.idPersona)"></button>
               </div>
           </td>
       </tr>

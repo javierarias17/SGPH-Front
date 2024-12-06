@@ -6,7 +6,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 import { PeriodoAcademicoOutDTO } from 'src/app/componentes/periodo-academico/gestionar-periodo-academico/model/out/periodo-academico-out-dto';
-import { Message } from 'primeng/api';
+import { ConfirmationService, Message } from 'primeng/api';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { InformacionDetalleCargueComponent } from '../components/informacion-detalle-cargue/informacion-detalle-cargue.component';
 import { HttpClient } from '@angular/common/http';
@@ -37,7 +37,8 @@ export class CargarLaborDocenciaComponent implements OnInit {
 		private dialogService: DialogService,
 		private messageService: ShowMessageService,
 		public periodoAcademicoSharedService:PeriodoAcademicoSharedService,
-		private http: HttpClient
+		private http: HttpClient,
+        private confirmationService: ConfirmationService
 	) {
 
 	}
@@ -57,6 +58,10 @@ export class CargarLaborDocenciaComponent implements OnInit {
 	public idPrograma(): FormControl {
 		return this.formulario.get("idPrograma") as FormControl
 	}
+
+    private nombrePrograma(): FormControl {
+        return this.formulario.get("nombrePrograma") as FormControl
+    }
 
 	cargarLabor() {
 		this.cargar = !this.cargar
@@ -92,6 +97,9 @@ export class CargarLaborDocenciaComponent implements OnInit {
 	}
 
 	guardar() {
+        const programaSeleccionado = this.listaProgramas.find(
+            (programa) => programa.idPrograma === this.idPrograma().value
+        );
         this.isLoading = true;
         this.http.get<any[]>('/assets/mock-labor-docente.json').subscribe(
             (docenteLaborList) => {
@@ -117,7 +125,7 @@ export class CargarLaborDocenciaComponent implements OnInit {
                                     data: {
                                         facultad:
                                             'Facultad de Ingeniería Electrónica y Telecomunicaciones',
-                                        programa: "Nombre del programa",
+                                        programa: programaSeleccionado.nombre,
                                         estado: 'Cargado con éxito',
                                         detalleCargue: response,
                                     },
@@ -215,5 +223,31 @@ export class CargarLaborDocenciaComponent implements OnInit {
             },
         });
     }
+
+    confirmarGuardado() {
+        const programaSeleccionado = this.listaProgramas.find(
+            (p) => p.idPrograma === this.idPrograma().value
+        );
+    
+        const mensaje = `¿Está seguro de que desea realizar el cargue para el programa "${programaSeleccionado?.nombre}" en el periodo académico vigente?`;
+    
+        this.confirmationService.confirm({
+            message: mensaje,
+            header: 'Confirmación requerida',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                // Si el usuario acepta, se ejecuta el método guardar
+                this.guardar();
+            },
+            reject: () => {
+                // Opcional: Manejar la acción si el usuario rechaza
+                this.messageService.showMessage(
+                    'info',
+                    'El cargue fue cancelado.'
+                );
+            },
+        });
+    }
+    
 
 }
