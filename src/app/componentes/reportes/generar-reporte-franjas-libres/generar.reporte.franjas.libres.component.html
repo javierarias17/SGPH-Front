@@ -1,0 +1,129 @@
+<div class="grid">
+  <div class="col-12">
+    <h3>Generar reporte de franjas libres</h3>
+    <p>Esta pantalla permite visualizar y generar reportes para las franjas libres.</p>
+    <hr />
+  </div>
+</div>
+
+<!-- Filtros -->
+<div class="grid p-fluid">
+  <div class="col-3">
+    <label>Ubicación</label>
+    <p-dropdown
+    [options]="lstUbicacionOutDTO"
+    optionLabel="nombre"
+    optionValue="idUbicacion"
+    placeholder="Seleccione ubicación"
+    [(ngModel)]="filtroEspacioFisicoDTO.listaIdUbicacion"
+    (onChange)="onUbicacionesChange()"
+    [showClear]="true">
+  </p-dropdown>
+
+  </div>
+
+  <div class="col-3">
+    <label for="salon">Salón</label>
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="filtro.salon"
+      placeholder="Ingrese el salón"
+      (ngModelChange)="onInputsChange()"
+    />
+  </div>
+  
+  <div class="col-3">
+    <label for="dia">Día</label>
+    <p-dropdown
+      [options]="diasSemana"
+      placeholder="Seleccione el día"
+      [(ngModel)]="filtro.dia"
+      (onChange)="onInputsChange()"
+    ></p-dropdown>
+  </div>  
+
+  <!-- Hora Inicio y Hora Fin uno debajo del otro -->
+  <div class="col-3">
+    <div class="field">
+      <label for="horaInicio" style="margin-right: 1rem;">Hora Inicio: </label>
+      <input
+        type="time"
+        class="form-control"
+        [(ngModel)]="filtro.horaInicio"
+        (ngModelChange)="onInputsChange()"
+      />
+    </div>
+    <div class="field" style="margin-top: 1rem;">
+      <label for="horaFin" style="margin-right: 2rem;">Hora Fin: </label>
+      <input
+        type="time"
+        class="form-control"
+        [(ngModel)]="filtro.horaFin"
+        (ngModelChange)="onInputsChange()"
+      />
+    </div>
+  </div>
+</div>
+
+<!-- Tabla con Paginación -->
+<div class="grid">
+  <div class="col-12">
+    <div class="grid" *ngIf="totalRecords!==undefined">
+      <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
+          <label class="large-label">Franjas libres consultadas: {{totalRecords}}</label>
+      </div>
+      <div [class]="totalRecords!==undefined ? 'col-6': 'col-12'">
+          <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
+              <ng-template pTemplate="left">
+              </ng-template>
+              <ng-template pTemplate="right">              
+                <button pButton 
+                        pRipple 
+                        label="Descargar reporte" 
+                        icon="pi pi-download" 
+                        class="p-button-help" 
+                        (click)="descargarReporte()">
+                </button>
+              
+                <span style="margin-right: 10px;"></span>
+              </ng-template>
+              
+          </p-toolbar>  
+      </div>
+    </div>  
+    <p-table
+      #dt
+      [value]="franjasLibres"
+      [rows]="registrosPorPagina"
+      [first]="pagina"
+      responsiveLayout="scroll"
+      selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines"
+    >
+      <!-- Encabezado -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Ubicación</th>
+          <th>Salón</th>
+          <th>Tipo</th>
+          <th>Capacidad</th>
+          <th>Día</th>
+          <th>Hora disponible</th>
+        </tr>
+      </ng-template>
+
+      <!-- Cuerpo -->
+      <ng-template pTemplate="body" let-franja>
+        <tr>
+          <td>{{ franja.nombre || 'No disponible' }}</td>
+          <td>{{ franja.salon || 'No disponible' }}</td>
+          <td>{{ franja.tipo || 'No disponible' }}</td>
+          <td>{{ franja.capacidad || 'No disponible' }}</td>
+          <td>{{ franja.dia || 'No disponible' }}</td>
+          <td>{{ franja.horaInicio || 'No disponible' }} - {{ franja.horaFin || 'No disponible' }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords"></p-paginator>   
+  </div>
+</div>

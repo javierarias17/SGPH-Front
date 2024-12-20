@@ -47,6 +47,8 @@ import { InformacionDetalleCargueComponent } from './datos/cargar-labor-docencia
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PersonaService } from './common/services/persona.service';
 import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte-espacio-fisico/generar.reporte.espacio.fisico.component';
+import { PlanificacionManualService } from './common/services/planificacion.manual.service';
+import { GenerarReporteFranjasLibresComponent } from './reportes/generar-reporte-franjas-libres/generar.reporte.franjas.libres.component';
 
 @NgModule({
 	declarations: [
@@ -76,7 +78,8 @@ import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte
 		CrearEditardocenteComponent,
 		GenerarReporteDocenteComponent,
   		InformacionDetalleCargueComponent,
-		GenerarReporteEspacioFisicoComponent
+		GenerarReporteEspacioFisicoComponent,
+		GenerarReporteFranjasLibresComponent,
 	],
 	imports: [
 		CardModule,
@@ -86,7 +89,7 @@ import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte
 		SharedModule,
 		MessageModule,
 		ToastModule,	
-		ProgressSpinnerModule,	
+		ProgressSpinnerModule
 	],
 	providers: [
 		//Especificos de cada componente
@@ -101,7 +104,8 @@ import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte
 		UsuarioService,
 		DynamicDialogRef,
 		DynamicDialogConfig,
-		PersonaService
+		PersonaService,
+		PlanificacionManualService,
 	]
 })
 export class ComponentesModule { }

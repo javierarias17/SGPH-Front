@@ -15,6 +15,7 @@ import { BandejaReporteDocenteComponent } from './reportes/ver-horario-docente/p
 import { EliminarHorarioProgramaComponent } from './planificacion-horario/eliminar-horario-programa/pages/eliminar-horario-programa.component';
 import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docente/pages/generar.reporte.docente.component';
 import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte-espacio-fisico/generar.reporte.espacio.fisico.component';
+import { GenerarReporteFranjasLibresComponent } from './reportes/generar-reporte-franjas-libres/generar.reporte.franjas.libres.component';
 
 
 const routes: Routes=[
@@ -33,6 +34,7 @@ const routes: Routes=[
     { path: 'generar-reporte-espacio-fisico', component: GenerarReporteEspacioFisicoComponent},
     { path: 'gestionar-reserva-temporal', component: GestionarReservaTemporalComponent},
     { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
+    { path: 'generar-reporte-franjas-libres', component: GenerarReporteFranjasLibresComponent},
     {
       path: 'gestionar-periodo-academico',
       loadChildren: () =>

@@ -6,10 +6,11 @@ import { MessageService } from 'primeng/api';
 export class ShowMessageService {
     constructor(private messageService: MessageService) { }
 
-    showMessage(severity: string, message: string): void {
+    showMessage(severity: string, message: string, life: number = 3000): void {
       this.messageService.add({
         severity: severity,
         detail: message,
+        life: life,
       });
     }
 }

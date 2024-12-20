@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FacultadOutDTO } from 'src/app/componentes/common/model/facultad/out/facultad.out.dto';
 import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/agrupador.espacio.fisico.dto';
+import { FranjaLibreOutDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/franaja.libre.out.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -50,4 +51,18 @@ export class SharedService {
     const url = `${environment.url}${this.urlReporte}/espacioFisico`;
     return this.http.post<any>(url, filtro);
   }  
+  public descargarHorarioDocente(filtro: any): Observable<any> {
+    const url = `${environment.url}${this.urlReporte}/laborDocente`;
+    return this.http.post<any>(url, filtro, { responseType: 'text' as 'json' });
+  }
+
+  public descargarHorarioEspacioFisico(filtro: any): Observable<any> {
+    const url = `${environment.url}${this.urlReporte}/espacioFisico`;
+    return this.http.post<any>(url, filtro, { responseType: 'text' as 'json' });
+  }
+
+  public descargarHorarioFranjasLibres(filtro: FranjaLibreOutDTO[]): Observable<any> {
+    const url = `${environment.url}${this.urlReporte}/franjaLibre`;
+    return this.http.post<FranjaLibreOutDTO>(url, filtro, { responseType: 'text' as 'json' });
+  }
 }

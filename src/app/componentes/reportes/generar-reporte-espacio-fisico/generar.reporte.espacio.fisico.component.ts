@@ -1,10 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SharedService } from 'src/app/shared/service/shared.service';
-import { DialogService } from 'primeng/dynamicdialog';
-import { VisualizadorExcelComponent } from 'src/app/shared/components/visualizador-excel/visualizador-excel.component';
-import * as XLSX from 'xlsx';
+import { 
+  SharedService } from 'src/app/shared/service/shared.service';
 import { EspacioFisicoService } from '../../common/services/espacio.fisico.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Message } from 'primeng/api';
+import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
+import { EstadoEspacioFisicoEnum } from '../../common/enum/estado.espacio.fisico.enum';
+import { FiltroEspacioFisicoDTO } from '../../datos/gestionar-espacio-fisico/model/in/filtro.espacio.fisico.dto';
+import { EspacioFisicoDTO } from '../../datos/gestionar-espacio-fisico/model/out/espacio.fisico.dto';
+import { TipoEspacioFisicoOutDTO } from '../../datos/gestionar-espacio-fisico/model/out/tipo.espacio.fisico.out.dto';
+import { UbicacionOutDTO } from '../../datos/gestionar-espacio-fisico/model/out/ubicacion.out.dto';
+import { HorarioEspacioFisicoComponent } from '../ver-horario-espacio-fisico/components/horario-espacio-fisico/horario.espacio.fisico.component';
+import { PlanificacionManualService } from '../../common/services/planificacion.manual.service';
+import { FranjaHorariaEspacioFisicoDTO } from '../../datos/gestionar-espacio-fisico/model/out/franja.horaria.espacio.fisico.dto';
+import { EspacioFisicoOutDTO } from '../../datos/gestionar-espacio-fisico/model/out/espacio.fisico.out.dto';
+import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 
 @Component({
   selector: 'app-generar-reporte-espacio-fisico',
@@ -12,172 +23,222 @@ import { EspacioFisicoService } from '../../common/services/espacio.fisico.servi
   styleUrls: ['./generar.reporte.espacio.fisico.component.css']
 })
 export class GenerarReporteEspacioFisicoComponent implements OnInit {
-  formulario: FormGroup;
-  base64: string;
-  isLoading: boolean = false;
-  resultados: any[] = [];
-  messages: any[] = [];
-  // Declarar las propiedades
-  ubicaciones: { label: string; value: any }[] = [];
-  estados: { label: string; value: string }[] = [
-    { label: 'Activo', value: 'ACTIVO' },
-    { label: 'Inactivo', value: 'INACTIVO' }
-  ];
-  tipos: { label: string; value: any }[] = [];
+  private readonly PAGINA_CERO: number = 0;   
 
-  constructor(
-    private fb: FormBuilder,
-    private sharedService: SharedService,
-    private espacioFisicoService: EspacioFisicoService,
-    private dialogService: DialogService
-  ) {}
+    private readonly REGISTROS_POR_PAGINA: number = 10;  
 
-  ngOnInit(): void {
-    this.inicializarFormulario();
-    this.cargarUbicaciones();
-    this.cargarTiposEspaciosFisicos();
-  }
+    public pagina: number = this.PAGINA_CERO;
 
-  inicializarFormulario() {
-    this.formulario = this.fb.group({
-      ubicacion: [null],
-      estado: [null],
-      tipo: [null],
-      nombre: [null]
-    });
-  }
+    public registrosPorPagina: number = this.REGISTROS_POR_PAGINA;  
 
-  cargarUbicaciones() {
-    this.espacioFisicoService.consultarUbicaciones().subscribe((ubicaciones) => {
-      this.ubicaciones = ubicaciones.map((u) => ({
-        label: u.nombre,
-        value: u.idUbicacion
-      }));
-    });
-  }
+    public totalRecords:number;  
 
-  cargarTiposEspaciosFisicos() {
-    this.espacioFisicoService.consultarTiposEspaciosFisicos().subscribe((tipos) => {
-      this.tipos = tipos.map((t) => ({
-        label: t.tipo,
-        value: t.tipo
-      }));
-    });
-  }
+    public listaEspacioFisicoDTO: EspacioFisicoDTO[] = [];
 
-  limpiar() {
-    this.formulario.reset();
-  }
+    public lstUbicacionOutDTO: UbicacionOutDTO[] = [];
 
-  visualizar() {
-    const filtro = {
-      idUbicacion: this.formulario.value.ubicacion,
-      idEdificio: null,
-      tipoEspacio: this.formulario.value.tipo,
-      nombreEspacio: this.formulario.value.nombre,
-      estado: this.formulario.value.estado
-    };    
-    this.realizarBusqueda(filtro, true);
-  }
+    public lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[] = [];
 
-  descargar() {
-    const filtro = {
-      idUbicacion: this.formulario.value.ubicacion,
-      idEdificio: null,
-      tipoEspacio: this.formulario.value.tipo,
-      nombreEspacio: this.formulario.value.nombre,
-      estado: this.formulario.value.estado
-    };
-    this.realizarBusqueda(filtro, false);
-  }
+    public listaEstados:{ label: string; value: string }[] = [];  
 
-  realizarBusqueda(filtro: any, isVisualizar: boolean) {
-    console.log("Filtro recibido: {}", filtro);
+    public filtroEspacioFisicoDTO: FiltroEspacioFisicoDTO=new FiltroEspacioFisicoDTO();
+
+    public aulaDTOSeleccionado: EspacioFisicoDTO=new EspacioFisicoDTO();   
+
+    public inactivarEspacioFisicoDialog: boolean = false;
+
+    public messages: Message[] = null;
+
+    @ViewChild('horarioEspacioFisico') horarioEspacioFisico: HorarioEspacioFisicoComponent;
   
-    this.isLoading = true;
-    this.sharedService.obtenerReporteEspacioFisico(filtro).subscribe(
-      (r) => {
-        this.isLoading = false;
-        if (r) {
-          this.resultados = r; // Almacena los datos recibidos para visualización
-          this.base64 = r.archivoBase64;
-          console.log("respuesta: {}", r);
-          if (isVisualizar) {
-            this.dialogService.open(VisualizadorExcelComponent, {
-              height: '90vh',
-              width: '95%',
-              header: 'Reporte espacio físico',
-              contentStyle: { overflow: 'hidden' },
-              data: {
-                base64: this.base64
-              }
-            });
-          } else {
-            this.downloadExcelFile();
-          }
-        }
-      },
-      (error) => {
-        this.isLoading = false;
-        console.error('Error al generar el reporte:', error);
-  
-        // Mostrar mensaje con formato si no hay registros disponibles
-        if (error.error && error.error.message === "No hay espacios físicos disponibles para generar el reporte.") {
-          this.messages = [
-            {
-              severity: 'error',
-              summary: 'No existen registros para los filtros seleccionados',
-              detail: 'Por favor, intente con diferentes filtros.'
+	constructor(private espacioFisicoService:EspacioFisicoService,
+        private translateService: TranslateService,
+		    public periodoAcademicoSharedService:PeriodoAcademicoSharedService,
+        private planificacionManualService: PlanificacionManualService,
+        private messageService: ShowMessageService,
+        private sharedService: SharedService
+    ) {
+	}
+
+	public ngOnInit():void {    
+        this.consultarPeriodoAcademicoVigente();       
+        this.filtroEspacioFisicoDTO.registrosPorPagina = this.registrosPorPagina;         
+
+        this.espacioFisicoService.consultarUbicaciones().subscribe(
+            (lstUbicacionOutDTO: UbicacionOutDTO[]) => {
+                this.lstUbicacionOutDTO = lstUbicacionOutDTO;
+            },
+            (error) => {
+              console.error(error);
             }
-          ];
-        } else {
-          // Mensaje genérico en caso de otro error
-          this.messages = [
-            {
-              severity: 'error',
-              summary: 'Error al generar el reporte',
-              detail: 'Ocurrió un problema inesperado. Intente nuevamente más tarde.'
+        );  
+
+        Object.keys(EstadoEspacioFisicoEnum).forEach(key => {
+            const translatedLabel = this.translateService.instant('gestionar.espaciofisico.filtro.estado.espaciofisico.' + key);
+            this.listaEstados.push({ label: translatedLabel, value: key });
+        });
+        this.messages = [];
+
+        this.inputsChange();
+	}
+
+    private consultarEspaciosFisicos():void{
+        this.espacioFisicoService.consultarEspaciosFisicos(this.filtroEspacioFisicoDTO).subscribe(
+            (response: any) => {
+                this.consultarPeriodoAcademicoVigente(); 
+                this.listaEspacioFisicoDTO = response.content;
+                this.totalRecords= response.totalElements;
+            },
+            (error) => {
+                console.error(error);
             }
-          ];
+          );
+    }
+
+    public onUbicacionesChange():void{
+        this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
+        if(this.filtroEspacioFisicoDTO.listaIdUbicacion!==null && this.filtroEspacioFisicoDTO.listaIdUbicacion.length !== 0){
+            this.espacioFisicoService.consultarTiposEspaciosFisicosPorUbicaciones(this.filtroEspacioFisicoDTO.listaIdUbicacion).subscribe(
+                (lstTipoEspacioFisicoOutDTO: TipoEspacioFisicoOutDTO[]) => {
+                    this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
+                    this.filtroEspacioFisicoDTO.estado=null;
+                    this.filtroEspacioFisicoDTO.salon="";
+                    if(lstTipoEspacioFisicoOutDTO.length === 0){
+                        this.lstTipoEspacioFisicoOutDTO=[];
+                    }else{
+                        this.lstTipoEspacioFisicoOutDTO = lstTipoEspacioFisicoOutDTO;
+                    }
+                    this.consultarEspaciosFisicos();
+                },
+                (error) => {
+                    console.error(error);
+                }
+                ); 
+        }else{
+            this.filtroEspacioFisicoDTO.listaIdUbicacion=[];
+            this.filtroEspacioFisicoDTO.listaIdTipoEspacioFisico =[];
+            this.filtroEspacioFisicoDTO.estado=null;
+            this.filtroEspacioFisicoDTO.salon="";
+            this.listaEspacioFisicoDTO=[];
+            this.totalRecords=0;
+            this.consultarEspaciosFisicos();
         }
-      }
+    }  
+    
+    public onTipoEspacioFisicoChange():void{
+        this.inputsChange();
+    }
+
+    public onEstadoChange():void{     
+        this.inputsChange();
+    }
+    
+    public inputsChange(){
+        this.filtroEspacioFisicoDTO.pagina=this.PAGINA_CERO;
+        this.consultarEspaciosFisicos();
+    }
+
+    public onPageChange(event: any):void {
+		this.filtroEspacioFisicoDTO.pagina =event.page;     
+		this.consultarEspaciosFisicos();
+	}
+	
+    /*Horario aula*/
+	public abrirModalHorarioAula(aulaDTOSeleccionado: EspacioFisicoDTO):void {
+		if (this.horarioEspacioFisico) {
+			this.horarioEspacioFisico.abrirModal(aulaDTOSeleccionado);
+		}      
+	} 
+
+  private consultarPeriodoAcademicoVigente():void{
+       this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe(
+           (r: any) => {
+               if(r){
+                   this.messages=null;
+               }else{
+				this.messages=[{ severity: 'error', summary: 'No existe periodo académico vigente', detail:"No podrá acceder a esta funcionalidad si no existe un periodo académico abierto." }];
+               }
+           },
+           (error) => {
+               console.error(error);
+           }
+      );        
+  }
+
+  public DescargarHorarioEspacioFisico(aulaDTOSeleccionado: EspacioFisicoOutDTO): void {
+    if (!aulaDTOSeleccionado.idEspacioFisico) {
+        console.error('El espacio físico seleccionado no tiene un ID válido.');
+        return;
+    }
+
+    this.planificacionManualService.consultarFranjasEspacioFisicoPorIdEspacioFisico(aulaDTOSeleccionado.idEspacioFisico).subscribe(
+        (listaFranjaHorariaAulaDTO: FranjaHorariaEspacioFisicoDTO[]) => {
+            if (!listaFranjaHorariaAulaDTO || listaFranjaHorariaAulaDTO.length === 0) {
+                this.messageService.showMessage("warn", "No se encontraron franjas horarias para el espacio físico seleccionado.");
+                this.limpiarMessages();
+                return;
+            }
+
+            const filtro = {
+                idEspacioFisico: aulaDTOSeleccionado.idEspacioFisico,
+                nombreEspacio: aulaDTOSeleccionado.salon,
+                ubicacion: aulaDTOSeleccionado.nombreEdificio,
+                estado: aulaDTOSeleccionado.estado,
+                tipoEspacio: aulaDTOSeleccionado.idTipoEspacioFisico,
+                horarios: listaFranjaHorariaAulaDTO.map(franja => ({
+                    dia: franja.dia,
+                    horarioInicio: franja.horaInicio,
+                    horaFin: franja.horaFin,
+                    salon: franja.nombreCurso,
+                }))
+            };
+
+            this.sharedService.descargarHorarioEspacioFisico(filtro).subscribe(
+                (response: any) => {
+                    try {
+                        const jsonResponse = JSON.parse(response);
+                        if (jsonResponse.archivoBase64) {
+                            this.descargarArchivo(jsonResponse.archivoBase64, 'Horario_Espacio_Fisico.xlsx');
+                            this.messageService.showMessage("success", "El archivo se ha descargado correctamente");
+                            this.limpiarMessages();
+                        } else {
+                            console.error('No se recibió el archivo en la respuesta.');
+                        }
+                    } catch (error) {
+                        console.error('Error al decodificar la respuesta JSON:', error);
+                    }
+                },
+                (error) => {
+                    console.error('Error descargando el horario:', error);
+                }
+            );
+        },
+        (error) => {
+            console.error('Error consultando las franjas horarias del espacio físico:', error);
+        }
     );
   }
-  
 
-  downloadExcelFile() {
-    const buffer = this.base64ToArrayBuffer(this.base64);
-    const workbook = XLSX.read(buffer, { type: 'array' });
-
-    const excelBlob = new Blob([this.arrayBufferToBlob(buffer)], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    });
-
-    const url = window.URL.createObjectURL(excelBlob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'reporte_espacios_fisicos.xlsx';
-
-    link.click();
+  private limpiarMessages(): void {
+      setTimeout(() => {
+          this.messages = null;
+      }, 3000); // Puedes ajustar el tiempo según sea necesario
   }
 
-  base64ToArrayBuffer(base64: string): ArrayBuffer {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; ++i) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
-  }
+  private descargarArchivo(base64Data: string, nombreArchivo: string): void {
+      const binaryData = atob(base64Data);
+      const byteArray = new Uint8Array(binaryData.length);
+      for (let i = 0; i < binaryData.length; i++) {
+          byteArray[i] = binaryData.charCodeAt(i);
+      }
 
-  arrayBufferToBlob(buffer: ArrayBuffer): Blob {
-    return new Blob([new Uint8Array(buffer)]);
-  }
-
-  mostrarMensaje(mensaje: string) {
-    alert(mensaje);
+      const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nombreArchivo;
+      a.click();
+      window.URL.revokeObjectURL(url);
   }
   
 }

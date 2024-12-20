@@ -13067,7 +13067,7 @@
 		"CODIGOMATERIA" : "M24616",
 		"NOMBREMATERIA" : "Contabilidad y Finanzas para Emprendedores",
 		"TIPOASIGNATURA" : 2,
-		"GRUPO" : "A",
+		"GRUPO" : null,
 		"HORASTEORICAS" : 4,
 		"OIDPENSUM" : 545,
 		"HORASSEMANALES" : 4,

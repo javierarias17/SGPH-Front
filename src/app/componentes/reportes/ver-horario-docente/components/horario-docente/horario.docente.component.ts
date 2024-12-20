@@ -106,13 +106,14 @@ export class HorarioDocenteComponent{
 					this.listaFranjaHorariaDocenteDTO = listaFranjaHorariaDocenteDTO;
 					this.spinnerService.hide();
 					this.visible=true;
+					console.log('FRANJAS', listaFranjaHorariaDocenteDTO);
 				},
 				(error) => {
 					this.spinnerService.hide();
 					console.error(error);
 					this.mensajeError = 'Ocurrió un error al consultar el horario del docente.';
 					this.mostrarModalError = true;
-				}
+				}				
 			);
 		}
 	}

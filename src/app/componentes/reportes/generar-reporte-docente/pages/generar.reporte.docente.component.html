@@ -1,76 +1,95 @@
+<p-messages [(value)]="messages" [enableService]="true" [closable]="true"></p-messages>
+
 <div class="grid">
     <div class="col-12">
-        <h3>Generar reporte docente</h3>
-        <p>Esta pantalla permite visualizar y generar el reporte para docente.</p>
+        <h3>Descargar horario docente</h3>
+        <p>Esta pantalla permite visualizar y descargar los horarios de los docentes.</p>
         <hr>
-        <br>
-        <br>
-        <form class="grid" [formGroup]="formulario">
-            <div class="p-fluid col sm:col-12 md:col-3">
-                <label class="required">Tipo identificación</label>
-                <p-dropdown [placeholder]="' '" [ngClass]="{
-                                'ng-invalid ng-dirty':
-                                    this.tipoIdentificacion().invalid &&
-                                    this.tipoIdentificacion().touched
-                            }" [options]="listaTipoIdentificacion"
-                    formControlName="tipoIdentificacion" [showClear]="true" optionValue="idTipoIdentificacion" optionLabel="tipoIdentificacion" appendTo="body">
-                </p-dropdown>
-                <small class="p-error block fade-in" *ngIf="this.tipoIdentificacion().invalid &&
-                                    this.tipoIdentificacion().touched">
-                    Tipo identificación es obligatorio
-                </small>
-            </div>
-            <div class="p-fluid col sm:col-12 md:col-3">
-                <label class="w-6rem align-self-center" style="text-align: right;">Número identificación</label>
-                <input type="text" class="p-inputtext" 
-                       formControlName="numeroIdentificacion"
-                       >
-            </div>
-            <div class="p-fluid col sm:col-12 md:col-3">
-                <label class="w-6rem align-self-center" style="text-align: right;">Primer nombre</label>
-                <input type="text" class="p-inputtext" 
-                       formControlName="primerNombre"
-                       
-                       >
-            </div>
-            <div class="p-fluid col sm:col-12 md:col-3">
-                <label class="w-6rem align-self-center" style="text-align: right;">Segundo nombre</label>
-                <input type="text" class="p-inputtext" 
-                       formControlName="segundoNombre"
-                       
-                       >
-            </div>
-            <div class="p-fluid col sm:col-12 md:col-3">
-                <label class="w-6rem align-self-center" style="text-align: right;">Primer apellido</label>
-                <input type="text" class="p-inputtext" 
-                       formControlName="primerApellido"
-                       
-                       >
-            </div>
-            <div class="p-fluid col sm:col-12 md:col-3">
-                <label class="w-6rem align-self-center" style="text-align: right;">Segundo apellido</label>
-                <input type="text" class="p-inputtext" 
-                       formControlName="segundoApellido"
-                       
-                       >
-            </div>
-        </form>
-
-        <div class="flex justify-content-start" style="width: 100%;">
-            <div class="m-1">
-                <button pButton pRipple icon="pi pi-search" class="p-button mr-2" label="Visualizar reporte"
-                    [disabled]="isLoading" (click)="visualizar()">
-                    <ng-container *ngIf="isLoading">
-                        <i class="pi pi-spin pi-spinner"></i>
-                    </ng-container>
-                </button>
-                <button pButton pRipple icon="pi pi-download" class="p-button" label="Descargar reporte"
-                    [disabled]="isLoading" (click)="descargar()">
-                    <ng-container *ngIf="isLoading">
-                        <i class="pi pi-spin pi-spinner"></i>
-                    </ng-container>
-                </button>
-            </div>
-        </div>
     </div>
 </div>
+
+<!--Filtros-->
+<div class="p-fluid p-formgrid grid">
+    <div class="field col-6 md:col-3">
+        <label>Nombres</label>
+        <input type="text" class="p-inputtext" 
+        [(ngModel)]="filtroDocenteDTO.nombre" 
+        placeholder="Ingrese nombres"
+        (ngModelChange)="inputsChange()">
+    </div>
+    <div class="field col-6 md:col-3">
+        <label>Código</label>
+        <input type="text" class="p-inputtext" 
+        [(ngModel)]="filtroDocenteDTO.codigo" 
+        placeholder="Ingrese código docente"
+        (ngModelChange)="inputsChange()">
+    </div>
+    <div class="field col-6 md:col-3">
+        <label>Identificación</label>
+        <input type="text" class="p-inputtext" 
+        [(ngModel)]="filtroDocenteDTO.numeroIdentificacion" 
+        placeholder="Ingrese número de identificación"
+        (ngModelChange)="inputsChange()">
+    </div>
+    <div class="field col-6 md:col-3">
+        <label>Estado</label>
+        <p-dropdown 
+            placeholder="Seleccione estado docente" 
+            [options]="listaEstados" 
+            [(ngModel)]="filtroDocenteDTO.estado"
+            [showClear]="true"
+            (ngModelChange)="onEstadoChange()">
+        </p-dropdown>
+    </div>
+</div>
+
+<!--Tabla-->
+<br>
+<div class="grid">
+    <div class="col-12">
+        <div class="grid" *ngIf="totalRecords!==undefined">
+            <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
+                <label class="large-label">Docentes consultados: {{totalRecords}}</label>
+            </div>
+        </div>        
+        <p-table #dt [value]="listaDocenteOutDTO" responsiveLayout="scroll" [rows]="10"
+            selectionMode="multiple" [rowHover]="true" dataKey="id" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Codigo</th>
+                    <th>Identificación</th>
+                    <th>Primer nombre</th>
+                    <th>Segundo nombre</th>
+                    <th>Primer apellido</th>
+                    <th>Segundo apellido</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-docenteOutDTO>
+                <tr>
+                    <td>{{docenteOutDTO.codigo}}</td>
+                    <td>{{docenteOutDTO.codigoTipoIdentificacion}} {{docenteOutDTO.numeroIdentificacion}}</td>
+                    <td>{{docenteOutDTO.primerNombre}}</td>
+                    <td>{{docenteOutDTO.segundoNombre}}</td>
+                    <td>{{docenteOutDTO.primerApellido}}</td>
+                    <td>{{docenteOutDTO.segundoApellido}}</td>
+                    <td>{{docenteOutDTO.estado | titlecase }}</td>
+                    <td>
+                        <div class="flex">            
+                            <button pButton pRipple type="button" icon="pi pi-calendar" class="p-button-rounded p-button-info p-button-outlined" pTooltip="Ver horario" tooltipPosition="top" (click)="abrirModalHorarioDocente(docenteOutDTO)"></button>  
+                            <button pButton pRipple type="button" icon="pi pi-download" 
+                                class="p-button-rounded p-button-info p-button-outlined" 
+                                pTooltip="Descargar horario" tooltipPosition="top"  
+                                (click)="DescargarHorarioDocente(docenteOutDTO)">
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="pagina" [rows]="registrosPorPagina" [totalRecords]="totalRecords"></p-paginator>   
+    </div>   
+</div>
+
+<app-horario-docente #horarioDocente></app-horario-docente>
