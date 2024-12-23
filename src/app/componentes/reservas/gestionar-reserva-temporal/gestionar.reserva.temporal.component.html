@@ -1,9 +1,127 @@
-<div class="grid">
-    <div class="col-12">
-        <h3>Gestionar reserva temporal</h3>
-        <p>Esta pantalla permite gestionar reservas ocasionales de espacios físicos para estudiantes o docentes.</p>
-        <hr>
-        <br>
-        <br>
+<div class="formulario-container">
+    <h2>FORMULARIO DE RESERVA ESPACIOS FÍSICOS TEMPORALES</h2>
+    <h4>Préstamo de Aulas y Auditorios Universitarios</h4>
+  
+    <!-- Datos del solicitante -->
+    <fieldset class="datos-solicitante">
+      <legend>Datos solicitante</legend>
+      <div class="grid">
+        <div class="col">
+          <label><b>Nombre completo: </b></label>
+          <span>{{ usuario?.primerNombre }} {{ usuario?.segundoNombre }} {{ usuario?.primerApellido }} {{ usuario?.segundoApellido }}</span>
+        </div>
+        <div class="col">
+          <label><b>Identificación: </b></label>
+          <span>{{ usuario?.tipoIdentificacion }} {{ usuario?.identificacion }}</span>
+        </div>
+        <div class="col">
+            <label><b>Correo electrónico: </b></label>
+            <span>{{ usuario?.correo }}</span>
+        </div>
+        <div class="col">
+          <label><b>Tipo de solicitante: </b></label>
+          <span>{{ usuario?.programa[0]?.rol }}</span>
+        </div>
+          
+        <div class="col">
+          <label><b>Fecha solicitud: </b></label>
+          <span>{{ fechaSolicitud | date }}</span>
+        </div>
+      </div>
+    </fieldset>
+  
+    <!-- Características del aula -->
+    <fieldset class="caracteristicas-aula">
+      <legend>Características Aula</legend>
+      <div class="grid">
+        <!-- Columna para Ubicación -->
+        <div class="col-6">
+          <label>Ubicación:</label>
+          <p-dropdown
+            [options]="lstUbicacionOutDTO"
+            optionLabel="nombre"
+            optionValue="idUbicacion"
+            placeholder="Seleccione ubicación"
+            [(ngModel)]="filtroEspacioFisicoDTO.listaIdUbicacion"
+            (onChange)="onUbicacionesChange()"
+            [showClear]="true">
+          </p-dropdown>
+        </div>
+    
+        <!-- Columna para Salón -->
+        <div class="col-6">
+          <label for="salon">Salón:</label>
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="filtro.salon"
+            placeholder="Ingrese el salón"
+            (ngModelChange)="onInputsChange()"
+          />
+        </div>
+      </div>
+    
+      <div class="grid mt-2">
+        <!-- Fecha de uso -->
+        <div class="col-6">
+          <label>Fecha uso:</label>
+          <p-calendar [(ngModel)]="fechaUso" (onSelect)="onFechaUsoChange()"></p-calendar>
+        </div>
+    
+        <!-- Hora Inicio y Hora Fin -->
+        <div class="col-6">
+          <div class="field-horizontal">
+            <label for="horaInicio">Hora Inicio:</label>
+            <input
+              type="time"
+              class="form-control"
+              [(ngModel)]="filtro.horaInicio"
+              (ngModelChange)="onInputsChange()"
+            />
+          </div>
+          <div class="field-horizontal mt-2">
+            <label for="horaFin">Hora Fin:</label>
+            <input
+              type="time"
+              class="form-control"
+              [(ngModel)]="filtro.horaFin"
+              (ngModelChange)="onInputsChange()"
+            />
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    
+  
+    <!-- Espacios físicos -->
+    <fieldset class="espacios-fisicos">
+      <legend>Espacios Físicos Disponibles</legend>
+      <p-pickList
+        [source]="espaciosDisponibles"
+        [target]="espaciosReservados"
+        sourceHeader="Espacios disponibles"
+        targetHeader="Espacios reservados"
+        [sourceStyle]="{ height: '200px' }"
+        [targetStyle]="{ height: '200px' }"
+        [dragdrop]="true"
+        [showSourceControls]="false"
+        [showTargetControls]="false">
+      >
+        <ng-template let-espacio pTemplate="item">
+          <div>{{ espacio.label }}</div>
+        </ng-template>
+      </p-pickList>
+    </fieldset>
+  
+    <!-- Justificación de uso -->
+    <fieldset class="justificacion">
+      <legend>Justificación de uso</legend>
+      <textarea [(ngModel)]="justificacion" rows="3" placeholder="Describa la justificación de uso"></textarea>
+    </fieldset>
+  
+    <!-- Botón de reservar -->
+    <div class="form-buttons">
+      <button pButton label="Reservar" icon="pi pi-check" (click)="reservar()"></button>
     </div>
-</div>
+  </div>
+  

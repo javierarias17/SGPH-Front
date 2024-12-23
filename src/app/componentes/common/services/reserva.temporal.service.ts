@@ -1,0 +1,82 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReservaTemporalService {
+
+  private urlReservaTemporal: string = `${environment.url}AdministrarReservaTemporal`;
+
+  constructor(private http: HttpClient) {}
+
+  /**
+   * Método para cargar el formulario con datos del usuario.
+   * 
+   * @param username Nombre de usuario.
+   * @returns Información del formulario de reserva.
+   */
+  public cargarFormulario(username: string): Observable<any> {
+    const url = `${this.urlReservaTemporal}/formulario`;
+    const params = new HttpParams().set('username', username);
+    return this.http.get<any>(url, { params });
+  }
+
+  /**
+   * Método para consultar las franjas libres disponibles.
+   * 
+   * @param filtro Objeto con los filtros de búsqueda.
+   * @returns Lista de franjas libres.
+   */
+  public consultarFranjasLibres(filtro: any): Observable<any> {
+    const url = `${this.urlReservaTemporal}/franjasLibresReserva`;
+
+    // Convertir el objeto filtro en parámetros de URL
+    let params = new HttpParams();
+    if (filtro.idEspacioFisico) {
+      params = params.set('idEspacioFisico', filtro.idEspacioFisico);
+    }
+    if (filtro.diaSemana) {
+      params = params.set('diaSemana', filtro.diaSemana);
+    }
+    if (filtro.horaInicio) {
+      params = params.set('horaInicio', filtro.horaInicio);
+    }
+    if (filtro.horaFin) {
+      params = params.set('horaFin', filtro.horaFin);
+    }
+    if (filtro.salon) {
+      params = params.set('salon', filtro.salon);
+    }
+    if (filtro.ubicacion && filtro.ubicacion.length > 0) {
+      params = params.set('ubicacion', filtro.ubicacion.join(','));
+    }
+    params = params.set('pagina', filtro.pagina || '0');
+    params = params.set('registrosPorPagina', filtro.registrosPorPagina || '10');
+
+    return this.http.get<any>(url, { params });
+  }
+
+  /**
+   * Método para realizar una reserva temporal.
+   * 
+   * @param reserva Objeto con los datos de la reserva.
+   * @returns Confirmación de la reserva.
+   */
+  public guardarReserva(reserva: any): Observable<any> {
+    const url = `${this.urlReservaTemporal}/guardarReserva`;
+    return this.http.post<any>(url, reserva);
+  }
+
+  /**
+   * Método para consultar todas las reservas temporales.
+   * 
+   * @returns Lista de reservas temporales.
+   */
+  public consultarReservas(): Observable<any[]> {
+    const url = `${this.urlReservaTemporal}/consultarReservas`;
+    return this.http.get<any[]>(url);
+  }
+}

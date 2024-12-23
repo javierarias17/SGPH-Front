@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { AuthGuardGuard } from './auth-guard.guard';
+import { GestionarReservaTemporalComponent } from './componentes/reservas/gestionar-reserva-temporal/gestionar.reserva.temporal.component';
 
 @NgModule({
     imports: [
@@ -27,6 +28,7 @@ import { AuthGuardGuard } from './auth-guard.guard';
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
+            { path: 'autho/ReservaTemporal',  component: GestionarReservaTemporalComponent },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: 'auth' },
         ], { useHash: false })
