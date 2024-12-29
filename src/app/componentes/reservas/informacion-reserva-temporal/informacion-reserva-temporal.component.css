@@ -1,0 +1,32 @@
+.contenedor-reserva {
+  text-align: center;
+  margin: 50px auto;
+  font-family: Arial, sans-serif;
+  width: 80%;
+  max-width: 600px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 20px;
+  margin-top: -10px;
+}
+
+.nota {
+  font-size: 14px;
+  font-style: italic;
+  margin: 20px 0;
+}
+
+.mensaje-confirmacion {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  font-size: 16px;
+  line-height: 1.5;
+}

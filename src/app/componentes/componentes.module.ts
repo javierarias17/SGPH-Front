@@ -49,8 +49,8 @@ import { PersonaService } from './common/services/persona.service';
 import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte-espacio-fisico/generar.reporte.espacio.fisico.component';
 import { PlanificacionManualService } from './common/services/planificacion.manual.service';
 import { GenerarReporteFranjasLibresComponent } from './reportes/generar-reporte-franjas-libres/generar.reporte.franjas.libres.component';
-import { ConfirmacionReservaComponent } from './reservas/confirmacion-reserva-temporal/confirmacion-reserva/confirmacion-reserva.component';
-import { ConfirmacionReservaTemporalComponent } from './reservas/confirmacion-reserva-temporal/confirmacion-reserva-temporal/confirmacion-reserva-temporal.component';
+import { InformacionReservaTemporalComponent } from './reservas/informacion-reserva-temporal/informacion-reserva-temporal.component';
+import { SeguimientoReservaTemporalComponent } from './reservas/seguimiento-reserva-temporal/seguimiento.reserva.temporal/seguimiento.reserva.temporal.component';
 
 @NgModule({
 	declarations: [
@@ -82,8 +82,8 @@ import { ConfirmacionReservaTemporalComponent } from './reservas/confirmacion-re
   		InformacionDetalleCargueComponent,
 		GenerarReporteEspacioFisicoComponent,
 		GenerarReporteFranjasLibresComponent,
-  ConfirmacionReservaComponent,
-  ConfirmacionReservaTemporalComponent,
+  		InformacionReservaTemporalComponent,
+    SeguimientoReservaTemporalComponent
 	],
 	imports: [
 		CardModule,

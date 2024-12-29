@@ -100,7 +100,7 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Reservas',
                 items: [
-                    { label: 'Gestionar reserva temporal', icon: 'pi pi-fw pi-id-card', routerLink: ['reservas/gestionar-reserva-temporal'], visible: authorities.includes('ROLE_PRESTAMISTA') },
+                    { label: 'Gestionar reserva temporal', icon: 'pi pi-fw pi-id-card', routerLink: ['reservas/seguimiento-reserva-temporal'], visible: authorities.includes('ROLE_PRESTAMISTA') },
                 ],
                 visible: authorities.includes('ROLE_PRESTAMISTA') 
             },        

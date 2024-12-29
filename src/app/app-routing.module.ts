@@ -4,6 +4,8 @@ import { NotfoundComponent } from './demo/components/notfound/notfound.component
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { AuthGuardGuard } from './auth-guard.guard';
 import { GestionarReservaTemporalComponent } from './componentes/reservas/gestionar-reserva-temporal/gestionar.reserva.temporal.component';
+import { LoginStudentComponent } from './demo/components/auth/login-student/login.student/login.student.component';
+import { InformacionReservaTemporalComponent } from './componentes/reservas/informacion-reserva-temporal/informacion-reserva-temporal.component';
 
 @NgModule({
     imports: [
@@ -27,8 +29,10 @@ import { GestionarReservaTemporalComponent } from './componentes/reservas/gestio
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
+            { path: 'login-student', component: LoginStudentComponent },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
-            { path: 'autho/ReservaTemporal',  component: GestionarReservaTemporalComponent },
+            { path: 'login-student/ReservaTemporal',  component: GestionarReservaTemporalComponent },
+            { path: 'reserva/InformacionReserva',  component: InformacionReservaTemporalComponent },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: 'auth' },
         ], { useHash: false })

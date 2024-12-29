@@ -7,6 +7,7 @@ import { HorarioService } from '../../common/services/horario.service';
 import { SharedService } from 'src/app/shared/service/shared.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { EspacioFisicoService } from '../../common/services/espacio.fisico.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gestionar-reserva-temporal',
@@ -26,6 +27,7 @@ export class GestionarReservaTemporalComponent {
   horaInicio: Date | null = null;
   horaFin: Date | null = null;
   justificacion: string = '';
+  messages: any[];
   
   public filtro: any = {
     idEspacioFiso: null,
@@ -48,7 +50,8 @@ export class GestionarReservaTemporalComponent {
     private horarioService: HorarioService,
     private espacioFisicoService: EspacioFisicoService,
     private sharedService: SharedService, 
-    private messageService: ShowMessageService
+    private messageService: ShowMessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -77,6 +80,22 @@ export class GestionarReservaTemporalComponent {
   }
 
   buscarFranja(): void {
+
+    // 1. Definir el arreglo de nombres de días (índice 0 = DOMINGO, 1 = LUNES, etc.)
+    const dayNames = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
+  
+    // Función auxiliar para formatear la fecha a 'yyyy-MM-dd'
+    const formatDateYYYYMMDD = (dateValue: Date | null): string | null => {
+      if (!dateValue) {
+        return null;
+      }
+      const year = dateValue.getFullYear();
+      const month = (dateValue.getMonth() + 1).toString().padStart(2, '0');
+      const day = dateValue.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`; // '2024-12-27'
+    };
+  
+    // Función para formatear horas (HH:mm:ss)
     const formatTime = (timeValue: Date | string): string | null => {
       if (!timeValue) return null;
       if (typeof timeValue === 'string') {
@@ -91,31 +110,39 @@ export class GestionarReservaTemporalComponent {
         const minutes = timeValue.getMinutes().toString().padStart(2, '0');
         return `${hours}:${minutes}:00`;
       }
-    }; 
-
-    // Función para convertir el día de la semana a texto
-    const getDayName = (date: Date): string => {
-      const days = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
-      return days[date.getDay()];
     };
-
-    const REGISTROS_POR_PAGINA_SIN_PAGINACION = 300;
-    const diaSeleccionado = this.fechaUso ? getDayName(this.fechaUso) : null;
+  
+    // 2. Si `this.filtro.fechaReserva` es un Date, podemos extraer el día:
+    let diaSeleccionado = null;
+    if (this.filtro.fechaReserva instanceof Date) {
+      // getDay() retorna un número (0=Domingo, 6=Sábado)
+      const dayIndex = this.filtro.fechaReserva.getDay();
+      diaSeleccionado = dayNames[dayIndex]; 
+      console.log("DIA SELECCIONADO", diaSeleccionado);
+    }
+  
+    // Formateamos las fechas
+    const fechaUsoFormateada = formatDateYYYYMMDD(this.fechaUso);
+    const fechaReservaFormateada = formatDateYYYYMMDD(this.filtro.fechaReserva);
+  
+    // 3. Construir el filtro y asignar el día
     const filtro = {
-      pagina: 0, 
-      registrosPorPagina: REGISTROS_POR_PAGINA_SIN_PAGINACION,
-      fechaUso: this.fechaUso,
-      dia: diaSeleccionado, 
+      pagina: 0,
+      registrosPorPagina: 300,
+      fechaUso: fechaUsoFormateada,
+      fechaReserva: fechaReservaFormateada,
       horaInicio: formatTime(this.filtro.horaInicio),
       horaFin: formatTime(this.filtro.horaFin),
       idUbicacion: this.filtro.idUbicacion,
+      dia: diaSeleccionado, 
       salon: this.filtro.salon?.trim() || '',
     };
-
-    this.horarioService.consultarFranjasLibres(filtro).subscribe({
+  
+    // 4. Llamar al servicio con el filtro (que ahora lleva el día)
+    this.reservaService.consultarFranjasLibres(filtro).subscribe({
       next: (data) => {
         this.espaciosDisponibles = data.content.map((franja: any) => ({
-          label: `${franja.salon} - ${franja.dia} (${franja.horaInicio} - ${franja.horaFin})`,
+          label: `${franja.salon} (${franja.horaInicio} - ${franja.horaFin})`,
           value: franja.idEspacioFisico,
         }));
         console.log("ESPACIOSDISPONI", this.espaciosDisponibles);
@@ -125,7 +152,7 @@ export class GestionarReservaTemporalComponent {
         this.messageService.showMessage('error', 'No se pudieron cargar las franjas libres');
       },
     });
-  }
+  }  
 
   reservar(): void {
     console.log("ENTRA")
@@ -134,38 +161,46 @@ export class GestionarReservaTemporalComponent {
       return;
     }
     console.log("ENTRA2")
-    if (!this.fechaUso || !this.filtro.horaInicio || !this.filtro.horaFin) {
-      this.messageService.showMessage('error', 'Debe completar la fecha, hora de inicio y hora de fin.');
-      return;
-    }
-    console.log("ENTRA3")
-    // Construir el objeto para enviar al backend
+
+    const dayNames = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
+    let diaSeleccionado = null;
+    if (this.filtro.fechaReserva instanceof Date) {
+      // getDay() retorna un número (0=Domingo, 6=Sábado)
+      const dayIndex = this.filtro.fechaReserva.getDay();
+      diaSeleccionado = dayNames[dayIndex]; 
+      console.log("DIA SELECCIONADO", diaSeleccionado);
+    }    
     const reserva = {
       idEspacioFisico: this.espaciosReservados.length > 0 ? this.espaciosReservados[0].value : null,
       salon: this.filtro.salon,
       idUbicacion: this.filtroEspacioFisicoDTO.listaIdUbicacion,
-      usuario: this.usuario.usuario, // Campo del usuario cargado
-      correo: this.usuario.correo,   // Campo del usuario cargado
+      usuario: this.usuario.usuario, 
+      correo: this.usuario.correo,   
       tipoIdentificacion: this.usuario.tipoIdentificacion,
       identificacion: this.usuario.identificacion,
-      tipoSolicitante: this.usuario.programa[0]?.rol, // Tipo de solicitante
-      fechaReserva: this.fechaUso.toISOString().split('T')[0], // Convertir a formato YYYY-MM-DD
-      estado: 'RESERVA_PENDIENTE', // Estado inicial de la reserva
-      observaciones: this.justificacion, // Justificación del uso
+      tipoSolicitante: this.usuario.programa[0]?.rol,
+      fechaReserva: this.fechaUso ? this.fechaUso.toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+      estado: 'RESERVA_PENDIENTE', 
+      observaciones: this.justificacion,
       horaInicio: this.filtro.horaInicio,
       horaFin: this.filtro.horaFin,
-      dia: this.getDayName(this.fechaUso), // Día de la semana en texto
+      dia: diaSeleccionado, 
     };
-    console.log("ENTRA4")
+    /*if (!this.fechaUso || !this.filtro.horaInicio || !this.filtro.horaFin) {
+      this.messageService.showMessage('error', 'Debe completar la fecha, hora de inicio y hora de fin.');
+      return;
+    }*/
     // Llamar al servicio
     this.loading = true;
+    console.log("PARAMETRO RESERVA", reserva);
     this.reservaService.guardarReserva(reserva).subscribe({
       
       next: (response) => {
         console.log("ENTRA5");
         this.messageService.showMessage('success', 'Reserva realizada exitosamente.');
+        this.router.navigate(['/reserva/InformacionReserva'])
         console.log('Respuesta del backend:', response);
-        this.resetFormulario(); // Opcional: Reiniciar el formulario tras la reserva
+        
       },
       error: (error) => {
         console.error('Error al realizar la reserva:', error);
@@ -175,11 +210,6 @@ export class GestionarReservaTemporalComponent {
         this.loading = false;
       },
     });
-  }
-  
-  private getDayName(date: Date): string {
-    const days = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
-    return days[date.getDay()];
   }
   
   private resetFormulario(): void {

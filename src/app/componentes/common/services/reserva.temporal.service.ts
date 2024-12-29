@@ -31,16 +31,14 @@ export class ReservaTemporalService {
    * @returns Lista de franjas libres.
    */
   public consultarFranjasLibres(filtro: any): Observable<any> {
-    const url = `${this.urlReservaTemporal}/franjasLibresReserva`;
+    const url = `${this.urlReservaTemporal}/consultarFranjasLibresReservas`;
 
     // Convertir el objeto filtro en parámetros de URL
     let params = new HttpParams();
     if (filtro.idEspacioFisico) {
       params = params.set('idEspacioFisico', filtro.idEspacioFisico);
     }
-    if (filtro.diaSemana) {
-      params = params.set('diaSemana', filtro.diaSemana);
-    }
+    if (filtro.dia) params = params.set('diaSemana', filtro.dia);
     if (filtro.horaInicio) {
       params = params.set('horaInicio', filtro.horaInicio);
     }
@@ -50,8 +48,15 @@ export class ReservaTemporalService {
     if (filtro.salon) {
       params = params.set('salon', filtro.salon);
     }
-    if (filtro.ubicacion && filtro.ubicacion.length > 0) {
-      params = params.set('ubicacion', filtro.ubicacion.join(','));
+    if (filtro.idUbicacion && Array.isArray(filtro.idUbicacion)) {
+      filtro.idUbicacion.forEach((id: number) => {
+        params = params.append('ubicacion', id.toString());
+      });
+    } else if (filtro.idUbicacion) {
+      params = params.set('ubicacion', filtro.idUbicacion.toString());
+    }
+    if(filtro.fechaReserva){
+      params = params.set('fechaReserva', filtro.fechaReserva)
     }
     params = params.set('pagina', filtro.pagina || '0');
     params = params.set('registrosPorPagina', filtro.registrosPorPagina || '10');

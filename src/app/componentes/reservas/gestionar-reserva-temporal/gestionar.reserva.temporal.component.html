@@ -1,3 +1,4 @@
+<p-messages [(value)]="messages" [enableService]="true" [closable]="true"></p-messages>
 <div class="formulario-container">
     <h2>FORMULARIO DE RESERVA ESPACIOS FÍSICOS TEMPORALES</h2>
     <h4>Préstamo de Aulas y Auditorios Universitarios</h4>
@@ -65,7 +66,7 @@
         <!-- Fecha de uso -->
         <div class="col-6">
           <label>Fecha uso:</label>
-          <p-calendar [(ngModel)]="fechaUso" (onSelect)="onFechaUsoChange()"></p-calendar>
+          <p-calendar [(ngModel)]="filtro.fechaReserva" (onSelect)="onFechaUsoChange()"></p-calendar>
         </div>
     
         <!-- Hora Inicio y Hora Fin -->
