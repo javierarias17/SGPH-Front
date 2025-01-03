@@ -17,6 +17,7 @@ import { GenerarReporteDocenteComponent } from './reportes/generar-reporte-docen
 import { GenerarReporteEspacioFisicoComponent } from './reportes/generar-reporte-espacio-fisico/generar.reporte.espacio.fisico.component';
 import { GenerarReporteFranjasLibresComponent } from './reportes/generar-reporte-franjas-libres/generar.reporte.franjas.libres.component';
 import { InformacionReservaTemporalComponent } from './reservas/informacion-reserva-temporal/informacion-reserva-temporal.component';
+import { SeguimientoReservaTemporalComponent } from './reservas/seguimiento-reserva-temporal/seguimiento.reserva.temporal/seguimiento.reserva.temporal.component';
 
 
 const routes: Routes=[
@@ -37,6 +38,7 @@ const routes: Routes=[
     { path: 'gestionar-usuario', component: GestionarUsuarioComponent},
     { path: 'generar-reporte-franjas-libres', component: GenerarReporteFranjasLibresComponent},
     { path: 'informacion-reserva', component: InformacionReservaTemporalComponent },
+    { path: 'seguimiento-reserva', component: SeguimientoReservaTemporalComponent },
     
     {
       path: 'gestionar-periodo-academico',

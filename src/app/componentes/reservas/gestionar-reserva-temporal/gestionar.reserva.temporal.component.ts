@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReservaTemporalService } from '../../common/services/reserva.temporal.service';
 import { FiltroEspacioFisicoDTO } from '../../datos/gestionar-espacio-fisico/model/in/filtro.espacio.fisico.dto';
 import { UbicacionOutDTO } from '../../datos/gestionar-espacio-fisico/model/out/ubicacion.out.dto';
@@ -61,7 +61,7 @@ export class GestionarReservaTemporalComponent {
   }
 
   cargarUsuario(): void {
-    this.reservaService.cargarFormulario('andresfag').subscribe((data) => {
+    this.reservaService.cargarFormulario('anaescobar').subscribe((data) => {
       this.usuario = data.usuario;
     });
   }
@@ -112,14 +112,7 @@ export class GestionarReservaTemporalComponent {
       }
     };
   
-    // 2. Si `this.filtro.fechaReserva` es un Date, podemos extraer el día:
-    let diaSeleccionado = null;
-    if (this.filtro.fechaReserva instanceof Date) {
-      // getDay() retorna un número (0=Domingo, 6=Sábado)
-      const dayIndex = this.filtro.fechaReserva.getDay();
-      diaSeleccionado = dayNames[dayIndex]; 
-      console.log("DIA SELECCIONADO", diaSeleccionado);
-    }
+    const diaSeleccionado = this.obtenerDiaDeLaSemana(this.fechaUso);
   
     // Formateamos las fechas
     const fechaUsoFormateada = formatDateYYYYMMDD(this.fechaUso);
@@ -138,6 +131,7 @@ export class GestionarReservaTemporalComponent {
       salon: this.filtro.salon?.trim() || '',
     };
   
+    console.log("BUSCAR FRANJAS DIA", filtro)
     // 4. Llamar al servicio con el filtro (que ahora lleva el día)
     this.reservaService.consultarFranjasLibres(filtro).subscribe({
       next: (data) => {
@@ -186,6 +180,8 @@ export class GestionarReservaTemporalComponent {
       horaFin: this.filtro.horaFin,
       dia: diaSeleccionado, 
     };
+
+    console.log("fecha uso", reserva);
     /*if (!this.fechaUso || !this.filtro.horaInicio || !this.filtro.horaFin) {
       this.messageService.showMessage('error', 'Debe completar la fecha, hora de inicio y hora de fin.');
       return;
@@ -230,4 +226,11 @@ export class GestionarReservaTemporalComponent {
     console.log("Fecha seleccionada:", this.fechaUso);
     this.buscarFranja(); // Actualizar la búsqueda cuando cambie la fecha
   }
+
+  obtenerDiaDeLaSemana(fecha) {
+    const diasSemana = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
+    const date = new Date(fecha);
+    return diasSemana[date.getDay()];
+  }
+  
 }

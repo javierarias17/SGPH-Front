@@ -1,1 +1,175 @@
-<p>seguimiento.reserva.temporal works!</p>
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <h3>Gestionar reserva de espacio físico temporal</h3>
+    <p>Esta pantalla permite aprobar reservas ocasionales para usuarios activos.</p>
+    <hr />
+  </div>
+</div>
+
+<!-- FILTROS -->
+<div class="grid mb-3">
+  <div class="col-12 md:col-4">
+    <label for="tipoId">Tipo identificación:</label>
+    <p-dropdown
+      [options]="['Cédula', 'Pasaporte', 'Tarjeta de identidad']"
+      [(ngModel)]="tipoIdentificacion"
+      placeholder="Seleccione tipo de identificación"
+      (onChange)="filtrarReservas()"
+      id="tipoId"
+    ></p-dropdown>
+  </div>
+  <div class="col-12 md:col-4">
+    <label for="numeroId">Número identificación:</label>
+    <input
+        id="numeroId"
+        pInputText
+        type="text"
+        [(ngModel)]="identificacion"
+        (keyup)="filtrarReservas()"
+        placeholder="Ingrese número de identificación"
+        />
+  </div>
+  <div class="col-12 md:col-4">
+    <label for="tipoId">Estado reserva:</label>
+    <p-dropdown
+      [options]="estadosReserva"
+      [(ngModel)]="estado"
+      placeholder="Seleccione tipo de identificación"
+      (onChange)="filtrarReservas()"
+      id="tipoId"
+    ></p-dropdown>
+  </div>
+</div>
+<div class="grid" *ngIf="totalRecords!==undefined">
+  <div class="col-6" *ngIf="totalRecords!==undefined" style="padding: 2rem;">          
+      <label class="large-label">Reservas consultadas: {{totalRecords}}</label>
+  </div>
+  <div [class]="totalRecords!==undefined ? 'col-6': 'col-12'">
+      <p-toolbar styleClass="mb-1" [style]="{'background': 'none', 'border': 'none', 'margin': '0', 'padding':'0'}">
+          <ng-template pTemplate="left">
+          </ng-template>
+          <ng-template pTemplate="right">
+              <span style="margin-right: 10px;"></span>
+              <div class="my-0">
+                  <button pButton pRipple label="Crear reserva" icon="pi pi-plus" class="p-button-success mr-2" (click)="registrarReserva()"></button>
+              </div>
+          </ng-template>
+      </p-toolbar>  
+  </div>
+</div>   
+<!-- TABLA DE RESULTADOS -->
+<p-table
+  [value]="reservas"
+  [paginator]="true"
+  [rows]="rows"
+  [totalRecords]="totalRecords"
+  [lazy]="true"
+  [loading]="loading"
+  responsiveLayout="scroll"
+  styleClass="p-datatable-gridlines"
+  (onLazyLoad)="cambiarPagina($event)"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Tipo Identificación</th>
+      <th>Número de Identificación</th>
+      <th>Tipo Solicitante</th>
+      <th>Aula</th>      
+      <th>Día</th>
+      <th>Hora Inicio</th>
+      <th>Hora Fin</th>
+      <th>Estado Reserva</th>
+      <th>Opciones</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-reserva>
+    <tr>
+      <td>{{ reserva.tipoIdentificacion }}</td>
+      <td>{{ reserva.identificacion }}</td>
+      <td>{{ reserva.tipoSolicitante }}</td>
+      <td>{{ reserva.salon }}</td>      
+      <td>{{ reserva.fechaReserva | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ reserva.horaInicio }}</td>
+      <td>{{ reserva.horaFin }}</td>
+      <td>{{ reserva.estado }}</td>
+      <td>
+        <button
+          pButton
+          icon="pi pi-search"
+          class="p-button-rounded p-button-info mr-2"
+          pTooltip="Ver reserva"
+          (click)="verInformacionReserva(reserva)"
+        ></button>
+        <button
+        *ngIf="reserva.estado === 'PENDIENTE'"
+          pButton
+          icon="pi pi-check"
+          class="p-button-rounded p-button-success mr-2"
+          pTooltip="Aprobar"
+          (click)="abrirModal(reserva, 'aprobar')"
+        ></button>
+        <button
+        *ngIf="reserva.estado === 'PENDIENTE'"
+          pButton
+          icon="pi pi-times"
+          class="p-button-rounded p-button-danger"
+          pTooltip="Rechazar"
+          (click)="abrirModal(reserva, 'rechazar')"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="9" class="text-center">No existen reservas temporales</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog 
+  header="{{ accion === 'aprobar' ? 'Motivo de Aprobación' : 'Motivo de Rechazo' }}" 
+  [(visible)]="mostrarModalMotivo" 
+  [modal]="true" 
+  [responsive]="true" >
+  
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="motivo">
+        {{ accion === 'aprobar' ? 'Ingrese motivo de aprobación:' : 'Ingrese motivo de rechazo:' }}
+      </label>
+      <textarea 
+        id="motivo" 
+        rows="4" 
+        [(ngModel)]="motivo" 
+        placeholder="Escriba el motivo aquí..." 
+        style="width: 100%;"></textarea>
+    </div>
+  </div>
+
+  <p-footer>
+    <button 
+      pButton 
+      label="Cancelar" 
+      icon="pi pi-times" 
+      class="p-button-text" 
+      (click)="cerrarModal()"></button>
+    <button 
+      pButton 
+      label="Enviar" 
+      icon="pi pi-check" 
+      class="p-button-primary" 
+      (click)="enviarMotivo()"></button>
+  </p-footer>
+</p-dialog>
+
+<app-detalles-reserva-temporal 
+  [reserva]="reservaSeleccionada" 
+  [(mostrarDialogo)]="mostrarDialogo">
+</app-detalles-reserva-temporal>
+
+<app-registrar-reserva-planificador 
+  [(mostrarDialogoReserva)]="mostrarDialogoReserva">
+</app-registrar-reserva-planificador>

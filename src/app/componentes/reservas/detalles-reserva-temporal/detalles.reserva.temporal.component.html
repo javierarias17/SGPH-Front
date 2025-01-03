@@ -1,0 +1,55 @@
+<p-dialog 
+  header="Información detalle Reserva"
+  [(visible)]="mostrarDialogo" 
+  [modal]="true" 
+  [responsive]="true"
+  [style]="{ width: '50vw' }"
+  [closeOnEscape]="false"
+  [dismissableMask]="true"
+>
+  <div *ngIf="reserva" class="modal-content">
+    <h4 class="modal-header">DATOS SOLICITANTE</h4>
+    <div class="modal-row">
+      <div class="modal-label"><b>Tipo solicitante:</b></div>
+      <div class="modal-value">{{ reserva.tipoSolicitante || 'N/A' }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label"><b>Nombre completo:</b></div>
+      <div class="modal-value">{{ usuario?.primerNombre }} {{ usuario?.segundoNombre }} {{ usuario?.primerApellido }} {{ usuario?.segundoApellido }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label"><b>Tipo identificación:</b></div>
+      <div class="modal-value">{{ reserva.tipoIdentificacion || 'N/A' }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label"><b>Número identificación:</b></div>
+      <div class="modal-value">{{ reserva.identificacion || 'N/A' }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label"><b>Ubicación:</b></div>
+      <div class="modal-value">{{ ubicacion || 'N/A' }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label"><b>Aula:</b></div>
+      <div class="modal-value">{{ reserva.salon || 'N/A' }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label"><b>Fecha de reserva:</b></div>
+      <div class="modal-value">{{ reserva.fechaReserva | date: 'dd/MM/yyyy' }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label"><b>Justificación de uso:</b></div>
+      <div class="modal-value">{{ reserva.observaciones || 'N/A' }}</div>
+    </div>
+  </div>
+
+  <p-footer>
+    <button 
+      pButton 
+      label="Cerrar" 
+      icon="pi pi-times" 
+      class="p-button-outlined" 
+      (click)="cerrarDialogo()">
+    </button>
+  </p-footer>
+</p-dialog>

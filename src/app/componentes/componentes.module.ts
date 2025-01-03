@@ -51,6 +51,8 @@ import { PlanificacionManualService } from './common/services/planificacion.manu
 import { GenerarReporteFranjasLibresComponent } from './reportes/generar-reporte-franjas-libres/generar.reporte.franjas.libres.component';
 import { InformacionReservaTemporalComponent } from './reservas/informacion-reserva-temporal/informacion-reserva-temporal.component';
 import { SeguimientoReservaTemporalComponent } from './reservas/seguimiento-reserva-temporal/seguimiento.reserva.temporal/seguimiento.reserva.temporal.component';
+import { DetallesReservaTemporalComponent } from './reservas/detalles-reserva-temporal/detalles.reserva.temporal.component';
+import { RegistrarReservaPlanificadorComponent } from './reservas/registrar-reserva-planificador/registrar.reserva.planificador.component';
 
 @NgModule({
 	declarations: [
@@ -83,7 +85,9 @@ import { SeguimientoReservaTemporalComponent } from './reservas/seguimiento-rese
 		GenerarReporteEspacioFisicoComponent,
 		GenerarReporteFranjasLibresComponent,
   		InformacionReservaTemporalComponent,
-    SeguimientoReservaTemporalComponent
+    	SeguimientoReservaTemporalComponent,
+		DetallesReservaTemporalComponent,
+		RegistrarReservaPlanificadorComponent,
 	],
 	imports: [
 		CardModule,

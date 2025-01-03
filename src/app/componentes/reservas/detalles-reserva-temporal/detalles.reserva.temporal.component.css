@@ -1,0 +1,32 @@
+.modal-content {
+    padding: 1rem;
+  }
+  
+  .modal-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #444;
+  }
+  
+  .modal-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .modal-label {
+    flex: 0 0 40%;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .modal-value {
+    flex: 1;
+    color: #666;
+  }
+  
+  p-footer button {
+    margin-top: 1rem;
+  }
+  

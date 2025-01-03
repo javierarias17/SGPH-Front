@@ -80,8 +80,41 @@ export class ReservaTemporalService {
    * 
    * @returns Lista de reservas temporales.
    */
-  public consultarReservas(): Observable<any[]> {
+  public consultarReservas(params: any): Observable<any> {
     const url = `${this.urlReservaTemporal}/consultarReservas`;
-    return this.http.get<any[]>(url);
+    return this.http.get<any>(url, { params });
   }
+  
+  /**
+   * Método para aprobar la reserva temporal.
+   * 
+   * @returns reserva temporal actualizada.
+   */
+  public aprobarReserva(reservaId: number, motivo: string): Observable<any> {
+    if (!reservaId || !motivo) {
+      throw new Error('Los parámetros reservaId y motivo son obligatorios');
+    }
+  
+    const url = `${this.urlReservaTemporal}/aprobarReserva`;
+    const params = new HttpParams()
+      .set('reservaId', reservaId.toString())
+      .set('motivo', motivo);
+  
+    return this.http.post<any>(url, {}, { params });
+  }
+  
+  
+  /**
+   * Método para rechazar la reserva temporal.
+   * 
+   * @returns reserva temporal actualizada.
+   */
+  public rechazarReserva(reservaId: number, motivo: string): Observable<any> {
+    const url = `${this.urlReservaTemporal}/rechazarReserva`;
+    const params = new HttpParams()
+      .set('reservaId', reservaId.toString())
+      .set('motivo', motivo);
+    return this.http.post<any>(url, null, { params });
+  }
+  
 }
