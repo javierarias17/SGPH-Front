@@ -42,13 +42,20 @@
             [options]="lstUbicacionOutDTO"
             optionLabel="nombre"
             optionValue="idUbicacion"
-            placeholder="Seleccione ubicación"
+            placeholder="FACULTAD DE INGENIERÍA ELECTRÓNICA Y TELECOMUNICACIONES"
             [(ngModel)]="filtroEspacioFisicoDTO.listaIdUbicacion"
             (onChange)="onUbicacionesChange()"
             [showClear]="true">
           </p-dropdown>
         </div>
-    
+        <!-- Fecha de uso -->
+        <div class="col-6">
+          <label>Fecha uso:</label>
+          <p-calendar [(ngModel)]="fechaUso" (onSelect)="onFechaUsoChange()"></p-calendar>
+        </div>
+        <div class="col-12" *ngIf="!validarFechaUso() && fechaUso">
+          <small class="p-error">La fecha de reserva debe ser mayor o igual a la fecha actual.</small>
+        </div>
         <!-- Columna para Salón -->
         <div class="col-6">
           <label for="salon">Salón:</label>
@@ -62,13 +69,7 @@
         </div>
       </div>
     
-      <div class="grid mt-2">
-        <!-- Fecha de uso -->
-        <div class="col-6">
-          <label>Fecha uso:</label>
-          <p-calendar [(ngModel)]="fechaUso" (onSelect)="onFechaUsoChange()"></p-calendar>
-        </div>
-    
+      <div class="grid mt-2">    
         <!-- Hora Inicio y Hora Fin -->
         <div class="col-6">
           <div class="field-horizontal">
@@ -91,6 +92,9 @@
           </div>
         </div>
       </div>
+      <div class="col-12" *ngIf="!validarHorarios() && filtro.horaInicio && filtro.horaFin">
+        <small class="p-error">La hora fin debe ser mayor a la hora inicio.</small>
+      </div>
     </fieldset>
     
   
@@ -106,7 +110,9 @@
         [targetStyle]="{ height: '200px' }"
         [dragdrop]="true"
         [showSourceControls]="false"
-        [showTargetControls]="false">
+        [showTargetControls]="false"
+        (onMoveToTarget)="manejarMovimiento($event)"
+        (onMoveToSource)="manejarMovimiento($event)">
       >
         <ng-template let-espacio pTemplate="item">
           <div>{{ espacio.label }}</div>
@@ -125,4 +131,4 @@
       <button pButton label="Reservar" icon="pi pi-check" (click)="reservar()"></button>
     </div>
   </div>
-  
+  <p-confirmDialog></p-confirmDialog>

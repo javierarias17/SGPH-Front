@@ -47,11 +47,18 @@
             [options]="lstUbicacionOutDTO"
             optionLabel="nombre"
             optionValue="idUbicacion"
-            placeholder="Seleccione ubicación"
+            placeholder="FACULTAD DE INGENIERÍA ELECTRÓNICA Y TELECOMUNICACIONES"
             [(ngModel)]="filtroEspacioFisicoDTO.listaIdUbicacion"
             (onChange)="onUbicacionesChange()"
             [showClear]="true">
           </p-dropdown>
+        </div>
+        <div class="col-6">
+            <label>Fecha de uso:</label>
+            <p-calendar [(ngModel)]="fechaUso" (onSelect)="onFechaUsoChange()"></p-calendar>
+        </div>
+        <div class="col-12" *ngIf="!validarFechaUso() && fechaUso">
+          <small class="p-error">La fecha de reserva debe ser mayor o igual a la fecha actual.</small>
         </div>
         <div class="col-6">
           <label for="salon">Salón:</label>
@@ -65,10 +72,6 @@
         </div>
       </div>
       <div class="grid mt-2">
-        <div class="col-6">
-          <label>Fecha de uso:</label>
-          <p-calendar [(ngModel)]="fechaUso" (onSelect)="onFechaUsoChange()"></p-calendar>
-        </div>
         <div class="col-6">
           <label>Hora Inicio:</label>
           <input
@@ -84,6 +87,9 @@
           />
         </div>
       </div>
+      <div class="col-12" *ngIf="!validarHorarios() && filtro.horaInicio && filtro.horaFin">
+        <small class="p-error">La hora fin debe ser mayor a la hora inicio.</small>
+      </div>
     </fieldset>
 
     <!-- Espacios físicos -->
@@ -96,9 +102,11 @@
         targetHeader="Espacios reservados"
         [sourceStyle]="{ height: '200px' }"
         [targetStyle]="{ height: '200px' }"
-        [dragdrop]="true"
+        [dragdrop]="false"
         [showSourceControls]="false"
-        [showTargetControls]="false">
+        [showTargetControls]="false"
+        (onMoveToTarget)="manejarMovimiento($event)"
+        (onMoveToSource)="manejarMovimiento($event)">
         <ng-template let-espacio pTemplate="item">
           <div>{{ espacio.label }}</div>
         </ng-template>

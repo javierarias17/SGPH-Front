@@ -171,5 +171,6 @@
 </app-detalles-reserva-temporal>
 
 <app-registrar-reserva-planificador 
-  [(mostrarDialogoReserva)]="mostrarDialogoReserva">
+  [(mostrarDialogoReserva)]="mostrarDialogoReserva"
+  (reservaCreada)="consultarReservas()">
 </app-registrar-reserva-planificador>

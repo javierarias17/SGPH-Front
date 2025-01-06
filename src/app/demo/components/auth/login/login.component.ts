@@ -104,7 +104,8 @@ export class LoginComponent implements OnInit {
         })
     }
     nombreUsuario(): FormControl {
-        return this.formulario.get("nombreUsuario") as FormControl
+        console.log("NOMBRE USUARIO", this.formulario.get("nombreUsuario") as FormControl);
+        return this.formulario.get("nombreUsuario") as FormControl        
     }
     password(): FormControl {
         return this.formulario.get("password") as FormControl
@@ -134,7 +135,16 @@ export class LoginComponent implements OnInit {
         this.tokenService.setToken(data.token);
         this.tokenService.setUserName(data.nombreUsuario);
         this.tokenService.setAuthorities(data.authorities);
-        this.roles = data.authorities;
+
+        // Almacenar idPersona y otros datos del usuario en el localStorage
+        const usuarioData = {
+            idPersona: data.idPersona, // Ajusta según la estructura de tu API
+            nombreUsuario: data.nombreUsuario,
+            roles: data.authorities,
+        };
+        localStorage.setItem('usuarioData', JSON.stringify(usuarioData));
+
+       //his.roles = data.authorities;
         this.showMessageService.showMessage("error", "Bienvenido " + data.nombreUsuario);
     }
     

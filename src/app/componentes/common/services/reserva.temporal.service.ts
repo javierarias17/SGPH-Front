@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -9,6 +9,10 @@ import { environment } from 'src/environments/environment';
 export class ReservaTemporalService {
 
   private urlReservaTemporal: string = `${environment.url}AdministrarReservaTemporal`;
+
+  private reservasActualizadas = new Subject<void>();
+
+  reservasActualizadas$ = this.reservasActualizadas.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -117,4 +121,7 @@ export class ReservaTemporalService {
     return this.http.post<any>(url, null, { params });
   }
   
+  notificarActualizacion(): void {
+    this.reservasActualizadas.next();
+  }
 }

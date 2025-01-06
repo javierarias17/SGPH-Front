@@ -48,6 +48,9 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
   ngOnInit(): void {
     this.consultarPeriodoAcademicoVigente();
     this.consultarReservas(); 
+    this.reservaTemporalService.reservasActualizadas$.subscribe(() => {
+      this.consultarReservas(); // Actualiza las reservas automáticamente
+    });
   }
 
   consultarReservas() {
