@@ -4,7 +4,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 @Component({
     selector: 'app-informacion-detalle-cargue',
     templateUrl: './informacion-detalle-cargue.component.html',
-    styleUrls: ['./informacion-detalle-cargue.component.scss'],
+    styleUrls: ['./informacion-detalle-cargue.component.css'],
 })
 export class InformacionDetalleCargueComponent implements OnInit {
     detalleCargue: any;

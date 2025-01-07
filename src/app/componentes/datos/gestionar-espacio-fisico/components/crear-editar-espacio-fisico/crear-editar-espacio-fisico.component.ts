@@ -133,6 +133,7 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
         recursos: this.espacio.recursos?.map(r => r.idRecurso) || [],
     });
 
+    console.log("FORMULARIO", this.formulario);
     // Deshabilitar los campos no editables
     this.idUbicacion().disable();
     this.salon().disable();

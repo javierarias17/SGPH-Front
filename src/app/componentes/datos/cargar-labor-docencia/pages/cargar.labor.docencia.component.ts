@@ -100,79 +100,66 @@ export class CargarLaborDocenciaComponent implements OnInit {
         const programaSeleccionado = this.listaProgramas.find(
             (programa) => programa.idPrograma === this.idPrograma().value
         );
+    
         this.isLoading = true;
-        this.http.get<any[]>('/assets/mock-labor-docente.json').subscribe(
-            (docenteLaborList) => {
-                this.sharedService
-                    .importarLaborDocente(
-                        docenteLaborList,
-                        1,
-                        this.idPrograma().value
-                    )
-                    .subscribe(
-                        (response) => {
-                            this.isLoading = false;
-                            this.messageService.showMessage(
-                                'success',
-                                'Labor docente importada correctamente'
-                            );
-
-                            // Abre el modal con estado de éxito
-                            this.ref = this.dialogService.open(
-                                InformacionDetalleCargueComponent,
-                                {
-                                    header: 'Información detalle cargue',
-                                    data: {
-                                        facultad:
-                                            'Facultad de Ingeniería Electrónica y Telecomunicaciones',
-                                        programa: programaSeleccionado.nombre,
-                                        estado: 'Cargado con éxito',
-                                        detalleCargue: response,
-                                    },
-                                    width: '50%',
-                                }
-                            );
-                        },
-                        (error) => {
-                            this.isLoading = false;
-                            console.error('Error al importar:', error);
-
-                            // Configura el mensaje de error
-                            let mensajeError =
-                                'Ocurrió un error inesperado al importar la labor docente.';
-                            if (error.error && Array.isArray(error.error)) {
-                                mensajeError = error.error.join('\n');
-                            } else if (typeof error.error === 'string') {
-                                mensajeError = error.error;
-                            }
-
-                            // Muestra el modal con estado de fallo
-                            this.ref = this.dialogService.open(
-                                InformacionDetalleCargueComponent,
-                                {
-                                    header: 'Información detalle cargue',
-                                    data: {
-                                        facultad:
-                                            'Facultad de Ingeniería Electrónica y Telecomunicaciones',
-                                        estado: 'Fallo cargue',
-                                        detalleCargue: [mensajeError], // Muestra el mensaje de error en detalleCargue
-                                    },
-                                    width: '50%',
-                                }
-                            );
+    
+        // Llamada directa al backend sin enviar el JSON local
+        this.sharedService
+            .importarLaborDocente(1, this.idPrograma().value) // Facultades y programas que quieras
+            .subscribe(
+                (response) => {
+                    this.isLoading = false;
+                    this.messageService.showMessage(
+                        'success',
+                        'Labor docente importada correctamente'
+                    );
+    
+                    // Abrir modal de éxito
+                    this.ref = this.dialogService.open(
+                        InformacionDetalleCargueComponent,
+                        {
+                            header: 'Información detalle cargue',
+                            data: {
+                                facultad:
+                                    'Facultad de Ingeniería Electrónica y Telecomunicaciones',
+                                programa: programaSeleccionado?.nombre,
+                                estado: 'Cargado con éxito',
+                                detalleCargue: response,
+                            },
+                            width: '50%',
                         }
                     );
-            },
-            (error) => {
-                this.isLoading = false;
-                console.error('Error al cargar el archivo JSON:', error);
-                this.messageService.showMessage(
-                    'error',
-                    'Error al cargar el archivo JSON de prueba.'
-                );
-            }
-        );
-    }
+                },
+                (error) => {
+                    this.isLoading = false;
+                    console.error('Error al importar:', error);
+    
+                    // Configura el mensaje de error
+                    let mensajeError =
+                        'Ocurrió un error inesperado al importar la labor docente.';
+                    if (error.error && Array.isArray(error.error)) {
+                        mensajeError = error.error.join('\n');
+                    } else if (typeof error.error === 'string') {
+                        mensajeError = error.error;
+                    }
+    
+                    // Muestra el modal con estado de fallo
+                    this.ref = this.dialogService.open(
+                        InformacionDetalleCargueComponent,
+                        {
+                            header: 'Información detalle cargue',
+                            data: {
+                                facultad:
+                                    'Facultad de Ingeniería Electrónica y Telecomunicaciones',
+                                estado: 'Fallo cargue',
+                                detalleCargue: [mensajeError],
+                            },
+                            width: '50%',
+                        }
+                    );
+                }
+            );
+    }    
 
     visualizar() {
         if (this.programa) {

@@ -1,7 +1,8 @@
 /* Contenedor principal del modal */
 .modal-container {
     padding: 20px;
-    max-width: 500px;
+    max-width: 900px;    /* límite de ancho para el contenedor */
+    margin: 0 auto;      /* esto hará que el contenedor se centre horizontalmente */
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
