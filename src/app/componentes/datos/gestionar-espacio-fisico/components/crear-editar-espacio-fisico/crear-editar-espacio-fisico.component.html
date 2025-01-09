@@ -50,7 +50,7 @@
                 [showClear]="true"
                 appendTo="body"
             ></p-dropdown>
-            <small class="p-error block fade-in" *ngIf="this.idUbicacion().invalid && this.idUbicacion().touched">
+            <small class="p-error block fade-in" *ngIf="idUbicacion().invalid && idUbicacion().touched">
                 Ubicación es obligatorio
             </small>
         </div>
@@ -77,13 +77,13 @@
                 pInputText 
                 [ngClass]="{
                         'ng-invalid ng-dirty':
-                            this.salon().invalid &&
-                            this.salon().touched
+                            salon().invalid &&
+                            salon().touched
                     }" 
                 formControlName="salon" 
                 placeholder=" ">
-            <small class="p-error block fade-in" *ngIf="this.salon().invalid &&
-                    (this.salon().touched)">
+            <small class="p-error block fade-in" *ngIf="salon().invalid &&
+                    (salon().touched)">
                 Salón es obligatorio
             </small>
 

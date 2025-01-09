@@ -159,6 +159,8 @@ export class GestionarEspacioFisicoComponent {
         })
     }
     editarEspacioFisico(idEspacioFisico: number) {
+        const espacioFisico = this.listaEspacioFisicoDTO.find(e => e.idEspacioFisico === idEspacioFisico);
+
         const ref = this.dialog.open(CrearEditarEspacioFisicoComponent, {
             height: 'auto',
             width: '800px',
@@ -166,7 +168,9 @@ export class GestionarEspacioFisicoComponent {
             closable: false,
             data: {
                 lectura: false,
-                idEspacioFisico: idEspacioFisico
+                idEspacioFisico: idEspacioFisico,
+                idUbicacion: espacioFisico?.idUbicacion, // Asegúrate de incluir idUbicacion
+                salon: espacioFisico?.salon
             }
         });
         ref.onClose.subscribe(r => {

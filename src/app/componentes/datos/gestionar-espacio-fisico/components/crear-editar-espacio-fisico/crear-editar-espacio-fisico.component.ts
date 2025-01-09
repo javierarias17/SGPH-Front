@@ -35,10 +35,19 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.inicializarFormulario()
-    this.obtenerUbicaciones()
-    this.obtenerRecursos()
-    this.obtenerTipos()
+    console.log('Datos recibidos en CrearEditarEspacioFisicoComponent:', this.config.data);
+
+    this.inicializarFormulario();
+
+    if (this.config.data) {
+      this.formulario.patchValue({
+          idUbicacion: this.config.data.idUbicacion || null,
+          salon: this.config.data.salon || '',
+      });
+    } 
+    this.obtenerUbicaciones();
+    this.obtenerRecursos();
+    this.obtenerTipos();
     this.lectura = this.config.data?.lectura
     if (this.config.data?.idEspacioFisico) {
       this.infoEspacioFisico()
@@ -159,14 +168,19 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   }
 
   guardar() {
-    console.log("Método guardar invocado");
-    console.log("Formulario válido:", this.formulario.valid);
+    console.log('Formulario enviado:', this.formulario.value);
+    console.log("Formulario actual:", this.formulario.value); // Verifica si los valores están presentes
+    console.log("Valor de idUbicacion:", this.formulario.get('idUbicacion')?.value);
+    console.log("Valor de salon:", this.formulario.get('salon')?.value);
+    
     if (this.formulario.valid) {
         const espacioSave: EspacioFisicoOutDTO = {
             ...this.formulario.value,
             idEspacioFisico: this.espacio?.idEspacioFisico,
             idEdificio: this.idEdificio().value || null, 
             idTipoEspacioFisico: this.tipo().value || null,
+            idUbicacion: this.idUbicacion().value || null,
+            salon: this.salon().value || null,
             OID: this.OID().value,
             esValidar: false,
         };
