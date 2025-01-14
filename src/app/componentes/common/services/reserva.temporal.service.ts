@@ -62,6 +62,13 @@ export class ReservaTemporalService {
     if(filtro.fechaReserva){
       params = params.set('fechaReserva', filtro.fechaReserva)
     }
+
+    if (filtro.listaRecursos && filtro.listaRecursos.length > 0) {
+      filtro.listaRecursos.forEach((id: number) => {
+        params = params.append('recursos', id.toString());
+      });
+    }    
+
     params = params.set('pagina', filtro.pagina || '0');
     params = params.set('registrosPorPagina', filtro.registrosPorPagina || '10');
 

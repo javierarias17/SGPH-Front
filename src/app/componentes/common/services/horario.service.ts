@@ -47,4 +47,16 @@ export class HorarioService{
 
         return this.http.get<{ content: FranjaLibreOutDTO[]; totalElements: number }>(url, { params });
       }
+
+      /**
+   * Método para enviar el QR al backend
+   */
+  guardarQR(qrData: string, nombreArchivo: string): Observable<any> {
+    const url = `${this.baseUrl}/guardarQR`; // Cambia la URL al endpoint de tu backend
+    const payload = {
+      nombre: nombreArchivo,
+      qrData: qrData
+    };
+    return this.http.post<any>(url, payload);
+  }
 }

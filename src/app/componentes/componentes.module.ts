@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { GestionarCursoComponent } from './datos/gestionar-curso/pages/gestionar.curso.component';
 import { GestionarEspacioFisicoComponent } from './datos/gestionar-espacio-fisico/pages/gestionar.espacio.fisico.component';
 import { GestionarDocenteComponent } from './datos/gestionar-docente/pages/gestionar.docente.component';
@@ -53,6 +53,8 @@ import { InformacionReservaTemporalComponent } from './reservas/informacion-rese
 import { SeguimientoReservaTemporalComponent } from './reservas/seguimiento-reserva-temporal/seguimiento.reserva.temporal/seguimiento.reserva.temporal.component';
 import { DetallesReservaTemporalComponent } from './reservas/detalles-reserva-temporal/detalles.reserva.temporal.component';
 import { RegistrarReservaPlanificadorComponent } from './reservas/registrar-reserva-planificador/registrar.reserva.planificador.component';
+import { QRCodeModule  } from 'angularx-qrcode';
+import { VisualizarEspacioFisicoComponent } from './reportes/ver-horario-espacio-fisico/visualizar-espacio-fisico/visualizar.espacio.fisico.component';
 
 @NgModule({
 	declarations: [
@@ -88,6 +90,7 @@ import { RegistrarReservaPlanificadorComponent } from './reservas/registrar-rese
     	SeguimientoReservaTemporalComponent,
 		DetallesReservaTemporalComponent,
 		RegistrarReservaPlanificadorComponent,
+		VisualizarEspacioFisicoComponent, 
 	],
 	imports: [
 		CardModule,
@@ -97,8 +100,10 @@ import { RegistrarReservaPlanificadorComponent } from './reservas/registrar-rese
 		SharedModule,
 		MessageModule,
 		ToastModule,	
-		ProgressSpinnerModule
+		ProgressSpinnerModule,
+		QRCodeModule,
 	],
+	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	providers: [
 		//Especificos de cada componente
 		EspacioFisicoService, 

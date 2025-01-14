@@ -44,3 +44,8 @@
     background: #88d8b0;
     font-weight: bold;
   }
+
+  .mt-3 {
+    text-align: center;
+    margin-top: 20px;
+}

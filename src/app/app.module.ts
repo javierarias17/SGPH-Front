@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -20,6 +20,9 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { SpinnerService } from './shared/service/spinner.service';
 import { SharedModule } from './shared/shared.module';
 import { AuthInterceptor } from './auth.interceptor';
+import { QRCodeModule } from 'angularx-qrcode';
+
+
 
 // Se importa registerLocaleData y los datos de localización en español
 import { registerLocaleData } from '@angular/common';
@@ -50,8 +53,10 @@ registerLocaleData(localeEs);
               deps: [HttpClient]
             }
           }),
-        SharedModule
+        SharedModule,
+        QRCodeModule,
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [
         // Proveemos LOCALE_ID con el valor 'es' para establecer el idioma español
         { provide: LOCALE_ID, useValue: 'es' },

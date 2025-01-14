@@ -33,92 +33,148 @@
   
     <!-- Características del aula -->
     <fieldset class="caracteristicas-aula">
-      <legend>Características Aula</legend>
+      <legend>Filtrar por Características de Aula </legend>
+      <!-- Primera fila: Ubicación, Fecha de uso, Nombre espacio físico -->
       <div class="grid">
-        <!-- Columna para Ubicación -->
         <div class="col-6">
           <label>Ubicación:</label>
           <p-dropdown
             [options]="lstUbicacionOutDTO"
             optionLabel="nombre"
             optionValue="idUbicacion"
-            placeholder="FACULTAD DE INGENIERÍA ELECTRÓNICA Y TELECOMUNICACIONES"
+            placeholder="Seleccione una ubicación"
             [(ngModel)]="filtroEspacioFisicoDTO.listaIdUbicacion"
             (onChange)="onUbicacionesChange()"
             [showClear]="true">
           </p-dropdown>
         </div>
-        <!-- Fecha de uso -->
         <div class="col-6">
           <label>Fecha uso:</label>
-          <p-calendar [(ngModel)]="fechaUso" (onSelect)="onFechaUsoChange()"></p-calendar>
+          <p-calendar 
+            [(ngModel)]="fechaUso" 
+            placeholder="dd/mm/aaaa" 
+            (onSelect)="onFechaUsoChange()">
+          </p-calendar>
         </div>
-        <div class="col-12" *ngIf="!validarFechaUso() && fechaUso">
-          <small class="p-error">La fecha de reserva debe ser mayor o igual a la fecha actual.</small>
-        </div>
-        <!-- Columna para Salón -->
         <div class="col-6">
-          <label for="salon">Salón:</label>
+          <label for="salon">Nombre espacio físico:</label>
           <input
             type="text"
             pInputText
             [(ngModel)]="filtro.salon"
-            placeholder="Ingrese el salón"
+            placeholder="Ingrese el nombre del espacio físico"
             (ngModelChange)="onInputsChange()"
           />
         </div>
       </div>
-    
-      <div class="grid mt-2">    
-        <!-- Hora Inicio y Hora Fin -->
-        <div class="col-6">
-          <div class="field-horizontal">
-            <label for="horaInicio">Hora Inicio:</label>
-            <input
-              type="time"
-              class="form-control"
-              [(ngModel)]="filtro.horaInicio"
-              (ngModelChange)="onInputsChange()"
-            />
-          </div>
-          <div class="field-horizontal mt-2">
-            <label for="horaFin">Hora Fin:</label>
-            <input
-              type="time"
-              class="form-control"
-              [(ngModel)]="filtro.horaFin"
-              (ngModelChange)="onInputsChange()"
-            />
-          </div>
+      
+      <div class="grid" *ngIf="!validarFechaUso() && fechaUso">
+        <div class="col-12">
+          <small class="p-error">La fecha de reserva debe ser mayor o igual a la fecha actual.</small>
         </div>
       </div>
-      <div class="col-12" *ngIf="!validarHorarios() && filtro.horaInicio && filtro.horaFin">
-        <small class="p-error">La hora fin debe ser mayor a la hora inicio.</small>
+
+      <!-- Segunda fila: Hora Inicio y Hora Fin -->
+      <div class="grid mt-2">
+        <div class="col-6">
+          <label for="horaInicio">Hora Inicio:</label>
+          <input
+            type="time"
+            class="form-control"
+            [(ngModel)]="filtro.horaInicio"
+          />
+        </div>
+        <div class="col-6">
+          <label for="horaFin">Hora Fin:</label>
+          <input
+            type="time"
+            class="form-control"
+            [(ngModel)]="filtro.horaFin"
+            (ngModelChange)="onInputsChange()"
+          />
+        </div>
+        <div class="col-6">
+          <label>Recursos a solicitar:</label>
+          <div *ngFor="let recurso of listaRecursos; trackBy: trackByRecurso">
+            <input 
+              type="checkbox"
+              [checked]="filtro.listaRecursos.includes(recurso.idRecursoFisico)"
+              (change)="onRecursoChange($event, recurso.idRecursoFisico)"
+            />
+            <label>{{ recurso.nombre }}</label>
+          </div>               
+        </div>        
+        
+      </div>
+      
+      <div class="grid" *ngIf="!validarHorarios() && filtro.horaInicio && filtro.horaFin">
+        <div class="col-12">
+          <small class="p-error">La hora fin debe ser mayor a la hora inicio.</small>
+        </div>
       </div>
     </fieldset>
+
     
   
     <!-- Espacios físicos -->
     <fieldset class="espacios-fisicos">
       <legend>Espacios Físicos Disponibles</legend>
-      <p-pickList
-        [source]="espaciosDisponibles"
-        [target]="espaciosReservados"
-        sourceHeader="Espacios disponibles"
-        targetHeader="Espacios reservados"
-        [sourceStyle]="{ height: '200px' }"
-        [targetStyle]="{ height: '200px' }"
-        [dragdrop]="true"
-        [showSourceControls]="false"
-        [showTargetControls]="false"
-        (onMoveToTarget)="manejarMovimiento($event)"
-        (onMoveToSource)="manejarMovimiento($event)">
-      >
-        <ng-template let-espacio pTemplate="item">
-          <div>{{ espacio.label }}</div>
-        </ng-template>
-      </p-pickList>
+      <div class="grid">
+        <!-- Espacios disponibles -->
+        <div class="col-5">
+          <label>Espacios disponibles:</label>
+          <div class="box">
+            <ul class="space-list">
+              <li *ngFor="let espacio of espaciosDisponibles" 
+                  (click)="seleccionarEspacio(espacio)" 
+                  [class.selected]="espacio === espacioSeleccionado">
+                {{ espacio.label }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Botones Reservar/Quitar -->
+        <div class="col-2 flex justify-content-center align-items-center">
+          <div class="button-group">
+            <!-- Botón Reservar -->
+            <button 
+              pButton 
+              label="Reservar" 
+              icon="pi pi-angle-right" 
+              class="p-button-primary" 
+              (click)="reservarEspacio()" 
+              [disabled]="!puedeReservar() || !puedeReservarMultiples()">
+            </button>
+
+            <!-- Botón Quitar -->
+            <button 
+              pButton 
+              label="Quitar" 
+              icon="pi pi-angle-left" 
+              class="p-button-primary" 
+              (click)="quitarEspacio()" 
+              [disabled]="espaciosReservados.length === 0 ">
+            </button>
+          </div>
+        </div>
+
+        <!-- Espacios reservados -->
+        <div class="col-5">
+          <label>Espacio reservado:</label>
+          <div class="box">
+            <ul class="space-list">
+              <li *ngFor="let espacio of espaciosReservados" 
+                  (click)="seleccionarEspacioReservado(espacio)" 
+                  [class.selected]="espacio === espacioSeleccionado">
+                {{ espacio.label }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </fieldset>
+
   
     <!-- Justificación de uso -->
     <fieldset class="justificacion">

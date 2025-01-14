@@ -4,7 +4,6 @@ import { FiltroEspacioFisicoDTO } from '../../datos/gestionar-espacio-fisico/mod
 import { UbicacionOutDTO } from '../../datos/gestionar-espacio-fisico/model/out/ubicacion.out.dto';
 import { FranjaLibreOutDTO } from '../../datos/gestionar-espacio-fisico/model/out/franaja.libre.out.dto';
 import { HorarioService } from '../../common/services/horario.service';
-import { SharedService } from 'src/app/shared/service/shared.service';
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { EspacioFisicoService } from '../../common/services/espacio.fisico.service';
 import { Router } from '@angular/router';
@@ -23,6 +22,7 @@ export class GestionarReservaTemporalComponent {
   aulas: any[] = [];
   espaciosDisponibles: any[] = [];
   espaciosReservados: any[] = [];
+  espacioSeleccionado: any = null;
   fechaSolicitud = new Date();
   fechaUso: Date | null = null;
   horaInicio: Date | null = null;
@@ -32,7 +32,7 @@ export class GestionarReservaTemporalComponent {
   desactivarMovimiento: boolean = false; 
   contarEventos: number = 0;
   public idUbicacion: number; 
-  
+  public listaRecursos: Array<{ idRecursoFisico: number; nombre: string }> = [];
   public filtro: any = {
     idEspacioFiso: null,
     idUbicacion: 11,
@@ -41,6 +41,7 @@ export class GestionarReservaTemporalComponent {
     dia: '',
     horaInicio: '',
     horaFin: '',
+    listaRecursos: [] as number[]
   };
 
   public filtroEspacioFisicoDTO: FiltroEspacioFisicoDTO=new FiltroEspacioFisicoDTO();
@@ -51,7 +52,6 @@ export class GestionarReservaTemporalComponent {
 
 
   constructor(private reservaService: ReservaTemporalService,
-    private horarioService: HorarioService,
     private espacioFisicoService: EspacioFisicoService,
     private confirmationService: ConfirmationService,
     private messageService: ShowMessageService,
@@ -62,7 +62,45 @@ export class GestionarReservaTemporalComponent {
     this.cargarUbicaciones();
     this.buscarFranja();
     this.cargarUsuario();
+    this.cargarRecursos();
   }
+
+  onRecursoChange(event: any, idRecurso: number) {
+    if (event.target.checked) {
+      // Agregar ID si no está
+      if (!this.filtro.listaRecursos.includes(idRecurso)) {
+        this.filtro.listaRecursos.push(idRecurso);
+        this.buscarFranja();
+      }
+    } else {
+      // Quitar ID
+      this.filtro.listaRecursos = this.filtro.listaRecursos.filter(id => id !== idRecurso);
+      this.buscarFranja();
+    }
+    console.log('listaRecursos ahora:', this.filtro.listaRecursos);
+  }
+  
+  cargarRecursos(): void {
+    this.espacioFisicoService.obtenerListaRecursos().subscribe({
+      next: (data) => {
+        // Ver en consola los datos crudos
+        console.log('Recursos desde backend:', data);
+  
+        this.listaRecursos = data.map((item: any) => ({
+          idRecursoFisico: item.idRecurso, // forzamos a número con +
+          nombre: item.nombre
+        }));
+        console.log('listaRecursos final:', this.listaRecursos);
+      },
+      error: (error) => {
+        console.error('Error al cargar recursos', error);
+      }
+    });
+  }    
+
+  trackByRecurso(index: number, recurso: { idRecursoFisico: number; nombre: string }) {
+    return recurso.idRecursoFisico; 
+  }  
 
   cargarUsuario(): void {
     this.reservaService.cargarFormulario('juliethhs').subscribe((data) => {
@@ -127,12 +165,13 @@ export class GestionarReservaTemporalComponent {
       pagina: 0,
       registrosPorPagina: 300,
       fechaUso: fechaUsoFormateada,
-      fechaReserva: fechaReservaFormateada,
+      fechaReserva: fechaUsoFormateada,
       horaInicio: formatTime(this.filtro.horaInicio),
       horaFin: formatTime(this.filtro.horaFin),
       idUbicacion: this.filtro.idUbicacion,
       dia: diaSeleccionado, 
       salon: this.filtro.salon?.trim() || '',
+      listaRecursos: this.filtro.listaRecursos,
     };
 
     // 4. Llamar al servicio con el filtro (que ahora lleva el día)
@@ -209,6 +248,7 @@ export class GestionarReservaTemporalComponent {
       horaInicio: this.filtro.horaInicio,
       horaFin: this.filtro.horaFin,
       dia: diaSeleccionado,
+      listaRecursos: this.filtro.listaRecursos,
     };
 
     this.loading = true;
@@ -218,8 +258,9 @@ export class GestionarReservaTemporalComponent {
         this.router.navigate(['/reserva/InformacionReserva']);
       },
       error: (error) => {
-        console.error('Error al realizar la reserva:', error);
-        this.messageService.showMessage('error', 'No se pudo realizar la reserva.');
+        this.messageService.showMessage('error', error.error.message);
+        this.espaciosReservados = [];
+        this.buscarFranja();
       },
       complete: () => {
         this.loading = false;
@@ -233,6 +274,8 @@ export class GestionarReservaTemporalComponent {
     this.filtro.horaFin = '';
     this.justificacion = '';
     this.espaciosReservados = [];
+    this.horaFin = null;
+    this.horaInicio = null;
   }  
 
   onUbicacionesChange(): void {
@@ -285,8 +328,6 @@ export class GestionarReservaTemporalComponent {
     this.filtro.horaInicio = espacio.horaInicio;
     this.filtro.horaFin = espacio.horaFin;
     this.filtro.idEspacioFisico = espacio.idEspacioFisico;
-  
-    console.log('Filtros actualizados:', this.filtro);
   }
   
   limpiarEspacioReservado(): void {
@@ -303,7 +344,6 @@ export class GestionarReservaTemporalComponent {
     this.filtro.horaFin = '';
     this.filtro.idEspacioFisico = null;
     this.contarEventos = 0;
-    console.log('Filtros limpiados');
   }
   
   
@@ -376,7 +416,6 @@ export class GestionarReservaTemporalComponent {
     }
   }
 
-
   validarFechaUso(): boolean {
     if (!this.fechaUso) {
       return false; // No validar si la fecha está vacía.
@@ -390,4 +429,146 @@ export class GestionarReservaTemporalComponent {
     // Validar que la fecha de uso sea mayor o igual a la fecha actual
     return fechaSeleccionada >= hoy;
   }  
+
+  // Seleccionar un espacio de los disponibles
+  seleccionarEspacio(espacio: any): void {
+    this.espacioSeleccionado = espacio;
+  }
+
+  // Seleccionar un espacio de los reservados
+  seleccionarEspacioReservado(espacio: any): void {
+    this.espacioSeleccionado = espacio;
+  }
+
+  // Reservar espacio
+  reservarEspacio(): void {
+    if (!this.puedeReservar()) {
+      this.messageService.showMessage('error', 'Solo se pueden reservar franjas continuas del mismo salón.');
+      return;
+    }
+
+    if (!this.espacioSeleccionado || this.espaciosReservados.includes(this.espacioSeleccionado)) {
+      this.messageService.showMessage('warn', 'Seleccione un espacio disponible para reservar.');
+      return;
+    }
+  
+    const nuevoEspacio = this.espacioSeleccionado.value;
+  
+    // Validar que el salón sea el mismo para todas las franjas
+    if (this.espaciosReservados.length > 0) {
+      const primerEspacio = this.espaciosReservados[0].value;
+  
+      if (nuevoEspacio.salon !== primerEspacio.salon) {
+        this.messageService.showMessage('error', 'Solo se pueden reservar franjas del mismo salón.');
+        return;
+      }
+    }
+  
+    // Agregar el nuevo espacio a la lista de reservados
+    this.espaciosReservados.push(this.espacioSeleccionado);
+  
+    this.filtro.salon = nuevoEspacio.salon;
+
+    // Actualizar filtro de horaInicio y horaFin
+    const horas = this.espaciosReservados.map((espacio) => ({
+      inicio: espacio.value.horaInicio,
+      fin: espacio.value.horaFin,
+    }));
+  
+    // Ordenar las horas para determinar el rango
+    horas.sort((a, b) => new Date(`1970-01-01T${a.inicio}`).getTime() - new Date(`1970-01-01T${b.inicio}`).getTime());
+  
+    this.filtro.horaInicio = horas[0].inicio; // La hora más temprana
+    this.filtro.horaFin = horas[horas.length - 1].fin; // La hora más tardía
+  
+    // Eliminar la franja de la lista de disponibles
+    this.espaciosDisponibles = this.espaciosDisponibles.filter(
+      (espacio) => espacio !== this.espacioSeleccionado
+    );
+    this.espacioSeleccionado = null; // Limpiar selección
+  }
+
+  // Quitar reserva
+  quitarEspacio(): void {
+    if (!this.espacioSeleccionado || this.espaciosDisponibles.includes(this.espacioSeleccionado)) {
+      this.messageService.showMessage('warn', 'Seleccione un espacio reservado para quitar.');
+      return;
+    }
+  
+    // Mover espacio a la lista de disponibles
+    this.espaciosDisponibles.push(this.espacioSeleccionado);
+    this.espaciosReservados = this.espaciosReservados.filter(
+      (espacio) => espacio !== this.espacioSeleccionado
+    );
+  
+    // Recalcular el rango de horas si quedan franjas reservadas
+    if (this.espaciosReservados.length > 0) {
+      const horas = this.espaciosReservados.map((espacio) => ({
+        inicio: espacio.value.horaInicio,
+        fin: espacio.value.horaFin,
+      }));
+  
+      // Ordenar las horas para determinar el nuevo rango
+      horas.sort((a, b) => new Date(`1970-01-01T${a.inicio}`).getTime() - new Date(`1970-01-01T${b.inicio}`).getTime());
+  
+      this.filtro.horaInicio = horas[0].inicio; // La hora más temprana
+      this.filtro.horaFin = horas[horas.length - 1].fin; // La hora más tardía
+    } else {
+      // Si no hay franjas reservadas, limpiar los filtros
+      this.filtro.horaInicio = '';
+      this.filtro.horaFin = '';
+    }
+    this.espacioSeleccionado = null; // Limpiar selección
+  }
+
+  puedeReservarMultiples(): boolean {
+    if (this.espaciosReservados.length <= 1) {
+      // Si hay 0 o 1 espacios reservados, no hay conflicto
+      return true;
+    }
+  
+    // Obtener la primera franja para comparar
+    const primerEspacio = this.espaciosReservados[0].value;
+  
+    // Validar que todos los espacios reservados sean del mismo salón y fecha
+    return this.espaciosReservados.every((espacio) => 
+      espacio.value.salon === primerEspacio.salon &&
+      this.fechaUso === this.fechaUso // Comparar fechas
+    );
+  }
+  
+  puedeReservar(): boolean {
+    if (!this.espacioSeleccionado) {
+      return false; // Si no hay ningún espacio seleccionado, deshabilitar el botón
+    }
+  
+    if (this.espaciosReservados.length === 0) {
+      return true; // Si no hay franjas reservadas, permitir reservar cualquier espacio
+    }
+  
+    // Verificar que el salón sea el mismo
+    const primerEspacio = this.espaciosReservados[0].value;
+    if (this.espacioSeleccionado.value.salon !== primerEspacio.salon) {
+      return false; // Si el salón no coincide, deshabilitar
+    }
+  
+    // Ordenar las franjas reservadas por hora de inicio
+    const horasReservadas = this.espaciosReservados.map((espacio) => espacio.value);
+    horasReservadas.sort((a, b) =>
+      new Date(`1970-01-01T${a.horaInicio}`).getTime() - new Date(`1970-01-01T${b.horaInicio}`).getTime()
+    );
+  
+    // Obtener la última franja reservada
+    const ultimaFranja = horasReservadas[horasReservadas.length - 1];
+  
+    // Validar continuidad estricta:
+    // 1. La franja seleccionada debe comenzar inmediatamente después de la última franja reservada.
+    // 2. Si la última franja termina a las 13:00 (1 PM), permitir una franja que comience a las 14:00 (2 PM).
+    const esContinuo =
+      this.espacioSeleccionado.value.horaInicio === ultimaFranja.horaFin || // Inmediatamente después
+      (ultimaFranja.horaFin === '13:00:00' && this.espacioSeleccionado.value.horaInicio === '14:00:00'); // Excepción 1 PM - 2 PM
+  
+    return esContinuo;
+  }
+  
 }

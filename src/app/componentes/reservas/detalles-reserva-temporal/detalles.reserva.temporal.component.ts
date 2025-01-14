@@ -13,7 +13,7 @@ export class DetallesReservaTemporalComponent {
 
   usuario: any = null;
   ubicacion: string = null;
-
+  
   constructor(private reservaService: ReservaTemporalService,
     private espacioFisicoService: EspacioFisicoService
   ) {}
@@ -21,6 +21,7 @@ export class DetallesReservaTemporalComponent {
   get esReservaValida(): boolean {
     return this.reserva && Object.keys(this.reserva).length > 0;
   }
+  
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['reserva'] && changes['reserva'].currentValue) {
@@ -41,7 +42,6 @@ export class DetallesReservaTemporalComponent {
       this.usuario = data.usuario;
     });
   }
-
 
   consultarUbicacion(): void{
     this.espacioFisicoService.consultarEspacioFisicoPorIdEspacioFisico(this.reserva.idEspacioFisico).subscribe((data) => {

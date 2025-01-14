@@ -29,6 +29,16 @@
                     <label class="w-25rem" style="margin-left: 10%; width: 90%"><b>{{ espacioFisicoDTOSeleccionado.estado | titlecase}}</b></label>
                 </div>
             </div>
+            <div style="position: absolute; top: 160px; right: 7%; transform: translateX(50%);">
+                <button
+                    pButton
+                    pRipple 
+                    icon="pi pi-qrcode"
+                    label="Ver QR"
+                    class="p-button-text"
+                    (click)="abrirModalQR()"
+                ></button>
+            </div>
         </div>
         <br>
 
@@ -56,7 +66,7 @@
                 </ng-container>
             </ng-container>
         </div>  
-
+        
     </ng-template>
 
     <ng-template pTemplate="footer">
@@ -72,3 +82,26 @@
         <button pButton type="button" label="Cerrar" (click)="cerrarModalError()" style="width: 20%;"></button>
     </p-footer>
 </p-dialog>
+
+<!-- Modal para mostrar el QR -->
+<p-dialog
+  [(visible)]="qrModalVisible"
+  [style]="{ width: '400px' }"
+  [modal]="true"
+  [header]="'Código QR del Espacio Físico'"
+  (onHide)="cerrarModalQR()"
+>
+  <div class="text-center">
+    <img [src]="qrCodeImage" *ngIf="qrCodeImage" alt="Código QR" />
+  </div>
+  <p-footer>
+    <button
+      pButton
+      label="Cerrar"
+      icon="pi pi-times"
+      class="p-button-secondary"
+      (click)="cerrarModalQR()"
+    ></button>
+  </p-footer>
+</p-dialog>
+

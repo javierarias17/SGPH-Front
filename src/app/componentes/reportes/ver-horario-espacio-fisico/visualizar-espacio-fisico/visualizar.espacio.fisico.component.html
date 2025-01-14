@@ -1,0 +1,38 @@
+<div class="horario-container">
+    <h1 class="titulo">Horario del Espacio Físico</h1>
+    <div class="info-container">
+      <p><strong>Ubicación:</strong> {{ espacioFisicoDTOSeleccionado.nombreUbicacion }}</p>
+      <p><strong>Edificio:</strong> {{ espacioFisicoDTOSeleccionado?.nombreEdificio }}</p>
+      <p><strong>Tipo:</strong> {{ espacioFisicoDTOSeleccionado?.tipoEspacioFisico }}</p>
+      <p><strong>Nombre:</strong> {{ espacioFisicoDTOSeleccionado?.salon }}</p>
+      <p><strong>Estado:</strong> {{ espacioFisicoDTOSeleccionado?.estado }}</p>
+    </div>
+  
+    <div class="horario-grid">
+      <!-- Encabezado -->
+      <div class="columna-horas encabezado">HORAS</div>
+      <div class="encabezado" *ngFor="let dia of dias">{{ dia }}</div>
+  
+      <!-- Horas y Franjas -->
+      <ng-container *ngFor="let intervaloHora of horas">
+        <!-- Columna de horas -->
+        <div class="columna-horas">{{ intervaloHora }}</div>
+  
+        <!-- Celdas para los días -->
+        <ng-container *ngFor="let dia of dias">
+          <div
+            class="grid-item franja"
+            *ngIf="obtenerNombreCurso(dia, intervaloHora)"
+            [ngStyle]="{
+              'background-color': obtenerColorPorMateria(obtenerNombreCurso(dia, intervaloHora))
+            }"
+            [style.gridRow]="generarFilasParaFranja(dia, intervaloHora)"
+          >
+            {{ obtenerNombreCurso(dia, intervaloHora) }}
+          </div>
+          <div class="grid-item empty" *ngIf="!obtenerNombreCurso(dia, intervaloHora)"></div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  

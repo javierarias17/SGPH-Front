@@ -7,7 +7,7 @@ export class EspacioFisicoOutDTO{
 	public idEdificio?: number;
 	public idTipoEspacioFisico?: number;
 	public esValidar?: boolean;
-	OID?: string;
+	oid?: string;
 	public salon?: string;
 	nombreEdificio?: string;
 	public idUbicacion?: number;

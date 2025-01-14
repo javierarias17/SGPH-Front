@@ -4,6 +4,9 @@ import { EspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fi
 import { FranjaHorariaEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/franja.horaria.espacio.fisico.dto';
 import { PlanificacionManualService } from 'src/app/componentes/common/services/planificacion.manual.service';
 import { SpinnerService } from 'src/app/shared/service/spinner.service';
+import * as QRCode from 'qrcode';
+import { HorarioService } from 'src/app/componentes/common/services/horario.service';
+import * as html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-horario-espacio-fisico',
@@ -26,11 +29,18 @@ export class HorarioEspacioFisicoComponent {
 	public espacioFisicoDTOSeleccionado:EspacioFisicoDTO;
 	
 	public listaFranjaHorariaAulaDTO: FranjaHorariaEspacioFisicoDTO[] = [];
-	
+
+	public qrData: string = '';
+
+	qrCodeImage: string = '';
+
+	public qrVisible: boolean = false; 
 	// Arreglo para almacenar las posiciones ocupadas
 	public posicionesOcupadas: { x: number, y: number }[] = [];
 
 	public horas: string[] = [];  
+
+	public qrModalVisible: boolean = false; 
 
 	public dias: DiaSemanaEnum[] = [
 		DiaSemanaEnum.LUNES,
@@ -42,10 +52,55 @@ export class HorarioEspacioFisicoComponent {
 		DiaSemanaEnum.DOMINGO
 	];
 	
-	constructor(private planificacionManualService: PlanificacionManualService, private spinnerService: SpinnerService){
+	constructor(private planificacionManualService: PlanificacionManualService, private spinnerService: SpinnerService, private horarioService: HorarioService){
 		for (let i = 7; i <= 22; i++) {
 			const hora = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
 			this.horas.push(hora);
+		}
+	}
+
+	// Abre el modal del QR
+	public abrirModalQR(): void {
+		console.log('Abriendo modal de QR...');
+		this.generarQR();
+		this.qrModalVisible = true;
+	  }
+	
+	  // Cierra el modal del QR
+	  public cerrarModalQR(): void {
+		console.log('Cerrando modal de QR...');
+		this.qrModalVisible = false;
+	  }
+	
+	  // Genera los datos del QR
+	  private generarQR(): void {
+		const qrUrl = `http://localhost:4200/visualizar-horario/${this.espacioFisicoDTOSeleccionado.idEspacioFisico}`;
+		this.qrData = qrUrl;
+	
+		QRCode.toDataURL(qrUrl, { width: 200, errorCorrectionLevel: 'M' }, (err, url) => {
+		  if (err) {
+			console.error('Error generando QR:', err);
+			return;
+		  }
+		  this.qrCodeImage = url; // Almacena la URL base64 del QR
+		  this.guardarQR();
+		});
+	  }
+
+	  // Guarda el QR en el backend
+	  public guardarQR(): void {
+		if (this.qrCodeImage) {
+		  const base64Data = this.qrCodeImage.split(',')[1]; // Elimina el prefijo data:image/png;base64,
+		  const nombreArchivo = `qr_${this.espacioFisicoDTOSeleccionado.idEspacioFisico}.png`;
+	
+		  console.log('Base64 Data Enviado:', base64Data);
+	
+		  this.horarioService.guardarQR(base64Data, nombreArchivo).subscribe({
+			next: () => console.log('QR guardado exitosamente en el backend'),
+			error: (err) => console.error('Error al guardar el QR:', err),
+		  });
+		} else {
+		  console.error('No se generó correctamente el QR antes de guardarlo.');
 		}
 	}
 

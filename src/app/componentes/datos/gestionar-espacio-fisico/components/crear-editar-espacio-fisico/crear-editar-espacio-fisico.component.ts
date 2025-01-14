@@ -121,7 +121,8 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
     this.espacioFisicoService
         .consultarEspacioFisicoPorIdEspacioFisico(this.config.data.idEspacioFisico)
         .subscribe((r) => {
-            this.espacio = r;
+          console.log('Respuesta del servicio:', r);  
+          this.espacio = r;
             if (r) {
                 this.recursosActuales = r.recursos;
                 this.setFormulario();
@@ -138,11 +139,11 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
         estado: this.espacio.estado || '',
         capacidad: this.espacio.capacidad || '',
         tipo: this.espacio.idTipoEspacioFisico || null,
-        OID: this.espacio.OID || '',
+        OID: this.espacio.oid || null,
         recursos: this.espacio.recursos?.map(r => r.idRecurso) || [],
     });
 
-    console.log("FORMULARIO", this.formulario);
+    console.log("FORMULARIO OID", this.formulario);
     // Deshabilitar los campos no editables
     this.idUbicacion().disable();
     this.salon().disable();
@@ -181,7 +182,7 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
             idTipoEspacioFisico: this.tipo().value || null,
             idUbicacion: this.idUbicacion().value || null,
             salon: this.salon().value || null,
-            OID: this.OID().value,
+            OID: this.OID().value || null,
             esValidar: false,
         };
 

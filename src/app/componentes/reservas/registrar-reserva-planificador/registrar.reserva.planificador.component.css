@@ -15,9 +15,10 @@
   }
   
   .grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* Ajusta las columnas: 1fr para recuadros, auto para botones */
+    gap: 20px; /* Reduce el espacio entre columnas */
+    align-items: center; /* Centra los elementos verticalmente */
   }
   
   .col {
@@ -30,5 +31,121 @@
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+  }
+  
+  .form-buttons {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .caracteristicas-aula .col-6 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .caracteristicas-aula label {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .mt-2 {
+    margin-top: 16px;
+  }
+  
+  .field-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espaciado entre el texto y el input */
+  }
+  
+  .field-horizontal label {
+    width: 100px; /* Ancho fijo para alinear los textos */
+    font-weight: bold; /* Opcional, para destacar las etiquetas */
+  }
+  
+  /* Resto del estilo ajustado para el nuevo diseño */
+  
+  /* Recuadros para espacios disponibles y reservados */
+  .box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    height: 500px;
+    width: 230%;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .space-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .space-list li {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .space-list li:hover {
+    background-color: #e6f7ff;
+  }
+  
+  .selected {
+    background-color: #cce5ff;
+    font-weight: bold;
+  }
+  
+  /* Botones entre recuadros */
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Espaciado entre los botones */
+  }
+  
+  .button-group button {
+    width: 150%; /* Asegurar ancho completo */
+    text-align: center;
+  }
+  
+  fieldset {
+    margin: 15px 0;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+  }
+  
+  .caracteristicas-aula .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Divide las columnas en tercios iguales */
+    gap: 20px;
+  }
+  
+  .caracteristicas-aula .col-6 {
+    grid-column: span 1; /* Mantén las columnas iguales */
+  }
+  
+  .caracteristicas-aula input[type="time"],
+  .caracteristicas-aula p-dropdown,
+  .caracteristicas-aula p-calendar,
+  .caracteristicas-aula input[type="text"] {
+    width: 100%; /* Garantiza que todos los elementos ocupen el mismo ancho */
+    box-sizing: border-box;
+  }
+  
+  .caracteristicas-aula label {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .espacio-recurso {
+    margin-right: 0.5rem;
   }
   

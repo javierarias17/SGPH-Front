@@ -1,0 +1,65 @@
+.horario-container {
+    max-width: 1700px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .titulo {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .info-container {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .horario-grid {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr); /* Primera columna para horas */
+    grid-auto-rows: 50px; /* Cada fila tiene una altura de 50px */
+    gap: 1px; /* Espaciado entre celdas */
+  }
+  
+  .columna-horas {
+    text-align: center;
+    background-color: #f8f8f8;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+  }
+  
+  .encabezado {
+    background-color: #e8f5e9;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #ccc;
+  }
+  
+  .grid-item {
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9em;
+  }
+  
+  .franja {
+    text-align: center;
+    font-size: 0.9em;
+  }
+  
+  .empty {
+    background-color: white;
+  }
+  

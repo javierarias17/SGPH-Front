@@ -26,6 +26,7 @@ export class GenerarReporteFranjasLibresComponent implements OnInit {
 
   // Lista de días de la semana
   public diasSemana: any[] = [
+    { label: 'Seleccione el día', value: null },
     { label: 'Lunes', value: 'LUNES' },
     { label: 'Martes', value: 'MARTES' },
     { label: 'Miércoles', value: 'MIERCOLES' },
@@ -62,6 +63,7 @@ export class GenerarReporteFranjasLibresComponent implements OnInit {
   ngOnInit(): void {
     this.cargarUbicaciones();
     this.cargarFranjasLibres();
+    this.actualizarHoraFin();
   }
 
   cargarUbicaciones(): void {
@@ -248,4 +250,27 @@ export class GenerarReporteFranjasLibresComponent implements OnInit {
       a.click();
       window.URL.revokeObjectURL(url);
   }
+
+  actualizarHoraFin(): void {
+    if (this.filtro.horaInicio) {
+      // Convertir la hora de inicio a un objeto Date
+      const [hours, minutes] = this.filtro.horaInicio.split(':').map(Number);
+      const horaInicioDate = new Date();
+      horaInicioDate.setHours(hours, minutes, 0);
+  
+      // Incrementar 2 horas
+      const horaFinDate = new Date(horaInicioDate);
+      horaFinDate.setHours(horaInicioDate.getHours() + 2);
+  
+      // Formatear la hora de fin
+      const horasFin = horaFinDate.getHours().toString().padStart(2, '0');
+      const minutosFin = horaFinDate.getMinutes().toString().padStart(2, '0');
+      this.filtro.horaFin = `${horasFin}:${minutosFin}`;
+    } else {
+      // Si no hay hora de inicio, limpiar la hora de fin
+      this.filtro.horaFin = '';
+    }
+    this.onInputsChange();
+  }
+  
 }
