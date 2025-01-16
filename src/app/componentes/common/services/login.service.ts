@@ -24,4 +24,24 @@ export class LoginService {
 		let tokenDto = {value: tokenGoogle}
         return this.http.post<any>(url, tokenDto);  
 	}
+
+	/**
+   * Verifica si un estudiante es activo
+   * @param username Nombre de usuario
+   * @returns Observable<boolean>
+   */
+	public esEstudianteActivo(nombreUsuario: string): Observable<boolean> {
+		const url = `${environment.url}${this.urlAutenticacion}/esEstudianteActivo?usuarioEst=${nombreUsuario}`;
+		return this.http.get<boolean>(url);
+	}
+	
+	/**
+	   * Verifica si un administrador es activo
+	   * @param username Nombre de usuario
+	   * @returns Observable<boolean>
+    */
+    public esAdministradorActivo(estado: string): Observable<boolean> {
+		const url = `${environment.url}${this.urlAutenticacion}/esAdministradorActivo?estado=${estado}`;
+    	return this.http.get<boolean>(url);
+    }
 }

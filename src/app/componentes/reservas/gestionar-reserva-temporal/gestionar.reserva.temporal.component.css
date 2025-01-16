@@ -156,3 +156,30 @@ fieldset {
   margin-right: 0.5rem;
 }
 
+.logout-button {
+  position: absolute; /* Posición absoluta dentro del contenedor */
+  top: 20px; /* Distancia desde la parte superior */
+  right: 20px; /* Distancia desde la parte derecha */
+  background-color: #002F6C; /* Color extraído del fondo en la imagen */
+  color: white; /* Texto blanco */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 10px 20px; /* Espaciado interno */
+  font-size: 14px; /* Tamaño del texto */
+  font-weight: bold; /* Negrita */
+  cursor: pointer; /* Cursor de mano al pasar */
+  z-index: 1000; /* Para asegurarte de que esté encima de otros elementos */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transición suave */
+}
+
+.logout-button:hover {
+  background-color: #001E45; /* Color más oscuro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de aumento */
+}
+
+.logout-button:active {
+  background-color: #001733; /* Color aún más oscuro al hacer clic */
+  transform: scale(0.95); /* Efecto de reducción */
+}
+
+

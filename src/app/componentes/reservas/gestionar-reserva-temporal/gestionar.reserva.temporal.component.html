@@ -1,5 +1,14 @@
+
 <p-messages [(value)]="messages" [enableService]="true" [closable]="true"></p-messages>
+
 <div class="formulario-container">
+    <button
+      pButton
+      label="Cerrar Sesión"
+      class="logout-button"
+      (click)="cerrarSesion()"
+      >
+    </button>
     <h2>FORMULARIO DE RESERVA ESPACIOS FÍSICOS TEMPORALES</h2>
     <h4>Préstamo de Aulas y Auditorios Universitarios</h4>
   
@@ -187,4 +196,5 @@
       <button pButton label="Reservar" icon="pi pi-check" (click)="reservar()"></button>
     </div>
   </div>
+
   <p-confirmDialog></p-confirmDialog>

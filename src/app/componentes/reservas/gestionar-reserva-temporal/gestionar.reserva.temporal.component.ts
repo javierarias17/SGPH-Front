@@ -8,6 +8,8 @@ import { ShowMessageService } from 'src/app/shared/service/show-message.service'
 import { EspacioFisicoService } from '../../common/services/espacio.fisico.service';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
+import { TokenService } from '../../common/services/token.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-gestionar-reserva-temporal',
@@ -55,7 +57,9 @@ export class GestionarReservaTemporalComponent {
     private espacioFisicoService: EspacioFisicoService,
     private confirmationService: ConfirmationService,
     private messageService: ShowMessageService,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenService,
+    private oauthService: OAuthService
   ) {}
 
   ngOnInit(): void {
@@ -569,6 +573,19 @@ export class GestionarReservaTemporalComponent {
       (ultimaFranja.horaFin === '13:00:00' && this.espacioSeleccionado.value.horaInicio === '14:00:00'); // Excepción 1 PM - 2 PM
   
     return esContinuo;
+  }
+
+  cerrarSesion() {
+    // Limpiar token y datos de sesión
+    this.tokenService.logOut(); // Borra los datos almacenados
+    sessionStorage.clear(); // Limpia toda la sesión
+    localStorage.clear(); // Opcional: limpia el almacenamiento local si se usa
+
+    // Cerrar sesión de Google
+    this.oauthService.logOut();
+
+    // Redirigir al inicio de sesión
+    this.router.navigate(['/auth/login']);
   }
   
 }

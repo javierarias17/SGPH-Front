@@ -46,6 +46,18 @@ export class TokenService {
         return this.roles;
     }
 
+    public hasRole(role: string): boolean {
+        return this.getAuthorities().includes(role);
+      }
+
+    public isStudent(): boolean {
+        return this.hasRole('ROLE_STUDENT');
+      }
+    
+      public isAdmin(): boolean {
+        return this.hasRole('ROLE_ADMIN');
+      }
+
     public logOut(): void {
         window.sessionStorage.clear();
     }
