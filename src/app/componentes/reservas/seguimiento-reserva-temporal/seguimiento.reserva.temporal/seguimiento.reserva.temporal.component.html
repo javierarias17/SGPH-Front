@@ -129,6 +129,17 @@
   </ng-template>
 </p-table>
 
+<!-- Botón de descarga debajo del paginador -->
+<div class="text-right mt-3">
+  <button
+    pButton
+    label="Descargar Excel"
+    icon="pi pi-file-excel"
+    class="p-button-success"
+    (click)="descargarHistorialExcel()"
+  ></button>
+</div>
+
 <p-dialog 
   header="{{ accion === 'aprobar' ? 'Motivo de Aprobación' : 'Motivo de Rechazo' }}" 
   [(visible)]="mostrarModalMotivo" 

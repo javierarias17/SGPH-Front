@@ -131,4 +131,18 @@ export class ReservaTemporalService {
   notificarActualizacion(): void {
     this.reservasActualizadas.next();
   }
+
+  /**
+   * Método para descargar el historial de reservas en formato Excel.
+   * 
+   * @param idPeriodo ID del periodo académico.
+   * @returns Archivo Excel como Blob.
+   */
+  public descargarHistorialReservas(idPeriodo: number): Observable<Blob> {
+    const url = `${this.urlReservaTemporal}/descargarHistorialReservas`;
+    const params = new HttpParams().set('idPeriodo', idPeriodo.toString());
+
+    return this.http.get(url, { params, responseType: 'blob' });
+  }
+
 }

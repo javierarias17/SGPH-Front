@@ -321,4 +321,48 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
       this.mostrarDialogoReserva = true; // Abre el modal
     }, 0);
   }
+
+  descargarHistorialExcel(): void {
+    this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe({
+      next: (periodoVigente: any) => {
+        console.log("PERIODO VIGENTE", periodoVigente);
+        if (!periodoVigente || !periodoVigente.idPeriodoAcademico) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No hay un periodo académico vigente para descargar el historial.'
+          });
+          return;
+        }
+  
+        this.reservaTemporalService.descargarHistorialReservas(periodoVigente.idPeriodoAcademico).subscribe({
+          next: (blob) => {
+            const a = document.createElement('a');
+            const objectUrl = URL.createObjectURL(blob);
+            a.href = objectUrl;
+            a.download = `historial_reservas_${periodoVigente.idPeriodo}.xlsx`;
+            a.click();
+            URL.revokeObjectURL(objectUrl);
+          },
+          error: (err) => {
+            console.error('Error al descargar el historial de reservas:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'No se pudo descargar el historial de reservas.'
+            });
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error al consultar el periodo académico vigente:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo consultar el periodo académico vigente.'
+        });
+      }
+    });
+  }
+  
 }
