@@ -9,6 +9,5 @@ import { LoginStudentComponent } from './login-student/login.student/login.stude
         AuthRoutingModule,
     ],
     declarations: [
-      LoginStudentComponent
     ]})
 export class AuthModule { }

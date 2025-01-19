@@ -33,6 +33,7 @@ export class GestionarReservaTemporalComponent {
   messages: any[];
   desactivarMovimiento: boolean = false; 
   contarEventos: number = 0;
+  public mostrarErrores: boolean = false;
   public idUbicacion: number; 
   public listaRecursos: Array<{ idRecursoFisico: number; nombre: string }> = [];
   public filtro: any = {
@@ -67,6 +68,7 @@ export class GestionarReservaTemporalComponent {
     this.buscarFranja();
     this.cargarUsuario();
     this.cargarRecursos();
+    
   }
 
   onRecursoChange(event: any, idRecurso: number) {
@@ -162,7 +164,6 @@ export class GestionarReservaTemporalComponent {
   
     // Formateamos las fechas
     const fechaUsoFormateada = formatDateYYYYMMDD(this.fechaUso);
-    const fechaReservaFormateada = formatDateYYYYMMDD(this.filtro.fechaReserva);
   
     // 3. Construir el filtro y asignar el día
     const filtro = {
@@ -194,6 +195,7 @@ export class GestionarReservaTemporalComponent {
   }  
 
   reservar(): void {
+    this.mostrarErrores = true; 
     if (!this.validarHorarios()) {
       this.messageService.showMessage('error', 'La hora fin debe ser mayor a la hora inicio.');
       return;
@@ -228,6 +230,7 @@ export class GestionarReservaTemporalComponent {
   }
   
   realizarReserva(): void {
+    this.validarCamposObligatorios()
     const dayNames = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
     let diaSeleccionado = null;
     if (this.fechaUso instanceof Date) {
@@ -490,6 +493,8 @@ export class GestionarReservaTemporalComponent {
       (espacio) => espacio !== this.espacioSeleccionado
     );
     this.espacioSeleccionado = null; // Limpiar selección
+
+    this.buscarFranja();
   }
 
   // Quitar reserva
@@ -553,7 +558,7 @@ export class GestionarReservaTemporalComponent {
     // Verificar que el salón sea el mismo
     const primerEspacio = this.espaciosReservados[0].value;
     if (this.espacioSeleccionado.value.salon !== primerEspacio.salon) {
-      return false; // Si el salón no coincide, deshabilitar
+      return false; // Si el salón no coincide, deshabilitar      
     }
   
     // Ordenar las franjas reservadas por hora de inicio
@@ -586,6 +591,11 @@ export class GestionarReservaTemporalComponent {
 
     // Redirigir al inicio de sesión
     this.router.navigate(['/auth/login']);
+  }
+  
+  onNombreEspacioChange(event: any): void {
+    this.filtro.salon = event.target.value.trim(); // Captura el valor del input y lo asigna al filtro
+    this.buscarFranja(); // Llama al método que actualiza las franjas libres
   }
   
 }

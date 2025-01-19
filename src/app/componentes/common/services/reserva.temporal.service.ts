@@ -145,4 +145,16 @@ export class ReservaTemporalService {
     return this.http.get(url, { params, responseType: 'blob' });
   }
 
+  public cancelarReserva(reservaId: number, motivo: string): Observable<any> {
+    if (!reservaId || !motivo) {
+      throw new Error('Los parámetros reservaId y motivo son obligatorios');
+    }
+  
+    const url = `${this.urlReservaTemporal}/cancelarReserva`;
+    const params = new HttpParams()
+      .set('reservaId', reservaId.toString())
+      .set('motivo', motivo);
+  
+    return this.http.post<any>(url, {}, { params });
+  }
 }

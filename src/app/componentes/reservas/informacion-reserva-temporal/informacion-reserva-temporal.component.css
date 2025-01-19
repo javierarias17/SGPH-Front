@@ -30,3 +30,20 @@ h2 {
   font-size: 16px;
   line-height: 1.5;
 }
+
+.logout-button {
+  position: absolute;
+  top: 10px; /* Ajusta según el espacio deseado */
+  right: 10px; /* Ajusta según el espacio deseado */
+  background-color: #4a90e2; /* Color del botón */
+  color: white;
+  padding: 8px 16px; /* Ajusta el tamaño del botón */
+  border: none;
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-button:hover {
+  background-color: #357ab8; /* Color al pasar el mouse */
+}

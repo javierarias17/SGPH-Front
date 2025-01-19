@@ -37,6 +37,10 @@
       </div>
     </fieldset>
 
+    <div class="alert alert-info" role="alert" style="margin-top: 20px; font-size: 14px; color: #6c757d;">
+      <strong>Nota importante:</strong> Solo puedes seleccionar un espacio físico y definir su franja de horario de inicio y fin. Asegúrate de ingresar correctamente los detalles antes de enviar tu solicitud.
+    </div>
+
     <!-- Características del aula -->
     <fieldset class="caracteristicas-aula">
       <legend>Filtrar por Características de Aula </legend>
@@ -53,6 +57,9 @@
             (onChange)="onUbicacionesChange()"
             [showClear]="true">
           </p-dropdown>
+          <div *ngIf="!filtroEspacioFisicoDTO.listaIdUbicacion && mostrarErrores">
+            <small class="p-error">La ubicación es obligatoria.</small>
+          </div>
         </div>
         <div class="col-6">
           <label>Fecha uso:</label>
@@ -61,6 +68,9 @@
             placeholder="dd/mm/aaaa" 
             (onSelect)="onFechaUsoChange()">
           </p-calendar>
+          <div *ngIf="!validarFechaUso() && mostrarErrores">
+            <small class="p-error">La fecha de reserva debe ser mayor o igual a la fecha actual.</small>
+          </div>
         </div>
         <div class="col-6">
           <label for="salon">Nombre espacio físico:</label>
@@ -71,6 +81,9 @@
             placeholder="Ingrese el nombre del espacio físico"
             (ngModelChange)="onInputsChange()"
           />
+          <div *ngIf="!filtro.salon?.trim() && mostrarErrores">
+            <small class="p-error">El nombre del espacio físico es obligatorio.</small>
+          </div>
         </div>
       </div>
       
@@ -89,6 +102,9 @@
             class="form-control"
             [(ngModel)]="filtro.horaInicio"
           />
+          <div *ngIf="!filtro.horaInicio && mostrarErrores">
+            <small class="p-error">La hora de inicio es obligatoria.</small>
+          </div>
         </div>
         <div class="col-6">
           <label for="horaFin">Hora Fin:</label>
@@ -98,6 +114,9 @@
             [(ngModel)]="filtro.horaFin"
             (ngModelChange)="onInputsChange()"
           />
+          <div *ngIf="!filtro.horaFin && mostrarErrores">
+            <small class="p-error">La hora de fin es obligatoria.</small>
+          </div>
         </div>
         <div class="col-6">
           <label>Recursos a solicitar:</label>

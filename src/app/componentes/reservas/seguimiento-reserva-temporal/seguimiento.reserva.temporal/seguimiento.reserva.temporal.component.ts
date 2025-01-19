@@ -24,7 +24,7 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
   mostrarModalMotivo: boolean = false;
   motivo: string = '';
   reservaSeleccionada: any = null;
-  accion: 'aprobar' | 'rechazar' | null = null;
+  accion: 'aprobar' | 'rechazar' | 'cancelar' | null = null;
   mostrarDialogo: boolean = false;
   mostrarDialogoReserva: boolean = false;
 
@@ -32,7 +32,8 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
     { label: 'Pendiente', value: 'RESERVA_PENDIENTE' },
     { label: 'Aprobada', value: 'RESERVA_APROBADA' },
     { label: 'Rechazada', value: 'RESERVA_RECHAZADA' },
-    { label: 'Finalizada', value: 'RESERVA_FINALIZADA' }
+    { label: 'Finalizada', value: 'RESERVA_FINALIZADA' },
+    { label: 'Cancelada', value: 'RESERVA_CANCELADA' }
   ];
 
   public messages: Message[] = null;
@@ -145,7 +146,7 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
     this.accion = 'aprobar';
     this.reservaSeleccionada = reserva;
     this.mostrarModalMotivo = true;
-    this.motivo = 'Aprobación automática.'; // Motivo por defecto
+    this.motivo = 'La reserva se ha realizado exitosamente. Por favor, complete el formulario correspondiente y entréguelo en la Decanatura para la firma del Señor Decano. Puede acceder al formulario en el siguiente enlace: https://facultades.unicauca.edu.co/prlvmen/listadeformatos/pr%C3%A9stamo-de-aulas-auditorios-universitarios.'; // Motivo por defecto
   }
   
   rechazarReserva(reserva: any) {
@@ -185,7 +186,9 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
       case 'RESERVA_RECHAZADA':
         return 'RECHAZADA';
       case 'RESERVA_FINALIZADA':
-        return 'FINALIZADA'
+        return 'FINALIZADA';
+      case 'RESERVA_CANCELADA':
+        return 'CANCELADA';
       default:
         return 'DESCONOCIDO'; 
     }
@@ -223,11 +226,16 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
     }
   }
 
-  abrirModal(reserva: any, accion: 'aprobar' | 'rechazar') {
+  abrirModal(reserva: any, accion: 'aprobar' | 'rechazar' | 'cancelar') {
     this.reservaSeleccionada = reserva;
     this.accion = accion;
     this.mostrarModalMotivo = true;
-    this.motivo = accion === 'rechazar' ? '' : 'Aprobación automática.';
+    // Ajustar el motivo inicial dependiendo de la acción
+    if (accion === 'rechazar' || accion === 'cancelar') {
+      this.motivo = ''; // Dejar vacío para que el usuario lo ingrese
+    } else if (accion === 'aprobar') {
+      this.motivo = 'Reserva realizada. Complete y entregue el formulario en la Decanatura para la firma del Decano. Acceda al formulario aquí: https://facultades.unicauca.edu.co/prlvmen/listadeformatos/pr%C3%A9stamo-de-aulas-auditorios-universitarios.'; // Motivo por defecto para aprobación
+    }
   }
   
   public cerrarModal(): void {
@@ -279,20 +287,41 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
           this.cerrarModal();
         }
       });
+    } else if (this.accion === 'cancelar') {
+      this.reservaTemporalService.cancelarReserva(this.reservaSeleccionada.idReserva, this.motivo).subscribe({
+        next: () => {
+          this.enviarCorreo('cancelada');
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reserva cancelada correctamente.' });
+          this.consultarReservas();
+        },
+        error: (error) => {
+          console.error('Error al cancelar la reserva:', error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cancelar la reserva.' });
+        },
+        complete: () => {
+          this.cerrarModal();
+        }
+      });
     }
   }
   
   private enviarCorreo(accion: string): void {
+    let mensajeAdicional = '';
+    if (accion === 'aprobada') {
+      mensajeAdicional =
+        'Si por algún motivo desea cancelar la reserva, le solicitamos responder a este correo indicando que ya no necesita el espacio reservado. Esto nos ayudará a optimizar el uso de nuestros recursos.';
+    }
     const datosCorreo = {
       nombre: this.reservaSeleccionada.usuario,
       to_email: this.reservaSeleccionada.correo,
       idReserva: this.reservaSeleccionada.idReserva,
-      accion: accion === 'aprobada' ? 'aprobada' : 'rechazada',
+      accion: accion === 'aprobada' ? 'aprobada' : accion === 'rechazada' ? 'rechazada' : 'cancelada',
       fechaReserva: this.reservaSeleccionada.fechaReserva,
       horaInicio: this.reservaSeleccionada.horaInicio,
       horaFin: this.reservaSeleccionada.horaFin,
       salon: this.reservaSeleccionada.salon,
       observaciones: this.motivo,
+      mensajeAdicional: mensajeAdicional,
     };
 
     console.log("DATOS DEL CORREO", datosCorreo);
@@ -363,6 +392,23 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
         });
       }
     });
+  }
+  
+  cancelarReserva(reserva: any): void {
+    if (!reserva || !reserva.idReserva) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Datos insuficientes',
+        detail: 'No se puede cancelar esta reserva porque faltan datos.',
+      });
+      return;
+    }
+  
+    // Configurar el modal para la acción de cancelar
+    this.accion = 'cancelar';
+    this.reservaSeleccionada = reserva;
+    this.mostrarModalMotivo = true;
+    this.motivo = ''; // Inicia con un motivo vacío
   }
   
 }

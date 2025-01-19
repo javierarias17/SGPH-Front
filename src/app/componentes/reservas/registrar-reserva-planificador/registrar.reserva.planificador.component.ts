@@ -36,6 +36,7 @@ export class RegistrarReservaPlanificadorComponent {
     messages: any[];
     desactivarMovimiento: boolean = false; 
     contarEventos: number = 0;
+    public mostrarErrores: boolean = false;
     public idUbicacion: number; 
     public listaRecursos: Array<{ idRecursoFisico: number; nombre: string }> = [];
     public filtro: any = {
@@ -196,6 +197,7 @@ export class RegistrarReservaPlanificadorComponent {
     }  
   
     reservar(): void {
+      this.mostrarErrores = true;
       if (!this.validarHorarios()) {
         this.messageService.showMessage('error', 'La hora fin debe ser mayor a la hora inicio.');
         return;
@@ -523,6 +525,8 @@ export class RegistrarReservaPlanificadorComponent {
       (espacio) => espacio !== this.espacioSeleccionado
     );
     this.espacioSeleccionado = null; // Limpiar selección
+
+    this.buscarFranja();
   }
 
   // Quitar reserva

@@ -118,6 +118,14 @@
           pTooltip="Rechazar"
           (click)="abrirModal(reserva, 'rechazar')"
         ></button>
+        <button
+          pButton
+          icon="pi pi-times"
+          class="p-button-rounded p-button-warning"
+          pTooltip="Cancelar Reserva"
+          *ngIf="reserva.estado === 'APROBADA'"
+          (click)="abrirModal(reserva, 'cancelar')"
+        ></button>
       </td>
     </tr>
   </ng-template>
@@ -141,7 +149,7 @@
 </div>
 
 <p-dialog 
-  header="{{ accion === 'aprobar' ? 'Motivo de Aprobación' : 'Motivo de Rechazo' }}" 
+  header="{{ accion === 'aprobar' ? 'Motivo de Aprobación' : accion === 'rechazar' ? 'Motivo de Rechazo' : 'Motivo de Cancelación' }}" 
   [(visible)]="mostrarModalMotivo" 
   [modal]="true" 
   [responsive]="true" >
@@ -149,7 +157,11 @@
   <div class="p-fluid">
     <div class="p-field">
       <label for="motivo">
-        {{ accion === 'aprobar' ? 'Ingrese motivo de aprobación:' : 'Ingrese motivo de rechazo:' }}
+        {{ 
+          accion === 'aprobar' ? 'Ingrese motivo de aprobación:' : 
+          accion === 'rechazar' ? 'Ingrese motivo de rechazo:' : 
+          'Ingrese motivo de cancelación:'
+        }}
       </label>
       <textarea 
         id="motivo" 

@@ -40,15 +40,12 @@ export class LoginComponent implements OnInit {
         this.isLoggedEstudent = sessionStorage.getItem('isLoggedEstudent') === 'true'; // Recupera el estado
         console.log('Iniciando configuración de login, isLoggedEstudent:', this.isLoggedEstudent);
     
-        const redirectUri = this.isLoggedEstudent
-            ? window.location.origin + '/login-student/ReservaTemporal'
-            : window.location.origin + '/auth/login';
     
         const config: AuthConfig = {
             issuer: 'https://accounts.google.com',
             strictDiscoveryDocumentValidation: false,
             clientId: '209217537458-cmls25384a06iif0mca643mpqrebig26.apps.googleusercontent.com',
-            redirectUri, // URL dinámica basada en isLoggedEstudent
+            redirectUri: window.location.origin + '/auth/login', 
             scope: 'openid profile email',
         };
     
