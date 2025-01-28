@@ -1,0 +1,25 @@
+<div class="modal-container">
+    <h2 class="modal-title">Información detalle cargue</h2>
+  
+    <div class="info-section">
+      <p><span class="info-label">Archivo cargado: </span> <span class="info-value">{{ archivo }}</span></p>
+      <p><span class="info-label">Facultad: </span> <span class="info-value"> FIET </span></p><p>
+        <span class="info-label">Estado: </span>
+        <span class="info-value estado" [ngClass]="{'fallido': config.data.estado === 'FALLO CARGUE', 'exitoso': config.data.estado === 'CARGUE EXITOSO'}">
+          {{ config.data.estado }}
+        </span>
+      </p>
+    </div>
+  
+    <div class="detail-section">
+      <h3 class="detail-title">Detalle cargue:</h3>
+      <div *ngFor="let detalle of detalleCargue">
+        <p class="detail-item">
+          <span class="detail-icon">📌</span> {{ detalle }}
+        </p>
+      </div>
+    </div>
+  
+    <button pButton type="button" label="Cerrar" class="p-button-secondary" (click)="cerrarModal()"></button>
+  </div>
+  

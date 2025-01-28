@@ -12,5 +12,6 @@ export interface CursoDTO {
     cupo: number,
     periodoAcademico: string,
     aulas: any[]
-    idAsignatura: string
+    idAsignatura: string,
+    esValidar?: boolean;
 }

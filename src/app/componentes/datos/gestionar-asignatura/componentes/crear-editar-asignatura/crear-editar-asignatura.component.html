@@ -85,43 +85,46 @@
 
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Código de asignatura</label>
-            <input type="text" pInputText [ngClass]="{
-                        'ng-invalid ng-dirty':
-                            this.codigoAsignatura().invalid &&
-                            this.codigoAsignatura().touched
-                    }" formControlName="codigoAsignatura" placeholder=" ">
-            <small class="p-error block fade-in" *ngIf="this.codigoAsignatura().invalid &&
-                    (this.codigoAsignatura().touched)">
-                Código asignatura es obligatorio
+            <input type="text" 
+                   pInputText 
+                   [ngClass]="{'ng-invalid ng-dirty': codigoAsignatura().invalid && codigoAsignatura().touched}" 
+                   formControlName="codigoAsignatura" 
+                   placeholder=" " 
+                   (input)="validateOnlyNumbers($event, 'codigoAsignatura')">
+            <small class="p-error block fade-in" *ngIf="codigoAsignatura().hasError('invalidCharacters') && codigoAsignatura().touched">
+                El código de asignatura solo debe contener números.
             </small>
-
         </div>
+        
 
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">OID asignatura</label>
-
-            <input type="text" pInputText [ngClass]="{
-                    'ng-invalid ng-dirty':
-                        this.OID().invalid &&
-                        this.OID().touched
-                }" formControlName="oid">
-            <small class="p-error block fade-in" *ngIf="this.OID().invalid &&
-                    (this.OID().touched)">
-                OID asignatura es obligatorio
+            <input type="text" 
+                   pInputText 
+                   [ngClass]="{'ng-invalid ng-dirty': OID().invalid && OID().touched}" 
+                   formControlName="oid" 
+                   placeholder=" " 
+                   (input)="validateNoSpecialCharacters($event, 'oid')">
+            <small class="p-error block fade-in" *ngIf="OID().hasError('invalidCharacters') && OID().touched">
+                El OID de la asignatura no debe contener caracteres especiales.
             </small>
         </div>
+        
+        
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Nombre asignatura</label>
-            <input type="text" pInputText [ngClass]="{
-                    'ng-invalid ng-dirty':
-                        this.nombre().invalid &&
-                        this.nombre().touched
-                }" formControlName="nombre">
-            <small class="p-error block fade-in" *ngIf="this.nombre().invalid &&
-                    (this.nombre().touched)">
-                Nombre asignatura es obligatorio
+            <input type="text" 
+                   pInputText 
+                   [ngClass]="{'ng-invalid ng-dirty': nombre().invalid && nombre().touched}" 
+                   formControlName="nombre" 
+                   placeholder=" " 
+                   (input)="validateOnlyLetters($event, 'nombre')">
+            <small class="p-error block fade-in" *ngIf="nombre().hasError('invalidCharacters') && nombre().touched">
+                El nombre de la asignatura solo debe contener letras.
             </small>
         </div>
+        
+
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Semestre</label>
             <p-inputNumber [ngClass]="{
@@ -138,28 +141,30 @@
 
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Horas por semana</label>
-            <input type="text" pInputText [ngClass]="{
-                    'ng-invalid ng-dirty':
-                        this.horasSemana().invalid &&
-                        this.horasSemana().touched
-                }" formControlName="horasSemana">
-            <small class="p-error block fade-in" *ngIf="this.horasSemana().invalid &&
-                (this.horasSemana().touched)">
-                Horas por semana es obligatorio
+            <input type="text" 
+                   pInputText 
+                   [ngClass]="{'ng-invalid ng-dirty': horasSemana().invalid && horasSemana().touched}" 
+                   formControlName="horasSemana" 
+                   placeholder=" " 
+                   (input)="validateOnlyNumbers($event, 'horasSemana')">
+            <small class="p-error block fade-in" *ngIf="horasSemana().hasError('invalidCharacters') && horasSemana().touched">
+                Las horas por semana solo deben contener números.
             </small>
         </div>
+        
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Pensum</label>
-            <input type="text" pInputText [ngClass]="{
-                        'ng-invalid ng-dirty':
-                            this.pensum().invalid &&
-                            this.pensum().touched
-                    }" formControlName="pensum">
-            <small class="p-error block fade-in" *ngIf="this.pensum().invalid &&
-                    (this.pensum().touched)">
-                Pensum es obligatorio
+            <input type="text" 
+                   pInputText 
+                   [ngClass]="{'ng-invalid ng-dirty': pensum().invalid && pensum().touched}" 
+                   formControlName="pensum" 
+                   placeholder=" " 
+                   (input)="validateNoSpecialCharacters($event, 'pensum')">
+            <small class="p-error block fade-in" *ngIf="pensum().hasError('invalidCharacters') && pensum().touched">
+                El pensum no debe contener caracteres especiales.
             </small>
         </div>
+        
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">¿Aplica E.F secundario?</label>
             <p-dropdown [options]="opcionesHabilitado"

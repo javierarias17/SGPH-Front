@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { CursoDTO } from '../../datos/gestionar-curso/model/curso-dto';
 import { environment } from 'src/environments/environment';
 
@@ -16,7 +16,12 @@ export class CursoService{
 	}
 	public guardarCurso(curso: any): Observable<any> {
 		const ur = environment.url + this.urlCurso + `/guardarCurso`
-		return this.http.post(ur,curso)
+		return this.http.post(ur,curso).pipe(
+				catchError((error: HttpErrorResponse) => {
+				// Retornar el error al componente para manejarlo allí
+				return throwError(() => error);
+			})
+		);
 	}
 	public eliminarCurso(curso: number): Observable<any> {
 		const ur = environment.url + this.urlCurso + `/eliminarCurso/${curso}`

@@ -146,7 +146,7 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
     this.accion = 'aprobar';
     this.reservaSeleccionada = reserva;
     this.mostrarModalMotivo = true;
-    this.motivo = 'La reserva se ha realizado exitosamente. Por favor, complete el formulario correspondiente y entréguelo en la Decanatura para la firma del Señor Decano. Puede acceder al formulario en el siguiente enlace: https://facultades.unicauca.edu.co/prlvmen/listadeformatos/pr%C3%A9stamo-de-aulas-auditorios-universitarios.'; // Motivo por defecto
+    this.motivo = 'Reserva aprobada. Complete y entregue el formulario en la Decanatura para que la reserva sea autorizada por el decano. Puede acceder al formulario en el siguiente enlace: https://facultades.unicauca.edu.co/prlvmen/listadeformatos/pr%C3%A9stamo-de-aulas-auditorios-universitarios.'; // Motivo por defecto
   }
   
   rechazarReserva(reserva: any) {
@@ -234,7 +234,7 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
     if (accion === 'rechazar' || accion === 'cancelar') {
       this.motivo = ''; // Dejar vacío para que el usuario lo ingrese
     } else if (accion === 'aprobar') {
-      this.motivo = 'Reserva realizada. Complete y entregue el formulario en la Decanatura para la firma del Decano. Acceda al formulario aquí: https://facultades.unicauca.edu.co/prlvmen/listadeformatos/pr%C3%A9stamo-de-aulas-auditorios-universitarios.'; // Motivo por defecto para aprobación
+      this.motivo = 'Reserva aprobada. Complete y entregue el formulario en la Decanatura de la FIET para la autorización del decano. Acceda en el siguiente enlace: https://facultades.unicauca.edu.co/prlvmen/listadeformatos/pr%C3%A9stamo-de-aulas-auditorios-universitarios.'; // Motivo por defecto para aprobación
     }
   }
   

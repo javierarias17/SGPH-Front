@@ -114,16 +114,16 @@
         *ngIf="reserva.estado === 'PENDIENTE'"
           pButton
           icon="pi pi-times"
-          class="p-button-rounded p-button-danger"
+          class="p-button-rounded p-button-danger mr-2"
           pTooltip="Rechazar"
           (click)="abrirModal(reserva, 'rechazar')"
         ></button>
         <button
           pButton
-          icon="pi pi-times"
+          icon="pi pi-ban"
           class="p-button-rounded p-button-warning"
           pTooltip="Cancelar Reserva"
-          *ngIf="reserva.estado === 'APROBADA'"
+          *ngIf="reserva.estado === 'APROBADA' || reserva.estado === 'PENDIENTE'"
           (click)="abrirModal(reserva, 'cancelar')"
         ></button>
       </td>

@@ -65,7 +65,8 @@ export class GestionarCursoComponent {
         public periodoAcademicoSharedService:PeriodoAcademicoSharedService,
         private dialog: DialogService,
         private messageService: ShowMessageService,
-        private PlanificacionManualService:PlanificacionManualService
+        private PlanificacionManualService:PlanificacionManualService,
+        private message: MessageService
     ) {
     }
 
@@ -93,6 +94,8 @@ export class GestionarCursoComponent {
     }
 
     private consultarCursosPorFiltro(){
+        console.log('Parámetros enviados:', this.filtroCursoPlanificacionDTO);
+
         this.PlanificacionManualService.consultarCursosPlanificacionPorFiltro(this.filtroCursoPlanificacionDTO).subscribe(
             (response: any) => {
             this.consultarPeriodoAcademicoVigente();
@@ -113,10 +116,18 @@ export class GestionarCursoComponent {
             if(this.programasSeleccionados.length === 1){
                 this.asignaturaService.consultarAsignaturasActivasPorIdPrograma(this.programasSeleccionados[0]).subscribe(
                     (response: any) => {
+                        console.log("ASIGNATURAS CONSULTADAS", response.length);
                         if(response.length === 0){
                             this.listaAsignaturas=[];
                         }else{
-                            this.listaAsignaturas = response.map((asignatura: any) => ({ nombre: asignatura.nombre, semestre: asignatura.semestre, idAsignatura:asignatura.idAsignatura }));
+                            console.log("AQUI ENTRA");
+                            this.listaAsignaturas = response.map((asignatura: any) => ({
+                                idAsignatura: asignatura.idAsignatura,
+                                nombre: asignatura.nombre,
+                                semestre: asignatura.semestre
+                            }));
+                            console.log('Lista de asignaturas:', this.listaAsignaturas);
+                            //this.listaAsignaturas = response.map((asignatura: any) => ({ nombre: asignatura.nombre, semestre: asignatura.semestre, idAsignatura:asignatura.idAsignatura }));
                         }
                         this.consultarCursosPorFiltro();
                     },
@@ -140,13 +151,15 @@ export class GestionarCursoComponent {
         }
     }
 
-    public onAsignaturasChange(){        
-        if( this.asignaturasSeleccionadas){
-            this.filtroCursoPlanificacionDTO.listaIdAsignatura = this.asignaturasSeleccionadas.map(asignatura => asignatura.idAsignatura);
-        }else{
-            this.filtroCursoPlanificacionDTO.listaIdAsignatura =[];
+    public onAsignaturasChange(){     
+        if (this.asignaturasSeleccionadas && this.asignaturasSeleccionadas.length > 0) {
+            this.filtroCursoPlanificacionDTO.listaIdAsignatura = this.asignaturasSeleccionadas
+                .filter(id => id !== undefined && id !== null);
+            console.log('Lista de asignaturas filtradas:', this.filtroCursoPlanificacionDTO.listaIdAsignatura);
+        } else {
+            this.filtroCursoPlanificacionDTO.listaIdAsignatura = [];
         }
-        this.filtroCursoPlanificacionDTO.pagina=this.PAGINA_CERO;
+        this.filtroCursoPlanificacionDTO.pagina = this.PAGINA_CERO;
         this.consultarCursosPorFiltro();
     }
 
@@ -182,7 +195,7 @@ export class GestionarCursoComponent {
         this.consultarCursosPorFiltro();
     }
     crear() {
-        this.dialog.open(CrearEditarVerCursoComponent, {
+        const ref =this.dialog.open(CrearEditarVerCursoComponent, {
             height: 'auto',
             width: '800px',
             header: 'Crear curso',
@@ -190,7 +203,23 @@ export class GestionarCursoComponent {
             data: {
               lectura: false
             }
-        })
+        });
+        ref.onClose.subscribe((result) => {
+            if (result === 'success') {
+                this.message.add({
+                    severity: 'success',
+                    summary: 'Curso guardado',
+                    detail: 'El curso fue guardado correctamente',
+                  });
+                  this.consultarCursosPorFiltro();
+            } else if (result?.status === 'error') {
+                this.message.add({
+                  severity: 'error',
+                  summary: 'Error al guardar curso',
+                  detail: result.detail,
+                });
+            }
+        });
     }
     ver(curso: CursoPlanificacionOutDTO) {
         this.dialog.open(CrearEditarVerCursoComponent, {
@@ -204,19 +233,39 @@ export class GestionarCursoComponent {
             }
         })
     }
-    editar(curso: CursoPlanificacionOutDTO) {
-        this.dialog.open(CrearEditarVerCursoComponent, {
-            height: 'auto',
-            width: '800px',
-            header: 'Editar curso',
-            closable: false,
-            data: {
-              id: curso.idCurso,
-              lectura: false
-            }
-        })
-    }
     
+    editar(curso: CursoPlanificacionOutDTO) {
+        const ref = this.dialog.open(CrearEditarVerCursoComponent, {
+          height: 'auto',
+          width: '800px',
+          header: 'Editar curso',
+          closable: false,
+          data: {
+            id: curso.idCurso,
+            lectura: false,
+          },
+        });
+      
+        ref.onClose.subscribe((result) => {
+          if (result === 'success') {
+            // Éxito
+            this.message.add({
+              severity: 'success',
+              summary: 'Curso guardado',
+              detail: 'El curso fue actualizado correctamente',
+            });
+            this.consultarCursosPorFiltro();
+          } else if (result?.status === 'error') {
+            // Error
+            this.message.add({
+              severity: 'error',
+              summary: 'Error al guardar curso',
+              detail: result.detail,
+            });
+          }
+        });
+    }
+        
     /*Eliminar curso*/
     public eliminarCurso(cursoPlanificacionOutDTOSeleccionado: CursoPlanificacionOutDTO) {
         this.cursoPlanificacionOutDTOSeleccionado = { ...cursoPlanificacionOutDTOSeleccionado};

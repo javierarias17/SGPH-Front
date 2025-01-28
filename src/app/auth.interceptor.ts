@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
 		return next.handle(authReq).pipe(
 			catchError((error: HttpErrorResponse) => {
 				// Si el error es un 401, redirige al usuario a la página de login
-				if (error.status === 401) {
+				if (error.status === 401 && !this.esRutaPublica(req.url)) {
 					this.tokenService.logOut();  // Limpia toda la información del local storage
 					this.router.navigate(['/auth/login']);  
 				}
@@ -39,4 +39,15 @@ export class AuthInterceptor implements HttpInterceptor {
 			})
 		);
   	}
+
+	private esRutaPublica(url: string): boolean {
+		// Compara la URL completa con los segmentos que sabes están abiertos en backend
+		// Devuelve true si coincide con cualquiera de esos "paths" públicos
+		return (
+		  url.includes('/Autenticacion/') ||
+		  url.includes('/AdministrarHorario/') ||
+		  url.includes('/AdministrarReservaTemporal/')
+		);
+	 }
+	  
 }

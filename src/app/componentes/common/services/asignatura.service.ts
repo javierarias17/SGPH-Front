@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FiltroBase } from '../model/filtro-base';
 import { FiltroAsignaturasDTO } from '../../datos/gestionar-asignatura/model/filtro-asignaturas';
@@ -53,7 +53,12 @@ export class AsignaturaService{
     }
     public guardarAsignatura(save: AsignaturaOutDTO): Observable <AsignaturaOutDTO> {
         const url = `${environment.url}${this.urlAsignatura}/guardarAsignatura`;
-        return this.http.post<any>(url, save);   
+        return this.http.post<any>(url, save).pipe(
+                        catchError((error: HttpErrorResponse) => {
+                        // Retornar el error al componente para manejarlo allí
+                        return throwError(() => error);
+                    })
+        );
     }
     public inactivarAsignatura(id: number): Observable <any> {
         const url = `${environment.url}${this.urlAsignatura}/inactivarAsignaturaPorId/${id}`;

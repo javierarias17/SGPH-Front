@@ -49,3 +49,18 @@
     text-align: center;
     margin-top: 20px;
 }
+
+:host ::ng-deep .boton-grande {
+  font-size: 1.5rem !important; /* Tamaño del texto */
+  padding: 1rem 1rem !important; /* Espaciado interno */
+  height: 50px !important; /* Altura */
+  width: 200px !important; /* Ancho */
+  border-radius: 10px !important; /* Opcional: esquinas redondeadas */
+  display: inline-flex !important; /* Asegura alineación correcta */
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+:host ::ng-deep .boton-grande .pi {
+  font-size: 2.5rem !important; /* Tamaño del ícono */
+}

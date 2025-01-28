@@ -3,11 +3,11 @@ import { EstadoCursoHorarioEnum } from "../../../../common/enum/estado.curso.hor
 export class FiltroCursoPlanificacionDTO{
     public estadoCursoHorario: EstadoCursoHorarioEnum;
 	
-	public listaIdFacultad: number[];
+	public listaIdFacultad: number[] = [];
 
-	public listaIdPrograma: number[];
+	public listaIdPrograma: number[] = [];
 
-	public listaIdAsignatura: number[];
+	public listaIdAsignatura: number[] = [];
 
 	public semestre:number;
 
@@ -17,6 +17,9 @@ export class FiltroCursoPlanificacionDTO{
 	
 	public cantidadDocentes:number;
 
-	constructor(){		
+	constructor(){	
+		this.listaIdFacultad = [];
+        this.listaIdPrograma = [];
+        this.listaIdAsignatura = [];	
 	} 
 }

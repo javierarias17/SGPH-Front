@@ -97,6 +97,7 @@ export class GestionarDocenteComponent {
 	}
 	/*Inactivar Docente*/
 	public inactivarDocente(docenteOutDTOSeleccionado: DocenteOutDTO) {
+		this.docenteOutDTOSeleccionado.esValidar = false;
 		this.docenteOutDTOSeleccionado = { ...docenteOutDTOSeleccionado};
 		const nombreCompleto = this.obtenerNombreCompletoDocente();
 
@@ -111,9 +112,16 @@ export class GestionarDocenteComponent {
 				} else {
 					this.docenteOutDTOSeleccionado.estado = EstadoDocenteEnum.ACTIVO
 				}
-				this.docenteService.guardarDocente(this.docenteOutDTOSeleccionado).subscribe(r => {
-					this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Docente activado/inactivado', life: 3000 });
-				})
+				// Llama al servicio de guardar con el estado actualizado
+				this.docenteService.guardarDocente(this.docenteOutDTOSeleccionado).subscribe({
+					next: (r) => {
+						this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Docente activado/inactivado', life: 3000 });
+					},
+					error: (err) => {
+						this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo realizar la operación', life: 3000 });
+						console.error(err);
+					},
+				});
             },
             reject: () => {
               this.messageService.add({ severity: 'error', summary: 'Cancelado', detail: 'Operación cancelada', life: 3000 });
@@ -124,13 +132,16 @@ export class GestionarDocenteComponent {
 	numeroIdentificacion
 	crearDocente() {
 		const ref = this.dialogService.open(CrearEditardocenteComponent, {
-			height: 'auto',
-			width: '800px',
-			header: 'Crear docente',
-			closable: false,
-			data: {
-			  lectura: false
-			}
+				height: 'auto',
+				width: '800px',
+				header: 'Crear docente',
+				closable: false,
+				data: {
+				lectura: false
+				}			
+			})
+			ref.onClose.subscribe(r => {
+				this.consultarDocentes();
 		  },)
 	}
 	editarDocente(docente: DocenteOutDTO) {

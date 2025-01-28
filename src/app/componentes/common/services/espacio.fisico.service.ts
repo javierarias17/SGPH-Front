@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { FiltroEspacioFisicoDTO } from '../../datos/gestionar-espacio-fisico/model/in/filtro.espacio.fisico.dto';
 import { TipoEspacioFisicoOutDTO } from '../../datos/gestionar-espacio-fisico/model/out/tipo.espacio.fisico.out.dto';
 import { EspacioFisicoOutDTO } from '../../datos/gestionar-espacio-fisico/model/out/espacio.fisico.out.dto';
@@ -161,7 +161,12 @@ export class EspacioFisicoService {
 
 	public guardarEspacioFisico(save: EspacioFisicoOutDTO): Observable<EspacioFisicoDTO> {
 		const url = `${environment.url}${this.urlAdministrarEspacioFisico}/guardarEspacioFisico`;
-		return this.http.post<any>(url, save);
+		return this.http.post<any>(url, save).pipe(
+			catchError((error: HttpErrorResponse) => {
+				// Retornar el error al componente para manejarlo allí
+				return throwError(() => error);
+			})
+		);
 	}
 
 	public activarInactivar(id: number): Observable<any> {
@@ -173,5 +178,17 @@ export class EspacioFisicoService {
 		const url = `${environment.url}${this.urlAdministrarEspacioFisico}/consultarTiposEspaciosFisicos`;
 		return this.http.get<TipoEspacioFisicoOutDTO[]>(url);
 	} 
-	  
+	 
+	public subirArchivo(formData: FormData): Observable<any> {
+		const url = `${environment.url}${this.urlAdministrarEspacioFisico}/cargarEspaciosFisicos`;
+		return this.http.post<any>(url, formData).pipe(
+			map((response) => response),
+			catchError((error: HttpErrorResponse) => {
+				console.error('Error al subir archivo:', error);
+				return throwError(() => error);
+			})
+		);
+	}
+	
+	
 }

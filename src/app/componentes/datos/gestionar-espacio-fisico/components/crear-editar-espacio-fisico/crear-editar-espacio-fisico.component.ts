@@ -8,6 +8,7 @@ import { EdificioOutDTO } from 'src/app/componentes/datos/gestionar-espacio-fisi
 import { ShowMessageService } from 'src/app/shared/service/show-message.service';
 import { TipoEspacioFisicoOutDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/tipo.espacio.fisico.out.dto';
 import { EspacioFisicoService } from 'src/app/componentes/common/services/espacio.fisico.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-crear-editar-espacio-fisico',
@@ -32,6 +33,7 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
     private espacioFisicoService: EspacioFisicoService,
     private fb: FormBuilder,
     private messageService: ShowMessageService,
+    private message: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -111,8 +113,8 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
       estado: ['', Validators.required],
       capacidad: ['', [Validators.required, Validators.min(1)]],
       tipo: ['', Validators.required],
-      OID: ['', Validators.required],
-      recursos: ['', Validators.required],
+      OID: [''],
+      recursos: [''],
     });
   }
   
@@ -143,8 +145,6 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
         recursos: this.espacio.recursos?.map(r => r.idRecurso) || [],
     });
 
-    console.log("FORMULARIO OID", this.formulario);
-    // Deshabilitar los campos no editables
     this.idUbicacion().disable();
     this.salon().disable();
   }
@@ -169,10 +169,6 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
   }
 
   guardar() {
-    console.log('Formulario enviado:', this.formulario.value);
-    console.log("Formulario actual:", this.formulario.value); // Verifica si los valores están presentes
-    console.log("Valor de idUbicacion:", this.formulario.get('idUbicacion')?.value);
-    console.log("Valor de salon:", this.formulario.get('salon')?.value);
     
     if (this.formulario.valid) {
         const espacioSave: EspacioFisicoOutDTO = {
@@ -183,18 +179,25 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
             idUbicacion: this.idUbicacion().value || null,
             salon: this.salon().value || null,
             OID: this.OID().value || null,
+            recursos: this.recursos().value && this.recursos().value.length > 0 ? this.recursos().value : [], 
             esValidar: false,
         };
 
-        console.log("Datos a guardar:", espacioSave);
         this.espacioFisicoService.guardarEspacioFisico(espacioSave).subscribe({
             next: (response) => {
                 this.messageService.showMessage("success", "Espacio físico guardado correctamente");
                 this.ref.close();
             },
-            error: (err) => {
-                console.error("Error al guardar el espacio físico:", err);
-                this.messageService.showMessage("error", "Error al guardar el espacio físico.");
+            error: (error) => {
+              if (error.error && Array.isArray(error.error)) {
+                // Extraer los mensajes de validación (defaultMessage)
+                const mensajes = error.error
+                .map((err: any) => `${err.field ? `${err.field}: ` : ''}${err.defaultMessage}`)
+                .join(', ');
+                this.message.add({ severity: 'error', summary: 'Error', detail: mensajes });
+              } else {
+                  this.message.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error inesperado' });
+              }
             },
         });
     } else {
@@ -231,4 +234,15 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
    OID(): FormControl {
     return this.formulario.get('OID') as FormControl
    }
+   validateOIDInline(event: any) {
+    const inputValue = event.target.value;
+
+    // Expresión regular para caracteres especiales
+  if (/[^a-zA-Z0-9]/.test(inputValue)) {
+        this.OID().setErrors({ invalidCharacters: true }); // Error personalizado
+    } else {
+        this.OID().setErrors(null); // Elimina el error si el valor es válido
+    }
+  }
+
 }

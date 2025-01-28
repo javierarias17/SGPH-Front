@@ -55,6 +55,8 @@ import { DetallesReservaTemporalComponent } from './reservas/detalles-reserva-te
 import { RegistrarReservaPlanificadorComponent } from './reservas/registrar-reserva-planificador/registrar.reserva.planificador.component';
 import { QRCodeModule  } from 'angularx-qrcode';
 import { VisualizarEspacioFisicoComponent } from './reportes/ver-horario-espacio-fisico/visualizar-espacio-fisico/visualizar.espacio.fisico.component';
+import { ModalDetalleCargueComponent } from './datos/gestionar-espacio-fisico/components/detalle-cargue/detalle-cargue-espacios.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
 	declarations: [
@@ -91,6 +93,7 @@ import { VisualizarEspacioFisicoComponent } from './reportes/ver-horario-espacio
 		DetallesReservaTemporalComponent,
 		RegistrarReservaPlanificadorComponent,
 		VisualizarEspacioFisicoComponent, 
+		ModalDetalleCargueComponent
 	],
 	imports: [
 		CardModule,

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 import { PersonaOutDTO } from "../../datos/gestionar-persona/model/out/persona.out.dto";
 import { PersonaInDTO } from "../../datos/gestionar-persona/model/in/persona.in.dto";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 import { TipoIdentificacionOutDTO } from "../../seguridad/gestionar-usuario/model/out/tipo.identificacion.out.dto";
 
@@ -15,7 +15,12 @@ export class PersonaService {
 
     public guardarPersona(personaInDTO:PersonaInDTO): Observable<PersonaOutDTO>{
         const url = `${environment.url}${this.urlPersona}/guardarPersona`;
-        return this.http.post<any>(url, personaInDTO);   
+        return this.http.post<any>(url, personaInDTO).pipe(
+                    catchError((error: HttpErrorResponse) => {
+                        // Retornar el error al componente para manejarlo allí
+                        return throwError(() => error);
+                    })
+                );   
     }
 
 	public consultarPersonaPorIdentificacion(idTipoIdentificacion:number, numeroIdentificacion:string) {

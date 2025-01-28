@@ -1,22 +1,49 @@
-<div class="login-student-container">
-    <div class="login-header">
-      <h1>Portal de Estudiantes</h1>
-      <p>Inicia sesión con tu cuenta de Google para continuar</p>
+<div class="container">
+  <!-- MITAD IZQUIERDA: IMAGEN -->
+  <div class="left-section">
+    <!-- Si quieres algo aquí, puedes ponerlo, 
+         pero ahora solo se muestra la imagen de fondo -->
+  </div>
+
+  <!-- MITAD DERECHA: Título, descripción y login en columna -->
+  <div class="right-section">
+    <!-- Título principal -->
+    <img 
+    src="https://www.unicauca.edu.co/wp-content/uploads/2023/11/Logo-Unicauca-Azul@3x.png" 
+    alt="Escudo Universidad del Cauca" 
+    class="escudo-unicauca"
+    />
+    <h1>Sistema de Reservas de Espacios Físicos</h1>
+
+    <!-- Descripción de las reservas -->
+    <div class="reservas-descripcion">
+      <p>
+        Aquí puedes gestionar las reservas de salones, laboratorios y demás
+        espacios dentro de la institución. Por favor inicia sesión para continuar.
+      </p>
     </div>
-  
-    <div class="login-content">
-      <button class="google-login-btn" (click)="iniciarSesionGoogleEstudent()">
-        <img
-          src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-          alt="Google"
-          class="google-icon"
-        />
-        Continuar con Google
-      </button>
-    </div>
-  
-    <div class="login-footer">
-      <p>¿Necesitas ayuda? <a href="/soporte">Contáctanos</a></p>
+
+    <!-- Tarjeta de login -->
+    <div class="login-student-container">
+      <div class="login-header">
+        <h1>Portal de Reservas</h1>
+        <p>Inicia sesión con tu cuenta de Google para continuar</p>
+      </div>
+
+      <div class="login-content">
+        <button class="google-login-btn" (click)="iniciarSesionGoogleEstudent()">
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google"
+            class="google-icon"
+          />
+          Continuar con Google
+        </button>
+      </div>
+
+      <div class="login-footer">
+        <p>¿Necesitas ayuda? <a href="/soporte">Contáctanos</a></p>
+      </div>
     </div>
   </div>
-  
+</div>

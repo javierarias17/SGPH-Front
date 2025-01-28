@@ -53,7 +53,7 @@
                                 this.idFacultad().invalid &&
                                 this.idFacultad().touched
                         }" [options]="lstFacultadOutDTO" optionValue="idFacultad" optionLabel="abreviatura"
-                formControlName="idFacultad" [showClear]="true" appendTo="body" (ngModelChange)="onFacultadChange()">
+                formControlName="idFacultad" [showClear]="true" appendTo="body">
                 <ng-template let-facultad pTemplate="item">
                     <div class="flex align-items-center gap-2">
                         <div><strong>{{ facultad.abreviatura }}</strong>-{{ facultad.nombre }}</div>
@@ -69,7 +69,7 @@
             <label class="required">Programa</label>
             <p-dropdown [placeholder]="' '" [options]="listaProgramas" optionValue="idPrograma"
                 optionLabel="abreviatura" formControlName="idPrograma" [showClear]="true" appendTo="body"
-                (ngModelChange)="onProgramaChange()"
+                
                 [ngClass]="{
                         'ng-invalid ng-dirty':
                             this.idPrograma().invalid &&
@@ -90,7 +90,7 @@
             <label class="required">Asignatura</label>
             <p-dropdown [placeholder]="' '" [options]="listaAsignaturas" optionValue="idAsignatura"
                 optionLabel="nombre" formControlName="idAsignatura" [showClear]="true" appendTo="body" [filter]="true"
-                (ngModelChange)="onAsignaturaChange()"
+                
                 [ngClass]="{
                         'ng-invalid ng-dirty':
                             this.idAsignatura().invalid &&
@@ -107,7 +107,7 @@
                 Asignatura es obligatorio
             </small>
         </div>
-
+        <!--
         <div class="p-fluid col sm:col-12 md:col-6" *ngIf="this.asignaturaSeleccionada">
             <label class=" col-12 md:col-2">OID asignatura</label>
             <p class="label col-12 md:col-6">{{this.asignaturaSeleccionada?.oid}}</p>
@@ -124,6 +124,7 @@
             <label class=" col-12 md:col-2" >Horas por semana</label>
             <p class="label col-12 md:col-6">{{this.asignaturaSeleccionada?.horasSemana}}</p>
         </div>
+         -->
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Grupo</label>
             <p-dropdown [placeholder]="' '" [options]="listaGrupos"

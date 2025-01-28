@@ -1,9 +1,10 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { TokenService } from '../componentes/common/services/token.service';
 import { PeriodoAcademicoSharedService } from '../shared/service/periodo.academico.shared.service';
+import { ReservaTemporalService } from '../componentes/common/services/reserva.temporal.service';
 
 @Component({
     selector: 'app-menu',
@@ -43,7 +44,9 @@ export class AppMenuComponent implements OnInit {
 
     panelMenuItems: MenuItem[] = [];
 
-    constructor(public layoutService: LayoutService, public periodoAcademicoSharedService:PeriodoAcademicoSharedService, private tokenService: TokenService) { }
+    constructor(public layoutService: LayoutService, public periodoAcademicoSharedService:PeriodoAcademicoSharedService, private tokenService: TokenService,
+        private reservaTemporalService: ReservaTemporalService, private messageService: MessageService
+    ) { }
 
     ngOnInit() {
         //Se consultan los roles del usuario
@@ -91,8 +94,14 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Generar reporte SIMCA', icon: 'pi pi-download', routerLink: ['reportes/generar-reporte-simca'], visible: authorities.includes('ROLE_PLANIFICADOR') },
                     { label: 'Generar reporte docente', icon: 'pi pi-download', routerLink: ['reportes/generar-reporte-docente'], visible: authorities.includes('ROLE_PLANIFICADOR')  },
                     { label: 'Generar reporte espacio físico', icon: 'pi pi-download', routerLink: ['reportes/generar-reporte-espacio-fisico'], visible: authorities.includes('ROLE_PLANIFICADOR') },
-                    { label: 'Generar reporte franjas libres', icon: 'pi pi-download', routerLink: ['reportes/generar-reporte-franjas-libres'], visible: authorities.includes('ROLE_PLANIFICADOR') }
-                ],
+                    { label: 'Generar reporte franjas libres', icon: 'pi pi-download', routerLink: ['reportes/generar-reporte-franjas-libres'], visible: authorities.includes('ROLE_PLANIFICADOR') },
+                    {
+                        label: 'Generar historial de reservas temporales',
+                        icon: 'pi pi-download',
+                        command: () => this.descargarHistorialExcel(),
+                        visible: authorities.includes('ROLE_PRESTAMISTA'),
+                      },
+                    ],
                 visible:  authorities.includes('ROLE_PLANIFICADOR') || authorities.includes('ROLE_PRESTAMISTA')    
             }, 
             {
@@ -121,4 +130,47 @@ export class AppMenuComponent implements OnInit {
     public actualizarPeriodoAcademicoVigente(){
         this.periodoAcademicoSharedService.emitirDataPeriodoVigente();
     }
+
+    descargarHistorialExcel(): void {
+        this.periodoAcademicoSharedService.consultarPeriodoAcademicoVigente().subscribe({
+          next: (periodoVigente: any) => {
+            if (!periodoVigente || !periodoVigente.idPeriodoAcademico) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'No hay un periodo académico vigente para descargar el historial.',
+              });
+              return;
+            }
+      
+            this.reservaTemporalService.descargarHistorialReservas(periodoVigente.idPeriodoAcademico).subscribe({
+              next: (blob) => {
+                const a = document.createElement('a');
+                const objectUrl = URL.createObjectURL(blob);
+                a.href = objectUrl;
+                a.download = `historial_reservas_${periodoVigente.idPeriodo}.xlsx`;
+                a.click();
+                URL.revokeObjectURL(objectUrl);
+              },
+              error: (err) => {
+                console.error('Error al descargar el historial de reservas:', err);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'No se pudo descargar el historial de reservas.',
+                });
+              },
+            });
+          },
+          error: (err) => {
+            console.error('Error al consultar el periodo académico vigente:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'No se pudo consultar el periodo académico vigente.',
+            });
+          },
+        });
+      }
+      
 }

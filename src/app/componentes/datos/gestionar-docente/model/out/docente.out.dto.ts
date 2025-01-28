@@ -2,6 +2,7 @@ import { EstadoDocenteEnum } from "src/app/componentes/common/enum/estado.docent
 
 export class DocenteOutDTO{
     public idPersona: number;
+    public idDocente: number;
     public idTipoIdentificacion: number;
     public numeroIdentificacion: string;
     public codigoTipoIdentificacion: string;
@@ -12,4 +13,5 @@ export class DocenteOutDTO{
     public email: string;
     public codigo: string;
     public estado: EstadoDocenteEnum;
+    public esValidar?: boolean;
 }

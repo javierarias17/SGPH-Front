@@ -31,4 +31,13 @@
   .mr-2 {
     margin-right: 0.5rem;
   }
+
+  :host ::ng-deep .p-dialog {
+    width: 50vw !important;
+    max-width: 50vw !important;
+  }
+  :host ::ng-deep .p-dialog .p-dialog-content {
+    min-height: 100px;
+  }
+  
   

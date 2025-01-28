@@ -8,7 +8,6 @@ export class PersonaOutDTO{
     public primerApellido:string;
     public segundoApellido:string;
     public email:string;
-
     public sinReferencia:boolean;
 
     constructor(){ }

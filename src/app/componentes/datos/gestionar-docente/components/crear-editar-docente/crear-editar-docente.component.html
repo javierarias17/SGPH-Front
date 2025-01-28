@@ -25,6 +25,10 @@
             <p class="label col-12 md:col-6">{{this.docente.segundoApellido}}</p>
         </div>
         <div class="p-fluid col-12 flex">
+            <label class="col-12 md:col-2">Código</label>
+            <p class="label col-12 md:col-6">{{ this.docente.codigo }}</p>
+        </div>
+        <div class="p-fluid col-12 flex">
             <label class=" col-12 md:col-2">Correo electrónico</label>
             <p class="label col-12 md:col-6">{{this.docente.email}}</p>
         </div>
@@ -60,7 +64,12 @@
                     (this.numeroIdentificacion().touched)">
                 Número identificación es obligatorio
             </small>
-
+            <small
+                class="p-error block fade-in"
+                *ngIf="numeroIdentificacion().hasError('pattern') && numeroIdentificacion().touched"
+            >
+                Solo se permiten números.
+            </small>
         </div>
 
         <div class="p-fluid col sm:col-12 md:col-6">
@@ -74,6 +83,12 @@
                     (this.primerNombre().touched)">
                     Primer nombre es obligatorio
             </small>
+            <small
+                class="p-error block fade-in"
+                *ngIf="primerNombre().hasError('pattern') && primerNombre().touched"
+            >
+                Solo se permiten letras.
+            </small>
         </div>
         <div class="p-fluid col sm:col-12 md:col-6">
             <label >Segundo nombre</label>
@@ -81,8 +96,15 @@
                     'ng-invalid ng-dirty':
                         this.segundoNombre().invalid &&
                         this.segundoNombre().touched
-                }" formControlName="segundoNombre">
+                }" formControlName="segundoNombre" />
+                <small
+                    class="p-error block fade-in"
+                    *ngIf="segundoNombre().hasError('pattern') && segundoNombre().touched"
+                >
+                    Solo se permiten letras.
+                </small>
         </div>
+        
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Primer apellido</label>
             <input type="text" pInputText [ngClass]="{
@@ -93,6 +115,12 @@
             <small class="p-error block fade-in" *ngIf="this.primerApellido().invalid &&
                     (this.primerApellido().touched)">
                 Primer apellido es obligatorio
+            </small>
+            <small
+                class="p-error block fade-in"
+                *ngIf="primerApellido().hasError('pattern') && primerApellido().touched"
+            >
+                Solo se permiten letras.
             </small>
         </div>
 
@@ -105,6 +133,10 @@
                 }" formControlName="segundoApellido">
         </div>
         <div class="p-fluid col sm:col-12 md:col-6">
+            <label class="required">Código</label>
+            <input type="text" pInputText formControlName="codigo">
+        </div>
+        <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Correo electrónico</label>
             <input type="text" pInputText [ngClass]="{
                         'ng-invalid ng-dirty':
@@ -114,6 +146,12 @@
             <small class="p-error block fade-in" *ngIf="this.email().invalid &&
                     (this.email().touched)">
                 Correo electrónico es obligatorio
+            </small>
+            <small
+                class="p-error block fade-in"
+                *ngIf="email().hasError('email') && email().touched"
+            >
+                Formato de correo electrónico inválido.
             </small>
         </div>
     </form>

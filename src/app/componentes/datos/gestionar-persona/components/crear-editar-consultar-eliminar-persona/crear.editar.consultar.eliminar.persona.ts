@@ -78,6 +78,7 @@ export class CrearEditarPersonaComponent implements OnInit {
       const personaPayload = {
         ...this.formulario.value,
         idTipoIdentificacion: persona.tipoIdentificacion,
+        esValidar: false
       };
       console.log("Payload enviado:", personaPayload);
       if (esEdicion) { 
@@ -128,7 +129,7 @@ export class CrearEditarPersonaComponent implements OnInit {
           primerApellido: persona.primerApellido || '',
           segundoApellido: persona.segundoApellido || '',
           email: persona.email || '',
-          sinReferencia: persona.sinReferencia || false,
+          sinReferencia: persona.sinReferencia || false
         };
   
         this.persona = personaOutDTO;

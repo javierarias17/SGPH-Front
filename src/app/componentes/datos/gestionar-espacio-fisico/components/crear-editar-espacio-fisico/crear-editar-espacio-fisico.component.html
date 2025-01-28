@@ -128,18 +128,18 @@
             </small>
         </div>
         <div class="p-fluid col sm:col-12 md:col-6">
-            <label class="required">OID</label>
+            <label>OID</label>
             <input type="text" 
-                pInputText 
-                [ngClass]="{'ng-invalid ng-dirty': OID().invalid && OID().touched}" 
-                formControlName="OID" 
-                placeholder=" ">
-            <small class="p-error block fade-in" *ngIf="this.OID().invalid &&
-                    (this.OID().touched)">
-                OID es obligatorio
+                   pInputText 
+                   [ngClass]="{'ng-invalid ng-dirty': OID().invalid && OID().touched}" 
+                   formControlName="OID" 
+                   placeholder=" " 
+                   (input)="validateOIDInline($event)">
+            <small class="p-error block fade-in" *ngIf="OID().hasError('invalidCharacters') && OID().touched">
+                El OID no debe contener caracteres especiales.
             </small>
-
         </div>
+        
         <div class="p-fluid col sm:col-12 md:col-6">
             <label class="required">Capacidad</label>
             <p-inputNumber [ngClass]="{
@@ -154,7 +154,7 @@
             </small>
         </div>
         <div  class="p-fluid col sm:col-12 md:col-6">
-            <label class="required">Recursos</label>
+            <label >Recursos</label>
             <p-multiSelect 
                 maxSelectedLabels="4"
                 [defaultLabel]="'Seleccione recurso'"
@@ -170,11 +170,7 @@
                         this.recursos().invalid &&
                         this.recursos().touched}"
                 >
-            </p-multiSelect>    	
-            <small class="p-error block fade-in" *ngIf="this.recursos().invalid &&
-                                (this.recursos().touched)">
-                Recursos es obligatorio
-            </small>
+            </p-multiSelect>  
         </div>
     </form>
     <div class="flex justify-content-end" style="width: 100%;">

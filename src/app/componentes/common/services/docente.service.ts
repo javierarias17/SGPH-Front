@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { DocenteOutDTO } from '../../datos/gestionar-docente/model/out/docente.out.dto';
 import { FiltroDocenteDTO } from '../../datos/gestionar-docente/model/in/filtro.docente.dto';
 import { environment } from 'src/environments/environment';
@@ -71,8 +71,16 @@ export class DocenteService{
 		return this.http.get<DocenteOutDTO>(url, { params });
 	}
 
-    public guardarDocente(save: DocenteOutDTO): Observable <DocenteOutDTO> {
-        const url = `${environment.url}${this.urlDocente}/guardarDocente`;
-        return this.http.post<any>(url, save);   
-    }
+    public guardarDocente(save: DocenteOutDTO): Observable<DocenteOutDTO> {
+		const url = `${environment.url}${this.urlDocente}/guardarDocente`;
+		console.log('Guardando docente:', save); // Depura los datos enviados
+		return this.http.post<any>(url, save).pipe(
+		  tap((response) => console.log('Respuesta del backend:', response)), // Depura la respuesta del backend
+		  catchError((error: HttpErrorResponse) => {
+			console.error('Error al guardar docente:', error);
+			return throwError(() => error);
+		  })
+		);
+	  }
+	  
 }

@@ -11,6 +11,7 @@ import { FacultadService } from 'src/app/componentes/common/services/facultad.se
 import { AgrupadorEspacioFisicoDTO } from 'src/app/componentes/datos/gestionar-espacio-fisico/model/out/agrupador.espacio.fisico.dto';
 import { ProgramaOutDTO } from 'src/app/componentes/common/model/programa/out/programa.out.dto';
 import { AsignaturaService } from 'src/app/componentes/common/services/asignatura.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-crear-editar-asignatura',
@@ -41,7 +42,8 @@ export class CrearEditarAsignaturaComponent implements OnInit {
     private facultadService: FacultadService,
     private programaService: ProgramaService,
     private sharedService: SharedService,
-    private messageSerivce: ShowMessageService
+    private messageSerivce: ShowMessageService,
+    private message: MessageService
   ) {}
   ngOnInit(): void {
     this.lectura = this.config.data.lectura
@@ -113,7 +115,8 @@ export class CrearEditarAsignaturaComponent implements OnInit {
       lstIdAgrupadorEspacioFisico: [{value: null}, Validators.required],
       idFacultad: [{value : ""}, Validators.required],
       aplicaEspacioSecundario:[{value: null}, Validators.required],
-      agrupadoresSeleccionados: [{value : ""}, Validators.required]
+      agrupadoresSeleccionados: [{value : ""}, Validators.required],
+      esValidar: [false]
     })
   }
   
@@ -143,6 +146,7 @@ export class CrearEditarAsignaturaComponent implements OnInit {
    guardarAsignatura() {
     this.formulario.get("lstIdAgrupadorEspacioFisico").setValue(this.agrupador().value)
     if (this.formulario.valid) {
+      this.formulario.get('esValidar').setValue(false);
       this.asignatura = this.formulario.value
       this.asignatura.idAsignatura = this.config.data?.id
       this.asignaturaService.guardarAsignatura(this.asignatura).subscribe({
@@ -151,9 +155,16 @@ export class CrearEditarAsignaturaComponent implements OnInit {
           this.ref.close()
           console.log(r)
         },
-        error: (r) => {
-          this.messageSerivce.showMessage("error", "Error al guardar")
-          console.log(r)
+        error: (error) => {
+          if (error.error && Array.isArray(error.error)) {
+            // Extraer los mensajes de validación (defaultMessage)
+            const mensajes = error.error
+            .map((err: any) => `${err.field ? `${err.field}: ` : ''}${err.defaultMessage}`)
+            .join(', ');
+            this.message.add({ severity: 'error', summary: 'Error', detail: mensajes });
+          } else {
+              this.message.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error inesperado' });
+          }
         }
       })
     } else {
@@ -193,4 +204,35 @@ export class CrearEditarAsignaturaComponent implements OnInit {
    aplicaEspacioSecundario(): FormControl {
     return this.formulario.get('aplicaEspacioSecundario') as FormControl
    }
+  
+   validateOnlyNumbers(event: any, controlName: string) {
+    const value = event.target.value;
+    const regex = /^[0-9]*$/; // Solo números
+    if (!regex.test(value)) {
+        this.formulario.get(controlName)?.setErrors({ invalidCharacters: true });
+    } else {
+        this.formulario.get(controlName)?.setErrors(null);
+    }
+}
+
+validateOnlyLetters(event: any, controlName: string) {
+    const value = event.target.value;
+    const regex = /^[a-zA-Z\s]*$/; // Solo letras y espacios
+    if (!regex.test(value)) {
+        this.formulario.get(controlName)?.setErrors({ invalidCharacters: true });
+    } else {
+        this.formulario.get(controlName)?.setErrors(null);
+    }
+}
+
+validateNoSpecialCharacters(event: any, controlName: string) {
+    const value = event.target.value;
+    const regex = /^[a-zA-Z0-9\s]*$/; // Letras, números y espacios
+    if (!regex.test(value)) {
+        this.formulario.get(controlName)?.setErrors({ invalidCharacters: true });
+    } else {
+        this.formulario.get(controlName)?.setErrors(null);
+    }
+}
+
 }

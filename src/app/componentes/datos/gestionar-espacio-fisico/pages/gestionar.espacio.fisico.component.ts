@@ -9,6 +9,8 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { CrearEditarEspacioFisicoComponent } from '../components/crear-editar-espacio-fisico/crear-editar-espacio-fisico.component';
 import { UbicacionOutDTO } from '../model/out/ubicacion.out.dto';
 import { EspacioFisicoService } from '../../../common/services/espacio.fisico.service';
+import { InformacionDetalleCargueComponent } from '../../cargar-labor-docencia/components/informacion-detalle-cargue/informacion-detalle-cargue.component';
+import { ModalDetalleCargueComponent } from '../components/detalle-cargue/detalle-cargue-espacios.component';
 
 @Component({
   selector: 'app-gestionar-espacio-fisico',
@@ -197,4 +199,73 @@ export class GestionarEspacioFisicoComponent {
     public obtenerNombreCompletoEspacioFisico():string{
         return "FALTA COMPLETAR";
     }
+
+    public cargarArchivo(): void {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.xlsx, .xls';
+    
+        input.onchange = (event: any) => {
+            const file: File = event.target.files[0];
+    
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+    
+                this.espacioFisicoService.subirArchivo(formData).subscribe(
+                    (response) => {
+                        // Determinar el estado basado en si hay errores o no
+                        const estado = (response.mensajesErrores && response.mensajesErrores.length > 0) 
+                            ? 'CARGUE FALLIDO' 
+                            : 'CARGUE EXITOSO';
+    
+                        // Capturando y procesando los datos del backend
+                        const detalleCargue = [
+                            `Total espacios físicos procesados: ${response.totalEspaciosFisicos || 0}`,
+                            `Total espacios creados: ${response.totalEspaciosCreados || 0}`,
+                            `Total espacios duplicados: ${response.totalEspaciosDuplicados || 0}`,
+                            ...(response.mensajesErrores || []), // Agregar los errores si existen
+                        ];
+    
+                        // Abrir el modal con los datos recibidos
+                        this.dialog.open(ModalDetalleCargueComponent, {
+                            header: 'Información detalle cargue',
+                            width: '50%',
+                            data: {
+                                archivo: response.archivo || file.name,
+                                facultad: 'FIET - Facultad de Ingeniería Electrónica y Telecomunicaciones',
+                                estado,
+                                detalleCargue,
+                            },
+                        });
+    
+                        // Actualizar la lista de espacios físicos
+                        this.consultarEspaciosFisicos();
+                    },
+                    (error) => {
+                        // Manejo de errores en el backend
+                        const detalleError =
+                            error.error?.mensajesErrores || ['Ocurrió un error inesperado al procesar el archivo.'];
+    
+                        // Mostrar modal con los errores
+                        this.dialog.open(ModalDetalleCargueComponent, {
+                            header: 'Información detalle cargue',
+                            width: '50%',
+                            data: {
+                                archivo: file.name,
+                                facultad: 'FIET - Facultad de Ingeniería Electrónica y Telecomunicaciones',
+                                estado: 'FALLO CARGUE',
+                                detalleCargue: detalleError,
+                            },
+                        });
+    
+                        console.error('Errores en el backend:', detalleError); // Logging para depuración
+                    }
+                );
+            }
+        };
+    
+        input.click(); // Abrir el selector de archivos
+    }    
+    
 }
