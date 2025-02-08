@@ -14,25 +14,26 @@
       <div class="encabezado" *ngFor="let dia of dias"> {{ dia | slice:0:3 }}</div>
   
       <!-- Horas y Franjas -->
-      <ng-container *ngFor="let intervaloHora of horas">
-        <!-- Columna de horas -->
-        <div class="columna-horas">{{ intervaloHora }}</div>
-  
+      <ng-container *ngFor="let horaRaw of horas; let i = index">
+        <!-- Columna de horas: se muestra el intervalo en formato "07:00 - 08:00" -->
+        <div class="columna-horas">{{ horasDisplay[i] }}</div>
+      
         <!-- Celdas para los días -->
         <ng-container *ngFor="let dia of dias">
           <div
             class="grid-item franja"
-            *ngIf="obtenerNombreCurso(dia, intervaloHora)"
+            *ngIf="obtenerNombreCurso(dia, horaRaw)"
             [ngStyle]="{
-              'background-color': obtenerColorPorMateria(obtenerNombreCurso(dia, intervaloHora))
+              'background-color': obtenerColorPorMateria(obtenerNombreCurso(dia, horaRaw))
             }"
-            [style.gridRow]="generarFilasParaFranja(dia, intervaloHora)"
+            [style.gridRow]="generarFilasParaFranja(dia, horaRaw)"
           >
-            {{ obtenerNombreCurso(dia, intervaloHora) }}
+            {{ obtenerNombreCurso(dia, horaRaw) }}
           </div>
-          <div class="grid-item empty" *ngIf="!obtenerNombreCurso(dia, intervaloHora)"></div>
+          <div class="grid-item empty" *ngIf="!obtenerNombreCurso(dia, horaRaw)"></div>
         </ng-container>
       </ng-container>
+      
     </div>
   </div>
   
