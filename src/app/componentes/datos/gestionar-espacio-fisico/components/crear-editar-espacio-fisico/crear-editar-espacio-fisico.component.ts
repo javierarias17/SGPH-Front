@@ -146,7 +146,6 @@ export class CrearEditarEspacioFisicoComponent implements OnInit {
     });
 
     this.idUbicacion().disable();
-    this.salon().disable();
   }
 
 

@@ -65,9 +65,10 @@ export class RegistrarReservaPlanificadorComponent {
     ) {}
   
     ngOnInit(): void {
+      console.log("DATOS USUARIO", this.ObtenerDatosUsuarioLogueado());
       this.cargarUbicaciones();
       this.buscarFranja();
-      this.cargarUsuario();
+      this.ObtenerDatosUsuarioLogueado();
       this.cargarRecursos();
     }
     
@@ -239,6 +240,16 @@ export class RegistrarReservaPlanificadorComponent {
         diaSeleccionado = dayNames[dayIndex];
       }
   
+      const rolMap = {
+        "ROLE_PLANIFICADOR": "Planificador",
+        "ROLE_PRESTAMISTA": "Prestamista",
+        "ROLE_ADMINISTRADOR": "Administrador"
+      };
+    
+      const tipoSolicitante = this.usuario.lstRol
+        ? this.usuario.lstRol.map((rol: string) => rolMap[rol] || rol).join(", ")
+        : "Desconocido"; // Si no hay roles, poner "Desconocido"
+
       const reserva = {
         idEspacioFisico: this.espaciosReservados.length > 0 
           ? this.espaciosReservados[0].value.idEspacioFisico 
@@ -246,10 +257,10 @@ export class RegistrarReservaPlanificadorComponent {
         salon: this.filtro.salon,
         idUbicacion: this.filtro.idUbicacion,
         usuario: this.usuario.usuario,
-        correo: this.usuario.correo,
+        correo: this.usuario.email,
         tipoIdentificacion: this.usuario.tipoIdentificacion,
         identificacion: this.usuario.identificacion,
-        tipoSolicitante: this.usuario.programa[0]?.rol,
+        tipoSolicitante: tipoSolicitante, 
         fechaReserva: this.fechaUso ? this.fechaUso.toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         estado: 'RESERVA_PENDIENTE',
         observaciones: this.justificacion,
@@ -259,6 +270,9 @@ export class RegistrarReservaPlanificadorComponent {
         listaRecursos: this.filtro.listaRecursos,
       };
   
+      console.log("Objeto reserva antes de enviarlo:", reserva);
+
+
       this.loading = true;
       this.reservaService.guardarReserva(reserva).subscribe({
         next: () => {
@@ -310,29 +324,52 @@ export class RegistrarReservaPlanificadorComponent {
     cerrarDialogo(): void {
         this.mostrarDialogoReserva = false;
     }
-
-    cargarUsuario(): void {
-        const usuarioData = this.obtenerDatosUsuario();
-    
-        if (usuarioData?.nombreUsuario) {
-            this.reservaService.cargarFormulario(usuarioData.nombreUsuario).subscribe({
-                next: (data) => {
-                    this.usuario = data.usuario;
-                    console.log('Usuario cargado:', this.usuario);
-                },
-                error: (err) => {
-                    console.error('Error al cargar el formulario:', err);
-                },
-            });
-        } else {
-            console.error('No se encontró información del usuario para cargar el formulario.');
-        }
-    }    
     
     private obtenerDatosUsuario(): any {
-        // Obtener los datos del usuario desde el localStorage
-        const usuarioData = localStorage.getItem('usuarioData');
-        return usuarioData ? JSON.parse(usuarioData) : null;
+      let usuarioData = null;
+      usuarioData = JSON.parse(localStorage.getItem("usuarioDataAdministrativo"));
+      if (sessionStorage.getItem("usuarioDataEstudiante")) {
+          usuarioData = JSON.parse(sessionStorage.getItem("usuarioDataEstudiante"));
+      } 
+
+      if (!usuarioData) {
+          console.warn("⚠ No se pudo obtener el usuario autenticado desde localStorage ni sessionStorage.");
+          return null;
+      }
+
+      return usuarioData;
+    }
+    
+    ObtenerDatosUsuarioLogueado(): void {
+      const usuarioData = this.obtenerDatosUsuario();
+  
+      if (!usuarioData || !usuarioData.nombreUsuario) {
+          console.error("No hay información del usuario en localStorage.");
+          return;
+      }
+  
+      this.usuarioService.consultarUsuarioAutenticado(usuarioData.nombreUsuario).subscribe({
+          next: (data) => {
+              console.log("QUE TRAE DATA", data);
+              if (data) {
+                  this.usuario = {
+                      usuario: data.nombreUsuario || '',
+                      primerNombre: data.primerNombre || '',
+                      segundoNombre: data.segundoNombre || '',
+                      primerApellido: data.primerApellido || '',
+                      segundoApellido: data.segundoApellido || '',
+                      tipoIdentificacion: data.codigoTipoIdentificacion || '',
+                      identificacion: data.numeroIdentificacion || '',
+                      email: data.email || '',
+                      lstRol: Array.isArray(data.lstRol) ? data.lstRol : []
+                  };
+              }
+              console.log('Usuario cargado:', this.usuario);
+          },
+          error: (err) => {
+              console.error('Error al cargar el formulario:', err);
+          },
+      });
     }
     
       
@@ -611,5 +648,20 @@ export class RegistrarReservaPlanificadorComponent {
   
     return esContinuo;
   }
+
+  getRolLegible(): string {
+    if (!this.usuario || !this.usuario.lstRol) {
+      return "Rol desconocido";  // Retorna un texto por defecto si no hay roles
+    }
+    
+    const rolMap = {
+      "ROLE_PLANIFICADOR": "Planificador",
+      "ROLE_PRESTAMISTA": "Prestamista",
+      "ROLE_ADMINISTRADOR": "Administrador"
+    };
+  
+    return this.usuario.lstRol.map((rol: string) => rolMap[rol] || rol).join(", ");
+  }  
+
 }
 

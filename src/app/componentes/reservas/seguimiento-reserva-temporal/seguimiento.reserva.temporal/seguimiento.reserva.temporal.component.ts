@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
 import { EmailService } from 'src/app/componentes/common/services/email.service';
 import { ReservaTemporalService } from 'src/app/componentes/common/services/reserva.temporal.service';
+import { UsuarioService } from 'src/app/componentes/common/services/usuario.service';
 import { PeriodoAcademicoSharedService } from 'src/app/shared/service/periodo.academico.shared.service';
 
 @Component({
@@ -43,6 +44,7 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
     public periodoAcademicoSharedService: PeriodoAcademicoSharedService,
     private messageService: MessageService,
     private emailService: EmailService,
+    private usuarioService: UsuarioService,
     private router: Router,
   ) {}
 
@@ -195,6 +197,8 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
   }
   
   confirmarAccion() {
+    console.log("📌 RESERVA SELECCIONADA en confirmarAccion:", this.reservaSeleccionada);
+
     if (this.accion === 'aprobar') {
       this.reservaTemporalService.aprobarReserva(this.reservaSeleccionada.idReserva, this.motivo).subscribe({
         next: () => {
@@ -227,6 +231,7 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
   }
 
   abrirModal(reserva: any, accion: 'aprobar' | 'rechazar' | 'cancelar') {
+    console.log("📌 Asignando reserva en abrirModal:", reserva);
     this.reservaSeleccionada = reserva;
     this.accion = accion;
     this.mostrarModalMotivo = true;
@@ -246,7 +251,7 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
   }
   
   public enviarMotivo(): void {
-    console.log("RESERVA SELECCIONADA", this.reservaSeleccionada);
+    console.log("📌 RESERVA SELECCIONADA en enviarMotivo:", this.reservaSeleccionada);
     if (!this.reservaSeleccionada || !this.reservaSeleccionada.idReserva) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Reserva no seleccionada.' });
       return;
@@ -306,34 +311,63 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
   }
   
   private enviarCorreo(accion: string): void {
-    let mensajeAdicional = '';
-    if (accion === 'aprobada') {
-      mensajeAdicional =
-        'Si por algún motivo desea cancelar la reserva, le solicitamos responder a este correo indicando que ya no necesita el espacio reservado. Esto nos ayudará a optimizar el uso de nuestros recursos.';
-    }
-    const datosCorreo = {
-      nombre: this.reservaSeleccionada.usuario,
-      to_email: this.reservaSeleccionada.correo,
-      idReserva: this.reservaSeleccionada.idReserva,
-      accion: accion === 'aprobada' ? 'aprobada' : accion === 'rechazada' ? 'rechazada' : 'cancelada',
-      fechaReserva: this.reservaSeleccionada.fechaReserva,
-      horaInicio: this.reservaSeleccionada.horaInicio,
-      horaFin: this.reservaSeleccionada.horaFin,
-      salon: this.reservaSeleccionada.salon,
-      observaciones: this.motivo,
-      mensajeAdicional: mensajeAdicional,
-    };
+    console.log("📌 RESERVA SELECCIONADA en enviarCorreo:", this.reservaSeleccionada);
+    const motivoEnviado = this.motivo;
+    console.log("📌 MOTIVO ENVIAD:", motivoEnviado);
+    // Crear una referencia local antes de llamar al servicio
+    const reservaSeleccionadaLocal = { ...this.reservaSeleccionada }; 
 
-    console.log("DATOS DEL CORREO", datosCorreo);
-    this.emailService.enviarCorreo(datosCorreo).then(
-      (response) => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Notificacion de reserva enviada correctamente.' });
-        console.log('Correo enviado exitosamente', response);
-      },
-      (error) => {
-        console.error('Error al enviar el correo', error);
-      }
-    );
+    let usuarioData = this.obtenerDatosUsuario();
+
+    // Consultar la API para obtener el email del usuario autenticado
+    this.usuarioService.consultarUsuarioAutenticado(usuarioData.nombreUsuario).subscribe({
+        next: (data) => {
+            console.log("DATAAAAA", reservaSeleccionadaLocal); // Ahora debería mantenerse
+            console.log("MOTIVO", this.motivo);
+            // Ahora tenemos el email del administrador
+            const usuarioRemitente = {
+                nombreUsuario: data.nombreUsuario,
+                email: data.email,
+            };
+
+            let mensajeAdicional = accion === 'aprobada'
+                ? 'Si por algún motivo desea cancelar la reserva, le solicitamos responder a este correo indicando que ya no necesita el espacio reservado.'
+                : '';
+
+            console.log("DATAAAA4", reservaSeleccionadaLocal); // Verificar si aún tiene datos
+
+            
+            const datosCorreo = {
+                to_email: reservaSeleccionadaLocal.correo,  
+                from_email: usuarioRemitente.email,  
+                from_name: usuarioRemitente.nombreUsuario || 'Administrador',
+                asunto: `Reserva ${accion}`,
+                nombre: reservaSeleccionadaLocal.usuario,
+                idReserva: reservaSeleccionadaLocal.idReserva,
+                salon: reservaSeleccionadaLocal.salon,
+                fechaReserva: reservaSeleccionadaLocal.fechaReserva,
+                horaInicio: reservaSeleccionadaLocal.horaInicio,
+                horaFin: reservaSeleccionadaLocal.horaFin,
+                observaciones: motivoEnviado,
+                mensajeAdicional: mensajeAdicional,
+                accion: accion === 'aprobada' ? 'aprobada' : accion === 'rechazada' ? 'rechazada' : 'cancelada',
+            };
+
+            console.log("📨 DATOS DEL CORREO A ENVIAR:", datosCorreo);
+            
+            this.emailService.enviarCorreo(datosCorreo).then(
+                () => {
+                    this.messageService.add({ severity: 'success', summary: 'Correo enviado con éxito' });
+                },
+                (error) => {
+                    console.error('❌ Error al enviar el correo:', error);
+                }
+            );
+        },
+        error: (err) => {
+            console.error('❌ Error al consultar el usuario autenticado:', err);
+        }
+    });
   }
 
   verInformacionReserva(reserva: any): void {
@@ -410,5 +444,21 @@ export class SeguimientoReservaTemporalComponent implements OnInit {
     this.mostrarModalMotivo = true;
     this.motivo = ''; // Inicia con un motivo vacío
   }
+  
+  private obtenerDatosUsuario(): any {
+    const esEstudiante = window.location.pathname.includes("login-student");
+
+    const usuarioData = localStorage.getItem(
+        esEstudiante ? 'usuarioDataEstudiante' : 'usuarioDataAdministrativo'
+    );
+
+    if (!usuarioData) {
+        console.warn("⚠ No hay datos en localStorage para el usuario actual");
+        return null;
+    }
+
+    return JSON.parse(usuarioData);
+  }
+
   
 }

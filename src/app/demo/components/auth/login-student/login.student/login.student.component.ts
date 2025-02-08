@@ -146,9 +146,15 @@ export class LoginStudentComponent implements OnInit{
         nombreUsuario: data.nombreUsuario,
         roles: data.authorities,
     };
-    localStorage.setItem('usuarioData', JSON.stringify(usuarioData));
-    console.log("USUARIO DATA", usuarioData)
-   //his.roles = data.authorities;
-    this.showMessageService.showMessage("error", "Bienvenido " + data.nombreUsuario);
-}
+    const esEstudiante = sessionStorage.getItem('isLoggedEstudent') === 'true';
+
+    if (esEstudiante) {
+        sessionStorage.setItem('usuarioDataEstudiante', JSON.stringify(usuarioData));
+    } else {
+      sessionStorage.removeItem('usuarioDataEstudiante');
+      localStorage.setItem('usuarioDataAdministrativo', JSON.stringify(usuarioData));
+    }
+
+    console.log("USUARIO GUARDADO:", esEstudiante ? "Estudiante en sessionStorage" : "Administrativo en localStorage");
+  }
 }

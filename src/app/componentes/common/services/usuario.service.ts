@@ -98,4 +98,10 @@ export class UsuarioService{
 		const url = `${environment.url}${this.urlUsuario}/consultarUsuarioPorIdPersona`;
 		return this.http.get<UsuarioOutDTO>(url, { params });
     }  
+
+	public consultarUsuarioAutenticado(nombreUsuario:string) {
+		const params = new HttpParams().set('nombreUsuario', nombreUsuario.toString());
+		const url = `${environment.url}${this.urlUsuario}/consultarUsuarioAutenticado`;
+		return this.http.get<UsuarioOutDTO>(url, { params });
+    } 
 }

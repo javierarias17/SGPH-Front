@@ -584,13 +584,12 @@ export class GestionarReservaTemporalComponent {
     // Limpiar token y datos de sesión
     this.tokenService.logOut(); // Borra los datos almacenados
     sessionStorage.clear(); // Limpia toda la sesión
-    localStorage.clear(); // Opcional: limpia el almacenamiento local si se usa
 
     // Cerrar sesión de Google
     this.oauthService.logOut();
 
     // Redirigir al inicio de sesión
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/login-student']);
   }
   
   onNombreEspacioChange(event: any): void {

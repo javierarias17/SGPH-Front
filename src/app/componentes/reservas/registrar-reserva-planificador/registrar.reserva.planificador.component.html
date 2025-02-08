@@ -24,11 +24,14 @@
         </div>
         <div class="col">
           <label><b>Correo electrónico: </b></label>
-          <span>{{ usuario?.correo }}</span>
+          <span>{{ usuario?.email }}</span>
         </div>
         <div class="col">
           <label><b>Tipo de solicitante: </b></label>
-          <span>{{ usuario?.programa[0]?.rol }}</span>
+          <span>{{ usuario?.lstRol ? getRolLegible() : 'Rol desconocido' }}</span>
+          <ng-template #sinRol>
+              <span>No disponible</span>
+          </ng-template>        
         </div>
         <div class="col">
           <label><b>Fecha solicitud: </b></label>
@@ -36,6 +39,7 @@
         </div>
       </div>
     </fieldset>
+
 
     <div class="alert alert-info" role="alert" style="margin-top: 20px; font-size: 14px; color: #6c757d;">
       <strong>Nota importante:</strong> Solo puedes seleccionar un espacio físico y definir su franja de horario de inicio y fin. Asegúrate de ingresar correctamente los detalles antes de enviar tu solicitud.

@@ -39,13 +39,13 @@ export class LoginComponent implements OnInit {
     private initLogin() {
         this.isLoggedEstudent = sessionStorage.getItem('isLoggedEstudent') === 'true'; // Recupera el estado
         console.log('Iniciando configuración de login, isLoggedEstudent:', this.isLoggedEstudent);
-    
+        const redirectUri = window.location.origin + '/auth/login';
     
         const config: AuthConfig = {
             issuer: 'https://accounts.google.com',
             strictDiscoveryDocumentValidation: false,
             clientId: '209217537458-cmls25384a06iif0mca643mpqrebig26.apps.googleusercontent.com',
-            redirectUri: window.location.origin + '/auth/login', 
+            redirectUri: redirectUri, 
             scope: 'openid profile email',
         };
     
@@ -205,41 +205,46 @@ export class LoginComponent implements OnInit {
         return this.formulario.get("password") as FormControl
     }
  
-    public iniciarSesionNormal(){
-
+    public iniciarSesionNormal() {
         if (this.formulario.invalid) {
             this.formulario.markAllAsTouched();
             return;
         }
-
+    
         this.loginService.login(this.nombreUsuario().value, this.password().value).subscribe(
-            data => {
-                this.isLogged = true;   
-                this.establercerInfoLocalStorage(data);           
+            async (data) => {
+                console.log("Datos de respuesta del login:", data);
+                this.isLogged = true;
+                this.establercerInfoLocalStorage(data);
                 this.router.navigate(['/']);
             },
             err => {
                 this.isLogged = false;
-                this.showMessageService.showMessage("error", "Nombre de usuario o contraseña erróneos")
+                this.showMessageService.showMessage("error", err.message);
             }
         );
     }
-
+    
     private establercerInfoLocalStorage(data: any){
+        console.log("📢 Datos recibidos en login:", data);
         this.tokenService.setToken(data.token);
         this.tokenService.setUserName(data.nombreUsuario);
         this.tokenService.setAuthorities(data.authorities);
-        console.log("USUARIO DATA", data)
-        // Almacenar idPersona y otros datos del usuario en el localStorage
+        console.log("✅ Guardando datos en localStorage:", data);
         const usuarioData = {
             idPersona: data.idPersona, // Ajusta según la estructura de tu API
             nombreUsuario: data.nombreUsuario,
             roles: data.authorities,
         };
-        localStorage.setItem('usuarioData', JSON.stringify(usuarioData));
-        console.log("USUARIO DATA", usuarioData)
-       //his.roles = data.authorities;
-        this.showMessageService.showMessage("error", "Bienvenido " + data.nombreUsuario);
+        const esEstudiante = sessionStorage.getItem('isLoggedEstudent') === 'true';
+    if (esEstudiante) {
+        sessionStorage.setItem('usuarioDataEstudiante', JSON.stringify(usuarioData));
+    } else {
+        sessionStorage.removeItem('usuarioDataEstudiante');
+        localStorage.setItem('usuarioDataAdministrativo', JSON.stringify(usuarioData));
+      }
+
+    console.log("USUARIO GUARDADO:", esEstudiante ? "Estudiante en sessionStorage" : "Administrativo en localStorage");
     }
 
     selectTab(tab: string) {
@@ -249,8 +254,14 @@ export class LoginComponent implements OnInit {
     logout() {
         this.isLogged = false;
         this.isLoggedEstudent = false;
-        sessionStorage.clear(); // Limpia el almacenamiento
+        sessionStorage.removeItem('isLoggedEstudent');
         this.oauthService.logOut();
+        console.log("RESERVA TEMPORAL", this.router.url.includes('/login-student/ReservaTemporal'));
+        if (this.router.url.includes('/login-student/ReservaTemporal')) {
+            this.router.navigate(['/login-student']);
+        } else {
+            this.router.navigate(['/']);
+        }
     }
     
 }

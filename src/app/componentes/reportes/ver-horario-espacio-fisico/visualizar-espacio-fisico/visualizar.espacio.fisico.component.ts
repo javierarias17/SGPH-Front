@@ -30,17 +30,30 @@ export class VisualizarEspacioFisicoComponent implements OnInit {
   ];
   public posicionesOcupadas: { x: number; y: number }[] = [];
   public datosCargados = false;
+
   constructor(
     private route: ActivatedRoute,
     private planificacionManualService: PlanificacionManualService,
     private spinnerService: SpinnerService,
     private espacioFisicoService: EspacioFisicoService
   ) {
-    // Inicializar el arreglo de horas
-    for (let i = 7; i <= 21; i ++) {
-      const hora = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
-      this.horas.push(hora);
-    }
+    // En vez de generar cada hora individualmente, definimos franjas de dos horas:
+    this.horas = [];
+    const bloques = [
+      { inicio: 7, fin: 9 },
+      { inicio: 9, fin: 11 },
+      { inicio: 11, fin: 13 },
+      // Se omite la franja que incluya la hora 13, por ello se salta al bloque siguiente:
+      { inicio: 14, fin: 16 },
+      { inicio: 16, fin: 18 },
+      { inicio: 18, fin: 20 }
+    ];
+    bloques.forEach(bloque => {
+      const horaInicio = bloque.inicio < 10 ? `0${bloque.inicio}:00:00` : `${bloque.inicio}:00:00`;
+      const horaFin = bloque.fin < 10 ? `0${bloque.fin}:00:00` : `${bloque.fin}:00:00`;
+      // Se guarda el bloque como "horaInicio - horaFin"
+      this.horas.push(`${horaInicio} - ${horaFin}`);
+    });
   }
 
   ngOnInit(): void {
@@ -71,32 +84,29 @@ export class VisualizarEspacioFisicoComponent implements OnInit {
 
   obtenerNombreCurso(dia: DiaSemanaEnum, horaInicio: string): string {
     const franja = this.listaFranjaHorariaAulaDTO.find(
-        (f) =>
-          f.dia === dia &&
+      (f) =>
+        f.dia === dia &&
         horaInicio >= f.horaInicio.toString() &&
-        horaInicio < f.horaFin.toString() // Asegúrate de que la hora actual esté dentro del rango
-      );
-      return franja ? franja.nombreCurso : '';
+        horaInicio < f.horaFin.toString() // Se verifica que la hora actual esté dentro del rango
+    );
+    return franja ? franja.nombreCurso : '';
   }
-  
 
   configurarBorderSegunIndicador(dia: DiaSemanaEnum, horaInicio: string): string {
     const franjaCurso = this.listaFranjaHorariaAulaDTO.find(
       (f) => f.dia === dia && f.horaInicio.toString() === horaInicio
     );
     return franjaCurso && !franjaCurso.esPrincipal ? '3px dashed #000' : null;
-  }  
+  }
 
   obtenerColorPorMateria(materia: string): string {
     if (!materia) {
       return '#cccccc';
     }
-
     let hash = 0;
     for (let i = 0; i < materia.length; i++) {
       hash = materia.charCodeAt(i) + ((hash << 5) - hash);
     }
-
     const hue = hash % 360;
     return `hsl(${hue}, 60%, 75%)`;
   }
@@ -110,46 +120,37 @@ export class VisualizarEspacioFisicoComponent implements OnInit {
     const franja = this.listaFranjaHorariaAulaDTO.find(
       (f) => f.dia === dia && f.horaInicio.toString() === horaInicio
     );
-  
     if (franja) {
       const horaInicioDate = new Date(`2000-01-01T${franja.horaInicio}`);
       const horaFinDate = new Date(`2000-01-01T${franja.horaFin}`);
-  
-      // Calcula el número de filas necesarias (cada fila equivale a 2 horas)
       const diffMs = horaFinDate.getTime() - horaInicioDate.getTime();
       const diffHours = diffMs / (1000 * 60 * 60);
-  
-      return `span ${diffHours / 2}`; // Divide entre 2 porque cada fila es de 2 horas
+      return `span ${diffHours / 2}`; // Se divide entre 2 porque cada fila representa 2 horas
     }
-  
-    return 'span 1'; // Por defecto, una fila
+    return 'span 1';
   }
-  
+
   cargarDetallesEspacioFisico(): void {
     if (!this.espacioFisicoId) {
       return;
     }
-  
     this.spinnerService.show('Cargando datos del espacio físico...');
     this.espacioFisicoService
       .consultarEspacioFisicoPorIdEspacioFisico(this.espacioFisicoId)
       .subscribe(
         (data) => {
-          // Mapear las propiedades del DTO
           this.espacioFisicoDTOSeleccionado = {
             idEspacioFisico: data.idEspacioFisico,
             capacidad: data.capacidad,
-            estado: data.estado ? EstadoEspacioFisicoEnum.ACTIVO : EstadoEspacioFisicoEnum.INACTIVO, // Asegúrate de que coincidan los valores
+            estado: data.estado ? EstadoEspacioFisicoEnum.ACTIVO : EstadoEspacioFisicoEnum.INACTIVO,
             salon: data.salon,
             idEdificio: data.idEdificio,
             nombreEdificio: data.nombreEdificio,
             idUbicacion: data.idUbicacion,
             nombreUbicacion: data.nombreUbicacion,
-            tipoEspacioFisico: data.nombreTipoEspacioFisico, // Corrige según la propiedad existente
-            OID: data.oid, // Corrige la referencia según la propiedad correcta
+            tipoEspacioFisico: data.nombreTipoEspacioFisico,
+            OID: data.oid,
           };
-          
-  
           this.spinnerService.hide();
         },
         (error) => {
@@ -158,6 +159,4 @@ export class VisualizarEspacioFisicoComponent implements OnInit {
         }
       );
   }
-  
-  
 }

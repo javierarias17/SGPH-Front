@@ -17,7 +17,7 @@
             <p class="label col-12 md:col-6">{{this.espacio.oid}}</p>
         </div>
         <div class="p-fluid col-12 flex">
-            <label class=" col-12 md:col-2">Salón</label>
+            <label class=" col-12 md:col-2">Nombre de espacio físico</label>
             <p class="label col-12 md:col-6">{{this.espacio.salon}}</p>
         </div>
         <div class="p-fluid col-12 flex">
@@ -72,7 +72,7 @@
             </small>
         </div>
         <div class="p-fluid col sm:col-12 md:col-6">
-            <label class="required">Salón</label>
+            <label class="required">Nombre de espacio físico</label>
             <input type="text" 
                 pInputText 
                 [ngClass]="{
@@ -84,7 +84,7 @@
                 placeholder=" ">
             <small class="p-error block fade-in" *ngIf="salon().invalid &&
                     (salon().touched)">
-                Salón es obligatorio
+                Nombre de espacio físico es obligatorio
             </small>
 
         </div>
@@ -104,7 +104,7 @@
             </p-dropdown>
             <small class="p-error block fade-in" *ngIf="this.estado().invalid &&
                                 (this.estado().touched)">
-                Salón es obligatorio
+                Estado es obligatorio
             </small>
         </div>
         <div class="p-fluid col sm:col-12 md:col-6">

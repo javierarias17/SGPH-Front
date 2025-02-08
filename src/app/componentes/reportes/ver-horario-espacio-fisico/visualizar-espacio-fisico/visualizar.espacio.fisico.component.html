@@ -11,7 +11,7 @@
     <div class="horario-grid">
       <!-- Encabezado -->
       <div class="columna-horas encabezado">HORAS</div>
-      <div class="encabezado" *ngFor="let dia of dias">{{ dia }}</div>
+      <div class="encabezado" *ngFor="let dia of dias"> {{ dia | slice:0:3 }}</div>
   
       <!-- Horas y Franjas -->
       <ng-container *ngFor="let intervaloHora of horas">
